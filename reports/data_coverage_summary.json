@@ -1,0 +1,231 @@
+{
+  "by_resolution": {
+    "1": {
+      "contiguous_rows": 4,
+      "gapped_rows": 38,
+      "native_or_derived": "NATIVE",
+      "observed_window_verified_bars": 279373,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "1",
+      "statuses": {
+        "ARCHIVED_VERIFIED_CONTIGUOUS": 4,
+        "ARCHIVED_VERIFIED_WITH_GAPS": 38,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 42
+    },
+    "15": {
+      "contiguous_rows": 4,
+      "gapped_rows": 38,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 18568,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "1",
+      "statuses": {
+        "ARCHIVED_VERIFIED_CONTIGUOUS": 4,
+        "ARCHIVED_VERIFIED_WITH_GAPS": 38,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 42
+    },
+    "180": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "60",
+      "statuses": {
+        "DERIVATION_NOT_MATERIALIZED": 42,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 0
+    },
+    "1D": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "NATIVE",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "1D",
+      "statuses": {
+        "NOT_ARCHIVED_NOT_PROBED": 469
+      },
+      "verified_rows": 0
+    },
+    "240": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "60",
+      "statuses": {
+        "DERIVATION_NOT_MATERIALIZED": 42,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 0
+    },
+    "2D": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "1D",
+      "statuses": {
+        "NOT_ARCHIVED_NOT_PROBED": 469
+      },
+      "verified_rows": 0
+    },
+    "30": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "1",
+      "statuses": {
+        "DERIVATION_NOT_MATERIALIZED": 42,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 0
+    },
+    "360": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "60",
+      "statuses": {
+        "DERIVATION_NOT_MATERIALIZED": 42,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 0
+    },
+    "3D": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "1D",
+      "statuses": {
+        "NOT_ARCHIVED_NOT_PROBED": 469
+      },
+      "verified_rows": 0
+    },
+    "480": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "60",
+      "statuses": {
+        "DERIVATION_NOT_MATERIALIZED": 42,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 0
+    },
+    "5": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "1",
+      "statuses": {
+        "DERIVATION_NOT_MATERIALIZED": 42,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 0
+    },
+    "60": {
+      "contiguous_rows": 24,
+      "gapped_rows": 18,
+      "native_or_derived": "NATIVE",
+      "observed_window_verified_bars": 4648,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "60",
+      "statuses": {
+        "ARCHIVED_VERIFIED_CONTIGUOUS": 24,
+        "ARCHIVED_VERIFIED_WITH_GAPS": 18,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 42
+    },
+    "720": {
+      "contiguous_rows": 0,
+      "gapped_rows": 0,
+      "native_or_derived": "DERIVED",
+      "observed_window_verified_bars": 0,
+      "overall_historical_coverage": "UNKNOWN_UNPROVEN_HISTORY_START",
+      "rows": 469,
+      "source_resolution": "60",
+      "statuses": {
+        "DERIVATION_NOT_MATERIALIZED": 42,
+        "NOT_ARCHIVED_NOT_PROBED": 422,
+        "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 5
+      },
+      "verified_rows": 0
+    }
+  },
+  "catalog_assets": 469,
+  "catalog_resolution_rows": 6097,
+  "coverage_definition": "observed_window_coverage_percent is computed only between first and last verified archived candle; it is not whole-history coverage.",
+  "generated_at_utc": "2026-10-22T13:08:31.275365+00:00",
+  "hash_statuses": {
+    "NOT_APPLICABLE": 294,
+    "NOT_AVAILABLE": 5677,
+    "VERIFIED": 126
+  },
+  "historical_coverage": "UNKNOWN_UNPROVEN_API_HISTORY_START",
+  "order_book_audit": {
+    "ask_to_future_bid_status": "REQUIRES_TIME_MATCHED_LATER_REAL_RECEIPTS",
+    "database_present": true,
+    "first_observed_at": 1792651192.11402,
+    "historical_order_book_available": true,
+    "last_observed_at": 1792673953.6262147,
+    "microstructure_feature_status": "REAL_RECEIPTS_AVAILABLE_FOR_RECORDED_SYMBOLS_ONLY",
+    "real_snapshot_rows": 210,
+    "symbols_with_snapshots": 8,
+    "tables": [
+      "forecasts",
+      "outcomes",
+      "quotes"
+    ]
+  },
+  "recorded_incidents": 212,
+  "remaining_gaps": 20026,
+  "scope": "All discovered catalog markets; trade eligibility is intentionally not inferred.",
+  "source_statuses": {
+    "ARCHIVED_VERIFIED_CONTIGUOUS": 32,
+    "ARCHIVED_VERIFIED_WITH_GAPS": 94,
+    "DERIVATION_NOT_MATERIALIZED": 294,
+    "NOT_ARCHIVED_NOT_PROBED": 5627,
+    "PUBLIC_SOURCE_UNAVAILABLE_OR_INCOMPLETE": 50
+  }
+}

@@ -1,0 +1,1277 @@
+{
+  "generated_at_utc": "2026-10-22T13:08:31.291820+00:00",
+  "incidents": [
+    {
+      "created_at": "2026-10-22T04:34:46.937175+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 7740s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "1BBABYDOGETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:33:55.528658+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 7740s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "60",
+      "symbol": "1BBABYDOGETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:36:45.467841+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "1BBABYDOGEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:36:44.570644+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "1BBABYDOGEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:36:43.649866+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "1BBABYDOGEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:35:54.163534+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1BBABYDOGEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:35:53.228314+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1BBABYDOGEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:35:52.328939+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1BBABYDOGEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:38:24.153857+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 2700s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "1INCHTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:38:14.762372+00:00",
+      "reason": "ValueError: incomplete real history: 170 missing; first [1792476000, 1792476060, 1792476120, 1792476180]",
+      "resolution": "1",
+      "symbol": "1INCHTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:38:13.810261+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "1INCHTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:37:23.189031+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792476000, 1792479600]",
+      "resolution": "60",
+      "symbol": "1INCHTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:37:22.269576+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1INCHTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:37:21.400769+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1INCHTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:39:58.239842+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "1INCHUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:39:57.741540+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "1INCHUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:39:57.219630+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "1INCHUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:39:20.470060+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1INCHUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:39:19.546449+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1INCHUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:39:18.263880+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "1INCHUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:40:57.211478+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 4680s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "2ZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:40:52.856499+00:00",
+      "reason": "ValueError: incomplete real history: 26 missing; first [1792497600, 1792497660, 1792497720, 1792497780]",
+      "resolution": "1",
+      "symbol": "2ZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:40:52.284890+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "2ZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:40:25.771686+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 4680s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "60",
+      "symbol": "2ZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:40:20.845066+00:00",
+      "reason": "ValueError: incomplete real history: 3 missing; first [1792486800, 1792490400, 1792494000]",
+      "resolution": "60",
+      "symbol": "2ZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:40:20.338762+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "2ZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:42:04.259055+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "2ZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:42:03.639513+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "2ZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:42:03.071449+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "2ZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:41:29.832552+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "2ZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:41:29.329498+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "2ZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:41:28.836804+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "2ZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:43:04.587199+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAPLXTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:43:04.066293+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAPLXTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:43:03.489241+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAPLXTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:42:34.806170+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAPLXTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:42:34.312652+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAPLXTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:42:33.816465+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAPLXTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:44:12.259877+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAPLXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:44:11.736822+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAPLXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:44:11.215968+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAPLXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:43:43.535154+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAPLXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:43:43.048660+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAPLXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:43:42.465335+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAPLXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:45:04.621974+00:00",
+      "reason": "ValueError: incomplete real history: 125 missing; first [1792476000, 1792476060, 1792476120, 1792476180]",
+      "resolution": "1",
+      "symbol": "AAVETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:45:04.070542+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAVETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:45:03.452237+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAVETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:44:34.220268+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792476000, 1792479600]",
+      "resolution": "60",
+      "symbol": "AAVETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:44:33.624495+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAVETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:44:33.036317+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAVETMN"
+    },
+    {
+      "created_at": "2026-10-22T04:46:17.765977+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 1020s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "AAVEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:46:11.473036+00:00",
+      "reason": "ValueError: incomplete real history: 97 missing; first [1792465200, 1792465260, 1792465320, 1792465380]",
+      "resolution": "1",
+      "symbol": "AAVEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:46:10.921832+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AAVEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:45:39.363168+00:00",
+      "reason": "ValueError: incomplete real history: 1 missing; first [1792465200]",
+      "resolution": "60",
+      "symbol": "AAVEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:45:38.677717+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AAVEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:51:10.674192+00:00",
+      "reason": "ValueError: incomplete real history: 13 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "ADATMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:09.066793+00:00",
+      "reason": "ValueError: incomplete real history: 13 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "ADATMN"
+    },
+    {
+      "created_at": "2026-10-22T05:12:51.630857+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 840s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "ADATMN"
+    },
+    {
+      "created_at": "2026-10-22T04:48:14.258037+00:00",
+      "reason": "ValueError: incomplete real history: 69 missing; first [1792454400, 1792454460, 1792454520, 1792454580]",
+      "resolution": "1",
+      "symbol": "ADAUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:48:13.731743+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 1500s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "ADAUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:47:42.899062+00:00",
+      "reason": "ValueError: incomplete real history: 1 missing; first [1792454400]",
+      "resolution": "60",
+      "symbol": "ADAUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:49:20.962556+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 4380s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "AEROTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:49:17.188522+00:00",
+      "reason": "ValueError: incomplete real history: 57 missing; first [1792508400, 1792508460, 1792508520, 1792508580]",
+      "resolution": "1",
+      "symbol": "AEROTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:49:16.676674+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEROTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:48:50.708263+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 4380s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "60",
+      "symbol": "AEROTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:48:46.282011+00:00",
+      "reason": "ValueError: incomplete real history: 3 missing; first [1792497600, 1792501200, 1792504800]",
+      "resolution": "60",
+      "symbol": "AEROTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:48:45.756517+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEROTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:50:23.750663+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEROUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:50:23.232592+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEROUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:50:22.699761+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEROUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:49:53.244664+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEROUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:49:52.761270+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEROUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:49:52.268376+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEROUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:51:24.620943+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEVOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:51:24.108581+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEVOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:51:23.615187+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEVOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:50:54.203309+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEVOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:50:53.704833+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEVOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:50:53.187639+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEVOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:52:24.844468+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEVOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:52:24.346234+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEVOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:52:23.841009+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AEVOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:51:54.123560+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEVOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:51:53.597391+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEVOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:51:53.100759+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AEVOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:53:28.193675+00:00",
+      "reason": "ValueError: incomplete real history: 98 missing; first [1792627200, 1792627260, 1792627320, 1792627380]",
+      "resolution": "1",
+      "symbol": "AGLDTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:53:27.635903+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AGLDTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:53:27.109856+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AGLDTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:52:54.108538+00:00",
+      "reason": "ValueError: incomplete real history: 1 missing; first [1792627200]",
+      "resolution": "60",
+      "symbol": "AGLDTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:52:53.564006+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AGLDTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:52:53.042386+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AGLDTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:54:28.326684+00:00",
+      "reason": "ValueError: incomplete real history: 59 missing; first [1792605600, 1792605660, 1792605720, 1792605780]",
+      "resolution": "1",
+      "symbol": "AGLDUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:54:27.746139+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AGLDUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:54:27.249388+00:00",
+      "reason": "ValueError: incomplete real history: 132 missing; first [1792586880, 1792586940, 1792587000, 1792587060]",
+      "resolution": "1",
+      "symbol": "AGLDUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:53:57.170677+00:00",
+      "reason": "ValueError: incomplete real history: 3 missing; first [1792594800, 1792598400, 1792602000]",
+      "resolution": "60",
+      "symbol": "AGLDUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:53:56.638555+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792587600, 1792591200]",
+      "resolution": "60",
+      "symbol": "AGLDUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:53:51.272100+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792476000, 1792479600]",
+      "resolution": "60",
+      "symbol": "AGLDUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:55:31.333108+00:00",
+      "reason": "ValueError: incomplete real history: 166 missing; first [1792605600, 1792605660, 1792605720, 1792605780]",
+      "resolution": "1",
+      "symbol": "AIOZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:55:30.502142+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIOZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:55:29.751088+00:00",
+      "reason": "ValueError: incomplete real history: 132 missing; first [1792586880, 1792586940, 1792587000, 1792587060]",
+      "resolution": "1",
+      "symbol": "AIOZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:54:58.646736+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792605600, 1792609200]",
+      "resolution": "60",
+      "symbol": "AIOZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:54:58.097591+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIOZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:54:57.583531+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792587600, 1792591200]",
+      "resolution": "60",
+      "symbol": "AIOZTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:56:35.785731+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIOZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:56:35.205672+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIOZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:56:34.675746+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIOZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:56:04.532361+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIOZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:56:04.013953+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIOZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:56:03.492081+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIOZUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:57:34.391008+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 4500s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "AIXBTTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:57:30.702355+00:00",
+      "reason": "ValueError: incomplete real history: 99 missing; first [1792508400, 1792508460, 1792508520, 1792508580]",
+      "resolution": "1",
+      "symbol": "AIXBTTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:57:30.184886+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIXBTTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:57:03.934700+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 4500s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "60",
+      "symbol": "AIXBTTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:56:59.889343+00:00",
+      "reason": "ValueError: incomplete real history: 1 missing; first [1792508400]",
+      "resolution": "60",
+      "symbol": "AIXBTTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:56:59.341523+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIXBTTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:58:38.058181+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIXBTUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:58:37.551810+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIXBTUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:58:37.044999+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AIXBTUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:58:07.425121+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIXBTUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:58:06.818566+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIXBTUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:58:06.277030+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AIXBTUSDT"
+    },
+    {
+      "created_at": "2026-10-22T04:59:40.319447+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 240s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "ALGOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:59:34.423448+00:00",
+      "reason": "ValueError: incomplete real history: 27 missing; first [1792465200, 1792465260, 1792465320, 1792465380]",
+      "resolution": "1",
+      "symbol": "ALGOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:59:33.909789+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "ALGOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:58:59.174324+00:00",
+      "reason": "ValueError: incomplete real history: 3 missing; first [1792454400, 1792458000, 1792461600]",
+      "resolution": "60",
+      "symbol": "ALGOTMN"
+    },
+    {
+      "created_at": "2026-10-22T04:58:58.641641+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792447200, 1792450800]",
+      "resolution": "60",
+      "symbol": "ALGOTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:00:45.792983+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "ALGOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:00:45.289796+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "ALGOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:00:44.752547+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "ALGOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:00:13.372364+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "ALGOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:00:12.869937+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "ALGOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:00:12.291444+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "ALGOUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:01:44.870401+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 2340s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "ALICETMN"
+    },
+    {
+      "created_at": "2026-10-22T05:01:37.870167+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 6120s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "ALICETMN"
+    },
+    {
+      "created_at": "2026-10-22T05:02:45.108125+00:00",
+      "reason": "ValueError: incomplete real history: 86 missing; first [1792584000, 1792584060, 1792584120, 1792584180]",
+      "resolution": "1",
+      "symbol": "ALICEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:02:44.559923+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "ALICEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:02:44.061310+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "ALICEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:02:14.353831+00:00",
+      "reason": "ValueError: incomplete real history: 1 missing; first [1792584000]",
+      "resolution": "60",
+      "symbol": "ALICEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:02:13.783567+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "ALICEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:02:13.269583+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "ALICEUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:03:46.847298+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AMZNXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:03:46.339052+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AMZNXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:03:45.838543+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AMZNXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:03:17.576105+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AMZNXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:03:16.926030+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AMZNXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:03:16.388349+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AMZNXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:04:19.225082+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AMZNXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:04:18.722526+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AMZNXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:04:18.196954+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "1",
+      "symbol": "AMZNXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:04:16.642394+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AMZNXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:04:16.109820+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AMZNXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:04:15.602346+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "AMZNXUSDT"
+    },
+    {
+      "created_at": "2026-10-22T05:51:04.771023+00:00",
+      "reason": "ValueError: incomplete real history: 36 missing; first [1792454400, 1792454460, 1792454520, 1792454580]",
+      "resolution": "1",
+      "symbol": "APETMN"
+    },
+    {
+      "created_at": "2026-10-22T05:51:03.867117+00:00",
+      "reason": "ValueError: incomplete real history: 52 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "APETMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:05.424615+00:00",
+      "reason": "ValueError: incomplete real history: 36 missing; first [1792454400, 1792454460, 1792454520, 1792454580]",
+      "resolution": "1",
+      "symbol": "APETMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:50.527564+00:00",
+      "reason": "ValueError: incomplete real history: 36 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "ARBTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:48:56.863900+00:00",
+      "reason": "ValueError: incomplete real history: 36 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "ARBTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:09:06.885108+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 2220s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "ARBTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:54.466873+00:00",
+      "reason": "ValueError: incomplete real history: 16 missing; first [1792447440, 1792447500, 1792447560, 1792451280]",
+      "resolution": "1",
+      "symbol": "BNBTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:48:59.161641+00:00",
+      "reason": "ValueError: incomplete real history: 16 missing; first [1792447440, 1792447500, 1792447560, 1792451280]",
+      "resolution": "1",
+      "symbol": "BNBTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:09:33.219200+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 840s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "BNBTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:03:53.881151+00:00",
+      "reason": "SSLError: HTTPSConnectionPool(host='api.wallex.ir', port=443): Max retries exceeded with url: /v1/udf/history?symbol=BTCTMN&resolution=1&from=1792659600&to=1792659780 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)",
+      "resolution": "1",
+      "symbol": "BTCTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:03:51.422846+00:00",
+      "reason": "SSLError: HTTPSConnectionPool(host='api.wallex.ir', port=443): Max retries exceeded with url: /v1/udf/history?symbol=BTCTMN&resolution=1&from=1792648800&to=1792659600 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)",
+      "resolution": "1",
+      "symbol": "BTCTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:28.235119+00:00",
+      "reason": "ValueError: incomplete real history: 13 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "BTCTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:58.163782+00:00",
+      "reason": "ValueError: incomplete real history: 49 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "DASHTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:01.470167+00:00",
+      "reason": "ValueError: incomplete real history: 49 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "DASHTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:11:20.396742+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 3000s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "DASHTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:29.968977+00:00",
+      "reason": "ReadTimeout: HTTPSConnectionPool(host='api.wallex.ir', port=443): Read timed out. (read timeout=5)",
+      "resolution": "1",
+      "symbol": "DOGETMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:24.503590+00:00",
+      "reason": "ReadTimeout: HTTPSConnectionPool(host='api.wallex.ir', port=443): Read timed out. (read timeout=5)",
+      "resolution": "1",
+      "symbol": "DOGETMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:44.050883+00:00",
+      "reason": "ValueError: incomplete real history: 16 missing; first [1792447440, 1792451280, 1792451340, 1792451400]",
+      "resolution": "1",
+      "symbol": "DOGETMN"
+    },
+    {
+      "created_at": "2026-10-22T09:43:15.361619+00:00",
+      "reason": "ValueError: incomplete real history: 1 missing; first [1792662120]",
+      "resolution": "1",
+      "symbol": "ETHTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:05.889253+00:00",
+      "reason": "ReadTimeout: HTTPSConnectionPool(host='api.wallex.ir', port=443): Read timed out. (read timeout=5)",
+      "resolution": "1",
+      "symbol": "ETHTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:00.409884+00:00",
+      "reason": "ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))",
+      "resolution": "1",
+      "symbol": "ETHTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:51:08.835928+00:00",
+      "reason": "ValueError: incomplete real history: 87 missing; first [1792447440, 1792447500, 1792447560, 1792447620]",
+      "resolution": "1",
+      "symbol": "LTCTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:07.842788+00:00",
+      "reason": "ValueError: incomplete real history: 87 missing; first [1792447440, 1792447500, 1792447560, 1792447620]",
+      "resolution": "1",
+      "symbol": "LTCTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:12:40.485259+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 5280s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "LTCTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:03:48.973044+00:00",
+      "reason": "ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))",
+      "resolution": "1",
+      "symbol": "PEPETMN"
+    },
+    {
+      "created_at": "2026-10-22T09:03:47.137717+00:00",
+      "reason": "ReadTimeout: HTTPSConnectionPool(host='api.wallex.ir', port=443): Read timed out. (read timeout=5)",
+      "resolution": "1",
+      "symbol": "PEPETMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:26.370587+00:00",
+      "reason": "ValueError: incomplete real history: 14 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "PEPETMN"
+    },
+    {
+      "created_at": "2026-10-22T09:43:14.020906+00:00",
+      "reason": "ValueError: incomplete real history: 1 missing; first [1792662120]",
+      "resolution": "1",
+      "symbol": "PUMPTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:03:58.775346+00:00",
+      "reason": "SSLError: HTTPSConnectionPool(host='api.wallex.ir', port=443): Max retries exceeded with url: /v1/udf/history?symbol=PUMPTMN&resolution=1&from=1792659600&to=1792659780 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000",
+      "resolution": "1",
+      "symbol": "PUMPTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:03:56.319939+00:00",
+      "reason": "SSLError: HTTPSConnectionPool(host='api.wallex.ir', port=443): Max retries exceeded with url: /v1/udf/history?symbol=PUMPTMN&resolution=1&from=1792648800&to=1792659600 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000",
+      "resolution": "1",
+      "symbol": "PUMPTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:56.305295+00:00",
+      "reason": "ValueError: incomplete real history: 22 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "SOLTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:00.324362+00:00",
+      "reason": "ValueError: incomplete real history: 22 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "SOLTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:10:00.072659+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 1380s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "SOLTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:51:00.034816+00:00",
+      "reason": "ValueError: incomplete real history: 13 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "STMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:02.590924+00:00",
+      "reason": "ValueError: incomplete real history: 13 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "STMN"
+    },
+    {
+      "created_at": "2026-10-22T05:10:26.758793+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 840s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "STMN"
+    },
+    {
+      "created_at": "2026-10-22T05:51:06.740484+00:00",
+      "reason": "ValueError: incomplete real history: 50 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "SUITMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:06.689891+00:00",
+      "reason": "ValueError: incomplete real history: 50 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "SUITMN"
+    },
+    {
+      "created_at": "2026-10-22T05:12:13.732365+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 3060s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "SUITMN"
+    },
+    {
+      "created_at": "2026-10-22T05:51:01.871747+00:00",
+      "reason": "ValueError: incomplete real history: 19 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "TRXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:49:03.722321+00:00",
+      "reason": "ValueError: incomplete real history: 19 missing; first [1792451280, 1792451340, 1792451400, 1792451460]",
+      "resolution": "1",
+      "symbol": "TRXTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:10:53.609293+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 1200s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "TRXTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:11.946496+00:00",
+      "reason": "SSLError: HTTPSConnectionPool(host='api.wallex.ir', port=443): Max retries exceeded with url: /v1/udf/history?symbol=USDTTMN&resolution=1&from=1792659600&to=1792659780 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000",
+      "resolution": "1",
+      "symbol": "USDTTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:11.355791+00:00",
+      "reason": "ReadTimeout: HTTPSConnectionPool(host='api.wallex.ir', port=443): Read timed out. (read timeout=5)",
+      "resolution": "1",
+      "symbol": "USDTTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:40.194989+00:00",
+      "reason": "ValueError: incomplete real history: 130 missing; first [1792476000, 1792476060, 1792476120, 1792476180]",
+      "resolution": "1",
+      "symbol": "USDTTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:36.613378+00:00",
+      "reason": "ValueError: incomplete real history: 2 missing; first [1792476000, 1792479600]",
+      "resolution": "60",
+      "symbol": "USDTTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:35.584432+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "USDTTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:34.677440+00:00",
+      "reason": "MarketDataError: API error/no data: {'s': 'no_data'}",
+      "resolution": "60",
+      "symbol": "USDTTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:19.060405+00:00",
+      "reason": "ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))",
+      "resolution": "1",
+      "symbol": "USOONTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:17.390914+00:00",
+      "reason": "ReadTimeout: HTTPSConnectionPool(host='api.wallex.ir', port=443): Read timed out. (read timeout=5)",
+      "resolution": "1",
+      "symbol": "USOONTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:42.171000+00:00",
+      "reason": "ValueError: incomplete real history: 22 missing; first [1792447440, 1792447500, 1792447560, 1792447620]",
+      "resolution": "1",
+      "symbol": "USOONTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:52.380870+00:00",
+      "reason": "ValueError: incomplete real history: 25 missing; first [1792447440, 1792447500, 1792447560, 1792447620]",
+      "resolution": "1",
+      "symbol": "XAUTTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:48:58.011218+00:00",
+      "reason": "ValueError: incomplete real history: 25 missing; first [1792447440, 1792447500, 1792447560, 1792447620]",
+      "resolution": "1",
+      "symbol": "XAUTTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:08:39.941487+00:00",
+      "reason": "MarketDataError: Requested resolution 1 (60s) but data has spacing 60s / max 840s. DO NOT backtest mislabelled or discontinuous candles. Check source interval and gaps; resample explicitly only after confirming the actual source period.",
+      "resolution": "1",
+      "symbol": "XAUTTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:59:00.223839+00:00",
+      "reason": "HTTPError: 500 Server Error: Internal Server Error for url: https://api.wallex.ir/v1/udf/history?symbol=XRPTMN&resolution=1&from=1792659600&to=1792663080",
+      "resolution": "1",
+      "symbol": "XRPTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:52.939598+00:00",
+      "reason": "ConnectionError: HTTPSConnectionPool(host='api.wallex.ir', port=443): Max retries exceeded with url: /v1/udf/history?symbol=XRPTMN&resolution=1&from=1792659600&to=1792659780 (Caused by NameResolutionError(\"HTTPSConnection(host='api.wallex.ir', port=443): Failed to resolve 'api.wallex.ir' ([Errno ",
+      "resolution": "1",
+      "symbol": "XRPTMN"
+    },
+    {
+      "created_at": "2026-10-22T09:04:41.453609+00:00",
+      "reason": "ConnectionError: HTTPSConnectionPool(host='api.wallex.ir', port=443): Max retries exceeded with url: /v1/udf/history?symbol=XRPTMN&resolution=1&from=1792648800&to=1792659600 (Caused by NameResolutionError(\"HTTPSConnection(host='api.wallex.ir', port=443): Failed to resolve 'api.wallex.ir' ([Errno ",
+      "resolution": "1",
+      "symbol": "XRPTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:48.696178+00:00",
+      "reason": "ValueError: incomplete real history: 31 missing; first [1792454400, 1792454460, 1792454520, 1792454580]",
+      "resolution": "1",
+      "symbol": "ZECTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:50:47.793062+00:00",
+      "reason": "ValueError: incomplete real history: 54 missing; first [1792447440, 1792447500, 1792451280, 1792451340]",
+      "resolution": "1",
+      "symbol": "ZECTMN"
+    },
+    {
+      "created_at": "2026-10-22T05:48:55.728609+00:00",
+      "reason": "ValueError: incomplete real history: 31 missing; first [1792454400, 1792454460, 1792454520, 1792454580]",
+      "resolution": "1",
+      "symbol": "ZECTMN"
+    }
+  ]
+}

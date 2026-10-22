@@ -1,0 +1,12 @@
+{
+  "candles": {
+    "chunk_observation_records": 15,
+    "legacy_chunks_without_separate_receipt_availability_provenance": 3792,
+    "rule": "A historical candle timestamp is never proof it was available then; only local receipt/available_at is PIT evidence."
+  },
+  "closed_candle_rule": "Rows are accepted only when candle_open_timestamp + resolution <= local request time.",
+  "derived_rule": "A target OHLCV bucket is created only if every source candle in that epoch-aligned bucket is present and valid.",
+  "gap_rule": "No missing interval is forward-filled, interpolated or synthesized.",
+  "generated_at_utc": "2026-10-22T13:08:31.291820+00:00",
+  "limitation": "Existing legacy chunks preserve observed_at but do not retroactively prove availability at each historical decision time."
+}

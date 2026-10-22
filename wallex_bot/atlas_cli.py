@@ -14,7 +14,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit','challenger-preflight','train-challenger-v2','challenger-evaluate'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit','challenger-preflight','train-challenger-v2','challenger-evaluate','data-quality-audit'])
     p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
     p.add_argument('--checkpoint-dir',default=None,help='Exact Stage13 saved research run directory, never auto-select checkpoints')
     p.add_argument('--days',type=int,default=7)
@@ -28,6 +28,11 @@ def main(argv=None):
     p.add_argument('--resolution',default='15')
     p.add_argument('--limit-markets',type=int,default=None)
     p.add_argument('--delay',type=float,default=.35)
+    p.add_argument('--workers',type=int,default=1,help='Controlled public-data GET workers (1..8); no worker writes the archive')
+    p.add_argument('--retries',type=int,default=2,help='Bounded public-data retry count per window (0..6)')
+    p.add_argument('--backoff-seconds',type=float,default=.5,help='Exponential retry backoff base for public-data GETs')
+    p.add_argument('--output-dir',default='reports',help='Output directory for read-only data-quality audit reports')
+    p.add_argument('--probe-symbol',default=None,help='Optional public UDF contract probe; records observed response grids without orders')
     p.add_argument('--fee',type=float,default=.001)
     p.add_argument('--slippage',type=float,default=.0005)
     p.add_argument('--top',type=int,default=8)
@@ -117,6 +122,9 @@ def main(argv=None):
         if args.command=='broker-status':
             from .atlas_broker import broker_status
             pretty(broker_status(lake.root));return
+        if args.command=='data-quality-audit':
+            from .atlas_data_quality import build_reports
+            pretty(build_reports(lake,args.output_dir,probe_symbol=args.probe_symbol));return
         if args.command=='status':pretty(lake.status());return
         if args.command=='forward-report':
             from .atlas_forward import report
@@ -193,7 +201,9 @@ def main(argv=None):
                 network_intervals+=('60',)
             if any(r in resolutions for r in ('2D','3D')) and '1D' not in network_intervals:
                 network_intervals+=('1D',)
-            pretty({'harvest':lake.harvest(args.scope,args.days,network_intervals,max_markets=args.limit_markets,delay=args.delay)})
+            pretty({'harvest':lake.harvest(args.scope,args.days,network_intervals,max_markets=args.limit_markets,
+                                            delay=args.delay,retries=args.retries,
+                                            backoff_seconds=args.backoff_seconds,workers=args.workers)})
             from .atlas_archive import DERIVED
             derived=[r for r in resolutions if r in DERIVED]
             if derived:pretty({'derived_from_real_observations':lake.materialize_derived(derived)})
