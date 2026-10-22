@@ -1,0 +1,86 @@
+[
+  {
+    "repository": "TradingAgents",
+    "commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+    "license": "Apache-2.0",
+    "license_file": "third_party\\TradingAgents\\LICENSE",
+    "license_sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+    "inspected_path": "tradingagents/graph/trading_graph.py",
+    "capability": "structured roles in existing LangGraph",
+    "integration": "CONCEPT_ONLY_INDEPENDENT_CODE",
+    "copied_source_lines": 0,
+    "external_code_executed": false
+  },
+  {
+    "repository": "FinMem",
+    "commit": "be814aa47970de9bf2fdd6a1d5a60ae5cf361b46",
+    "license": "MIT",
+    "license_file": "third_party\\FinMem\\LICENSE",
+    "license_sha256": "e6af707d1fa3fbbb67372c6fbee76c44d6c253d67478aa0338df3c6d49331f89",
+    "inspected_path": "puppy/memory_functions/compound_score.py",
+    "capability": "additive PIT memory layers and Atlas product ranking, not FinMem additive ranking",
+    "integration": "CONCEPT_ONLY_INDEPENDENT_CODE",
+    "copied_source_lines": 0,
+    "external_code_executed": false
+  },
+  {
+    "repository": "hindsight",
+    "commit": "5111eeaf969c26c74443f5fd1d5dfbd30b32a9af",
+    "license": "MIT, placeholder copyright",
+    "license_file": "third_party\\hindsight\\LICENSE",
+    "license_sha256": "ac200f20bf7d946f4965de294fb6e9a70438ab7632ccf6dac1fa20b319123e5d",
+    "inspected_path": "WRITEUP.md",
+    "capability": "separate prospective evidence; baselines, leakage and short-window skepticism",
+    "integration": "CONCEPT_ONLY_INDEPENDENT_CODE",
+    "copied_source_lines": 0,
+    "external_code_executed": false
+  },
+  {
+    "repository": "FinRL-Trading",
+    "commit": "4409abe925c904e570be78ebfb5e77ac3491dff8",
+    "license": "Apache-2.0",
+    "license_file": "third_party\\FinRL-Trading\\LICENSE",
+    "license_sha256": "afae3377fdbd0537635360e91585f3c5b478ffe8eb5308f1ddcb37b76a7325d2",
+    "inspected_path": "src/strategies/adaptive_rotation/risk_manager.py",
+    "capability": "portfolio state and risk separation; existing RiskGate retained",
+    "integration": "CONCEPT_ONLY_INDEPENDENT_CODE",
+    "copied_source_lines": 0,
+    "external_code_executed": false
+  },
+  {
+    "repository": "NautilusTrader",
+    "commit": "a51ae015c150ef68f62d9295e3efa9534f492a4a",
+    "license": "LGPL-3.0",
+    "license_file": "third_party\\NautilusTrader\\LICENSE",
+    "license_sha256": "ee907919ec88c9c017b1f8b608db20960b6598aefcc4fe58820bde955d65ed3c",
+    "inspected_path": "crates/event_store/src/replay.rs",
+    "capability": "state-only deterministic replay; no publishing execution commands",
+    "integration": "CONCEPT_ONLY_INDEPENDENT_CODE",
+    "copied_source_lines": 0,
+    "external_code_executed": false
+  },
+  {
+    "repository": "Freqtrade",
+    "commit": "c051e9065c5b677f03817dd1f83cb980af1ed684",
+    "license": "GPL-3.0",
+    "license_file": "third_party\\Freqtrade\\LICENSE",
+    "license_sha256": "53927bd0b739d38c87a0a82236fd9b070c2dfff11c0c119be50372005d5047ad",
+    "inspected_path": "docs/lookahead-analysis.md",
+    "capability": "prefix causality checks; Atlas protections never disabled",
+    "integration": "CONCEPT_ONLY_INDEPENDENT_CODE",
+    "copied_source_lines": 0,
+    "external_code_executed": false
+  },
+  {
+    "repository": "Hummingbot",
+    "commit": "9af100d6822da7d2d0291a906c730ef172284ee2",
+    "license": "Apache-2.0",
+    "license_file": "third_party\\Hummingbot\\LICENSE",
+    "license_sha256": "76e406e8470e0f9cbb16eabe494e20b1a7c9c955801d40f63bd059a4ffc9c21e",
+    "inspected_path": "hummingbot/connector/client_order_tracker.py",
+    "capability": "observation identity, leases and reconciliation; existing broker tracker retained",
+    "integration": "CONCEPT_ONLY_INDEPENDENT_CODE",
+    "copied_source_lines": 0,
+    "external_code_executed": false
+  }
+]

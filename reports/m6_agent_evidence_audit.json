@@ -1,0 +1,2469 @@
+{
+  "roles": 7,
+  "actual_decisions": 8,
+  "records": [
+    {
+      "decision_id": "bb73ce09c4ba8d50d1e38ca0ebe2b77174837ca7975a7c33ce12c7d4ba223429",
+      "symbol": "PEPETMN",
+      "decision_time": 1792693472.3998632,
+      "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+      "proposal": {
+        "decision_time": 1792693472.3998632,
+        "model_promotion": false,
+        "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "bb73ce09c4ba8d50d1e38ca0ebe2b77174837ca7975a7c33ce12c7d4ba223429",
+        "symbol": "PEPETMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693472.3998632,
+          "decision_time": 1792693472.3998632,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792692000,
+            "selected_strategy": "bollinger_momentum_1.5",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "0306b91e1d8e6594c479b77d2c6c1877dafd8988ecf0fdf4e09f8b33aec4e007",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693472.3998632,
+          "decision_time": 1792693472.3998632,
+          "facts": {
+            "article_ids": [
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+              "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+              "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+              "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+              "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+              "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+              "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+              "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+              "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+              "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+              "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+              "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693472.3998632,
+          "decision_time": 1792693472.3998632,
+          "facts": {
+            "feature_end_ts": 1792692000,
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.008320130407810211,
+              "q50": 0.001478784717619419,
+              "q90": 0.015033088624477386
+            },
+            "source": "real_wallex_only",
+            "symbol": "PEPETMN"
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "cd003cc590124b9f1130ba0d2085535d54811db2f5a5da87640219ff1224d547",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693472.3998632,
+          "decision_time": 1792693472.3998632,
+          "facts": {
+            "last_candle_ts": 1792692000,
+            "status": "DESCRIPTIVE_ONLY"
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "30874450f7e4fd39af6cc405e3e7d90469a7afdc3c5b0d0c2ec39ddda431ef23",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693472.3998632,
+          "decision_time": 1792693472.3998632,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693472.3998632,
+          "decision_time": 1792693472.3998632,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693472.3998632,
+          "decision_time": 1792693472.3998632,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        }
+      ],
+      "memory_references": [],
+      "disagreements": {
+        "forecast_q50_positive": true,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": null,
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    },
+    {
+      "decision_id": "1400ddf6dced8cc2929ec6931b7ebb8a721a67033af9ce960b9883fc418a16bb",
+      "symbol": "BTCTMN",
+      "decision_time": 1792693476.6319542,
+      "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+      "proposal": {
+        "decision_time": 1792693476.6319542,
+        "model_promotion": false,
+        "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "1400ddf6dced8cc2929ec6931b7ebb8a721a67033af9ce960b9883fc418a16bb",
+        "symbol": "BTCTMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693476.6319542,
+          "decision_time": 1792693476.6319542,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792692000,
+            "selected_strategy": "adx_strong_uptrend",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "85545c2119c2fb89caa564fc744dddc4c9cef2231e0560a1a6518432ebc8adb3",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693476.6319542,
+          "decision_time": 1792693476.6319542,
+          "facts": {
+            "article_ids": [
+              "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+              "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+              "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+              "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+              "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+              "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+              "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693476.6319542,
+          "decision_time": 1792693476.6319542,
+          "facts": {
+            "feature_end_ts": 1792692000,
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.00929730013012886,
+              "q50": -0.0012146374210715294,
+              "q90": 0.01258150115609169
+            },
+            "source": "real_wallex_only",
+            "symbol": "BTCTMN"
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "4112343f33b349cb6023d097cf34ebdf33319ce6ae01ce7bdc981c246cbaa58f",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693476.6319542,
+          "decision_time": 1792693476.6319542,
+          "facts": {
+            "last_candle_ts": 1792692000,
+            "status": "DESCRIPTIVE_ONLY"
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "30874450f7e4fd39af6cc405e3e7d90469a7afdc3c5b0d0c2ec39ddda431ef23",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693476.6319542,
+          "decision_time": 1792693476.6319542,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693476.6319542,
+          "decision_time": 1792693476.6319542,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693476.6319542,
+          "decision_time": 1792693476.6319542,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        }
+      ],
+      "memory_references": [],
+      "disagreements": {
+        "forecast_q50_positive": false,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": null,
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    },
+    {
+      "decision_id": "00529792106be023e130da80750620a37672f934bd0d5905428b31f9262e79c7",
+      "symbol": "PEPETMN",
+      "decision_time": 1792693660.611687,
+      "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+      "proposal": {
+        "decision_time": 1792693660.611687,
+        "model_promotion": false,
+        "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "00529792106be023e130da80750620a37672f934bd0d5905428b31f9262e79c7",
+        "symbol": "PEPETMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693660.611687,
+          "decision_time": 1792693660.611687,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792692000,
+            "regime_evidence": {
+              "adx14": 26.473398005282515,
+              "descriptive_state": "TRENDING_ADX_GE_25",
+              "ret24": -0.013792176090506349,
+              "volatility12": 0.004036344328930267
+            },
+            "selected_strategy": "bollinger_momentum_1.5",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "266bc655754d62085c1b640237b455f6dbbee1a449d9c2a11c3ca8e74836d8f6",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693660.611687,
+          "decision_time": 1792693660.611687,
+          "facts": {
+            "article_ids": [
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+              "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+              "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+              "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+              "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+              "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+              "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+              "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+              "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+              "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+              "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+              "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693660.611687,
+          "decision_time": 1792693660.611687,
+          "facts": {
+            "feature_end_ts": 1792692000,
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.008320130407810211,
+              "q50": 0.001478784717619419,
+              "q90": 0.015033088624477386
+            },
+            "source": "real_wallex_only",
+            "symbol": "PEPETMN"
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "cd003cc590124b9f1130ba0d2085535d54811db2f5a5da87640219ff1224d547",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693660.611687,
+          "decision_time": 1792693660.611687,
+          "facts": {
+            "adx14": 26.473398005282515,
+            "descriptive_state": "TRENDING_ADX_GE_25",
+            "ret24": -0.013792176090506349,
+            "volatility12": 0.004036344328930267
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "ee66b56633f66f407b72c7d78f4ccbb827bb357f6f680f00dcb89aa32f5d435e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693660.611687,
+          "decision_time": 1792693660.611687,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693660.611687,
+          "decision_time": 1792693660.611687,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693660.611687,
+          "decision_time": 1792693660.611687,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        }
+      ],
+      "memory_references": [
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-bb73ce09c4ba8d50d1e38ca0ebe2b77174837ca7975a7c33ce12c7d4ba223429",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99850329,
+          "relevance": 0.35,
+          "source_hash": "c7862aca2b39d9c0fecf84b7ab3ce4a936828c1dbcff803aea192cd6dac90a06"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "market-75fddb79145fe47a2089fdd3576d8708bfd088070d811291a8e61773cb926806",
+          "memory_type": "RECENT_MARKET_CONTEXT",
+          "recency": 0.99998389,
+          "relevance": 0.35,
+          "source_hash": "75fddb79145fe47a2089fdd3576d8708bfd088070d811291a8e61773cb926806"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-PEPETMN-fbcad602b1501ca42476f16d1ba809347c208e07dd3003f03dfce67938221056",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.9984772,
+          "relevance": 0.35,
+          "source_hash": "fbcad602b1501ca42476f16d1ba809347c208e07dd3003f03dfce67938221056"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-PEPETMN-4df902795ebdfc86c4850fb600a5af3f079653edacfd288a7ed3a022d00d5f4b",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99847718,
+          "relevance": 0.35,
+          "source_hash": "4df902795ebdfc86c4850fb600a5af3f079653edacfd288a7ed3a022d00d5f4b"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-PEPETMN-b9d09a644504b594c1f3cc76fbdda05e1968dbe2a3f6584ebb5c3c46f69fe55b",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99847716,
+          "relevance": 0.35,
+          "source_hash": "b9d09a644504b594c1f3cc76fbdda05e1968dbe2a3f6584ebb5c3c46f69fe55b"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-PEPETMN-ac83ac7a340dcc813793638c7704765d9207cb1fd4c287e1cfb3664814cea5b3",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99847714,
+          "relevance": 0.35,
+          "source_hash": "ac83ac7a340dcc813793638c7704765d9207cb1fd4c287e1cfb3664814cea5b3"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-PEPETMN-72c15017b6df203106d1e6a0ce7f6d1b3ae6d3da054ffd0c68a8f952c40eaef4",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99847712,
+          "relevance": 0.35,
+          "source_hash": "72c15017b6df203106d1e6a0ce7f6d1b3ae6d3da054ffd0c68a8f952c40eaef4"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-PEPETMN-1a41e702ec2bf94b1788a46905e1485d396cebdabc10dbacb2ae016d5ecc9571",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.9984771,
+          "relevance": 0.35,
+          "source_hash": "1a41e702ec2bf94b1788a46905e1485d396cebdabc10dbacb2ae016d5ecc9571"
+        }
+      ],
+      "disagreements": {
+        "forecast_q50_positive": true,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": null,
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    },
+    {
+      "decision_id": "e88a6ec893912400c5ca10ba3ae792506a061cd0ba1719b96aef940699aec987",
+      "symbol": "BTCTMN",
+      "decision_time": 1792693664.699898,
+      "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+      "proposal": {
+        "decision_time": 1792693664.699898,
+        "model_promotion": false,
+        "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "e88a6ec893912400c5ca10ba3ae792506a061cd0ba1719b96aef940699aec987",
+        "symbol": "BTCTMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693664.699898,
+          "decision_time": 1792693664.699898,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792692000,
+            "regime_evidence": {
+              "adx14": 15.642778265976286,
+              "descriptive_state": "LOW_ADX",
+              "ret24": -0.0012072297379408668,
+              "volatility12": 0.002208584774175008
+            },
+            "selected_strategy": "adx_strong_uptrend",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "3ed9be3d0503400a58199ba0c287f8f70dcc5457e43ebebaca1bf70ce271026c",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693664.699898,
+          "decision_time": 1792693664.699898,
+          "facts": {
+            "article_ids": [
+              "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+              "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+              "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+              "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+              "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+              "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+              "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693664.699898,
+          "decision_time": 1792693664.699898,
+          "facts": {
+            "feature_end_ts": 1792692000,
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.00929730013012886,
+              "q50": -0.0012146374210715294,
+              "q90": 0.01258150115609169
+            },
+            "source": "real_wallex_only",
+            "symbol": "BTCTMN"
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "4112343f33b349cb6023d097cf34ebdf33319ce6ae01ce7bdc981c246cbaa58f",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693664.699898,
+          "decision_time": 1792693664.699898,
+          "facts": {
+            "adx14": 15.642778265976286,
+            "descriptive_state": "LOW_ADX",
+            "ret24": -0.0012072297379408668,
+            "volatility12": 0.002208584774175008
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "74b55bf9b7c608188fd1192e85bb9b0fd949765f4494a6a47a7417a19f0400c7",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693664.699898,
+          "decision_time": 1792693664.699898,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693664.699898,
+          "decision_time": 1792693664.699898,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693664.699898,
+          "decision_time": 1792693664.699898,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        }
+      ],
+      "memory_references": [
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-1400ddf6dced8cc2929ec6931b7ebb8a721a67033af9ce960b9883fc418a16bb",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99850467,
+          "relevance": 0.35,
+          "source_hash": "5403e089f0f71dcf5b6b36584331f8f900fa6e52e3d2a9cfc1f684bfb7daa613"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "market-9c81f5ae8cfc8ed8b0807afc29e7e909d276ca2ec613aa0c8f62d1bcb0ddf3ef",
+          "memory_type": "RECENT_MARKET_CONTEXT",
+          "recency": 0.99999239,
+          "relevance": 0.35,
+          "source_hash": "9c81f5ae8cfc8ed8b0807afc29e7e909d276ca2ec613aa0c8f62d1bcb0ddf3ef"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-BTCTMN-616de301d6fa26cf3bf2989bdd4ff68b4a1433eeb982023161388a0e7177cb32",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99848814,
+          "relevance": 0.35,
+          "source_hash": "616de301d6fa26cf3bf2989bdd4ff68b4a1433eeb982023161388a0e7177cb32"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-BTCTMN-f79ee1a13b45593dfee87162b26c087d7b2fa117feec245669910accdb94bd5f",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99848812,
+          "relevance": 0.35,
+          "source_hash": "f79ee1a13b45593dfee87162b26c087d7b2fa117feec245669910accdb94bd5f"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-BTCTMN-72c15017b6df203106d1e6a0ce7f6d1b3ae6d3da054ffd0c68a8f952c40eaef4",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99848809,
+          "relevance": 0.35,
+          "source_hash": "72c15017b6df203106d1e6a0ce7f6d1b3ae6d3da054ffd0c68a8f952c40eaef4"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-BTCTMN-1a41e702ec2bf94b1788a46905e1485d396cebdabc10dbacb2ae016d5ecc9571",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99848807,
+          "relevance": 0.35,
+          "source_hash": "1a41e702ec2bf94b1788a46905e1485d396cebdabc10dbacb2ae016d5ecc9571"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-BTCTMN-001861b37cff6f8826da02cddd7f6abe49878b22ea0b88fbb4ca33000e6b749b",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99848805,
+          "relevance": 0.35,
+          "source_hash": "001861b37cff6f8826da02cddd7f6abe49878b22ea0b88fbb4ca33000e6b749b"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "news-BTCTMN-b3e51d7f3c9fd0ad18b7dd0706b0ee92a0e3d08e5664bcc4b9c94fe0d23049f6",
+          "memory_type": "NEWS_EVENT",
+          "recency": 0.99848802,
+          "relevance": 0.35,
+          "source_hash": "b3e51d7f3c9fd0ad18b7dd0706b0ee92a0e3d08e5664bcc4b9c94fe0d23049f6"
+        }
+      ],
+      "disagreements": {
+        "forecast_q50_positive": false,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": null,
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    },
+    {
+      "decision_id": "00a09ac6db9b5a3671280b9736368b977446b75aa485c42860b4de2cc700c722",
+      "symbol": "PEPETMN",
+      "decision_time": 1792693885.693068,
+      "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+      "proposal": {
+        "decision_time": 1792693885.693068,
+        "model_promotion": false,
+        "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "00a09ac6db9b5a3671280b9736368b977446b75aa485c42860b4de2cc700c722",
+        "symbol": "PEPETMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693885.693068,
+          "decision_time": 1792693885.693068,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792692900,
+            "regime_evidence": {
+              "adx14": 27.369722141183402,
+              "descriptive_state": "TRENDING_ADX_GE_25",
+              "ret24": -0.01641691791565576,
+              "volatility12": 0.0038404683359647483
+            },
+            "selected_strategy": "bollinger_momentum_1.5",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "95aaf84c2bdae62e00256480a5986b2e5a6d2f1342277b450d44151e35f90677",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693885.693068,
+          "decision_time": 1792693885.693068,
+          "facts": {
+            "article_ids": [
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+              "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+              "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+              "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+              "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+              "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+              "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+              "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+              "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+              "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+              "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+              "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693885.693068,
+          "decision_time": 1792693885.693068,
+          "facts": {
+            "feature_end_ts": 1792692900,
+            "feature_source_receipts": [
+              {
+                "file": "candles/PEPETMN/15/1792389600_1792443600.csv.gz",
+                "sha256": "f3daad198e7cf3fc7b14fa1f800b617b19c84f3f5b755be13bd7cf90c1750c66"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792389600_1792450800.csv.gz",
+                "sha256": "d77050b573b813470f66175644e2e80286099889a7a0939eb37c4bf87b55e21b"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792647900.csv.gz",
+                "sha256": "0463770221bb04e49383c4f6b3de203961ada42e72c74984b3724f376ca7f6a6"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792650600.csv.gz",
+                "sha256": "b4b3b70350f5714768954d304187f13274bfc805603160d35e6825a3369d85fb"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792651500.csv.gz",
+                "sha256": "a26a1dbe0f562bdc26cb2f0c880ea94dce50192fbfcb6dbdbef7c9c307598432"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792652400.csv.gz",
+                "sha256": "b4206e17dc3abbad9e8569f825bb185f262fcace7923bbfa847ee000d834c338"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792653300.csv.gz",
+                "sha256": "24d565e94029e61462ba76662e5a83b4b89ca0472080b3c5b4535a53f3a04b7f"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792654200.csv.gz",
+                "sha256": "5b6019822db2dfa97c954b15396fe90f1350e31dbc65e57eb22d99ec54537710"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792655100.csv.gz",
+                "sha256": "ee37238b7b405f63311fd9c21403871a5783a56855402f5ac5bbdf39a09e0de8"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792656000.csv.gz",
+                "sha256": "e2796e1a6964d6f13961531c99d331fa7c356da94b606b11963fa25c1c78ce7e"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792656900.csv.gz",
+                "sha256": "1d6e7a7fc040ed8e1b8e190c6964cfcdda3b654a86cf490113dc7951be722d2b"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792657800.csv.gz",
+                "sha256": "52433ea7179cffdec119111b054a9a026abee174b134c33c3a3ba609332e12dd"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792658700.csv.gz",
+                "sha256": "09db90334ea3186ebe425970cd5ab3806389fbc7626f1ae5d4fdc6d939722760"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792660500.csv.gz",
+                "sha256": "030e446ba4d70bfc0446faa7e5cd3a943e751e3ba2d32b16f4069f992604bd05"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792661400.csv.gz",
+                "sha256": "6e1a4c538564b6a160d2c118a78e792e59a96432d2a5c71c72f5666c79b8560d"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792662300.csv.gz",
+                "sha256": "cc781e7618658dee46261d4e89adda93467604cb4eb3d174ea79deaaae78cc4c"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792663200.csv.gz",
+                "sha256": "64c63518293fe36dccc50278bf52f9a4845c7338ce8b186f201d5218da2f28cc"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792664100.csv.gz",
+                "sha256": "136bc24b3418e10a09412fefa67ef2fc11254e404054fa22162b3e9623c7ef8e"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792665000.csv.gz",
+                "sha256": "5938623da0467025995c3476eea7c2fb8a437973fecaf1006116d3d90c298694"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792665900.csv.gz",
+                "sha256": "6cae47099d258f05b30b075173ca7abe4fdf67abe20792e9e504032881c9e313"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792666800.csv.gz",
+                "sha256": "91661078d2367e807802b8d5dc164978ca73b24ae786459746540c3ea66e78ec"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792667700.csv.gz",
+                "sha256": "49c232cd9002691e2fc740ee602f5d2b5be2acc45b22edba0b9e86113519eecf"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792668600.csv.gz",
+                "sha256": "209faeb8531c93fe600d6346551e57102ae5947e3c35e1b6ceb61bec9dfcff85"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792669500.csv.gz",
+                "sha256": "5b83ac2498d248130a21502c8759ffa27960ee9b7f5182ac05321d450da7be06"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792670400.csv.gz",
+                "sha256": "1eb9cba6ecf5a1f3a0dd9bb969fbdc2197230c7807c94b6cb78d5331fddba9ac"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792671300.csv.gz",
+                "sha256": "a55d522488d100960916b84906784e1ef80208b9e00e5cff095fa71be7d2030b"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792672200.csv.gz",
+                "sha256": "320b18afb1a7969188eb3f2eebac6851ea6bd9ebdc2537e2f56c6a0e8285660d"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792673100.csv.gz",
+                "sha256": "36d3cd4f52b3a337fe358e04b664b9b6814decb3a67f6013f20da7de28e88ab6"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792674000.csv.gz",
+                "sha256": "50f0c3008eb42044bbf9130339ece4dbd1564d96436593e0b805018109eaa269"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792674900.csv.gz",
+                "sha256": "4ba7a29c47ee6c0209b770e57fa4a1d9a50d97914e5be6b6465e00ea5cbacd55"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792675800.csv.gz",
+                "sha256": "5ceb0249fc05ef355edca57f0c1a1aac2094073b0f15121e406c2c6d8b45373a"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792676700.csv.gz",
+                "sha256": "64ed76b1ca6ec17a261ede29aea17d3ca47232605c9f8190f66b0c7046f5f299"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792677600.csv.gz",
+                "sha256": "f57b6e6a398719f95322176b4c270c9c5ed8ec7fbcd118f2712311b28c9a1ba7"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792692900.csv.gz",
+                "sha256": "54b99dd2e66a5020336d658806ddfbea9a739b704cdcccc88983ec1b6709527e"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792693800.csv.gz",
+                "sha256": "a9d785404c4134d90b91e27472e541031edb11310e9cb00be82411eb221ffa25"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792454400_1792645200.csv.gz",
+                "sha256": "4e291c2a320ee0fc7b8aca7c57e9a0f5073ec1840bbaf41661a9ea4cbf4c2d99"
+              }
+            ],
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.006287023425102234,
+              "q50": -0.001580796204507351,
+              "q90": 0.011069592088460922
+            },
+            "source": "real_wallex_only",
+            "symbol": "PEPETMN"
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "9103c0babc1796418e243e1b95aac5c531546d7a0c263cb950ff48a3e4131fb9",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693885.693068,
+          "decision_time": 1792693885.693068,
+          "facts": {
+            "adx14": 27.369722141183402,
+            "descriptive_state": "TRENDING_ADX_GE_25",
+            "ret24": -0.01641691791565576,
+            "volatility12": 0.0038404683359647483
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "0b9a7cbc1432afe8a3242206c73f3ac327397e8ffec308bf02aa987e1aea3c34",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693885.693068,
+          "decision_time": 1792693885.693068,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693885.693068,
+          "decision_time": 1792693885.693068,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693885.693068,
+          "decision_time": 1792693885.693068,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        }
+      ],
+      "memory_references": [
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-00529792106be023e130da80750620a37672f934bd0d5905428b31f9262e79c7",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.9982086,
+          "relevance": 0.35,
+          "source_hash": "87acb1f07971016bfca517789c1f0d336e958c0b56962eb6f8236302573838aa"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-bb73ce09c4ba8d50d1e38ca0ebe2b77174837ca7975a7c33ce12c7d4ba223429",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99670255,
+          "relevance": 0.35,
+          "source_hash": "c7862aca2b39d9c0fecf84b7ab3ce4a936828c1dbcff803aea192cd6dac90a06"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-a851aa483dde7c2ad3c297223f283036206f25a8054897740ff582ca79fc732c",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999006,
+          "relevance": 0.35,
+          "source_hash": "6d4bd9c599bf9db39fa632844dd462023edc3a7e1e25e09c2962a760095eb79d"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-b54d8191b389815e9f804b468e4c1d270611bb2a136ee81d48d3b418c7ce8e9b",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999005,
+          "relevance": 0.35,
+          "source_hash": "7f4c0fb0801ac7997a26069073ef3a08a2665ab7ba1fe2ed07349e2d2890e955"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-fdafee98acef4867913467114db278211bf26c10b7b443d6ef6dffbea1180a6b",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999002,
+          "relevance": 0.35,
+          "source_hash": "19cd64190605f5e3d8ff1112b08ac76190ebb8c95399f976e7235eb0d72f2773"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-5716c65967f47c4f58a47e6e96ace41b8dc446bcb28816705b9ef5e43bfae169",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999,
+          "relevance": 0.35,
+          "source_hash": "aad4c70132ea2bd0cd5265511acf9e0fb3214e0f8fc39d078029072d5daa5a7b"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-0fba04b59b10eb255478e5c9b16334ed3745df0ca40cc426017d6ccb00aa9e49",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99998997,
+          "relevance": 0.35,
+          "source_hash": "2558a9f1b21fb2dc76746b3f64478742a428889d1ba4c7ffb707e032a313c6c4"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "market-e76840c0caf0dcc8f053c87a9dd15d15e8e238b1ddfed4bf048b36e12dcc2a0a",
+          "memory_type": "RECENT_MARKET_CONTEXT",
+          "recency": 0.99998174,
+          "relevance": 0.35,
+          "source_hash": "e76840c0caf0dcc8f053c87a9dd15d15e8e238b1ddfed4bf048b36e12dcc2a0a"
+        }
+      ],
+      "disagreements": {
+        "forecast_q50_positive": false,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": "63d5c2de0feeba0a4a9e31d337edbbf9f94984699b64898c6b3a58e09cfe2e1c",
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    },
+    {
+      "decision_id": "0ebc247251ac2e2f2648fb8c17992b1c9dfa424fdc473127dd31c063394a3e8f",
+      "symbol": "BTCTMN",
+      "decision_time": 1792693889.724391,
+      "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+      "proposal": {
+        "decision_time": 1792693889.724391,
+        "model_promotion": false,
+        "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "0ebc247251ac2e2f2648fb8c17992b1c9dfa424fdc473127dd31c063394a3e8f",
+        "symbol": "BTCTMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693889.724391,
+          "decision_time": 1792693889.724391,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792692900,
+            "regime_evidence": {
+              "adx14": 16.600591942982195,
+              "descriptive_state": "LOW_ADX",
+              "ret24": -0.002916816860339415,
+              "volatility12": 0.0018612251369506299
+            },
+            "selected_strategy": "adx_strong_uptrend",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "9d5b5ae62f5e741cc929fe9c3e2a4cb280a0123a7b9c8f09b26c15f585219d36",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693889.724391,
+          "decision_time": 1792693889.724391,
+          "facts": {
+            "article_ids": [
+              "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+              "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+              "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+              "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+              "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+              "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+              "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693889.724391,
+          "decision_time": 1792693889.724391,
+          "facts": {
+            "feature_end_ts": 1792692900,
+            "feature_source_receipts": [
+              {
+                "file": "candles/BTCTMN/15/1792389600_1792443600.csv.gz",
+                "sha256": "d31eda0a3da63e08b1293c21486c4bc8bbd0811ff4cea75fc247bddf9a40410c"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792389600_1792450800.csv.gz",
+                "sha256": "b27f72d4fc255998a2f59e51bb743eaeb612bd4733a919c04ec8cec02c268bfa"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792647900.csv.gz",
+                "sha256": "8649f882305c2ce2381c2011bdd9caf0dd38be2af841a4723942fc28a66c7211"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792650600.csv.gz",
+                "sha256": "ef4866e3a161b3996b6e80a48fb85c0f8e1c794a383ad6e2d5b07973197aa264"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792651500.csv.gz",
+                "sha256": "fdbd8e0f396112805ee1c8c434d5ba3b285d9f08fc0617f3da1a6e41f20ea859"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792652400.csv.gz",
+                "sha256": "70e29a043ace400788d347c9b98023cc2cfe296738c2ad561187bc272c66a6a6"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792653300.csv.gz",
+                "sha256": "33f403f71662508cc06aa5c261f13262a7c8908996ae7d0f7a55a62f09b5e30a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792654200.csv.gz",
+                "sha256": "f6c3b983124a42bbc56c2930f7d2696a9665bf35ee2b5b029db400dcae3393f2"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792655100.csv.gz",
+                "sha256": "ab7c57e7a3e94843d9710578764e069c45c4171d47a1ff2f4c5ebbed40192d3a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792656000.csv.gz",
+                "sha256": "e2299fdae7b6ced457abdb3f5dc7b2f70338fcf0ce6c82d8b8c6c244887efa7f"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792656900.csv.gz",
+                "sha256": "23f13e94f69bdae1e893d0846a862794d5bd140959cce32d6fe17b8868d5a938"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792657800.csv.gz",
+                "sha256": "e1cd21d36f921c044e5a47a11c597137b39740e1e7e5af65831ac867ed90598c"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792658700.csv.gz",
+                "sha256": "b9c8c4b705cf6875f7c7123985877e1365ef2a48e7876a74994a2cb8d5e19acb"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792660500.csv.gz",
+                "sha256": "94d7d6832af46a368e2d05f07b2007f9daf24af31044eff3b6cc5ac95d16e387"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792661400.csv.gz",
+                "sha256": "ca3b325ecf8471c4b2b07ce2f3e6f168e319f68f8b17e4ba55dde368ed8a5d80"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792662300.csv.gz",
+                "sha256": "7afb17f43ca56c028eb7ea9ba9c57bd6b7cf2a0f1e3f8f921104bb2101056c8e"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792663200.csv.gz",
+                "sha256": "fa6914a48b6dced0b1913b17b955296e76652be9c4cfa7c8ce32f78f821eb3af"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792664100.csv.gz",
+                "sha256": "1e1cd0401add2dae2e346d2882a47390a3c662586ed0023ad6d9b1b3088c8e7a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792665000.csv.gz",
+                "sha256": "1956c65e5cbf37d6a263ca0a54f5e49a90beb6e885a45cecdf4e6a78f82f85f4"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792665900.csv.gz",
+                "sha256": "a4afd5a9ebd0a41383a5371e0071ae558be91a6dee5ce436e37bb903fe523698"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792666800.csv.gz",
+                "sha256": "f2c8e1df6ee026b50a3c980854360d5e731a61525787a915692cd4f98ba95408"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792667700.csv.gz",
+                "sha256": "236a00c504d6909434aff4cb5186daea754ee14164aed24397d9fa7a49ba4b0a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792668600.csv.gz",
+                "sha256": "5b3177008a29666a7eb97503048c863e81efb3f7f95d48650e23981c868fa591"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792669500.csv.gz",
+                "sha256": "ee9fc5ec9dd8c8260a15de0a53959e26c94a0628d581f40e99536582eb75c4e0"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792670400.csv.gz",
+                "sha256": "fb09fc141c39b28e4d0510a157582641c5a2a7bff1096641a44ceb137a92c216"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792671300.csv.gz",
+                "sha256": "a45c3ef0f14b73f66f3fbaf1e5a2b6d44454d53b0e0ba278b7b48519cc428bb0"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792672200.csv.gz",
+                "sha256": "6f022f584455f09842c83bd97bebc49eaf8bbaeec85cbd884f760dbb17433dbd"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792673100.csv.gz",
+                "sha256": "bf508f3a0c095e040a07b785b16d28e8e35a806a2ce8475cc892d1fc5188c30d"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792674000.csv.gz",
+                "sha256": "6c93c59fcb0684b61bd49a0bb738a8f7a378887575fb4fa55e77530e6caa5a76"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792674900.csv.gz",
+                "sha256": "43f05cc7b5d61e5a8666680188870754ed948d0ce0d09bb4f6e8b72497623455"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792675800.csv.gz",
+                "sha256": "c06817cad7bfd0aaf13f9a51c92142c7fed0d072aa8e869d9be63af325d54d36"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792676700.csv.gz",
+                "sha256": "5bb680da3bb8cbbea1850ab3323ee2eea80d02b82106733c49609898d9d0c442"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792692900.csv.gz",
+                "sha256": "27275e3fb04eb2324e6ff2f711521b2939840860521e7970b3ccbdf9331f697b"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792693800.csv.gz",
+                "sha256": "791bb2c5c9eb0d90a290a1053af7f440939fcfcb76ad41e1d54af1f18ca18553"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792454400_1792645200.csv.gz",
+                "sha256": "dea75e056491a098782417bdc8a24767b1f1d895606748b2a801bbd6c3819f8d"
+              }
+            ],
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.008417174220085144,
+              "q50": -0.0002518435940146446,
+              "q90": 0.012114644050598145
+            },
+            "source": "real_wallex_only",
+            "symbol": "BTCTMN"
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "3454a2c2a0d6ee7354617e0300128d2546c307f84b2953951b9903992f8b664c",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693889.724391,
+          "decision_time": 1792693889.724391,
+          "facts": {
+            "adx14": 16.600591942982195,
+            "descriptive_state": "LOW_ADX",
+            "ret24": -0.002916816860339415,
+            "volatility12": 0.0018612251369506299
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "2bf63c946c24fa7e42936ad173534e96fac75d63647eee33dbb2ae2360b81b67",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693889.724391,
+          "decision_time": 1792693889.724391,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693889.724391,
+          "decision_time": 1792693889.724391,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792693889.724391,
+          "decision_time": 1792693889.724391,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        }
+      ],
+      "memory_references": [
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-e88a6ec893912400c5ca10ba3ae792506a061cd0ba1719b96aef940699aec987",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99820862,
+          "relevance": 0.35,
+          "source_hash": "8a7ffe0f05001149b47f89052bab73d9189e9eb9a05aa9f40c03f4d527781210"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-1400ddf6dced8cc2929ec6931b7ebb8a721a67033af9ce960b9883fc418a16bb",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99670368,
+          "relevance": 0.35,
+          "source_hash": "5403e089f0f71dcf5b6b36584331f8f900fa6e52e3d2a9cfc1f684bfb7daa613"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-b70943564b62ef2ff53b8cc713f1a3f1c3f4243a4ae419c5980adf33f5d06e96",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999636,
+          "relevance": 0.35,
+          "source_hash": "3a620ab2f85c8384961fe078c2a34f2f38724a93a1ca1f1d25d203ec89945528"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-d0f8d37444ad60ca656a2230c3791663e6bc65d778b0256029478c8dbf2b3b01",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999634,
+          "relevance": 0.35,
+          "source_hash": "ec8c828d5dceec258c90ad3abfed829aba828d72dcb86b9e311ebea7a8ba09ff"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-f01c76696706571ea45f18d3458f3da84a4fe8bd8329721ced2d55b8d577e777",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999632,
+          "relevance": 0.35,
+          "source_hash": "99f241d958cab2950e0c654133a105c9f71a725dff8eddf12c8ecde06efbe2c3"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-381f3798477951b7224715fa77df1a83d5b572fda14f97f1efef73d9c76a6c05",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999629,
+          "relevance": 0.35,
+          "source_hash": "14012ae84a3a50850a7975ad87796b6e249b981ad099936bd887c6050624767a"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-dfea301327a8fa0c7e9d03104905522b163a231cefa6b1fd5f6b00505a0c9a60",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999626,
+          "relevance": 0.35,
+          "source_hash": "0d78063ef7d98aab96241aac549536c5f81f31bf3566f30aba261247f10c7b9e"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "market-6e2723b44cb4d5dd83bf9086462e5c8b806deb9f98c4f170cd27942b5d20a41e",
+          "memory_type": "RECENT_MARKET_CONTEXT",
+          "recency": 0.99999222,
+          "relevance": 0.35,
+          "source_hash": "6e2723b44cb4d5dd83bf9086462e5c8b806deb9f98c4f170cd27942b5d20a41e"
+        }
+      ],
+      "disagreements": {
+        "forecast_q50_positive": false,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": "fa13874e5176158f08dfae2691ddbd41ccf8f2b748cfe20bdcc86e61c4a18f08",
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    },
+    {
+      "decision_id": "1ce1039d714f577803d73e3a46584cf247c018b509912d0becf40e2f08341df5",
+      "symbol": "PEPETMN",
+      "decision_time": 1792694834.389378,
+      "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+      "proposal": {
+        "decision_time": 1792694834.389378,
+        "model_promotion": false,
+        "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "1ce1039d714f577803d73e3a46584cf247c018b509912d0becf40e2f08341df5",
+        "symbol": "PEPETMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694834.389378,
+          "decision_time": 1792694834.389378,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792693800,
+            "regime_evidence": {
+              "adx14": 27.807363070418813,
+              "descriptive_state": "TRENDING_ADX_GE_25",
+              "ret24": -0.012770718384497998,
+              "volatility12": 0.0036624502207720255
+            },
+            "selected_strategy": "bollinger_momentum_1.5",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "30eb39dd264b7990c215677ceed5fe94cf3b1262f47f3657fadaf8c28034a2b3",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694834.389378,
+          "decision_time": 1792694834.389378,
+          "facts": {
+            "article_ids": [
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+              "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+              "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+              "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+              "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+              "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+              "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+              "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+              "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+              "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+              "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+              "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694834.389378,
+          "decision_time": 1792694834.389378,
+          "facts": {
+            "feature_end_ts": 1792693800,
+            "feature_source_receipts": [
+              {
+                "file": "candles/PEPETMN/15/1792389600_1792443600.csv.gz",
+                "sha256": "f3daad198e7cf3fc7b14fa1f800b617b19c84f3f5b755be13bd7cf90c1750c66"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792389600_1792450800.csv.gz",
+                "sha256": "d77050b573b813470f66175644e2e80286099889a7a0939eb37c4bf87b55e21b"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792647900.csv.gz",
+                "sha256": "0463770221bb04e49383c4f6b3de203961ada42e72c74984b3724f376ca7f6a6"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792650600.csv.gz",
+                "sha256": "b4b3b70350f5714768954d304187f13274bfc805603160d35e6825a3369d85fb"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792651500.csv.gz",
+                "sha256": "a26a1dbe0f562bdc26cb2f0c880ea94dce50192fbfcb6dbdbef7c9c307598432"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792652400.csv.gz",
+                "sha256": "b4206e17dc3abbad9e8569f825bb185f262fcace7923bbfa847ee000d834c338"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792653300.csv.gz",
+                "sha256": "24d565e94029e61462ba76662e5a83b4b89ca0472080b3c5b4535a53f3a04b7f"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792654200.csv.gz",
+                "sha256": "5b6019822db2dfa97c954b15396fe90f1350e31dbc65e57eb22d99ec54537710"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792655100.csv.gz",
+                "sha256": "ee37238b7b405f63311fd9c21403871a5783a56855402f5ac5bbdf39a09e0de8"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792656000.csv.gz",
+                "sha256": "e2796e1a6964d6f13961531c99d331fa7c356da94b606b11963fa25c1c78ce7e"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792656900.csv.gz",
+                "sha256": "1d6e7a7fc040ed8e1b8e190c6964cfcdda3b654a86cf490113dc7951be722d2b"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792657800.csv.gz",
+                "sha256": "52433ea7179cffdec119111b054a9a026abee174b134c33c3a3ba609332e12dd"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792658700.csv.gz",
+                "sha256": "09db90334ea3186ebe425970cd5ab3806389fbc7626f1ae5d4fdc6d939722760"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792660500.csv.gz",
+                "sha256": "030e446ba4d70bfc0446faa7e5cd3a943e751e3ba2d32b16f4069f992604bd05"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792661400.csv.gz",
+                "sha256": "6e1a4c538564b6a160d2c118a78e792e59a96432d2a5c71c72f5666c79b8560d"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792662300.csv.gz",
+                "sha256": "cc781e7618658dee46261d4e89adda93467604cb4eb3d174ea79deaaae78cc4c"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792663200.csv.gz",
+                "sha256": "64c63518293fe36dccc50278bf52f9a4845c7338ce8b186f201d5218da2f28cc"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792664100.csv.gz",
+                "sha256": "136bc24b3418e10a09412fefa67ef2fc11254e404054fa22162b3e9623c7ef8e"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792665000.csv.gz",
+                "sha256": "5938623da0467025995c3476eea7c2fb8a437973fecaf1006116d3d90c298694"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792665900.csv.gz",
+                "sha256": "6cae47099d258f05b30b075173ca7abe4fdf67abe20792e9e504032881c9e313"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792666800.csv.gz",
+                "sha256": "91661078d2367e807802b8d5dc164978ca73b24ae786459746540c3ea66e78ec"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792667700.csv.gz",
+                "sha256": "49c232cd9002691e2fc740ee602f5d2b5be2acc45b22edba0b9e86113519eecf"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792668600.csv.gz",
+                "sha256": "209faeb8531c93fe600d6346551e57102ae5947e3c35e1b6ceb61bec9dfcff85"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792669500.csv.gz",
+                "sha256": "5b83ac2498d248130a21502c8759ffa27960ee9b7f5182ac05321d450da7be06"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792670400.csv.gz",
+                "sha256": "1eb9cba6ecf5a1f3a0dd9bb969fbdc2197230c7807c94b6cb78d5331fddba9ac"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792671300.csv.gz",
+                "sha256": "a55d522488d100960916b84906784e1ef80208b9e00e5cff095fa71be7d2030b"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792672200.csv.gz",
+                "sha256": "320b18afb1a7969188eb3f2eebac6851ea6bd9ebdc2537e2f56c6a0e8285660d"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792673100.csv.gz",
+                "sha256": "36d3cd4f52b3a337fe358e04b664b9b6814decb3a67f6013f20da7de28e88ab6"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792674000.csv.gz",
+                "sha256": "50f0c3008eb42044bbf9130339ece4dbd1564d96436593e0b805018109eaa269"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792674900.csv.gz",
+                "sha256": "4ba7a29c47ee6c0209b770e57fa4a1d9a50d97914e5be6b6465e00ea5cbacd55"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792675800.csv.gz",
+                "sha256": "5ceb0249fc05ef355edca57f0c1a1aac2094073b0f15121e406c2c6d8b45373a"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792676700.csv.gz",
+                "sha256": "64ed76b1ca6ec17a261ede29aea17d3ca47232605c9f8190f66b0c7046f5f299"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792677600.csv.gz",
+                "sha256": "f57b6e6a398719f95322176b4c270c9c5ed8ec7fbcd118f2712311b28c9a1ba7"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792692900.csv.gz",
+                "sha256": "54b99dd2e66a5020336d658806ddfbea9a739b704cdcccc88983ec1b6709527e"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792693800.csv.gz",
+                "sha256": "a9d785404c4134d90b91e27472e541031edb11310e9cb00be82411eb221ffa25"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792452600_1792694700.csv.gz",
+                "sha256": "9dfb538a1440396ffc48a8ba45f4b1424e109c733c6732a02aa4a59be2a0c537"
+              },
+              {
+                "file": "candles/PEPETMN/15/1792454400_1792645200.csv.gz",
+                "sha256": "4e291c2a320ee0fc7b8aca7c57e9a0f5073ec1840bbaf41661a9ea4cbf4c2d99"
+              }
+            ],
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.006366889923810959,
+              "q50": -0.00347005482763052,
+              "q90": 0.009613767266273499
+            },
+            "source": "real_wallex_only",
+            "symbol": "PEPETMN"
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "0b5609b5210608fe1bd0026622b4e9f290d59fe4c775a7fb884c271bbe7ca5d9",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694834.389378,
+          "decision_time": 1792694834.389378,
+          "facts": {
+            "adx14": 27.807363070418813,
+            "descriptive_state": "TRENDING_ADX_GE_25",
+            "ret24": -0.012770718384497998,
+            "volatility12": 0.0036624502207720255
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "dc32eb668fdafbf8c829a0307c182cfa5489d3d79a112bbce8ce5c1742860b0f",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694834.389378,
+          "decision_time": 1792694834.389378,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694834.389378,
+          "decision_time": 1792694834.389378,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694834.389378,
+          "decision_time": 1792694834.389378,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "PEPETMN"
+        }
+      ],
+      "memory_references": [
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-00a09ac6db9b5a3671280b9736368b977446b75aa485c42860b4de2cc700c722",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99243496,
+          "relevance": 0.35,
+          "source_hash": "bcdd0efab8a31ca8e5ae26ed978b06cb0f520f8308fb03f9785b049362e31ee5"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-00529792106be023e130da80750620a37672f934bd0d5905428b31f9262e79c7",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99064458,
+          "relevance": 0.35,
+          "source_hash": "87acb1f07971016bfca517789c1f0d336e958c0b56962eb6f8236302573838aa"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-bb73ce09c4ba8d50d1e38ca0ebe2b77174837ca7975a7c33ce12c7d4ba223429",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.98914994,
+          "relevance": 0.35,
+          "source_hash": "c7862aca2b39d9c0fecf84b7ab3ce4a936828c1dbcff803aea192cd6dac90a06"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-8792b7c0c7c35c3b057ce2e195bb4c6c1f55eeac4c52d2e75d2615fe818a0800",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99998638,
+          "relevance": 0.35,
+          "source_hash": "a1cf140e7a64aa404d6c0bf1a86c862f910bfd7fe5da62614d90ca388cf5aec5"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-92711165eef65120187c71b8fda7e441a0d9b45c58ba78c0d48fd0f4d2ff8418",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99998636,
+          "relevance": 0.35,
+          "source_hash": "fbe6047d770e0be6c2fcd42be5c4e0c0a63fe9fde8fceafa938f7d0c65714198"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-e4f8c5dba3611a2046ac8663591cc114af32918bf0020a7485348aec70e4bb1a",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99998634,
+          "relevance": 0.35,
+          "source_hash": "5be9626569ef02ebefdf54ea9a3f8399f33bc62a28d98e2ff9ebccb6130d294a"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-4bdca1efe437c8d9eea20c911b8f06a57b91600634352cd1e84e6db08b87fd0c",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99998631,
+          "relevance": 0.35,
+          "source_hash": "e8549804ce222a72d9e1a36ff21f3bf6deb28c7c23e5d0a3fd1fed1ef95420b5"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-0818b4ba226460745e2b985455297d5ad75db9e18530a584e4b0520084c3f1ac",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99998628,
+          "relevance": 0.35,
+          "source_hash": "3a776d78ae4426f2b81fb1df89b672ef33a7e4c25373ca446b81056b41f87e1e"
+        }
+      ],
+      "disagreements": {
+        "forecast_q50_positive": false,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": "c261da2beebd11f69e60f8d3315020c5a9ed7994c9683bdc3cab191dc82d3b53",
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    },
+    {
+      "decision_id": "66845f591dd2eac55625c9ba73c7a3413847a8a4aa39424fe59518ec706fbbaf",
+      "symbol": "BTCTMN",
+      "decision_time": 1792694838.5744715,
+      "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+      "proposal": {
+        "decision_time": 1792694838.5744715,
+        "model_promotion": false,
+        "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+        "proposed_action": "ABSTAIN",
+        "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+        "requires_deterministic_risk_gate": true,
+        "source_evidence_hash": "66845f591dd2eac55625c9ba73c7a3413847a8a4aa39424fe59518ec706fbbaf",
+        "symbol": "BTCTMN",
+        "veto_reasons": [
+          "technical_strategy_veto"
+        ]
+      },
+      "agents": [
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694838.5744715,
+          "decision_time": 1792694838.5744715,
+          "facts": {
+            "current_signal": false,
+            "last_candle_ts": 1792693800,
+            "regime_evidence": {
+              "adx14": 17.63479352966213,
+              "descriptive_state": "LOW_ADX",
+              "ret24": -0.0017850628209110484,
+              "volatility12": 0.0018553987489045676
+            },
+            "selected_strategy": "adx_strong_uptrend",
+            "selection_origin": "chronological_training_selection"
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "reason": "existing chronological strategy only",
+          "role": "Technical Analyst",
+          "source_hash": "8e5361e8ca3669ce6a05e7e48cc913f9bc9f8e42064f6dde04556d0fd57e0676",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694838.5744715,
+          "decision_time": 1792694838.5744715,
+          "facts": {
+            "article_ids": [
+              "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+              "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+              "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+              "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+              "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+              "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+              "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+              "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+              "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+              "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+              "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+              "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+              "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+              "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+              "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+              "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+              "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+              "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+              "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+              "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+            ],
+            "policy": "No raw headline can grant authority",
+            "strong_negative_urls": []
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "reason": "PIT evidence; optional missing news is not a core veto",
+          "role": "News Analyst",
+          "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694838.5744715,
+          "decision_time": 1792694838.5744715,
+          "facts": {
+            "feature_end_ts": 1792693800,
+            "feature_source_receipts": [
+              {
+                "file": "candles/BTCTMN/15/1792389600_1792443600.csv.gz",
+                "sha256": "d31eda0a3da63e08b1293c21486c4bc8bbd0811ff4cea75fc247bddf9a40410c"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792389600_1792450800.csv.gz",
+                "sha256": "b27f72d4fc255998a2f59e51bb743eaeb612bd4733a919c04ec8cec02c268bfa"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792647900.csv.gz",
+                "sha256": "8649f882305c2ce2381c2011bdd9caf0dd38be2af841a4723942fc28a66c7211"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792650600.csv.gz",
+                "sha256": "ef4866e3a161b3996b6e80a48fb85c0f8e1c794a383ad6e2d5b07973197aa264"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792651500.csv.gz",
+                "sha256": "fdbd8e0f396112805ee1c8c434d5ba3b285d9f08fc0617f3da1a6e41f20ea859"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792652400.csv.gz",
+                "sha256": "70e29a043ace400788d347c9b98023cc2cfe296738c2ad561187bc272c66a6a6"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792653300.csv.gz",
+                "sha256": "33f403f71662508cc06aa5c261f13262a7c8908996ae7d0f7a55a62f09b5e30a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792654200.csv.gz",
+                "sha256": "f6c3b983124a42bbc56c2930f7d2696a9665bf35ee2b5b029db400dcae3393f2"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792655100.csv.gz",
+                "sha256": "ab7c57e7a3e94843d9710578764e069c45c4171d47a1ff2f4c5ebbed40192d3a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792656000.csv.gz",
+                "sha256": "e2299fdae7b6ced457abdb3f5dc7b2f70338fcf0ce6c82d8b8c6c244887efa7f"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792656900.csv.gz",
+                "sha256": "23f13e94f69bdae1e893d0846a862794d5bd140959cce32d6fe17b8868d5a938"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792657800.csv.gz",
+                "sha256": "e1cd21d36f921c044e5a47a11c597137b39740e1e7e5af65831ac867ed90598c"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792658700.csv.gz",
+                "sha256": "b9c8c4b705cf6875f7c7123985877e1365ef2a48e7876a74994a2cb8d5e19acb"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792660500.csv.gz",
+                "sha256": "94d7d6832af46a368e2d05f07b2007f9daf24af31044eff3b6cc5ac95d16e387"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792661400.csv.gz",
+                "sha256": "ca3b325ecf8471c4b2b07ce2f3e6f168e319f68f8b17e4ba55dde368ed8a5d80"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792662300.csv.gz",
+                "sha256": "7afb17f43ca56c028eb7ea9ba9c57bd6b7cf2a0f1e3f8f921104bb2101056c8e"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792663200.csv.gz",
+                "sha256": "fa6914a48b6dced0b1913b17b955296e76652be9c4cfa7c8ce32f78f821eb3af"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792664100.csv.gz",
+                "sha256": "1e1cd0401add2dae2e346d2882a47390a3c662586ed0023ad6d9b1b3088c8e7a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792665000.csv.gz",
+                "sha256": "1956c65e5cbf37d6a263ca0a54f5e49a90beb6e885a45cecdf4e6a78f82f85f4"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792665900.csv.gz",
+                "sha256": "a4afd5a9ebd0a41383a5371e0071ae558be91a6dee5ce436e37bb903fe523698"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792666800.csv.gz",
+                "sha256": "f2c8e1df6ee026b50a3c980854360d5e731a61525787a915692cd4f98ba95408"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792667700.csv.gz",
+                "sha256": "236a00c504d6909434aff4cb5186daea754ee14164aed24397d9fa7a49ba4b0a"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792668600.csv.gz",
+                "sha256": "5b3177008a29666a7eb97503048c863e81efb3f7f95d48650e23981c868fa591"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792669500.csv.gz",
+                "sha256": "ee9fc5ec9dd8c8260a15de0a53959e26c94a0628d581f40e99536582eb75c4e0"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792670400.csv.gz",
+                "sha256": "fb09fc141c39b28e4d0510a157582641c5a2a7bff1096641a44ceb137a92c216"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792671300.csv.gz",
+                "sha256": "a45c3ef0f14b73f66f3fbaf1e5a2b6d44454d53b0e0ba278b7b48519cc428bb0"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792672200.csv.gz",
+                "sha256": "6f022f584455f09842c83bd97bebc49eaf8bbaeec85cbd884f760dbb17433dbd"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792673100.csv.gz",
+                "sha256": "bf508f3a0c095e040a07b785b16d28e8e35a806a2ce8475cc892d1fc5188c30d"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792674000.csv.gz",
+                "sha256": "6c93c59fcb0684b61bd49a0bb738a8f7a378887575fb4fa55e77530e6caa5a76"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792674900.csv.gz",
+                "sha256": "43f05cc7b5d61e5a8666680188870754ed948d0ce0d09bb4f6e8b72497623455"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792675800.csv.gz",
+                "sha256": "c06817cad7bfd0aaf13f9a51c92142c7fed0d072aa8e869d9be63af325d54d36"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792676700.csv.gz",
+                "sha256": "5bb680da3bb8cbbea1850ab3323ee2eea80d02b82106733c49609898d9d0c442"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792692900.csv.gz",
+                "sha256": "27275e3fb04eb2324e6ff2f711521b2939840860521e7970b3ccbdf9331f697b"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792693800.csv.gz",
+                "sha256": "791bb2c5c9eb0d90a290a1053af7f440939fcfcb76ad41e1d54af1f18ca18553"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792452600_1792694700.csv.gz",
+                "sha256": "27036c1baf74de36e72b37f9e770a3ddb397d4b98e192f23d40c9ac6789f14cf"
+              },
+              {
+                "file": "candles/BTCTMN/15/1792454400_1792645200.csv.gz",
+                "sha256": "dea75e056491a098782417bdc8a24767b1f1d895606748b2a801bbd6c3819f8d"
+              }
+            ],
+            "horizon_bars": 3,
+            "model": "patchtst",
+            "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+            "model_validation_pinball": 0.0018563736619704827,
+            "quantile_log_returns": {
+              "q10": -0.011391010135412216,
+              "q50": 0.003581182099878788,
+              "q90": 0.013238824903964996
+            },
+            "source": "real_wallex_only",
+            "symbol": "BTCTMN"
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "reason": "Champion only; research models never enter proposal",
+          "role": "Forecast Analyst",
+          "source_hash": "37b34f97dcf53e5e6e0ef370bb774b3ffe05a7ea94794549a3ba3efe26f7f5e2",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694838.5744715,
+          "decision_time": 1792694838.5744715,
+          "facts": {
+            "adx14": 17.63479352966213,
+            "descriptive_state": "LOW_ADX",
+            "ret24": -0.0017850628209110484,
+            "volatility12": 0.0018553987489045676
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "reason": "descriptive actual trailing features, not an inferred future regime",
+          "role": "Market Regime Analyst",
+          "source_hash": "2bc1bbc5464801e954a9f7616e9a05c166de76ca88c9290818a27e537d643482",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694838.5744715,
+          "decision_time": 1792694838.5744715,
+          "facts": {
+            "all_held_assets_marked_from_real_bids": true,
+            "cash_tmn": 5000000.0,
+            "equity": {
+              "drawdown_pct": 0.0,
+              "equity_tmn": 5000000.0,
+              "stopped": false
+            },
+            "positions": [],
+            "stopped": false
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "reason": "all held symbols require fresh actual bids before action",
+          "role": "Portfolio Analyst",
+          "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694838.5744715,
+          "decision_time": 1792694838.5744715,
+          "facts": {
+            "RiskGate": "mandatory again inside existing ShadowBroker transaction",
+            "preflight_veto": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "reason": "Review cannot authorize an order",
+          "role": "Risk Reviewer",
+          "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        },
+        {
+          "authority": "ADVISORY_STRUCTURED_NO_TOOLS",
+          "available_at": 1792694838.5744715,
+          "decision_time": 1792694838.5744715,
+          "facts": {
+            "proposal": "ABSTAIN",
+            "veto_reasons": [
+              "technical_strategy_veto"
+            ]
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "reason": "deterministic explanation; optional LLM cannot change fields",
+          "role": "Decision Explanation Agent",
+          "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+          "status": "OBSERVED_EVIDENCE",
+          "symbol": "BTCTMN"
+        }
+      ],
+      "memory_references": [
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-0ebc247251ac2e2f2648fb8c17992b1c9dfa424fdc473127dd31c063394a3e8f",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99242964,
+          "relevance": 0.35,
+          "source_hash": "1028f246f4c9a0db70f60bd18d1fb1115405f5cdd0934027123f793ac81cd330"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-e88a6ec893912400c5ca10ba3ae792506a061cd0ba1719b96aef940699aec987",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.99063965,
+          "relevance": 0.35,
+          "source_hash": "8a7ffe0f05001149b47f89052bab73d9189e9eb9a05aa9f40c03f4d527781210"
+        },
+        {
+          "evaluation_status": "OBSERVED_EVIDENCE_ONLY",
+          "event_id": "decision-1400ddf6dced8cc2929ec6931b7ebb8a721a67033af9ce960b9883fc418a16bb",
+          "memory_type": "DECISION_RISK_VETO",
+          "recency": 0.98914613,
+          "relevance": 0.35,
+          "source_hash": "5403e089f0f71dcf5b6b36584331f8f900fa6e52e3d2a9cfc1f684bfb7daa613"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-a6ca0b086693a3a7aa0d395105fcc0ecceda7249338073ec07c4bf8464dee609",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999633,
+          "relevance": 0.35,
+          "source_hash": "ac5cef1d6378b3ce2db3cc63cc7eb8e79a033041688c9b4bbf655713d4b379d1"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-55e67eaa05943822750d1124a40e8a92bd9c154a5229094580fbd4a497814d1f",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999631,
+          "relevance": 0.35,
+          "source_hash": "c7d6ea8b5668dba4cdafcfb6df665a0b461b43be6839dc44171a60a1d1a8248f"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-ad3396559159723419c4ef31e427076f7f84ea7bfa428b7b7fda54763b15862a",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999628,
+          "relevance": 0.35,
+          "source_hash": "b8e6188fa65f7bd338caed4eb0c2d849bf5455b9a70bc0c888b251094661cd4f"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-e32f2d265347c17da7402d1fa69ee0999ca3965a00bf894ae566bec1d4d468b9",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999625,
+          "relevance": 0.35,
+          "source_hash": "be1f36c39569e09fbf651708edbef01d3a7677b79bf78cf34058ffc5d0e5443c"
+        },
+        {
+          "evaluation_status": "PENDING_REAL_FUTURE_QUOTE",
+          "event_id": "forecast-2554d7ee27d15e9cfff3e815ad1769016fcad5612d73228ea9b9fe4e8a724aac",
+          "memory_type": "PAST_FORECAST",
+          "recency": 0.99999623,
+          "relevance": 0.35,
+          "source_hash": "32f5b77a7074ebbe07be664240379f3ad0331d5ebdab99397e272dba7976f63c"
+        }
+      ],
+      "disagreements": {
+        "forecast_q50_positive": true,
+        "technical_signal": false
+      },
+      "actual_shadow_action": "NO_TRUSTED_FORECAST",
+      "quote_receipt_sha256": "b624b9c9debd1f6a6416ab71fee035beaf135433e3e0de76b4a2cefd65588678",
+      "source_receipt_note": "Initial development cycles precede the explicit quote hash field; quote observation and raw receipts retained"
+    }
+  ],
+  "LLM_calls": 0,
+  "reviewers": "deterministic evidence functions, not claims of seven autonomous LLM calls",
+  "protected_source_unchanged": [
+    "atlas_risk.py",
+    "atlas_broker.py",
+    "atlas_deep.py",
+    "atlas_feature_recipe.py"
+  ],
+  "order_authority": "only unchanged ShadowBroker/RiskGate; observers and LLM have none"
+}

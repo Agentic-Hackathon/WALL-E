@@ -1,0 +1,19 @@
+{
+  "passed": 204,
+  "skipped": 5,
+  "failed": 0,
+  "errors": 0,
+  "baseline": {
+    "passed": 190,
+    "skipped": 5
+  },
+  "command": "$env:PYTEST_DISABLE_PLUGIN_AUTOLOAD='1'; conda run --no-capture-output -n shbk python -m pytest -q --junitxml=reports/m6_pytest.xml",
+  "synthetic_market_or_news_or_fill_data": false,
+  "earlier_full_verification": {
+    "passed": 203,
+    "failed": 1,
+    "skipped": 5,
+    "cause": "sub-millisecond wall-clock boundary race in new test; corrected to original actual historical cutoff to isolate creation-time leakage"
+  },
+  "legacy_quote_reconciliation_test": "Copies an original archived forecast and its original actual quotes into an isolated fixture; never new prospective evidence"
+}

@@ -1,0 +1,208 @@
+{
+  "models": {
+    "champion": {
+      "forecast_horizon": 2700,
+      "trained_target": "CLOSE_TO_CLOSE_RETURN",
+      "authority": "OBSERVATION_ONLY_NO_BROKER",
+      "promotion": false,
+      "training_partition": "existing Champion GLOBAL_UTC_PURGED_V1, not M5 training",
+      "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+      "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+      "model_version": "patchtst",
+      "config": {
+        "architecture": "patchtst",
+        "resolution": "15",
+        "context": 96,
+        "horizon": 3,
+        "training_source_manifest_sha256": "5d0c33c8bedaeb3454a3446f130eee33b189339a197f511cd3ba2fddf7a8ba9c",
+        "training_source_chunk_count": 134,
+        "validation_protocol": "GLOBAL_UTC_PURGED_V1",
+        "training_window_split_sha256": "4f8eef58ed355274e27f5fe1571512e502c517f0c186c92b32c2f0e172efd5cc",
+        "validation_hours_effective": 8,
+        "validation_start_ts": 1792618200,
+        "train_last_label_ts": 1792617300,
+        "feature_columns": [
+          "ret1",
+          "ret3",
+          "ret6",
+          "ret12",
+          "ret24",
+          "macd_hist",
+          "rsi14",
+          "natr14",
+          "volatility12",
+          "volume_ratio",
+          "obv_slope",
+          "stoch_k",
+          "adx14",
+          "mfi14",
+          "bb_z",
+          "roc12"
+        ],
+        "training_samples": 1189,
+        "validation_samples": 511,
+        "best_epoch": 7,
+        "validation_pinball": 0.0018563736619704827,
+        "device_used": "cuda",
+        "training_source": "verified_real_wallex_only",
+        "run_ts": 1792649242.5093193,
+        "history": [
+          {
+            "epoch": 1,
+            "train_pinball": 0.16384343440112595,
+            "validation_pinball": 0.09330150874335238
+          },
+          {
+            "epoch": 2,
+            "train_pinball": 0.05267399709900454,
+            "validation_pinball": 0.004944349962620178
+          },
+          {
+            "epoch": 3,
+            "train_pinball": 0.009576747805675957,
+            "validation_pinball": 0.0025907600478044988
+          },
+          {
+            "epoch": 4,
+            "train_pinball": 0.006253001862303475,
+            "validation_pinball": 0.008534865763672643
+          },
+          {
+            "epoch": 5,
+            "train_pinball": 0.004683896590610128,
+            "validation_pinball": 0.0047225510180288095
+          },
+          {
+            "epoch": 6,
+            "train_pinball": 0.005013513765740385,
+            "validation_pinball": 0.00735676382374886
+          },
+          {
+            "epoch": 7,
+            "train_pinball": 0.002795374768576996,
+            "validation_pinball": 0.0018563736619704827
+          },
+          {
+            "epoch": 8,
+            "train_pinball": 0.0034361918534397376,
+            "validation_pinball": 0.006961986753331414
+          },
+          {
+            "epoch": 9,
+            "train_pinball": 0.0052230636079312375,
+            "validation_pinball": 0.0059189953396567045
+          },
+          {
+            "epoch": 10,
+            "train_pinball": 0.004676861528705107,
+            "validation_pinball": 0.005530651844673428
+          },
+          {
+            "epoch": 11,
+            "train_pinball": 0.0028136080172840314,
+            "validation_pinball": 0.0021385201704077817
+          },
+          {
+            "epoch": 12,
+            "train_pinball": 0.0020694150011735845,
+            "validation_pinball": 0.002496398515623872
+          },
+          {
+            "epoch": 13,
+            "train_pinball": 0.0021280695549529627,
+            "validation_pinball": 0.0022179306550370623
+          }
+        ],
+        "data_catalog_sha256": "d12cd8113375293d6e1a5f7cc772292a927439e6294c7aff2d02664213f0d1ea"
+      },
+      "recipe": "UNCHANGED_CHAMPION_16_V1"
+    },
+    "m5_lightgbm": {
+      "forecast_horizon": 2700,
+      "trained_target": "CLOSE_TO_CLOSE_RETURN",
+      "authority": "OBSERVATION_ONLY_NO_BROKER",
+      "promotion": false,
+      "training_partition": "historical M5 four-way split, NOT prospective evidence",
+      "paths": [
+        "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\baselines\\lightgbm_q0.1.txt",
+        "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\baselines\\lightgbm_q0.5.txt",
+        "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\baselines\\lightgbm_q0.9.txt"
+      ],
+      "model_sha256": "9805c68132222788599030e73616a596eb035014eb7b95d6d0818cdd24ccbaf8",
+      "model_version": "M5_LIGHTGBM_QUANTILES_RAW",
+      "recipe": "M5_A_21_V1",
+      "receipts": {
+        "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\baselines\\lightgbm_q0.1.txt": "e778bd35a96cb1abe64a981180656ba98966d901b8998d1a02540a931ac2bd4e",
+        "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\baselines\\lightgbm_q0.5.txt": "f19e996f020c53f0e6c03c305503058d007d04522473b9f2d94e4772cfbc9fb8",
+        "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\baselines\\lightgbm_q0.9.txt": "f9c781db55b064929f084f3007992ccfa0eae0b710136614bb6bdcce6e4eea3f"
+      }
+    },
+    "m5_patchtst": {
+      "forecast_horizon": 2700,
+      "trained_target": "CLOSE_TO_CLOSE_RETURN",
+      "authority": "OBSERVATION_ONLY_NO_BROKER",
+      "promotion": false,
+      "training_partition": "historical M5 four-way split, NOT prospective evidence",
+      "path": "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\A_patchtst_ordered_17\\best.pt",
+      "model_sha256": "4f422406f03d57a7d8c0ca7891695a1057821c2d4083a197f0e4b0dca28a5fad",
+      "model_version": "M5_PATCHTST_ORDERED_RAW",
+      "config": {
+        "architecture": "patchtst",
+        "group": "A",
+        "head": "ordered",
+        "seed": 17,
+        "context": 96,
+        "channels": 21,
+        "target_mean": 0.0010872288839891553,
+        "target_scale": 0.007345039397478104,
+        "dataset_sha256": "a37ad033474551d54280b28525b95254b4eaa1cc3d1741e6ce2664319655e29e",
+        "source_manifest_sha256": "6180a52e4280f04fda4664ff2dba30337fa3c03b8a75efae4a046e3f4d3e75b0",
+        "split_sha256": "b387c06b23fd26630d61f3427d21b0bca570104f638e8eb4610bd045e62b7b30",
+        "feature_input_sha256": "ebf4f6998ac2adbfa879e9d75cfe125885328654131489fe5a719f076ea904c1",
+        "max_epochs": 120,
+        "patience": 15,
+        "min_delta": 1e-05,
+        "batch_size": 16,
+        "training_device": "cuda",
+        "mixed_precision": true,
+        "no_automatic_promotion": true
+      },
+      "recipe": "M5_A_21_V1"
+    },
+    "zero": {
+      "forecast_horizon": 2700,
+      "trained_target": "CLOSE_TO_CLOSE_RETURN",
+      "authority": "OBSERVATION_ONLY_NO_BROKER",
+      "promotion": false,
+      "training_partition": "historical M5 four-way split, NOT prospective evidence",
+      "model_sha256": "b75b0da27eda693972cb9f55443107bdad1e08fa7f380dc72caf171e3fec2d32",
+      "model_version": "ZERO_PERSISTENCE_V1",
+      "recipe": "NO_IMPUTATION_CONSTANT_FORECAST",
+      "constant": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "historical_quantiles": {
+      "forecast_horizon": 2700,
+      "trained_target": "CLOSE_TO_CLOSE_RETURN",
+      "authority": "OBSERVATION_ONLY_NO_BROKER",
+      "promotion": false,
+      "training_partition": "historical M5 four-way split, NOT prospective evidence",
+      "model_sha256": "da5a2ff745f9ac9acaa0d096d3148ba989d5d415c82f50b588dd55cbb7db3742",
+      "model_version": "TRAIN_ONLY_HISTORICAL_QUANTILES_V1",
+      "recipe": "TRAIN_LABEL_DISTRIBUTION",
+      "constant": [
+        -0.006595846558351189,
+        0.000603330979609752,
+        0.00917367371652637
+      ]
+    }
+  },
+  "common_evaluation_key": "symbol + actual decision timestamp + origin quote",
+  "selection": "Champion unchanged, M5 Patch selected by historical validation; LightGBM predeclared comparator; no prospective selection/promotion",
+  "multiple_testing_ledger": "M5 experiment registry remains historical; every M6 model failure and observation is retained in m6_cycles/m6_predictions",
+  "target_separation": "CLOSE_TO_CLOSE training vs current quote-origin MID proxy; due times stored independently",
+  "feature_transform": "M5-A exact log-minus-log, log1p volume, within-window normalization, scale floor 1e-6, clip [-20,20]"
+}

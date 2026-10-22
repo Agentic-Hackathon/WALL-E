@@ -1,0 +1,43 @@
+{
+  "strategy_evaluation_hours": 48,
+  "forecast_horizon_minutes": 45,
+  "initial_hypothetical_tmn": 5000000,
+  "elapsed_hours": 0.40332226706875696,
+  "observed_time_bins": 2,
+  "expected_time_bins": 2,
+  "coverage_fraction": 1.0,
+  "maximum_observation_gap_seconds": 942.0334324836731,
+  "status": "PENDING_INSUFFICIENT_48H_PROSPECTIVE_COVERAGE",
+  "paper": {
+    "mode": "PAPER_STATUS_READ_ONLY",
+    "live_order_submission": "ABSENT",
+    "watch_status": "RUNNING",
+    "deadline_epoch": 1792866258.4048214,
+    "paper_positions": [],
+    "paper_cash_tmn": 5000000.0,
+    "real_contest_balance": "NOT_QUERIED_BY_THIS_COMMAND",
+    "paper_hash_chain_valid": true,
+    "status": "PAPER_FLAT"
+  },
+  "portfolio_metrics": {
+    "valuation": "HYPOTHETICAL actual-bid liquidation, assumed fee; NOT fills or exchange PnL",
+    "actual_bid_marks": 8,
+    "observed_hypothetical_equity_change": 0.0,
+    "observed_hypothetical_max_drawdown": 0.0,
+    "paper_actions": {},
+    "paper_notional_turnover_tmn": 0,
+    "latest_entry_cost_exposure_tmn": 0,
+    "full_48h_result_valid": false
+  },
+  "cost_assumption": {
+    "fee_per_side": 0.001,
+    "verified": false,
+    "slippage": "observed best-quote hypothetical only"
+  },
+  "max_exposure_tmn": 1000000,
+  "drawdown_limit_fraction": 0.03,
+  "risk_limits_changed": false,
+  "realized_exchange_pnl": null,
+  "economic_edge": "NO_VERIFIED_ECONOMIC_EDGE",
+  "cash_holding_permitted": true
+}

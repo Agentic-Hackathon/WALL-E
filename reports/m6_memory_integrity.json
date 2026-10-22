@@ -1,0 +1,27 @@
+{
+  "chain_valid": true,
+  "layers": {
+    "DECISION_RISK_VETO": 8,
+    "NEWS_EVENT": 20,
+    "PAST_FORECAST": 30,
+    "RECENT_MARKET_CONTEXT": 8
+  },
+  "authority": "EVIDENCE_ONLY_NO_RISK_OR_MODEL_MUTATION",
+  "time_policy": "observation AND availability AND actual creation <= cutoff",
+  "supported_layers": [
+    "DECISION_RISK_VETO",
+    "MATURED_FORECAST_OUTCOME",
+    "NEWS_EVENT",
+    "PAST_FORECAST",
+    "RECENT_MARKET_CONTEXT",
+    "RESEARCH_LESSON",
+    "STRATEGY_PERFORMANCE_EVIDENCE"
+  ],
+  "old_context_chain": {
+    "hash_chain_valid": true,
+    "events_verified": 73
+  },
+  "dedup_policy": "stable event IDs + source/payload match; replay writes no memory",
+  "PIT_policy": "observation, availability AND actual creation <= decision; BACKTEST read-only",
+  "unpopulated_layers": "No matured outcome or validated lesson is fabricated; optional layers may be empty"
+}

@@ -1,0 +1,146 @@
+{
+  "before": "Watch -> direct ShadowBroker vs separate LangGraph auxiliary checks",
+  "after": "Watch -> shadow_cycle -> run_assets -> same atlas_agent.cycle LangGraph -> structured review -> unchanged ShadowBroker/RiskGate",
+  "legacy_function_preserved": "atlas_shadow._legacy_shadow_cycle, forensic comparison only",
+  "behavior_change": "Watch now shares Agent technical veto; optional LLM defaults OFF. No risk limit was loosened.",
+  "comparison": [
+    {
+      "decision_id": "bb73ce09c4ba8d50d1e38ca0ebe2b77174837ca7975a7c33ce12c7d4ba223429",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.0034172882031144143
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    },
+    {
+      "decision_id": "1400ddf6dced8cc2929ec6931b7ebb8a721a67033af9ce960b9883fc418a16bb",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.004126956342916564
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    },
+    {
+      "decision_id": "00529792106be023e130da80750620a37672f934bd0d5905428b31f9262e79c7",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.0032499941834854846
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    },
+    {
+      "decision_id": "e88a6ec893912400c5ca10ba3ae792506a061cd0ba1719b96aef940699aec987",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.0029990007114728255
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    },
+    {
+      "decision_id": "00a09ac6db9b5a3671280b9736368b977446b75aa485c42860b4de2cc700c722",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.00601407832714504
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    },
+    {
+      "decision_id": "0ebc247251ac2e2f2648fb8c17992b1c9dfa424fdc473127dd31c063394a3e8f",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.004005877994111416
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    },
+    {
+      "decision_id": "1ce1039d714f577803d73e3a46584cf247c018b509912d0becf40e2f08341df5",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.0030823305274711686
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    },
+    {
+      "decision_id": "66845f591dd2eac55625c9ba73c7a3413847a8a4aa39424fe59518ec706fbbaf",
+      "legacy_watch_gate_on_same_real_inputs": {
+        "action": "INSUFFICIENT_RISK_ADJUSTED_EDGE",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "notional_tmn": 0.0,
+        "estimated_cost_log_return": 0.00485245189269925
+      },
+      "new_shared_gate": {
+        "action": "NO_TRUSTED_FORECAST",
+        "estimated_cost_log_return": null,
+        "notional_tmn": 0.0,
+        "reason": "FINITE_Q10_FORECAST_REQUIRED"
+      },
+      "actual_new_action": "NO_TRUSTED_FORECAST",
+      "comparison_kind": "COUNTERFACTUAL_OLD_ROUTE_REVIEW_ON_ACTUAL_NEW_EVIDENCE_NOT_A_HISTORICAL_TRADE"
+    }
+  ],
+  "economic_improvement_proven": false,
+  "implementation_commit": "0977b35aaab7c86550a8ee336be76e4d825ffd86"
+}

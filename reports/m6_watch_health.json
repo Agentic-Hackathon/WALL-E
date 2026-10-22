@@ -1,0 +1,2903 @@
+{
+  "completed_cycles": 4,
+  "foreground_process_still_running": false,
+  "process_liveness_policy": "Lease presence is not verified process uptime; absent active lease means no collector currently owns this session",
+  "scope": "bounded executions finished; this report proves no continuous 48h service uptime",
+  "initial_development_cycles_without_pipeline_hash": 3,
+  "pipeline_policy": "New/resumed collection pins LF-normalized source digest; changed code requires a separate session. Initial bounded development cycles retain original input/model hashes but did not capture whole-pipeline source digest.",
+  "public_depth_requests_observer": 8,
+  "public_candle_complete_windows": 12,
+  "quote_count": 8,
+  "download_cache_hits": 0,
+  "model_cache_hits": 10,
+  "network_errors": [],
+  "additional_agent_depth_receipts": "One actual depth per completed graph plus every held-asset mark; no holdings in this bounded run",
+  "cycles": [
+    {
+      "observed_at": 1792693458.430323,
+      "symbols": [
+        "PEPETMN",
+        "BTCTMN"
+      ],
+      "registered": 10,
+      "quote_requests": 2,
+      "errors": [],
+      "models": {
+        "PEPETMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792692900,
+          "inserted": 5,
+          "cached": 0
+        },
+        "BTCTMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792692900,
+          "inserted": 5,
+          "cached": 0
+        }
+      },
+      "shadow": [
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "1d292b89a6728e403b734b6bcba6c42dec49c951efe7df70b7284ce8b12a1e1a",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "PEPETMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "PEPETMN",
+              "decision_time": 1792693472.3998632,
+              "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+              "source_evidence_hash": "bb73ce09c4ba8d50d1e38ca0ebe2b77174837ca7975a7c33ce12c7d4ba223429",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+                "decision_time": 1792693472.3998632,
+                "available_at": 1792693472.3998632,
+                "source_hash": "0306b91e1d8e6594c479b77d2c6c1877dafd8988ecf0fdf4e09f8b33aec4e007",
+                "facts": {
+                  "selected_strategy": "bollinger_momentum_1.5",
+                  "current_signal": false,
+                  "last_candle_ts": 1792692000,
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+                "decision_time": 1792693472.3998632,
+                "available_at": 1792693472.3998632,
+                "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+                "facts": {
+                  "article_ids": [
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+                    "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+                    "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+                    "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+                    "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+                    "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+                    "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+                    "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+                    "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+                    "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+                    "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+                    "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+                "decision_time": 1792693472.3998632,
+                "available_at": 1792693472.3998632,
+                "source_hash": "cd003cc590124b9f1130ba0d2085535d54811db2f5a5da87640219ff1224d547",
+                "facts": {
+                  "symbol": "PEPETMN",
+                  "feature_end_ts": 1792692000,
+                  "quantile_log_returns": {
+                    "q10": -0.008320130407810211,
+                    "q50": 0.001478784717619419,
+                    "q90": 0.015033088624477386
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb"
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+                "decision_time": 1792693472.3998632,
+                "available_at": 1792693472.3998632,
+                "source_hash": "30874450f7e4fd39af6cc405e3e7d90469a7afdc3c5b0d0c2ec39ddda431ef23",
+                "facts": {
+                  "last_candle_ts": 1792692000,
+                  "status": "DESCRIPTIVE_ONLY"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+                "decision_time": 1792693472.3998632,
+                "available_at": 1792693472.3998632,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+                "decision_time": 1792693472.3998632,
+                "available_at": 1792693472.3998632,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+                "decision_time": 1792693472.3998632,
+                "available_at": 1792693472.3998632,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": true
+            },
+            "review_sha256": "c7862aca2b39d9c0fecf84b7ab3ce4a936828c1dbcff803aea192cd6dac90a06"
+          },
+          "observation_id": "def2130b1774be825a3f1c588b93b22f1c47d12634ab50a78bb2b9f302cecb80",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        },
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "562bce52df7a0a2a29bae2a2da1cfeed0c3b22e78ad1dcb889c975d524ae22b2",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "BTCTMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "BTCTMN",
+              "decision_time": 1792693476.6319542,
+              "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+              "source_evidence_hash": "1400ddf6dced8cc2929ec6931b7ebb8a721a67033af9ce960b9883fc418a16bb",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+                "decision_time": 1792693476.6319542,
+                "available_at": 1792693476.6319542,
+                "source_hash": "85545c2119c2fb89caa564fc744dddc4c9cef2231e0560a1a6518432ebc8adb3",
+                "facts": {
+                  "selected_strategy": "adx_strong_uptrend",
+                  "current_signal": false,
+                  "last_candle_ts": 1792692000,
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+                "decision_time": 1792693476.6319542,
+                "available_at": 1792693476.6319542,
+                "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+                "facts": {
+                  "article_ids": [
+                    "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+                    "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+                    "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+                    "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+                    "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+                    "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+                    "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+                "decision_time": 1792693476.6319542,
+                "available_at": 1792693476.6319542,
+                "source_hash": "4112343f33b349cb6023d097cf34ebdf33319ce6ae01ce7bdc981c246cbaa58f",
+                "facts": {
+                  "symbol": "BTCTMN",
+                  "feature_end_ts": 1792692000,
+                  "quantile_log_returns": {
+                    "q10": -0.00929730013012886,
+                    "q50": -0.0012146374210715294,
+                    "q90": 0.01258150115609169
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb"
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+                "decision_time": 1792693476.6319542,
+                "available_at": 1792693476.6319542,
+                "source_hash": "30874450f7e4fd39af6cc405e3e7d90469a7afdc3c5b0d0c2ec39ddda431ef23",
+                "facts": {
+                  "last_candle_ts": 1792692000,
+                  "status": "DESCRIPTIVE_ONLY"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+                "decision_time": 1792693476.6319542,
+                "available_at": 1792693476.6319542,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+                "decision_time": 1792693476.6319542,
+                "available_at": 1792693476.6319542,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+                "decision_time": 1792693476.6319542,
+                "available_at": 1792693476.6319542,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": false
+            },
+            "review_sha256": "5403e089f0f71dcf5b6b36584331f8f900fa6e52e3d2a9cfc1f684bfb7daa613"
+          },
+          "observation_id": "743751561648e1e6c58e46c80d4112dd3343acb7cc30e4c3589f20e9c72e9aec",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        }
+      ],
+      "sync": {
+        "status": "COMPLETED",
+        "plan": {
+          "generated_at_utc": "2026-10-22T18:24:18.511350+00:00",
+          "purpose": "STARTUP_OR_WATCH_PUBLIC_DATA_SYNC",
+          "scope": "priority",
+          "symbols": [
+            "PEPETMN",
+            "BTCTMN"
+          ],
+          "target_resolutions": [
+            "15"
+          ],
+          "model_demand": {
+            "target_resolution": "15",
+            "context": 96,
+            "horizon": 3,
+            "origin": "ACTIVE_CHAMPION_METADATA"
+          },
+          "warmup_hours": 48.0,
+          "target_warmup_hours": {
+            "15": 37.75
+          },
+          "planned_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792692000,
+              "end": 1792693380,
+              "begin_utc": "2026-10-22T18:00:00+00:00",
+              "end_utc": "2026-10-22T18:23:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792692000,
+              "end": 1792693380,
+              "begin_utc": "2026-10-22T18:00:00+00:00",
+              "end_utc": "2026-10-22T18:23:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792681200,
+              "end": 1792692000,
+              "begin_utc": "2026-10-22T15:00:00+00:00",
+              "end_utc": "2026-10-22T18:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792681200,
+              "end": 1792692000,
+              "begin_utc": "2026-10-22T15:00:00+00:00",
+              "end_utc": "2026-10-22T18:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792676820,
+              "end": 1792681200,
+              "begin_utc": "2026-10-22T13:47:00+00:00",
+              "end_utc": "2026-10-22T15:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792678260,
+              "end": 1792681200,
+              "begin_utc": "2026-10-22T14:11:00+00:00",
+              "end_utc": "2026-10-22T15:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ],
+          "source_unavailable_windows": [],
+          "network_requests_planned": 6,
+          "network_requests_skipped_known_unavailable": 0,
+          "dry_run": false,
+          "selected_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792692000,
+              "end": 1792693380,
+              "begin_utc": "2026-10-22T18:00:00+00:00",
+              "end_utc": "2026-10-22T18:23:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792692000,
+              "end": 1792693380,
+              "begin_utc": "2026-10-22T18:00:00+00:00",
+              "end_utc": "2026-10-22T18:23:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792681200,
+              "end": 1792692000,
+              "begin_utc": "2026-10-22T15:00:00+00:00",
+              "end_utc": "2026-10-22T18:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792681200,
+              "end": 1792692000,
+              "begin_utc": "2026-10-22T15:00:00+00:00",
+              "end_utc": "2026-10-22T18:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792676820,
+              "end": 1792681200,
+              "begin_utc": "2026-10-22T13:47:00+00:00",
+              "end_utc": "2026-10-22T15:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792678260,
+              "end": 1792681200,
+              "begin_utc": "2026-10-22T14:11:00+00:00",
+              "end_utc": "2026-10-22T15:00:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ]
+        },
+        "harvest": {
+          "started": "2026-10-22T18:24:18.520721+00:00",
+          "scope": "all-spot",
+          "symbols_count": 2,
+          "resolutions": [
+            "1"
+          ],
+          "complete": 6,
+          "cached": 0,
+          "conflicts": 0,
+          "failed": 0,
+          "retried_requests": 0,
+          "workers": 1,
+          "min_request_start_spacing_seconds": 0.35,
+          "count_units": "source_window_chunks",
+          "errors": [],
+          "explicit_window_mode": true,
+          "finished": "2026-10-22T18:24:25.478747+00:00"
+        },
+        "derived_requested": [
+          "15"
+        ],
+        "complete": 6,
+        "cached": 0,
+        "failed": 0,
+        "remaining_planned_windows": 0
+      },
+      "reconciliation": {
+        "scored_now": 0,
+        "advance_clock": false
+      },
+      "finished_at": 1792693476.6969874
+    },
+    {
+      "observed_at": 1792693653.4007156,
+      "symbols": [
+        "PEPETMN",
+        "BTCTMN"
+      ],
+      "registered": 0,
+      "quote_requests": 2,
+      "errors": [],
+      "models": {
+        "PEPETMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792692900,
+          "inserted": 0,
+          "cached": 5
+        },
+        "BTCTMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792692900,
+          "inserted": 0,
+          "cached": 5
+        }
+      },
+      "shadow": [
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "37e9bbc8f2fe92bec3a46efd240a9990198e0848865d1f350dff0a33e2ebfd5b",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "PEPETMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "PEPETMN",
+              "decision_time": 1792693660.611687,
+              "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+              "source_evidence_hash": "00529792106be023e130da80750620a37672f934bd0d5905428b31f9262e79c7",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+                "decision_time": 1792693660.611687,
+                "available_at": 1792693660.611687,
+                "source_hash": "266bc655754d62085c1b640237b455f6dbbee1a449d9c2a11c3ca8e74836d8f6",
+                "facts": {
+                  "selected_strategy": "bollinger_momentum_1.5",
+                  "current_signal": false,
+                  "last_candle_ts": 1792692000,
+                  "regime_evidence": {
+                    "ret24": -0.013792176090506349,
+                    "volatility12": 0.004036344328930267,
+                    "adx14": 26.473398005282515,
+                    "descriptive_state": "TRENDING_ADX_GE_25"
+                  },
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+                "decision_time": 1792693660.611687,
+                "available_at": 1792693660.611687,
+                "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+                "facts": {
+                  "article_ids": [
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+                    "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+                    "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+                    "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+                    "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+                    "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+                    "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+                    "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+                    "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+                    "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+                    "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+                    "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+                "decision_time": 1792693660.611687,
+                "available_at": 1792693660.611687,
+                "source_hash": "cd003cc590124b9f1130ba0d2085535d54811db2f5a5da87640219ff1224d547",
+                "facts": {
+                  "symbol": "PEPETMN",
+                  "feature_end_ts": 1792692000,
+                  "quantile_log_returns": {
+                    "q10": -0.008320130407810211,
+                    "q50": 0.001478784717619419,
+                    "q90": 0.015033088624477386
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb"
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+                "decision_time": 1792693660.611687,
+                "available_at": 1792693660.611687,
+                "source_hash": "ee66b56633f66f407b72c7d78f4ccbb827bb357f6f680f00dcb89aa32f5d435e",
+                "facts": {
+                  "ret24": -0.013792176090506349,
+                  "volatility12": 0.004036344328930267,
+                  "adx14": 26.473398005282515,
+                  "descriptive_state": "TRENDING_ADX_GE_25"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+                "decision_time": 1792693660.611687,
+                "available_at": 1792693660.611687,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+                "decision_time": 1792693660.611687,
+                "available_at": 1792693660.611687,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+                "decision_time": 1792693660.611687,
+                "available_at": 1792693660.611687,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": true
+            },
+            "review_sha256": "87acb1f07971016bfca517789c1f0d336e958c0b56962eb6f8236302573838aa"
+          },
+          "observation_id": "b603c16b7179e2bb4819238f4b7ee118093dce7c3699aef0fee93f3303beb387",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        },
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "7dd51d470d19b4eb82ec5915e15f916df19ac624a80363192596c0b980248cbe",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "BTCTMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "BTCTMN",
+              "decision_time": 1792693664.699898,
+              "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+              "source_evidence_hash": "e88a6ec893912400c5ca10ba3ae792506a061cd0ba1719b96aef940699aec987",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+                "decision_time": 1792693664.699898,
+                "available_at": 1792693664.699898,
+                "source_hash": "3ed9be3d0503400a58199ba0c287f8f70dcc5457e43ebebaca1bf70ce271026c",
+                "facts": {
+                  "selected_strategy": "adx_strong_uptrend",
+                  "current_signal": false,
+                  "last_candle_ts": 1792692000,
+                  "regime_evidence": {
+                    "ret24": -0.0012072297379408668,
+                    "volatility12": 0.002208584774175008,
+                    "adx14": 15.642778265976286,
+                    "descriptive_state": "LOW_ADX"
+                  },
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+                "decision_time": 1792693664.699898,
+                "available_at": 1792693664.699898,
+                "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+                "facts": {
+                  "article_ids": [
+                    "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+                    "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+                    "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+                    "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+                    "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+                    "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+                    "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+                "decision_time": 1792693664.699898,
+                "available_at": 1792693664.699898,
+                "source_hash": "4112343f33b349cb6023d097cf34ebdf33319ce6ae01ce7bdc981c246cbaa58f",
+                "facts": {
+                  "symbol": "BTCTMN",
+                  "feature_end_ts": 1792692000,
+                  "quantile_log_returns": {
+                    "q10": -0.00929730013012886,
+                    "q50": -0.0012146374210715294,
+                    "q90": 0.01258150115609169
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb"
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+                "decision_time": 1792693664.699898,
+                "available_at": 1792693664.699898,
+                "source_hash": "74b55bf9b7c608188fd1192e85bb9b0fd949765f4494a6a47a7417a19f0400c7",
+                "facts": {
+                  "ret24": -0.0012072297379408668,
+                  "volatility12": 0.002208584774175008,
+                  "adx14": 15.642778265976286,
+                  "descriptive_state": "LOW_ADX"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+                "decision_time": 1792693664.699898,
+                "available_at": 1792693664.699898,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+                "decision_time": 1792693664.699898,
+                "available_at": 1792693664.699898,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+                "decision_time": 1792693664.699898,
+                "available_at": 1792693664.699898,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": false
+            },
+            "review_sha256": "8a7ffe0f05001149b47f89052bab73d9189e9eb9a05aa9f40c03f4d527781210"
+          },
+          "observation_id": "c51b2ba683b83871a9640f87c61fc38e9b1b3f8c0bcacad02f29bb8a64910825",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        }
+      ],
+      "sync": {
+        "status": "COMPLETED",
+        "plan": {
+          "generated_at_utc": "2026-10-22T18:27:33.480714+00:00",
+          "purpose": "STARTUP_OR_WATCH_PUBLIC_DATA_SYNC",
+          "scope": "priority",
+          "symbols": [
+            "PEPETMN",
+            "BTCTMN"
+          ],
+          "target_resolutions": [
+            "15"
+          ],
+          "model_demand": {
+            "target_resolution": "15",
+            "context": 96,
+            "horizon": 3,
+            "origin": "ACTIVE_CHAMPION_METADATA"
+          },
+          "warmup_hours": 48.0,
+          "target_warmup_hours": {
+            "15": 37.75
+          },
+          "planned_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693380,
+              "end": 1792693560,
+              "begin_utc": "2026-10-22T18:23:00+00:00",
+              "end_utc": "2026-10-22T18:26:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693380,
+              "end": 1792693560,
+              "begin_utc": "2026-10-22T18:23:00+00:00",
+              "end_utc": "2026-10-22T18:26:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ],
+          "source_unavailable_windows": [],
+          "network_requests_planned": 2,
+          "network_requests_skipped_known_unavailable": 0,
+          "dry_run": false,
+          "selected_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693380,
+              "end": 1792693560,
+              "begin_utc": "2026-10-22T18:23:00+00:00",
+              "end_utc": "2026-10-22T18:26:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693380,
+              "end": 1792693560,
+              "begin_utc": "2026-10-22T18:23:00+00:00",
+              "end_utc": "2026-10-22T18:26:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ]
+        },
+        "harvest": {
+          "started": "2026-10-22T18:27:33.488714+00:00",
+          "scope": "all-spot",
+          "symbols_count": 2,
+          "resolutions": [
+            "1"
+          ],
+          "complete": 2,
+          "cached": 0,
+          "conflicts": 0,
+          "failed": 0,
+          "retried_requests": 0,
+          "workers": 1,
+          "min_request_start_spacing_seconds": 0.35,
+          "count_units": "source_window_chunks",
+          "errors": [],
+          "explicit_window_mode": true,
+          "finished": "2026-10-22T18:27:35.528967+00:00"
+        },
+        "derived_requested": [
+          "15"
+        ],
+        "complete": 2,
+        "cached": 0,
+        "failed": 0,
+        "remaining_planned_windows": 0
+      },
+      "reconciliation": {
+        "scored_now": 0,
+        "advance_clock": false
+      },
+      "finished_at": 1792693664.7638984
+    },
+    {
+      "observed_at": 1792693877.7429688,
+      "symbols": [
+        "PEPETMN",
+        "BTCTMN"
+      ],
+      "registered": 10,
+      "quote_requests": 2,
+      "errors": [],
+      "models": {
+        "PEPETMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792693800,
+          "inserted": 5,
+          "cached": 0
+        },
+        "BTCTMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792693800,
+          "inserted": 5,
+          "cached": 0
+        }
+      },
+      "shadow": [
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "9b7b13bfe31e6961960398fea7d28fcdb2a628eea4dce598eefd2c20d567393c",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "PEPETMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "PEPETMN",
+              "decision_time": 1792693885.693068,
+              "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+              "source_evidence_hash": "00a09ac6db9b5a3671280b9736368b977446b75aa485c42860b4de2cc700c722",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+                "decision_time": 1792693885.693068,
+                "available_at": 1792693885.693068,
+                "source_hash": "95aaf84c2bdae62e00256480a5986b2e5a6d2f1342277b450d44151e35f90677",
+                "facts": {
+                  "selected_strategy": "bollinger_momentum_1.5",
+                  "current_signal": false,
+                  "last_candle_ts": 1792692900,
+                  "regime_evidence": {
+                    "ret24": -0.01641691791565576,
+                    "volatility12": 0.0038404683359647483,
+                    "adx14": 27.369722141183402,
+                    "descriptive_state": "TRENDING_ADX_GE_25"
+                  },
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+                "decision_time": 1792693885.693068,
+                "available_at": 1792693885.693068,
+                "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+                "facts": {
+                  "article_ids": [
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+                    "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+                    "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+                    "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+                    "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+                    "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+                    "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+                    "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+                    "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+                    "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+                    "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+                    "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+                "decision_time": 1792693885.693068,
+                "available_at": 1792693885.693068,
+                "source_hash": "9103c0babc1796418e243e1b95aac5c531546d7a0c263cb950ff48a3e4131fb9",
+                "facts": {
+                  "symbol": "PEPETMN",
+                  "feature_end_ts": 1792692900,
+                  "quantile_log_returns": {
+                    "q10": -0.006287023425102234,
+                    "q50": -0.001580796204507351,
+                    "q90": 0.011069592088460922
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+                  "feature_source_receipts": [
+                    {
+                      "file": "candles/PEPETMN/15/1792389600_1792443600.csv.gz",
+                      "sha256": "f3daad198e7cf3fc7b14fa1f800b617b19c84f3f5b755be13bd7cf90c1750c66"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792389600_1792450800.csv.gz",
+                      "sha256": "d77050b573b813470f66175644e2e80286099889a7a0939eb37c4bf87b55e21b"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792647900.csv.gz",
+                      "sha256": "0463770221bb04e49383c4f6b3de203961ada42e72c74984b3724f376ca7f6a6"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792650600.csv.gz",
+                      "sha256": "b4b3b70350f5714768954d304187f13274bfc805603160d35e6825a3369d85fb"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792651500.csv.gz",
+                      "sha256": "a26a1dbe0f562bdc26cb2f0c880ea94dce50192fbfcb6dbdbef7c9c307598432"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792652400.csv.gz",
+                      "sha256": "b4206e17dc3abbad9e8569f825bb185f262fcace7923bbfa847ee000d834c338"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792653300.csv.gz",
+                      "sha256": "24d565e94029e61462ba76662e5a83b4b89ca0472080b3c5b4535a53f3a04b7f"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792654200.csv.gz",
+                      "sha256": "5b6019822db2dfa97c954b15396fe90f1350e31dbc65e57eb22d99ec54537710"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792655100.csv.gz",
+                      "sha256": "ee37238b7b405f63311fd9c21403871a5783a56855402f5ac5bbdf39a09e0de8"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792656000.csv.gz",
+                      "sha256": "e2796e1a6964d6f13961531c99d331fa7c356da94b606b11963fa25c1c78ce7e"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792656900.csv.gz",
+                      "sha256": "1d6e7a7fc040ed8e1b8e190c6964cfcdda3b654a86cf490113dc7951be722d2b"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792657800.csv.gz",
+                      "sha256": "52433ea7179cffdec119111b054a9a026abee174b134c33c3a3ba609332e12dd"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792658700.csv.gz",
+                      "sha256": "09db90334ea3186ebe425970cd5ab3806389fbc7626f1ae5d4fdc6d939722760"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792660500.csv.gz",
+                      "sha256": "030e446ba4d70bfc0446faa7e5cd3a943e751e3ba2d32b16f4069f992604bd05"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792661400.csv.gz",
+                      "sha256": "6e1a4c538564b6a160d2c118a78e792e59a96432d2a5c71c72f5666c79b8560d"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792662300.csv.gz",
+                      "sha256": "cc781e7618658dee46261d4e89adda93467604cb4eb3d174ea79deaaae78cc4c"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792663200.csv.gz",
+                      "sha256": "64c63518293fe36dccc50278bf52f9a4845c7338ce8b186f201d5218da2f28cc"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792664100.csv.gz",
+                      "sha256": "136bc24b3418e10a09412fefa67ef2fc11254e404054fa22162b3e9623c7ef8e"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792665000.csv.gz",
+                      "sha256": "5938623da0467025995c3476eea7c2fb8a437973fecaf1006116d3d90c298694"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792665900.csv.gz",
+                      "sha256": "6cae47099d258f05b30b075173ca7abe4fdf67abe20792e9e504032881c9e313"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792666800.csv.gz",
+                      "sha256": "91661078d2367e807802b8d5dc164978ca73b24ae786459746540c3ea66e78ec"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792667700.csv.gz",
+                      "sha256": "49c232cd9002691e2fc740ee602f5d2b5be2acc45b22edba0b9e86113519eecf"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792668600.csv.gz",
+                      "sha256": "209faeb8531c93fe600d6346551e57102ae5947e3c35e1b6ceb61bec9dfcff85"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792669500.csv.gz",
+                      "sha256": "5b83ac2498d248130a21502c8759ffa27960ee9b7f5182ac05321d450da7be06"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792670400.csv.gz",
+                      "sha256": "1eb9cba6ecf5a1f3a0dd9bb969fbdc2197230c7807c94b6cb78d5331fddba9ac"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792671300.csv.gz",
+                      "sha256": "a55d522488d100960916b84906784e1ef80208b9e00e5cff095fa71be7d2030b"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792672200.csv.gz",
+                      "sha256": "320b18afb1a7969188eb3f2eebac6851ea6bd9ebdc2537e2f56c6a0e8285660d"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792673100.csv.gz",
+                      "sha256": "36d3cd4f52b3a337fe358e04b664b9b6814decb3a67f6013f20da7de28e88ab6"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792674000.csv.gz",
+                      "sha256": "50f0c3008eb42044bbf9130339ece4dbd1564d96436593e0b805018109eaa269"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792674900.csv.gz",
+                      "sha256": "4ba7a29c47ee6c0209b770e57fa4a1d9a50d97914e5be6b6465e00ea5cbacd55"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792675800.csv.gz",
+                      "sha256": "5ceb0249fc05ef355edca57f0c1a1aac2094073b0f15121e406c2c6d8b45373a"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792676700.csv.gz",
+                      "sha256": "64ed76b1ca6ec17a261ede29aea17d3ca47232605c9f8190f66b0c7046f5f299"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792677600.csv.gz",
+                      "sha256": "f57b6e6a398719f95322176b4c270c9c5ed8ec7fbcd118f2712311b28c9a1ba7"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792692900.csv.gz",
+                      "sha256": "54b99dd2e66a5020336d658806ddfbea9a739b704cdcccc88983ec1b6709527e"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792693800.csv.gz",
+                      "sha256": "a9d785404c4134d90b91e27472e541031edb11310e9cb00be82411eb221ffa25"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792454400_1792645200.csv.gz",
+                      "sha256": "4e291c2a320ee0fc7b8aca7c57e9a0f5073ec1840bbaf41661a9ea4cbf4c2d99"
+                    }
+                  ]
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+                "decision_time": 1792693885.693068,
+                "available_at": 1792693885.693068,
+                "source_hash": "0b9a7cbc1432afe8a3242206c73f3ac327397e8ffec308bf02aa987e1aea3c34",
+                "facts": {
+                  "ret24": -0.01641691791565576,
+                  "volatility12": 0.0038404683359647483,
+                  "adx14": 27.369722141183402,
+                  "descriptive_state": "TRENDING_ADX_GE_25"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+                "decision_time": 1792693885.693068,
+                "available_at": 1792693885.693068,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+                "decision_time": 1792693885.693068,
+                "available_at": 1792693885.693068,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+                "decision_time": 1792693885.693068,
+                "available_at": 1792693885.693068,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": false
+            },
+            "review_sha256": "bcdd0efab8a31ca8e5ae26ed978b06cb0f520f8308fb03f9785b049362e31ee5"
+          },
+          "observation_id": "6025c22a42f6186acfcacfe47c443f8ca8ae36422a1bceea963efa7537e4d2f9",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        },
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "fd579d8e5ad6d85a74e869706d42e5d9d08b9a6e7c0357a9e3dd66658330a184",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "BTCTMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "BTCTMN",
+              "decision_time": 1792693889.724391,
+              "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+              "source_evidence_hash": "0ebc247251ac2e2f2648fb8c17992b1c9dfa424fdc473127dd31c063394a3e8f",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+                "decision_time": 1792693889.724391,
+                "available_at": 1792693889.724391,
+                "source_hash": "9d5b5ae62f5e741cc929fe9c3e2a4cb280a0123a7b9c8f09b26c15f585219d36",
+                "facts": {
+                  "selected_strategy": "adx_strong_uptrend",
+                  "current_signal": false,
+                  "last_candle_ts": 1792692900,
+                  "regime_evidence": {
+                    "ret24": -0.002916816860339415,
+                    "volatility12": 0.0018612251369506299,
+                    "adx14": 16.600591942982195,
+                    "descriptive_state": "LOW_ADX"
+                  },
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+                "decision_time": 1792693889.724391,
+                "available_at": 1792693889.724391,
+                "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+                "facts": {
+                  "article_ids": [
+                    "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+                    "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+                    "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+                    "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+                    "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+                    "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+                    "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+                "decision_time": 1792693889.724391,
+                "available_at": 1792693889.724391,
+                "source_hash": "3454a2c2a0d6ee7354617e0300128d2546c307f84b2953951b9903992f8b664c",
+                "facts": {
+                  "symbol": "BTCTMN",
+                  "feature_end_ts": 1792692900,
+                  "quantile_log_returns": {
+                    "q10": -0.008417174220085144,
+                    "q50": -0.0002518435940146446,
+                    "q90": 0.012114644050598145
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+                  "feature_source_receipts": [
+                    {
+                      "file": "candles/BTCTMN/15/1792389600_1792443600.csv.gz",
+                      "sha256": "d31eda0a3da63e08b1293c21486c4bc8bbd0811ff4cea75fc247bddf9a40410c"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792389600_1792450800.csv.gz",
+                      "sha256": "b27f72d4fc255998a2f59e51bb743eaeb612bd4733a919c04ec8cec02c268bfa"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792647900.csv.gz",
+                      "sha256": "8649f882305c2ce2381c2011bdd9caf0dd38be2af841a4723942fc28a66c7211"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792650600.csv.gz",
+                      "sha256": "ef4866e3a161b3996b6e80a48fb85c0f8e1c794a383ad6e2d5b07973197aa264"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792651500.csv.gz",
+                      "sha256": "fdbd8e0f396112805ee1c8c434d5ba3b285d9f08fc0617f3da1a6e41f20ea859"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792652400.csv.gz",
+                      "sha256": "70e29a043ace400788d347c9b98023cc2cfe296738c2ad561187bc272c66a6a6"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792653300.csv.gz",
+                      "sha256": "33f403f71662508cc06aa5c261f13262a7c8908996ae7d0f7a55a62f09b5e30a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792654200.csv.gz",
+                      "sha256": "f6c3b983124a42bbc56c2930f7d2696a9665bf35ee2b5b029db400dcae3393f2"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792655100.csv.gz",
+                      "sha256": "ab7c57e7a3e94843d9710578764e069c45c4171d47a1ff2f4c5ebbed40192d3a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792656000.csv.gz",
+                      "sha256": "e2299fdae7b6ced457abdb3f5dc7b2f70338fcf0ce6c82d8b8c6c244887efa7f"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792656900.csv.gz",
+                      "sha256": "23f13e94f69bdae1e893d0846a862794d5bd140959cce32d6fe17b8868d5a938"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792657800.csv.gz",
+                      "sha256": "e1cd21d36f921c044e5a47a11c597137b39740e1e7e5af65831ac867ed90598c"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792658700.csv.gz",
+                      "sha256": "b9c8c4b705cf6875f7c7123985877e1365ef2a48e7876a74994a2cb8d5e19acb"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792660500.csv.gz",
+                      "sha256": "94d7d6832af46a368e2d05f07b2007f9daf24af31044eff3b6cc5ac95d16e387"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792661400.csv.gz",
+                      "sha256": "ca3b325ecf8471c4b2b07ce2f3e6f168e319f68f8b17e4ba55dde368ed8a5d80"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792662300.csv.gz",
+                      "sha256": "7afb17f43ca56c028eb7ea9ba9c57bd6b7cf2a0f1e3f8f921104bb2101056c8e"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792663200.csv.gz",
+                      "sha256": "fa6914a48b6dced0b1913b17b955296e76652be9c4cfa7c8ce32f78f821eb3af"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792664100.csv.gz",
+                      "sha256": "1e1cd0401add2dae2e346d2882a47390a3c662586ed0023ad6d9b1b3088c8e7a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792665000.csv.gz",
+                      "sha256": "1956c65e5cbf37d6a263ca0a54f5e49a90beb6e885a45cecdf4e6a78f82f85f4"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792665900.csv.gz",
+                      "sha256": "a4afd5a9ebd0a41383a5371e0071ae558be91a6dee5ce436e37bb903fe523698"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792666800.csv.gz",
+                      "sha256": "f2c8e1df6ee026b50a3c980854360d5e731a61525787a915692cd4f98ba95408"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792667700.csv.gz",
+                      "sha256": "236a00c504d6909434aff4cb5186daea754ee14164aed24397d9fa7a49ba4b0a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792668600.csv.gz",
+                      "sha256": "5b3177008a29666a7eb97503048c863e81efb3f7f95d48650e23981c868fa591"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792669500.csv.gz",
+                      "sha256": "ee9fc5ec9dd8c8260a15de0a53959e26c94a0628d581f40e99536582eb75c4e0"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792670400.csv.gz",
+                      "sha256": "fb09fc141c39b28e4d0510a157582641c5a2a7bff1096641a44ceb137a92c216"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792671300.csv.gz",
+                      "sha256": "a45c3ef0f14b73f66f3fbaf1e5a2b6d44454d53b0e0ba278b7b48519cc428bb0"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792672200.csv.gz",
+                      "sha256": "6f022f584455f09842c83bd97bebc49eaf8bbaeec85cbd884f760dbb17433dbd"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792673100.csv.gz",
+                      "sha256": "bf508f3a0c095e040a07b785b16d28e8e35a806a2ce8475cc892d1fc5188c30d"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792674000.csv.gz",
+                      "sha256": "6c93c59fcb0684b61bd49a0bb738a8f7a378887575fb4fa55e77530e6caa5a76"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792674900.csv.gz",
+                      "sha256": "43f05cc7b5d61e5a8666680188870754ed948d0ce0d09bb4f6e8b72497623455"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792675800.csv.gz",
+                      "sha256": "c06817cad7bfd0aaf13f9a51c92142c7fed0d072aa8e869d9be63af325d54d36"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792676700.csv.gz",
+                      "sha256": "5bb680da3bb8cbbea1850ab3323ee2eea80d02b82106733c49609898d9d0c442"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792692900.csv.gz",
+                      "sha256": "27275e3fb04eb2324e6ff2f711521b2939840860521e7970b3ccbdf9331f697b"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792693800.csv.gz",
+                      "sha256": "791bb2c5c9eb0d90a290a1053af7f440939fcfcb76ad41e1d54af1f18ca18553"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792454400_1792645200.csv.gz",
+                      "sha256": "dea75e056491a098782417bdc8a24767b1f1d895606748b2a801bbd6c3819f8d"
+                    }
+                  ]
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+                "decision_time": 1792693889.724391,
+                "available_at": 1792693889.724391,
+                "source_hash": "2bf63c946c24fa7e42936ad173534e96fac75d63647eee33dbb2ae2360b81b67",
+                "facts": {
+                  "ret24": -0.002916816860339415,
+                  "volatility12": 0.0018612251369506299,
+                  "adx14": 16.600591942982195,
+                  "descriptive_state": "LOW_ADX"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+                "decision_time": 1792693889.724391,
+                "available_at": 1792693889.724391,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+                "decision_time": 1792693889.724391,
+                "available_at": 1792693889.724391,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+                "decision_time": 1792693889.724391,
+                "available_at": 1792693889.724391,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": false
+            },
+            "review_sha256": "1028f246f4c9a0db70f60bd18d1fb1115405f5cdd0934027123f793ac81cd330"
+          },
+          "observation_id": "f5e691a23fa3fc9c6c8b9606c8ea40dbc487628cf798a9d6d9fedd9bd3000e3d",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        }
+      ],
+      "sync": {
+        "status": "COMPLETED",
+        "plan": {
+          "generated_at_utc": "2026-10-22T18:31:17.818970+00:00",
+          "purpose": "STARTUP_OR_WATCH_PUBLIC_DATA_SYNC",
+          "scope": "priority",
+          "symbols": [
+            "PEPETMN",
+            "BTCTMN"
+          ],
+          "target_resolutions": [
+            "15"
+          ],
+          "model_demand": {
+            "target_resolution": "15",
+            "context": 96,
+            "horizon": 3,
+            "origin": "ACTIVE_CHAMPION_METADATA"
+          },
+          "warmup_hours": 48.0,
+          "target_warmup_hours": {
+            "15": 37.75
+          },
+          "planned_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693560,
+              "end": 1792693800,
+              "begin_utc": "2026-10-22T18:26:00+00:00",
+              "end_utc": "2026-10-22T18:30:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693560,
+              "end": 1792693800,
+              "begin_utc": "2026-10-22T18:26:00+00:00",
+              "end_utc": "2026-10-22T18:30:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ],
+          "source_unavailable_windows": [],
+          "network_requests_planned": 2,
+          "network_requests_skipped_known_unavailable": 0,
+          "dry_run": false,
+          "selected_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693560,
+              "end": 1792693800,
+              "begin_utc": "2026-10-22T18:26:00+00:00",
+              "end_utc": "2026-10-22T18:30:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693560,
+              "end": 1792693800,
+              "begin_utc": "2026-10-22T18:26:00+00:00",
+              "end_utc": "2026-10-22T18:30:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ]
+        },
+        "harvest": {
+          "started": "2026-10-22T18:31:17.827969+00:00",
+          "scope": "all-spot",
+          "symbols_count": 2,
+          "resolutions": [
+            "1"
+          ],
+          "complete": 2,
+          "cached": 0,
+          "conflicts": 0,
+          "failed": 0,
+          "retried_requests": 0,
+          "workers": 1,
+          "min_request_start_spacing_seconds": 0.35,
+          "count_units": "source_window_chunks",
+          "errors": [],
+          "explicit_window_mode": true,
+          "finished": "2026-10-22T18:31:20.092387+00:00"
+        },
+        "derived_requested": [
+          "15"
+        ],
+        "complete": 2,
+        "cached": 0,
+        "failed": 0,
+        "remaining_planned_windows": 0
+      },
+      "reconciliation": {
+        "scored_now": 0,
+        "advance_clock": false
+      },
+      "finished_at": 1792693889.7873907
+    },
+    {
+      "observed_at": 1792694824.1272635,
+      "collector_instance_id": "6ea5b04e7f074264963e9f2d773dacd3",
+      "pipeline_sha256": "817346341b5d1df6461f4efb9fa4a38623e1bd6bf84d2f247f0330c894876354",
+      "symbols": [
+        "PEPETMN",
+        "BTCTMN"
+      ],
+      "registered": 10,
+      "quote_requests": 2,
+      "errors": [],
+      "models": {
+        "PEPETMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792694700,
+          "inserted": 5,
+          "cached": 0
+        },
+        "BTCTMN": {
+          "available": [
+            "champion",
+            "m5_lightgbm",
+            "m5_patchtst",
+            "zero",
+            "historical_quantiles"
+          ],
+          "errors": {},
+          "data_cutoff": 1792694700,
+          "inserted": 5,
+          "cached": 0
+        }
+      },
+      "shadow": [
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "b9deaca9c9943682d8aa485e857414feeb0fbd10dc213eb3193f0b1b23c2882d",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "PEPETMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "PEPETMN",
+              "decision_time": 1792694834.389378,
+              "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+              "source_evidence_hash": "1ce1039d714f577803d73e3a46584cf247c018b509912d0becf40e2f08341df5",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+                "decision_time": 1792694834.389378,
+                "available_at": 1792694834.389378,
+                "source_hash": "30eb39dd264b7990c215677ceed5fe94cf3b1262f47f3657fadaf8c28034a2b3",
+                "facts": {
+                  "selected_strategy": "bollinger_momentum_1.5",
+                  "current_signal": false,
+                  "last_candle_ts": 1792693800,
+                  "regime_evidence": {
+                    "ret24": -0.012770718384497998,
+                    "volatility12": 0.0036624502207720255,
+                    "adx14": 27.807363070418813,
+                    "descriptive_state": "TRENDING_ADX_GE_25"
+                  },
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+                "decision_time": 1792694834.389378,
+                "available_at": 1792694834.389378,
+                "source_hash": "8d850ce85e05b4972771968c9b24a969b101931e8743dfc9cf2bb86f31cf0d83",
+                "facts": {
+                  "article_ids": [
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+                    "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+                    "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+                    "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+                    "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+                    "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+                    "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+                    "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+                    "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+                    "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+                    "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+                    "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+                "decision_time": 1792694834.389378,
+                "available_at": 1792694834.389378,
+                "source_hash": "0b5609b5210608fe1bd0026622b4e9f290d59fe4c775a7fb884c271bbe7ca5d9",
+                "facts": {
+                  "symbol": "PEPETMN",
+                  "feature_end_ts": 1792693800,
+                  "quantile_log_returns": {
+                    "q10": -0.006366889923810959,
+                    "q50": -0.00347005482763052,
+                    "q90": 0.009613767266273499
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+                  "feature_source_receipts": [
+                    {
+                      "file": "candles/PEPETMN/15/1792389600_1792443600.csv.gz",
+                      "sha256": "f3daad198e7cf3fc7b14fa1f800b617b19c84f3f5b755be13bd7cf90c1750c66"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792389600_1792450800.csv.gz",
+                      "sha256": "d77050b573b813470f66175644e2e80286099889a7a0939eb37c4bf87b55e21b"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792647900.csv.gz",
+                      "sha256": "0463770221bb04e49383c4f6b3de203961ada42e72c74984b3724f376ca7f6a6"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792650600.csv.gz",
+                      "sha256": "b4b3b70350f5714768954d304187f13274bfc805603160d35e6825a3369d85fb"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792651500.csv.gz",
+                      "sha256": "a26a1dbe0f562bdc26cb2f0c880ea94dce50192fbfcb6dbdbef7c9c307598432"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792652400.csv.gz",
+                      "sha256": "b4206e17dc3abbad9e8569f825bb185f262fcace7923bbfa847ee000d834c338"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792653300.csv.gz",
+                      "sha256": "24d565e94029e61462ba76662e5a83b4b89ca0472080b3c5b4535a53f3a04b7f"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792654200.csv.gz",
+                      "sha256": "5b6019822db2dfa97c954b15396fe90f1350e31dbc65e57eb22d99ec54537710"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792655100.csv.gz",
+                      "sha256": "ee37238b7b405f63311fd9c21403871a5783a56855402f5ac5bbdf39a09e0de8"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792656000.csv.gz",
+                      "sha256": "e2796e1a6964d6f13961531c99d331fa7c356da94b606b11963fa25c1c78ce7e"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792656900.csv.gz",
+                      "sha256": "1d6e7a7fc040ed8e1b8e190c6964cfcdda3b654a86cf490113dc7951be722d2b"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792657800.csv.gz",
+                      "sha256": "52433ea7179cffdec119111b054a9a026abee174b134c33c3a3ba609332e12dd"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792658700.csv.gz",
+                      "sha256": "09db90334ea3186ebe425970cd5ab3806389fbc7626f1ae5d4fdc6d939722760"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792660500.csv.gz",
+                      "sha256": "030e446ba4d70bfc0446faa7e5cd3a943e751e3ba2d32b16f4069f992604bd05"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792661400.csv.gz",
+                      "sha256": "6e1a4c538564b6a160d2c118a78e792e59a96432d2a5c71c72f5666c79b8560d"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792662300.csv.gz",
+                      "sha256": "cc781e7618658dee46261d4e89adda93467604cb4eb3d174ea79deaaae78cc4c"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792663200.csv.gz",
+                      "sha256": "64c63518293fe36dccc50278bf52f9a4845c7338ce8b186f201d5218da2f28cc"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792664100.csv.gz",
+                      "sha256": "136bc24b3418e10a09412fefa67ef2fc11254e404054fa22162b3e9623c7ef8e"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792665000.csv.gz",
+                      "sha256": "5938623da0467025995c3476eea7c2fb8a437973fecaf1006116d3d90c298694"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792665900.csv.gz",
+                      "sha256": "6cae47099d258f05b30b075173ca7abe4fdf67abe20792e9e504032881c9e313"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792666800.csv.gz",
+                      "sha256": "91661078d2367e807802b8d5dc164978ca73b24ae786459746540c3ea66e78ec"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792667700.csv.gz",
+                      "sha256": "49c232cd9002691e2fc740ee602f5d2b5be2acc45b22edba0b9e86113519eecf"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792668600.csv.gz",
+                      "sha256": "209faeb8531c93fe600d6346551e57102ae5947e3c35e1b6ceb61bec9dfcff85"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792669500.csv.gz",
+                      "sha256": "5b83ac2498d248130a21502c8759ffa27960ee9b7f5182ac05321d450da7be06"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792670400.csv.gz",
+                      "sha256": "1eb9cba6ecf5a1f3a0dd9bb969fbdc2197230c7807c94b6cb78d5331fddba9ac"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792671300.csv.gz",
+                      "sha256": "a55d522488d100960916b84906784e1ef80208b9e00e5cff095fa71be7d2030b"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792672200.csv.gz",
+                      "sha256": "320b18afb1a7969188eb3f2eebac6851ea6bd9ebdc2537e2f56c6a0e8285660d"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792673100.csv.gz",
+                      "sha256": "36d3cd4f52b3a337fe358e04b664b9b6814decb3a67f6013f20da7de28e88ab6"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792674000.csv.gz",
+                      "sha256": "50f0c3008eb42044bbf9130339ece4dbd1564d96436593e0b805018109eaa269"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792674900.csv.gz",
+                      "sha256": "4ba7a29c47ee6c0209b770e57fa4a1d9a50d97914e5be6b6465e00ea5cbacd55"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792675800.csv.gz",
+                      "sha256": "5ceb0249fc05ef355edca57f0c1a1aac2094073b0f15121e406c2c6d8b45373a"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792676700.csv.gz",
+                      "sha256": "64ed76b1ca6ec17a261ede29aea17d3ca47232605c9f8190f66b0c7046f5f299"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792677600.csv.gz",
+                      "sha256": "f57b6e6a398719f95322176b4c270c9c5ed8ec7fbcd118f2712311b28c9a1ba7"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792692900.csv.gz",
+                      "sha256": "54b99dd2e66a5020336d658806ddfbea9a739b704cdcccc88983ec1b6709527e"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792693800.csv.gz",
+                      "sha256": "a9d785404c4134d90b91e27472e541031edb11310e9cb00be82411eb221ffa25"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792452600_1792694700.csv.gz",
+                      "sha256": "9dfb538a1440396ffc48a8ba45f4b1424e109c733c6732a02aa4a59be2a0c537"
+                    },
+                    {
+                      "file": "candles/PEPETMN/15/1792454400_1792645200.csv.gz",
+                      "sha256": "4e291c2a320ee0fc7b8aca7c57e9a0f5073ec1840bbaf41661a9ea4cbf4c2d99"
+                    }
+                  ]
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+                "decision_time": 1792694834.389378,
+                "available_at": 1792694834.389378,
+                "source_hash": "dc32eb668fdafbf8c829a0307c182cfa5489d3d79a112bbce8ce5c1742860b0f",
+                "facts": {
+                  "ret24": -0.012770718384497998,
+                  "volatility12": 0.0036624502207720255,
+                  "adx14": 27.807363070418813,
+                  "descriptive_state": "TRENDING_ADX_GE_25"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+                "decision_time": 1792694834.389378,
+                "available_at": 1792694834.389378,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+                "decision_time": 1792694834.389378,
+                "available_at": 1792694834.389378,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "PEPETMN",
+                "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+                "decision_time": 1792694834.389378,
+                "available_at": 1792694834.389378,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": false
+            },
+            "review_sha256": "a9533721486f92de8268c843c03a2841cf123f8eb0d67fa89e4f8c71f1f0f53b"
+          },
+          "observation_id": "85b274b223f72c171f4095b8262ce3e1f3880ff0419225632808090e180e5371",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        },
+        {
+          "decision": "NO_TRUSTED_FORECAST",
+          "explanation": {
+            "model_file": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+            "veto": [
+              "technical_strategy_veto"
+            ],
+            "audit_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\shadow.sqlite",
+            "trade_execution": "DISABLED",
+            "llm_advisory": {
+              "status": "OPTIONAL_LLM_DISABLED",
+              "authority": "ADVISORY_ONLY"
+            }
+          },
+          "context_memory_event_sha256": "cc18a0988eee1dd0cc2e26fb3c5de848a8e8ad0c88cf5fe7d71231272c8f8dd0",
+          "context_policy": "trusted fixed context + lazy skills + bounded SQLite-backed memory",
+          "symbol": "BTCTMN",
+          "checkpoint_db": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone6\\forward_v1\\agent_checkpoints.sqlite",
+          "review": {
+            "proposal": {
+              "protocol": "ATLAS_SHARED_AGENT_WATCH_REVIEW_V1",
+              "symbol": "BTCTMN",
+              "decision_time": 1792694838.5744715,
+              "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+              "source_evidence_hash": "66845f591dd2eac55625c9ba73c7a3413847a8a4aa39424fe59518ec706fbbaf",
+              "proposed_action": "ABSTAIN",
+              "veto_reasons": [
+                "technical_strategy_veto"
+              ],
+              "requires_deterministic_risk_gate": true,
+              "model_promotion": false
+            },
+            "agents": [
+              {
+                "role": "Technical Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+                "decision_time": 1792694838.5744715,
+                "available_at": 1792694838.5744715,
+                "source_hash": "8e5361e8ca3669ce6a05e7e48cc913f9bc9f8e42064f6dde04556d0fd57e0676",
+                "facts": {
+                  "selected_strategy": "adx_strong_uptrend",
+                  "current_signal": false,
+                  "last_candle_ts": 1792693800,
+                  "regime_evidence": {
+                    "ret24": -0.0017850628209110484,
+                    "volatility12": 0.0018553987489045676,
+                    "adx14": 17.63479352966213,
+                    "descriptive_state": "LOW_ADX"
+                  },
+                  "selection_origin": "chronological_training_selection"
+                },
+                "reason": "existing chronological strategy only",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "News Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+                "decision_time": 1792694838.5744715,
+                "available_at": 1792694838.5744715,
+                "source_hash": "b6613596cfd834564b744e80cc49e22c86710022a1a500a3e7485acfa2fbf25d",
+                "facts": {
+                  "article_ids": [
+                    "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+                    "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+                    "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+                    "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+                    "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+                    "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+                    "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+                    "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+                    "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+                    "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+                    "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+                    "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+                    "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+                    "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+                    "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+                    "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+                    "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+                    "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+                    "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+                    "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc"
+                  ],
+                  "strong_negative_urls": [],
+                  "policy": "No raw headline can grant authority"
+                },
+                "reason": "PIT evidence; optional missing news is not a core veto",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Forecast Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+                "decision_time": 1792694838.5744715,
+                "available_at": 1792694838.5744715,
+                "source_hash": "37b34f97dcf53e5e6e0ef370bb774b3ffe05a7ea94794549a3ba3efe26f7f5e2",
+                "facts": {
+                  "symbol": "BTCTMN",
+                  "feature_end_ts": 1792693800,
+                  "quantile_log_returns": {
+                    "q10": -0.011391010135412216,
+                    "q50": 0.003581182099878788,
+                    "q90": 0.013238824903964996
+                  },
+                  "model": "patchtst",
+                  "horizon_bars": 3,
+                  "source": "real_wallex_only",
+                  "model_validation_pinball": 0.0018563736619704827,
+                  "model_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+                  "feature_source_receipts": [
+                    {
+                      "file": "candles/BTCTMN/15/1792389600_1792443600.csv.gz",
+                      "sha256": "d31eda0a3da63e08b1293c21486c4bc8bbd0811ff4cea75fc247bddf9a40410c"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792389600_1792450800.csv.gz",
+                      "sha256": "b27f72d4fc255998a2f59e51bb743eaeb612bd4733a919c04ec8cec02c268bfa"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792647900.csv.gz",
+                      "sha256": "8649f882305c2ce2381c2011bdd9caf0dd38be2af841a4723942fc28a66c7211"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792650600.csv.gz",
+                      "sha256": "ef4866e3a161b3996b6e80a48fb85c0f8e1c794a383ad6e2d5b07973197aa264"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792651500.csv.gz",
+                      "sha256": "fdbd8e0f396112805ee1c8c434d5ba3b285d9f08fc0617f3da1a6e41f20ea859"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792652400.csv.gz",
+                      "sha256": "70e29a043ace400788d347c9b98023cc2cfe296738c2ad561187bc272c66a6a6"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792653300.csv.gz",
+                      "sha256": "33f403f71662508cc06aa5c261f13262a7c8908996ae7d0f7a55a62f09b5e30a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792654200.csv.gz",
+                      "sha256": "f6c3b983124a42bbc56c2930f7d2696a9665bf35ee2b5b029db400dcae3393f2"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792655100.csv.gz",
+                      "sha256": "ab7c57e7a3e94843d9710578764e069c45c4171d47a1ff2f4c5ebbed40192d3a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792656000.csv.gz",
+                      "sha256": "e2299fdae7b6ced457abdb3f5dc7b2f70338fcf0ce6c82d8b8c6c244887efa7f"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792656900.csv.gz",
+                      "sha256": "23f13e94f69bdae1e893d0846a862794d5bd140959cce32d6fe17b8868d5a938"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792657800.csv.gz",
+                      "sha256": "e1cd21d36f921c044e5a47a11c597137b39740e1e7e5af65831ac867ed90598c"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792658700.csv.gz",
+                      "sha256": "b9c8c4b705cf6875f7c7123985877e1365ef2a48e7876a74994a2cb8d5e19acb"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792660500.csv.gz",
+                      "sha256": "94d7d6832af46a368e2d05f07b2007f9daf24af31044eff3b6cc5ac95d16e387"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792661400.csv.gz",
+                      "sha256": "ca3b325ecf8471c4b2b07ce2f3e6f168e319f68f8b17e4ba55dde368ed8a5d80"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792662300.csv.gz",
+                      "sha256": "7afb17f43ca56c028eb7ea9ba9c57bd6b7cf2a0f1e3f8f921104bb2101056c8e"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792663200.csv.gz",
+                      "sha256": "fa6914a48b6dced0b1913b17b955296e76652be9c4cfa7c8ce32f78f821eb3af"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792664100.csv.gz",
+                      "sha256": "1e1cd0401add2dae2e346d2882a47390a3c662586ed0023ad6d9b1b3088c8e7a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792665000.csv.gz",
+                      "sha256": "1956c65e5cbf37d6a263ca0a54f5e49a90beb6e885a45cecdf4e6a78f82f85f4"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792665900.csv.gz",
+                      "sha256": "a4afd5a9ebd0a41383a5371e0071ae558be91a6dee5ce436e37bb903fe523698"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792666800.csv.gz",
+                      "sha256": "f2c8e1df6ee026b50a3c980854360d5e731a61525787a915692cd4f98ba95408"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792667700.csv.gz",
+                      "sha256": "236a00c504d6909434aff4cb5186daea754ee14164aed24397d9fa7a49ba4b0a"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792668600.csv.gz",
+                      "sha256": "5b3177008a29666a7eb97503048c863e81efb3f7f95d48650e23981c868fa591"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792669500.csv.gz",
+                      "sha256": "ee9fc5ec9dd8c8260a15de0a53959e26c94a0628d581f40e99536582eb75c4e0"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792670400.csv.gz",
+                      "sha256": "fb09fc141c39b28e4d0510a157582641c5a2a7bff1096641a44ceb137a92c216"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792671300.csv.gz",
+                      "sha256": "a45c3ef0f14b73f66f3fbaf1e5a2b6d44454d53b0e0ba278b7b48519cc428bb0"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792672200.csv.gz",
+                      "sha256": "6f022f584455f09842c83bd97bebc49eaf8bbaeec85cbd884f760dbb17433dbd"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792673100.csv.gz",
+                      "sha256": "bf508f3a0c095e040a07b785b16d28e8e35a806a2ce8475cc892d1fc5188c30d"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792674000.csv.gz",
+                      "sha256": "6c93c59fcb0684b61bd49a0bb738a8f7a378887575fb4fa55e77530e6caa5a76"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792674900.csv.gz",
+                      "sha256": "43f05cc7b5d61e5a8666680188870754ed948d0ce0d09bb4f6e8b72497623455"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792675800.csv.gz",
+                      "sha256": "c06817cad7bfd0aaf13f9a51c92142c7fed0d072aa8e869d9be63af325d54d36"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792676700.csv.gz",
+                      "sha256": "5bb680da3bb8cbbea1850ab3323ee2eea80d02b82106733c49609898d9d0c442"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792692900.csv.gz",
+                      "sha256": "27275e3fb04eb2324e6ff2f711521b2939840860521e7970b3ccbdf9331f697b"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792693800.csv.gz",
+                      "sha256": "791bb2c5c9eb0d90a290a1053af7f440939fcfcb76ad41e1d54af1f18ca18553"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792452600_1792694700.csv.gz",
+                      "sha256": "27036c1baf74de36e72b37f9e770a3ddb397d4b98e192f23d40c9ac6789f14cf"
+                    },
+                    {
+                      "file": "candles/BTCTMN/15/1792454400_1792645200.csv.gz",
+                      "sha256": "dea75e056491a098782417bdc8a24767b1f1d895606748b2a801bbd6c3819f8d"
+                    }
+                  ]
+                },
+                "reason": "Champion only; research models never enter proposal",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Market Regime Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+                "decision_time": 1792694838.5744715,
+                "available_at": 1792694838.5744715,
+                "source_hash": "2bc1bbc5464801e954a9f7616e9a05c166de76ca88c9290818a27e537d643482",
+                "facts": {
+                  "ret24": -0.0017850628209110484,
+                  "volatility12": 0.0018553987489045676,
+                  "adx14": 17.63479352966213,
+                  "descriptive_state": "LOW_ADX"
+                },
+                "reason": "descriptive actual trailing features, not an inferred future regime",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Portfolio Analyst",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+                "decision_time": 1792694838.5744715,
+                "available_at": 1792694838.5744715,
+                "source_hash": "5000954befe6a76568b3023edc601c78d7b103a04e9c6427b4cbeb6990a4ace8",
+                "facts": {
+                  "cash_tmn": 5000000.0,
+                  "positions": [],
+                  "stopped": false,
+                  "equity": {
+                    "equity_tmn": 5000000.0,
+                    "drawdown_pct": 0.0,
+                    "stopped": false
+                  },
+                  "all_held_assets_marked_from_real_bids": true
+                },
+                "reason": "all held symbols require fresh actual bids before action",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Risk Reviewer",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+                "decision_time": 1792694838.5744715,
+                "available_at": 1792694838.5744715,
+                "source_hash": "972f9062805075b77f0002b2568880d40aa82a658c5805aeb14d56beee7c397e",
+                "facts": {
+                  "preflight_veto": [
+                    "technical_strategy_veto"
+                  ],
+                  "RiskGate": "mandatory again inside existing ShadowBroker transaction"
+                },
+                "reason": "Review cannot authorize an order",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              },
+              {
+                "role": "Decision Explanation Agent",
+                "status": "OBSERVED_EVIDENCE",
+                "symbol": "BTCTMN",
+                "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+                "decision_time": 1792694838.5744715,
+                "available_at": 1792694838.5744715,
+                "source_hash": "fb4129050f3fec73311ca2314935375bbcf13c1ad95873852b2b90dd5585dd39",
+                "facts": {
+                  "proposal": "ABSTAIN",
+                  "veto_reasons": [
+                    "technical_strategy_veto"
+                  ]
+                },
+                "reason": "deterministic explanation; optional LLM cannot change fields",
+                "authority": "ADVISORY_STRUCTURED_NO_TOOLS"
+              }
+            ],
+            "disagreements": {
+              "technical_signal": false,
+              "forecast_q50_positive": true
+            },
+            "review_sha256": "a97da3843a3d4bbb4fd44be354d85937df5214f4d692fbd5290e13b52498eb89"
+          },
+          "observation_id": "c062a84aa235536331e1e24bcc2fce5dd10ae63e1f5bd6d246c882db965803f0",
+          "guarantee": "NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT"
+        }
+      ],
+      "sync": {
+        "status": "COMPLETED",
+        "plan": {
+          "generated_at_utc": "2026-10-22T18:47:04.205215+00:00",
+          "purpose": "STARTUP_OR_WATCH_PUBLIC_DATA_SYNC",
+          "scope": "priority",
+          "symbols": [
+            "PEPETMN",
+            "BTCTMN"
+          ],
+          "target_resolutions": [
+            "15"
+          ],
+          "model_demand": {
+            "target_resolution": "15",
+            "context": 96,
+            "horizon": 3,
+            "origin": "ACTIVE_CHAMPION_METADATA"
+          },
+          "warmup_hours": 48.0,
+          "target_warmup_hours": {
+            "15": 37.75
+          },
+          "planned_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693800,
+              "end": 1792694760,
+              "begin_utc": "2026-10-22T18:30:00+00:00",
+              "end_utc": "2026-10-22T18:46:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693800,
+              "end": 1792694760,
+              "begin_utc": "2026-10-22T18:30:00+00:00",
+              "end_utc": "2026-10-22T18:46:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ],
+          "source_unavailable_windows": [],
+          "network_requests_planned": 2,
+          "network_requests_skipped_known_unavailable": 0,
+          "dry_run": false,
+          "selected_windows": [
+            {
+              "symbol": "BTCTMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693800,
+              "end": 1792694760,
+              "begin_utc": "2026-10-22T18:30:00+00:00",
+              "end_utc": "2026-10-22T18:46:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            },
+            {
+              "symbol": "PEPETMN",
+              "target_resolution": "15",
+              "source_resolution": "1",
+              "begin": 1792693800,
+              "end": 1792694760,
+              "begin_utc": "2026-10-22T18:30:00+00:00",
+              "end_utc": "2026-10-22T18:46:00+00:00",
+              "target_resolutions": [
+                "15"
+              ]
+            }
+          ]
+        },
+        "harvest": {
+          "started": "2026-10-22T18:47:04.213222+00:00",
+          "scope": "all-spot",
+          "symbols_count": 2,
+          "resolutions": [
+            "1"
+          ],
+          "complete": 2,
+          "cached": 0,
+          "conflicts": 0,
+          "failed": 0,
+          "retried_requests": 0,
+          "workers": 1,
+          "min_request_start_spacing_seconds": 0.35,
+          "count_units": "source_window_chunks",
+          "errors": [],
+          "explicit_window_mode": true,
+          "finished": "2026-10-22T18:47:07.121570+00:00"
+        },
+        "derived_requested": [
+          "15"
+        ],
+        "complete": 2,
+        "cached": 0,
+        "failed": 0,
+        "remaining_planned_windows": 0
+      },
+      "reconciliation": {
+        "scored_now": 0,
+        "advance_clock": false
+      },
+      "finished_at": 1792694838.643745
+    }
+  ],
+  "lease": [],
+  "resume": "session deadline and model identities preserved across processes; no new capital on restart",
+  "control": "Ctrl+C stops between bounded calls; finally releases lease; --no-sync disables Agent sync too",
+  "LIVE": "HARD_DISABLED"
+}
