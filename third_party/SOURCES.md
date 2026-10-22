@@ -63,3 +63,21 @@ remain idea-only; no license-restricted code copied. FinMem MIT research evidenc
 layers reused through existing Atlas ResearchMemory with actual creation/PIT cutoffs.
 No new framework, portfolio optimizer or external performance claim adopted.
 Per-file license hashes verified again in `reports/m7_reference_integration.json`.
+
+## Milestone 8: actual numerical reuse for historical analogues
+
+`atlas_patterns.py` directly calls installed SciPy 1.16.3
+`scipy.spatial.distance.cdist` (BSD-3-Clause) rather than reimplementing
+pairwise Euclidean distances. This is executable library reuse, not a claim
+that one of the trading frameworks was imported.
+Existing local librosa 0.10.2.post1 (ISC LICENSE.md read completely) was
+investigated for its constrained DTW API. The local import/inspection probe
+did not finish within several minutes and was interrupted; no successful
+runtime integration is claimed. Primary algorithm/API documentation inspected:
+https://librosa.org/doc/0.10.2/generated/librosa.sequence.dtw.html
+Atlas implements only the small endpoint-anchored banded recurrence over
+SciPy costs, independently authored, with explicit band=2 and n+m normalization.
+No audio code, fitted encoder, external trading connectors or synthetic market
+data are imported. Recipe, actual receipt availability, labels, embargo and
+temporal de-overlap are Atlas-specific glue; historical close outcomes are
+never described as order fills or trading PnL.

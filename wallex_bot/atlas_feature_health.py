@@ -48,7 +48,12 @@ def _read_catalog_symbols(db, top, only_symbol=None):
 
 def _verified_segments(root,db,symbol,resolution):
     period=market.ALLOWED_RESOLUTIONS.get(resolution)
-    if period is None:raise ValueError('Unsupported source resolution; use native 15-minute archive')
+    # M8: 5m/30m are valid LOCAL derived grids, not native API resolutions.
+    # Reuse the same hash/conflict checks without changing the API adapter.
+    if period is None and resolution in ('5','30'):
+        from .atlas_archive import period_seconds
+        period=period_seconds(resolution)
+    if period is None:raise ValueError('Unsupported verified archive resolution')
     if not _table(db,'chunks'):return [],0
     files=db.execute('''SELECT filename,sha256 FROM chunks
            WHERE symbol=? AND resolution=? AND status='COMPLETE' ORDER BY begin''',
