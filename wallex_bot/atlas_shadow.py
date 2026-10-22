@@ -13,12 +13,14 @@ from .live_scout import measure_book
 from .atlas_forward import ForwardLedger
 from .atlas_risk import RiskGate
 from .atlas_broker import ShadowBroker, OrderIntent
+from .atlas_mode import ExecutionMode,require_mode
 
 
 def now():return datetime.now(timezone.utc).isoformat()
 
 class PaperAccount:
-    def __init__(self,lake,starting_tmn=5_000_000):
+    def __init__(self,lake,starting_tmn=5_000_000,mode=ExecutionMode.SHADOW):
+        require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='PaperAccount')
         self.risk=RiskGate()
         self.db=sqlite3.connect(Path(lake.root)/'shadow.sqlite',timeout=20)
         self.db.execute('PRAGMA journal_mode=WAL')
@@ -154,10 +156,11 @@ class PaperAccount:
     def close(self):self.db.close()
 
 
-def shadow_cycle(lake,models_dir=None,top=8,fee=.001):
+def shadow_cycle(lake,models_dir=None,top=8,fee=.001,mode=ExecutionMode.SHADOW):
     """One autonomous cycle on REAL Wallex quotes and previously trained checkpoints.
     Never read private API keys, never submit orders or withdrawal requests.
     """
+    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='shadow_cycle')
     checkpoint=verified_champion(models_dir or lake.root/'models')
     import torch
     model_cfg=torch.load(checkpoint,map_location='cpu',weights_only=True)['config']

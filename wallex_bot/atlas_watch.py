@@ -8,6 +8,7 @@ from .atlas_news import harvest_news
 from .atlas_shadow import shadow_cycle, PaperAccount
 from . import market
 from .atlas_context import ContextStore,make_packet
+from .atlas_mode import ExecutionMode,require_mode
 
 
 def _save_state(path, state):
@@ -16,7 +17,8 @@ def _save_state(path, state):
     tmp.replace(path)
 
 
-def run(lake, hours=48, interval_seconds=900, top=8):
+def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
+    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='watch.run')
     if not 1<=hours<=72:raise ValueError('Research watch hours must be 1..72')
     if interval_seconds<60 or interval_seconds>3600:raise ValueError('Polling interval outside safe range')
     if not 1<=top<=24:raise ValueError('Select up to 24 market observations per cycle')
@@ -42,14 +44,14 @@ def run(lake, hours=48, interval_seconds=900, top=8):
         derived=lake.materialize_derived(['15'])
         news=harvest_news(lake,hours=24)
         try:
-            context_packet=make_packet(lake,phase='watch')
+            context_packet=make_packet(lake,phase='watch',mode=mode)
         except Exception as exc:
             # A compromised/invalid memory chain cannot influence an action.
             context_packet=None
             result={'shadow_cycle_skipped':'CONTEXT_INTEGRITY_OR_BUDGET_FAILURE',
                     'error_type':type(exc).__name__}
         try:
-            if context_packet is not None: result=shadow_cycle(lake,top=top)
+            if context_packet is not None: result=shadow_cycle(lake,top=top,mode=mode)
         except Exception as exc:
             result={'shadow_cycle_failed':type(exc).__name__+': '+str(exc)[:180]}
         watch_record={'utc':datetime.now(timezone.utc).isoformat(),
@@ -62,7 +64,7 @@ def run(lake, hours=48, interval_seconds=900, top=8):
             log.write(json.dumps(watch_record,ensure_ascii=False,default=str)+'\n')
         # Store compact, machine-verifiable observations. Raw details remain in
         # watch_log.jsonl, forward_observations.sqlite and shadow.sqlite.
-        context_store=ContextStore(lake.root)
+        context_store=ContextStore(lake.root,mode=mode)
         try:
             context_store.record('WATCH_CYCLE',str(lake.root/'watch_log.jsonl'),{
                 'cycles_completed':state['cycles_completed']+1,

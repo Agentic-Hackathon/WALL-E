@@ -1,0 +1,715 @@
+diff --git a/CHANGELOG_STAGE5_MODE_ISOLATION_FA.md b/CHANGELOG_STAGE5_MODE_ISOLATION_FA.md
+new file mode 100644
+index 0000000..d4aeeac
+--- /dev/null
++++ b/CHANGELOG_STAGE5_MODE_ISOLATION_FA.md
+@@ -0,0 +1,31 @@
++# Stage 5 — قرارداد اجرایی و ایزوله‌سازی حافظه
++
++مبنای کد: Wallex Atlas Stage4، commit مرجع کاربر `1e0654f`، شاخه `integration/atlas-validation`.
++
++## منشأ
++- پلی‌بوک پروژه، بند ۲.۴: الهام از تمایز Backtest/Paper در QuantCrypt. در گزارش مرحله اول، QuantCrypt unavailable بود؛ در این مرحله کدی از آن کلون، کپی یا مشتق نشده است. این قرارداد از صفر برای Wallex Atlas نوشته شده است؛ لایسنس خارجی ادعا نمی‌شود.
++- قرارداد فعلی Memory Store، RiskGate و ShadowBroker حفظ شده است؛ کد خارجی وارد پروژه نشده است.
++
++## تغییرات
++- `wallex_bot/atlas_mode.py`: enum قطعی `BACKTEST`, `SHADOW`, `LIVE` و fail-closed mode guard. `LIVE` در کل پروژه غیرفعال است.
++- `wallex_bot/atlas_context.py`: BACKTEST فقط بازخوانی SQLite موجود با `mode=ro` و `PRAGMA query_only` را مجاز می‌داند؛ اگر فایل وجود نداشته باشد، نه پوشه و نه DB نمی‌سازد؛ تمام write methods، حتی ثبت lesson، خطا می‌دهند. برای پیشگیری از نشت اطلاعات آینده، رویدادهای عملیاتی موجود نیز در نمای BACKTEST به مدل داده نمی‌شوند؛ اتصال read-only فقط برای بررسی تمامیت زنجیره هش است.
++- `wallex_bot/atlas_shadow.py`, `atlas_broker.py`, `atlas_watch.py`, `atlas_agent.py`, `atlas_liquidation.py`: ورودی‌های عملیاتی از حالت SHADOW عبور می‌کنند و BACKTEST/LIVE به این مسیرها دسترسی ندارند.
++- `wallex_bot/atlas_validation.py`: فقط در BACKTEST اجرا می‌شود؛ خروجی صرفاً یک گزارش پژوهشی است و مدل، سفارش، حافظه یا چک‌پوینت را تغییر نمی‌دهد.
++- `wallex_bot/atlas_cli.py`: `--mode` اختیاری با کنترل صریح سازگاری هر فرمان؛ `mode-status` قرارداد و محدودیت‌ها را گزارش می‌کند. `run` چرخه ترکیبی Research+Shadow است و BACKTEST محسوب نمی‌شود.
++- `tests/test_stage5_mode_isolation_real_only.py`: ۶ تست قرارداد بدون داده ساختگی بازار یا معامله.
++
++## حدود تضمین
++- این Mode Contract فقط نقاط ورودی نام‌برده را محافظت می‌کند؛ sandbox امنیتی برای اجرای arbitrary Python نیست.
++- در BACKTEST فایل‌های گزارش پژوهشی می‌توانند نوشته شوند؛ «عدم نوشتن» مختص دیتابیس حافظه و دفتر عملیاتی/سفارش تولیدی است.
++- داده‌های بازار/کیفیت Transformer/حجم نمونه/مدت اعتبارسنجی/کارمزد تأیید نشده‌اند؛ هیچ بهبود سود یا بازده ادعا نمی‌شود.
++- هیچ سفارش واقعی از این مرحله ارسال نمی‌شود؛ تطبیق سفارش با API صرافی هنوز پیاده‌سازی نشده است.
++
++## اجرای محلی
++```bash
++bash scripts/apply_stage5_mode.sh
++python -m pytest -q
++python -m wallex_bot.atlas_cli mode-status
++python -m wallex_bot.atlas_cli validate --mode BACKTEST --resolution 15 --top 8
++```
++
++توجه: `validate` محاسبات را از روی داده‌های حقیقی موجود سیستم انجام می‌دهد؛ نتایج جدید در این محیط اجرا نشده‌اند.
+diff --git a/QUICKSTART_STAGE5_MODE_ISOLATION_FA.md b/QUICKSTART_STAGE5_MODE_ISOLATION_FA.md
+new file mode 100644
+index 0000000..7f535ef
+--- /dev/null
++++ b/QUICKSTART_STAGE5_MODE_ISOLATION_FA.md
+@@ -0,0 +1,34 @@
++# راهنمای نصب مرحله ۵ — جداسازی BACKTEST، SHADOW و LIVE
++
++## نصب امن
++۱. اجرای `watch` را در پایان یک چرخه متوقف کنید تا کدِ درحال‌اجرا را در میانه فرآیند جایگزین نکنید.
++۲. بسته ZIP پچ را در ریشه واقعی پروژه `/d/Hackaton/Wallex/wallex_agent_v3` استخراج کنید؛ پوشه `atlas_store` را پاک نکنید.
++۳. اسکریپت را اجرا کنید؛ فقط روی commit `1e0654f` در شاخه `integration/atlas-validation` اعمال می‌شود.
++
++```bash
++cd /d/Hackaton/Wallex/wallex_agent_v3
++conda activate shbk
++bash scripts/apply_stage5_mode.sh
++```
++
++## بررسی
++```bash
++python -m pytest -q
++python -m wallex_bot.atlas_cli mode-status
++python -m wallex_bot.atlas_cli validate --mode BACKTEST --resolution 15 --top 8
++python -m wallex_bot.atlas_cli context-preview
++```
++
++برای ادامه Session قبلی (همه معاملات فرضی):
++```bash
++python -m wallex_bot.atlas_cli watch --mode SHADOW --hours 48
++```
++
++## ممنوعیت‌ها
++- `watch --mode BACKTEST`، `agent-cycle --mode BACKTEST`، و `validate --mode SHADOW` رد می‌شوند.
++- `--mode LIVE` در تمام فرمان‌ها رد می‌شود. نه API Key لازم است، نه امکان ارسال سفارش واقعی اضافه شده است.
++- تست‌ها داده قیمت، کندل، خبر یا معامله فرضی نمی‌سازند. مطالعات آماری قبلی همچنان فقط گزارش پژوهش هستند.
++
++## آنچه حل نشده
++- خبر هنوز ورودی مستقیم Transformer نیست و اعتبارسنجی خارج نمونه اقتصادی Champion موجود نیست.
++- استفاده از حافظه وزن‌دار FinMem، replay تصمیم و توضیح‌گر مشاوره‌ای LLM مربوط به گام‌های بعدی است.
+diff --git a/tests/test_stage5_mode_isolation_real_only.py b/tests/test_stage5_mode_isolation_real_only.py
+new file mode 100644
+index 0000000..b5d3969
+--- /dev/null
++++ b/tests/test_stage5_mode_isolation_real_only.py
+@@ -0,0 +1,120 @@
++"""Stage 5: contract and operational-metadata-only tests. No fabricated prices/news/fills.
++
++These tests do NOT prove exchange connectivity, trading performance, or readiness.
++"""
++from __future__ import annotations
++
++from pathlib import Path
++from types import SimpleNamespace
++import sqlite3
++
++import pytest
++
++from wallex_bot.atlas_mode import ExecutionMode, ModeSafetyError, cli_mode, mode_status, require_mode
++from wallex_bot.atlas_context import ContextStore, make_packet
++from wallex_bot.atlas_broker import ShadowBroker
++from wallex_bot.atlas_shadow import PaperAccount, shadow_cycle
++from wallex_bot.atlas_watch import run as watch
++from wallex_bot.atlas_agent import cycle
++from wallex_bot.atlas_liquidation import liquidate_paper_positions
++from wallex_bot.atlas_validation import validate_archive, store_report
++
++
++def test_mode_name_cannot_alias_live_or_be_guessed():
++    assert cli_mode('validate') is ExecutionMode.BACKTEST
++    assert cli_mode('watch') is ExecutionMode.SHADOW
++    assert cli_mode('benchmark','BACKTEST') is ExecutionMode.BACKTEST
++    with pytest.raises(ModeSafetyError):
++        cli_mode('watch','BACKTEST')
++    with pytest.raises(ModeSafetyError):
++        cli_mode('validate','SHADOW')
++    with pytest.raises(ModeSafetyError,match='HARD_DISABLED'):
++        cli_mode('watch','LIVE')
++    with pytest.raises(ModeSafetyError):
++        cli_mode('validate','live')
++    with pytest.raises(ModeSafetyError):
++        cli_mode('context-status','BACKTEST')
++    assert not mode_status()['real_exchange_order_submission']
++
++
++def test_backtest_memory_missing_is_read_only_and_creates_nothing(tmp_path):
++    root=tmp_path/'intentionally_absent'
++    store=ContextStore(root,mode='BACKTEST')
++    assert store.status()['hash_chain_valid'] is True
++    assert store.recent()==[]
++    assert store.review_candidates()==[]
++    with pytest.raises(ModeSafetyError):
++        store.record('WATCH_CYCLE','watch_log.jsonl',{'cycles_completed':1})
++    with pytest.raises(ModeSafetyError):
++        store.propose_lesson('0'*64,'No invalid lesson created')
++    store.close()
++    assert not root.exists()
++    packet=make_packet(SimpleNamespace(root=root),phase='audit',mode='BACKTEST')
++    assert packet['summary']['memory_read_only'] is True
++    assert packet['summary']['execution_mode']=='BACKTEST'
++    assert not root.exists()
++
++
++def test_existing_operational_memory_immutable_in_backtest(tmp_path):
++    writable=ContextStore(tmp_path)
++    original=writable.record('RESEARCH_INCIDENT','watch_log.jsonl',{'error_type':'Timeout'})
++    writable.close()
++    readonly=ContextStore(tmp_path,mode=ExecutionMode.BACKTEST)
++    assert readonly.verify()=={'hash_chain_valid':True,'events_verified':1}
++    # No hindsight leakage from SHADOW operational memory to BACKTEST packets.
++    assert readonly.recent()==[]
++    assert readonly.review_candidates()==[]
++    packet=make_packet(SimpleNamespace(root=tmp_path),phase='audit',mode='BACKTEST')
++    assert packet['working_memory']==[]
++    with pytest.raises(ModeSafetyError):
++        readonly.record('RESEARCH_INCIDENT','log',{'error_type':'Error'})
++    with pytest.raises(ModeSafetyError):
++        readonly.propose_lesson(original,'Investigate observed incident before redeployment')
++    with pytest.raises(ModeSafetyError):
++        readonly.validate_lesson_from_evidence(7,'not_used','0'*64)
++    with pytest.raises(sqlite3.OperationalError):
++        readonly.db.execute("DELETE FROM context_events")
++    readonly.close()
++    reopened=ContextStore(tmp_path)
++    assert reopened.verify()=={'hash_chain_valid':True,'events_verified':1}
++    reopened.close()
++
++
++def test_backtest_cannot_open_shadow_ledger_or_broker(tmp_path):
++    pseudo_lake=SimpleNamespace(root=tmp_path)
++    with pytest.raises(ModeSafetyError):
++        PaperAccount(pseudo_lake,mode='BACKTEST')
++    with pytest.raises(ModeSafetyError):
++        ShadowBroker(None,mode='BACKTEST')
++    with pytest.raises(ModeSafetyError):
++        PaperAccount(pseudo_lake,mode='LIVE')
++    assert not (tmp_path/'shadow.sqlite').exists()
++
++
++def test_backtest_cannot_use_runtime_mutating_entrypoints(tmp_path):
++    lake=SimpleNamespace(root=tmp_path)
++    for fn, kwargs in [
++        (watch,{'mode':'BACKTEST'}),
++        (shadow_cycle,{'mode':'BACKTEST'}),
++        (liquidate_paper_positions,{'mode':'BACKTEST'}),
++    ]:
++        with pytest.raises(ModeSafetyError):fn(lake,**kwargs)
++    with pytest.raises(ModeSafetyError):
++        cycle(lake,mode='BACKTEST')
++    with pytest.raises(ModeSafetyError,match='HARD_DISABLED'):
++        cycle(lake,mode='LIVE')
++    assert list(tmp_path.iterdir())==[]
++
++
++def test_backtest_validation_writes_research_report_only(tmp_path):
++    lake=SimpleNamespace(root=tmp_path)
++    with pytest.raises(ModeSafetyError):
++        validate_archive(lake,mode='SHADOW')
++    with pytest.raises(ModeSafetyError):
++        store_report(lake,{},mode='SHADOW')
++    # Metadata-only report: no market values, trades, fills or benchmark numbers.
++    path=store_report(lake,{'status':'INSUFFICIENT_EVIDENCE'},mode='BACKTEST')
++    assert path.is_file()
++    assert not (tmp_path/'shadow.sqlite').exists()
++    assert not (tmp_path/'context_memory.sqlite').exists()
++    assert not (tmp_path/'agent_checkpoints.sqlite').exists()
+diff --git a/wallex_bot/atlas_agent.py b/wallex_bot/atlas_agent.py
+index 02b6ce4..c6d5344 100644
+--- a/wallex_bot/atlas_agent.py
++++ b/wallex_bot/atlas_agent.py
+@@ -18,6 +18,7 @@ import hashlib
+ from .live_scout import measure_book
+ from .market import depth
+ from .atlas_context import ContextStore,make_packet
++from .atlas_mode import ExecutionMode,require_mode
+ 
+ class AgentState(TypedDict,total=False):
+     symbol:str
+@@ -43,7 +44,8 @@ def select_symbol(lake):
+     return max(markets)[1]
+ 
+ 
+-def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.001):
++def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.001,mode=ExecutionMode.SHADOW):
++    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='agent.cycle')
+     try:
+         from langgraph.graph import StateGraph,START,END
+         from langgraph.checkpoint.sqlite import SqliteSaver
+@@ -54,7 +56,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
+     import torch
+     def context_node(state:AgentState):
+         # Trusted local code selects tool/skill scope. No article can widen it.
+-        packet=make_packet(lake,phase='agent-cycle',token_budget=1800)
++        packet=make_packet(lake,phase='agent-cycle',token_budget=1800,mode=mode)
+         return {'context_packet':packet}
+     model=verified_champion(lake.root/'models')
+     def market_node(state:AgentState):
+@@ -141,7 +143,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
+         compiled=graph.compile(checkpointer=SqliteSaver(conn))
+         output=compiled.invoke({'symbol':symbol},config={'configurable':{'thread_id':thread_id}})
+     finally:conn.close()
+-    memory=ContextStore(lake.root)
++    memory=ContextStore(lake.root,mode=mode)
+     try:
+         evidence={'symbol':symbol,'decision':output['decision'],'model_digest':output['prediction'].get('model_sha256'),
+                   'source':'LangGraph-shadow-ledger','context_skills':[x['name'] for x in output['context_packet']['task_skills']]}
+diff --git a/wallex_bot/atlas_broker.py b/wallex_bot/atlas_broker.py
+index 8b92e55..16392ae 100644
+--- a/wallex_bot/atlas_broker.py
++++ b/wallex_bot/atlas_broker.py
+@@ -22,6 +22,7 @@ import json
+ import math
+ import re
+ import sqlite3
++from .atlas_mode import ExecutionMode,require_mode
+ 
+ 
+ class BrokerSafetyError(RuntimeError):
+@@ -157,7 +158,8 @@ class ShadowBroker:
+     No second price or risk implementation exists here. Genuine book data must
+     be passed by the existing real Wallex observation call site.
+     """
+-    def __init__(self, paper_account):
++    def __init__(self, paper_account, mode=ExecutionMode.SHADOW):
++        require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='ShadowBroker')
+         self.paper = paper_account
+ 
+     def submit(self, intent: OrderIntent, *, forecast: dict | None = None,
+diff --git a/wallex_bot/atlas_cli.py b/wallex_bot/atlas_cli.py
+index 100e923..0223fd0 100644
+--- a/wallex_bot/atlas_cli.py
++++ b/wallex_bot/atlas_cli.py
+@@ -5,6 +5,7 @@ from __future__ import annotations
+ import argparse,json,sys,datetime,traceback,os
+ from pathlib import Path
+ from .atlas_archive import Lake,ALL_RESOLUTIONS
++from .atlas_mode import cli_mode,mode_status,ExecutionMode
+ 
+ 
+ def pretty(value):print(json.dumps(value,ensure_ascii=False,indent=2,default=str))
+@@ -13,7 +14,7 @@ def main(argv=None):
+     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
+         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
+     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
+-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate'])
++        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status'])
+     p.add_argument('--days',type=int,default=7)
+     p.add_argument('--minutes',type=int,default=10)
+     p.add_argument('--hours',type=int,default=48)
+@@ -28,7 +29,12 @@ def main(argv=None):
+     p.add_argument('--fee',type=float,default=.001)
+     p.add_argument('--slippage',type=float,default=.0005)
+     p.add_argument('--top',type=int,default=8)
++    p.add_argument('--mode',choices=('BACKTEST','SHADOW','LIVE'),default=None,
++                   help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
+     args=p.parse_args(argv)
++    effective_mode=cli_mode(args.command,args.mode)
++    if args.command=='mode-status':
++        pretty(mode_status());return
+     lake=Lake()
+     try:
+         if args.command in ('context-status','context-preview','context-review'):
+@@ -47,13 +53,13 @@ def main(argv=None):
+             if args.command=='liquidation-status':
+                 pretty(liquidation_status(lake.root))
+             else:
+-                pretty(liquidate_paper_positions(lake, fee=args.fee, require_watch_deadline=True))
++                pretty(liquidate_paper_positions(lake, fee=args.fee, require_watch_deadline=True,mode=ExecutionMode.SHADOW))
+             return
+         if args.command=='validate':
+             from .atlas_validation import validate_archive,store_report
+             result=validate_archive(lake,fee=args.fee,slippage=args.slippage,
+-                                    resolution=args.resolution,max_symbols=args.top)
+-            filename=store_report(lake,result)
++                                    resolution=args.resolution,max_symbols=args.top,mode=ExecutionMode.BACKTEST)
++            filename=store_report(lake,result,mode=ExecutionMode.BACKTEST)
+             pretty({'report_path':str(filename),**result});return
+         if args.command=='broker-status':
+             from .atlas_broker import broker_status
+@@ -70,14 +76,14 @@ def main(argv=None):
+             pretty(audit_v3(lake));return
+         if args.command=='watch':
+             from .atlas_watch import run as watch
+-            pretty(watch(lake,hours=args.hours,top=args.top));return
++            pretty(watch(lake,hours=args.hours,top=args.top,mode=ExecutionMode.SHADOW));return
+         if args.command=='capture-live':
+             from .atlas_stream import capture
+             if not lake.symbols('tmn-spot'):lake.discover()
+             pretty(capture(lake,minutes=args.minutes,max_markets=min(args.top,24)));return
+         if args.command=='agent-cycle':
+             from .atlas_agent import cycle
+-            pretty(cycle(lake,symbol=args.symbol));return
++            pretty(cycle(lake,symbol=args.symbol,mode=ExecutionMode.SHADOW));return
+         if args.command=='mcp-smoke':
+             from .mcp_smoke import run as mcp_check
+             pretty(mcp_check());return
+@@ -180,7 +186,7 @@ def main(argv=None):
+             if args.command=='run' and not promoted_this_run:
+                 pretty({'shadow_not_started':'No new model was promoted in this run; refusing silent fallback to older model'})
+             else:
+-                try:pretty({'shadow':shadow_cycle(lake,top=args.top,fee=args.fee)})
++                try:pretty({'shadow':shadow_cycle(lake,top=args.top,fee=args.fee,mode=ExecutionMode.SHADOW)})
+                 except (RuntimeError,ImportError,ValueError) as e:pretty({'shadow_not_started':str(e)})
+     finally:lake.close()
+ 
+diff --git a/wallex_bot/atlas_context.py b/wallex_bot/atlas_context.py
+index 747de34..9f9877c 100644
+--- a/wallex_bot/atlas_context.py
++++ b/wallex_bot/atlas_context.py
+@@ -7,6 +7,7 @@ from __future__ import annotations
+ import collections,datetime as dt,hashlib,json,re,sqlite3,time
+ from pathlib import Path
+ from .atlas_skills import skill_index,tools_for,skills_for
++from .atlas_mode import ExecutionMode,require_mode,ModeSafetyError
+ 
+ GENESIS='GENESIS'
+ KINDS=frozenset({'WATCH_CYCLE','GRAPH_DECISION','RESEARCH_INCIDENT','REVIEW_CANDIDATE'})
+@@ -43,8 +44,16 @@ def _clean(value,depth=0):
+ 
+ class ContextStore:
+     """Long-term evidence lives on disk; short-term packets are bounded views."""
+-    def __init__(self,root):
++    def __init__(self,root,mode=ExecutionMode.SHADOW):
++        self.mode=require_mode(mode,permitted=(ExecutionMode.BACKTEST,ExecutionMode.SHADOW),operation='ContextStore')
+         self.path=Path(root)/'context_memory.sqlite'
++        # A BACKTEST may inspect existing past evidence, but MUST NOT create a
++        # context database, WAL, lesson or operational decision record.
++        if self.mode is ExecutionMode.BACKTEST:
++            self.db=(sqlite3.connect(self.path.as_uri()+'?mode=ro',uri=True,timeout=30)
++                     if self.path.is_file() else None)
++            if self.db is not None:self.db.execute('PRAGMA query_only=ON')
++            return
+         self.path.parent.mkdir(parents=True,exist_ok=True)
+         self.db=sqlite3.connect(self.path,timeout=30)
+         self.db.execute('PRAGMA busy_timeout=30000')
+@@ -62,7 +71,11 @@ class ContextStore:
+         ''')
+         self.db.commit()
+ 
++    def _require_writable(self,operation):
++        require_mode(self.mode,permitted=(ExecutionMode.SHADOW,),operation=operation)
++
+     def record(self,kind,source_ref,payload,source_digest=None):
++        self._require_writable('ContextStore.record')
+         if kind not in KINDS:raise ValueError('Unrecognized event kind')
+         if not isinstance(source_ref,str) or not source_ref or len(source_ref)>512:raise ValueError('Evidence reference required')
+         clean=_clean(payload)
+@@ -87,6 +100,7 @@ class ContextStore:
+         return event_hash
+ 
+     def propose_lesson(self,event_hash,hypothesis):
++        self._require_writable('ContextStore.propose_lesson')
+         if not re.fullmatch(r'[0-9a-f]{64}',str(event_hash)):raise ValueError('Valid real event hash required')
+         row=self.db.execute('SELECT 1 FROM context_events WHERE event_hash=?',(event_hash,)).fetchone()
+         if not row:raise ValueError('Cannot attach lesson to unverified source event')
+@@ -98,17 +112,23 @@ class ContextStore:
+ 
+     def recent(self,limit=12):
+         if not 1<=limit<=40:raise ValueError('Bounded recent-events query required')
++        # A historical replay MUST NOT see operational memories from later
++        # timestamps. Until PIT memory retrieval is implemented, reveal none.
++        if self.mode is ExecutionMode.BACKTEST or self.db is None:return []
+         rows=self.db.execute('''SELECT observed_at_utc,kind,source_ref,source_sha256,payload_json,event_hash
+             FROM context_events ORDER BY id DESC LIMIT ?''',(limit,)).fetchall()
+         return [{'observed_at_utc':t,'kind':k,'source_ref':s,'source_sha256':h,'payload':json.loads(p),'event_hash':e}
+                 for t,k,s,h,p,e in rows]
+ 
+     def review_candidates(self):
++        # A backtest cannot consult hindsight-validated operational lessons.
++        if self.mode is ExecutionMode.BACKTEST or self.db is None:return []
+         # Candidates are *never* promoted by reading a model's self-generated claims.
+         rows=self.db.execute("SELECT id,event_hash,hypothesis FROM context_lessons WHERE status='CANDIDATE' ORDER BY id DESC LIMIT 30").fetchall()
+         return [{'id':i,'event_hash':h,'hypothesis':s,'status':'CANDIDATE_UNVALIDATED'} for i,h,s in rows]
+ 
+     def validate_lesson_from_evidence(self,lesson_id,validation_ref,validation_digest):
++        self._require_writable('ContextStore.validate_lesson_from_evidence')
+         """Independent real evidence can promote a hypothesis, not a trading rule.
+         Deliberately leaves strategy/model/weights unchanged.
+         """
+@@ -123,6 +143,7 @@ class ContextStore:
+         return {'lesson_id':lesson_id,'status':'VALIDATED_EVIDENCE_ONLY','auto_change_model':False}
+ 
+     def verify(self):
++        if self.db is None:return {'hash_chain_valid':True,'events_verified':0}
+         previous=GENESIS
+         count=0
+         for row in self.db.execute('''SELECT observed_at_utc,kind,source_ref,source_sha256,payload_json,prev_hash,event_hash
+@@ -135,13 +156,17 @@ class ContextStore:
+         return {'hash_chain_valid':True,'events_verified':count}
+ 
+     def status(self):
++        if self.db is None:
++            return {'database':str(self.path),'event_types':{},'lesson_statuses':{},
++                    'memory_policy':'BACKTEST_READ_ONLY_NO_DB_CREATED',**self.verify()}
+         kinds=dict(self.db.execute('SELECT kind,COUNT(*) FROM context_events GROUP BY kind').fetchall())
+         lessons=dict(self.db.execute('SELECT status,COUNT(*) FROM context_lessons GROUP BY status').fetchall())
+         return {'database':str(self.path),'event_types':kinds,'lesson_statuses':lessons,
+                 'memory_policy':'Append-only evidence; compact packets are read-only views; unvalidated lessons never control orders',
+                 **self.verify()}
+ 
+-    def close(self):self.db.close()
++    def close(self):
++        if self.db is not None:self.db.close()
+ 
+ 
+ def _event_card(event):
+@@ -155,14 +180,15 @@ def _event_card(event):
+             'metrics':{key:payload[key] for key in permitted if key in payload}}
+ 
+ 
+-def make_packet(lake,phase='watch',token_budget=1800):
++def make_packet(lake,phase='watch',token_budget=1800,mode=ExecutionMode.SHADOW):
+     """Small deterministic context, not a raw transcript or an LLM instruction from web.
+ 
+     Pinned guardrails live at both ends, while references to live facts remain
+     in the immutable source ledgers and database.
+     """
+     if not 650<=int(token_budget)<=3000:raise ValueError('Token budget must be 650..3000')
+-    store=ContextStore(lake.root)
++    mode=require_mode(mode,permitted=(ExecutionMode.BACKTEST,ExecutionMode.SHADOW),operation='make_packet')
++    store=ContextStore(lake.root,mode=mode)
+     try:
+         if not store.verify()['hash_chain_valid']:raise RuntimeError('Context hash chain corrupted; fail closed')
+         recent=[_event_card(x) for x in store.recent(limit=12)] if store.status()['events_verified'] else []
+@@ -188,7 +214,8 @@ def make_packet(lake,phase='watch',token_budget=1800):
+             # Catalog remains available by name; do not remove pinned policy.
+             packet['pinned_start']['tool_menu']=[{'name':x['name'],'permission':x['permission']} for x in tools_for(phase)]
+         if len(_json(packet))>max_chars:raise RuntimeError('Pinned safety context does not fit bounded context budget')
+-        packet['summary']={'token_budget_upper_estimate':token_budget,'actual_characters':len(_json(packet)),
++        packet['summary']={'execution_mode':mode.value,'memory_read_only':mode is ExecutionMode.BACKTEST,
++                           'token_budget_upper_estimate':token_budget,'actual_characters':len(_json(packet)),
+                           'recent_events_included':len(packet['working_memory']),
+                           'skills_loaded':len(packet['task_skills']),
+                           'evidence_source':'local hash-chained SQLite and packaged SKILL.md only',
+@@ -197,12 +224,12 @@ def make_packet(lake,phase='watch',token_budget=1800):
+     finally:store.close()
+ 
+ 
+-def inspect(lake,phase='watch'):
+-    store=ContextStore(lake.root)
++def inspect(lake,phase='watch',mode=ExecutionMode.SHADOW):
++    store=ContextStore(lake.root,mode=mode)
+     try:
+         result={'memory':store.status(),'unvalidated_lessons':store.review_candidates(),
+                 'tool_count_all_registered':len(__import__('wallex_bot.atlas_skills',fromlist=['TOOLS']).TOOLS),
+                 'active_phase':phase}
+-        result['compact_packet']=make_packet(lake,phase)
++        result['compact_packet']=make_packet(lake,phase,mode=mode)
+         return result
+     finally:store.close()
+diff --git a/wallex_bot/atlas_liquidation.py b/wallex_bot/atlas_liquidation.py
+index b1571c2..3848e13 100644
+--- a/wallex_bot/atlas_liquidation.py
++++ b/wallex_bot/atlas_liquidation.py
+@@ -24,6 +24,7 @@ import sqlite3
+ import time
+ 
+ from .atlas_broker import BrokerSafetyError, OrderIntent, ShadowBroker
++from .atlas_mode import ExecutionMode,require_mode
+ from .atlas_shadow import PaperAccount
+ from . import market
+ from .live_scout import _levels  # parse genuine Wallex order-book levels, not mocked quotes
+@@ -140,7 +141,7 @@ def _observed_exit_book(raw, quantity):
+ 
+ 
+ def liquidate_paper_positions(lake, *, fee=.001, require_watch_deadline=True,
+-                              max_fetch_seconds=15.0):
++                              max_fetch_seconds=15.0,mode=ExecutionMode.SHADOW):
+     """Close paper holdings once, using actual newly queried Wallex bid depth.
+ 
+     On missing/invalid quotes, record a failure and RETAIN the position.
+@@ -148,6 +149,7 @@ def liquidate_paper_positions(lake, *, fee=.001, require_watch_deadline=True,
+     duplicate submissions with identical evidence remain atomic and safe.
+     There is *no real-order transport* or fabricated market fixture.
+     """
++    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='liquidate_paper_positions')
+     if not isinstance(fee, (float, int)) or isinstance(fee, bool) or not math.isfinite(fee) or not 0 <= fee < .05:
+         raise ValueError('Explicit finite research fee required; NOT an exchange-verified fee')
+     if not isinstance(max_fetch_seconds, (int, float)) or not 0 < max_fetch_seconds <= 30:
+diff --git a/wallex_bot/atlas_mode.py b/wallex_bot/atlas_mode.py
+new file mode 100644
+index 0000000..fdd8421
+--- /dev/null
++++ b/wallex_bot/atlas_mode.py
+@@ -0,0 +1,78 @@
++"""Deterministic Wallex Atlas execution-mode contract (Stage 5).
++
++Provenance: QuantCrypt was listed but unavailable in the recorded reference
++review; the BACKTEST / SHADOW separation is independently written from the
++integration playbook, with no third-party source copied. LIVE remains disabled.
++
++The contract protects production context/paper ledgers at entry points.
++It does NOT make arbitrary Python inside the process sandboxed or make
++historical candle fills genuine exchange fills.
++"""
++from __future__ import annotations
++
++from enum import Enum
++
++
++class ModeSafetyError(RuntimeError):
++    """Execution context is not authorized for the requested side effect."""
++
++
++class ExecutionMode(str, Enum):
++    BACKTEST = 'BACKTEST'
++    SHADOW = 'SHADOW'
++    LIVE = 'LIVE'
++
++
++def normalized_mode(mode):
++    if isinstance(mode, ExecutionMode):
++        return mode
++    if not isinstance(mode, str):
++        raise ModeSafetyError('Explicit supported mode required')
++    try:
++        return ExecutionMode(mode)
++    except ValueError as exc:
++        raise ModeSafetyError('Unsupported execution mode; fail closed') from exc
++
++
++def require_mode(mode, *, permitted, operation):
++    """Fail before any DB/network interaction. LIVE is always disabled."""
++    selected = normalized_mode(mode)
++    if selected is ExecutionMode.LIVE:
++        raise ModeSafetyError('LIVE_EXECUTION_HARD_DISABLED_NO_AUTHORIZATION')
++    allowed = frozenset(normalized_mode(x) for x in permitted)
++    if selected not in allowed:
++        raise ModeSafetyError(f'{operation}: {selected.value} mode is forbidden')
++    return selected
++
++
++def cli_mode(command, requested=None):
++    """Validate explicit command mode, never silently downcast LIVE to SHADOW."""
++    designated = {
++        'validate': ExecutionMode.BACKTEST,
++        'benchmark': ExecutionMode.BACKTEST,
++        'watch': ExecutionMode.SHADOW,
++        'shadow-cycle': ExecutionMode.SHADOW,
++        'agent-cycle': ExecutionMode.SHADOW,
++        'liquidate-paper': ExecutionMode.SHADOW,
++        'run': ExecutionMode.SHADOW,  # Combined research + paper cycle, not a backtest.
++    }
++    if requested is None:
++        return designated.get(command)
++    selected = normalized_mode(requested)
++    require_mode(selected, permitted=(ExecutionMode.BACKTEST, ExecutionMode.SHADOW), operation=command)
++    if command not in designated:
++        raise ModeSafetyError(f'{command}: explicit mode not applicable')
++    if selected != designated[command]:
++        raise ModeSafetyError(f'{command}: requires {designated[command].value} mode')
++    return selected
++
++
++def mode_status():
++    return {
++        'mode_contract_version': 'ATLAS_EXECUTION_MODE_V1',
++        'BACKTEST': 'Production context hash verified read-only; operational events hidden to prevent future-information leakage; no paper actions',
++        'SHADOW': 'Hash-chained operational memory and risk-gated hypothetical actions permitted',
++        'LIVE': 'HARD_DISABLED; no order-submit transport; authorization cannot be supplied here',
++        'real_exchange_order_submission': False,
++        'no_live_orders': True,
++    }
+diff --git a/wallex_bot/atlas_shadow.py b/wallex_bot/atlas_shadow.py
+index af14353..0a010a4 100644
+--- a/wallex_bot/atlas_shadow.py
++++ b/wallex_bot/atlas_shadow.py
+@@ -13,12 +13,14 @@ from .live_scout import measure_book
+ from .atlas_forward import ForwardLedger
+ from .atlas_risk import RiskGate
+ from .atlas_broker import ShadowBroker, OrderIntent
++from .atlas_mode import ExecutionMode,require_mode
+ 
+ 
+ def now():return datetime.now(timezone.utc).isoformat()
+ 
+ class PaperAccount:
+-    def __init__(self,lake,starting_tmn=5_000_000):
++    def __init__(self,lake,starting_tmn=5_000_000,mode=ExecutionMode.SHADOW):
++        require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='PaperAccount')
+         self.risk=RiskGate()
+         self.db=sqlite3.connect(Path(lake.root)/'shadow.sqlite',timeout=20)
+         self.db.execute('PRAGMA journal_mode=WAL')
+@@ -154,10 +156,11 @@ class PaperAccount:
+     def close(self):self.db.close()
+ 
+ 
+-def shadow_cycle(lake,models_dir=None,top=8,fee=.001):
++def shadow_cycle(lake,models_dir=None,top=8,fee=.001,mode=ExecutionMode.SHADOW):
+     """One autonomous cycle on REAL Wallex quotes and previously trained checkpoints.
+     Never read private API keys, never submit orders or withdrawal requests.
+     """
++    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='shadow_cycle')
+     checkpoint=verified_champion(models_dir or lake.root/'models')
+     import torch
+     model_cfg=torch.load(checkpoint,map_location='cpu',weights_only=True)['config']
+diff --git a/wallex_bot/atlas_validation.py b/wallex_bot/atlas_validation.py
+index 623f82d..9b46f18 100644
+--- a/wallex_bot/atlas_validation.py
++++ b/wallex_bot/atlas_validation.py
+@@ -26,6 +26,7 @@ import numpy as np
+ import pandas as pd
+ 
+ from .atlas_signals import features, strategies, trade_path
++from .atlas_mode import ExecutionMode,require_mode
+ 
+ 
+ def _now():
+@@ -221,8 +222,9 @@ def _read_trials(lake):
+ 
+ 
+ def validate_archive(lake, *, fee=.001, slippage=.0005, resolution='15', max_symbols=8,
+-                     min_bars=180):
++                     min_bars=180,mode=ExecutionMode.BACKTEST):
+     """Read archived genuine candles; never modify model, trade/account or memory ledgers."""
++    require_mode(mode,permitted=(ExecutionMode.BACKTEST,),operation='validate_archive')
+     _finite_cost(fee, slippage)
+     if resolution not in ('5','15','30','60'):
+         raise ValueError('Stage4 validation requires supported intraday resolution')
+@@ -326,8 +328,9 @@ def validate_archive(lake, *, fee=.001, slippage=.0005, resolution='15', max_sym
+     return output
+ 
+ 
+-def store_report(lake, report):
++def store_report(lake, report,mode=ExecutionMode.BACKTEST):
+     """Persist only a research report, never an order/memory/model mutation."""
++    require_mode(mode,permitted=(ExecutionMode.BACKTEST,),operation='store_report')
+     path=Path(lake.root)/'reports'/'stage4_validation.json'
+     path.parent.mkdir(parents=True,exist_ok=True)
+     from os import replace
+diff --git a/wallex_bot/atlas_watch.py b/wallex_bot/atlas_watch.py
+index af6b529..dda3703 100644
+--- a/wallex_bot/atlas_watch.py
++++ b/wallex_bot/atlas_watch.py
+@@ -8,6 +8,7 @@ from .atlas_news import harvest_news
+ from .atlas_shadow import shadow_cycle, PaperAccount
+ from . import market
+ from .atlas_context import ContextStore,make_packet
++from .atlas_mode import ExecutionMode,require_mode
+ 
+ 
+ def _save_state(path, state):
+@@ -16,7 +17,8 @@ def _save_state(path, state):
+     tmp.replace(path)
+ 
+ 
+-def run(lake, hours=48, interval_seconds=900, top=8):
++def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
++    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='watch.run')
+     if not 1<=hours<=72:raise ValueError('Research watch hours must be 1..72')
+     if interval_seconds<60 or interval_seconds>3600:raise ValueError('Polling interval outside safe range')
+     if not 1<=top<=24:raise ValueError('Select up to 24 market observations per cycle')
+@@ -42,14 +44,14 @@ def run(lake, hours=48, interval_seconds=900, top=8):
+         derived=lake.materialize_derived(['15'])
+         news=harvest_news(lake,hours=24)
+         try:
+-            context_packet=make_packet(lake,phase='watch')
++            context_packet=make_packet(lake,phase='watch',mode=mode)
+         except Exception as exc:
+             # A compromised/invalid memory chain cannot influence an action.
+             context_packet=None
+             result={'shadow_cycle_skipped':'CONTEXT_INTEGRITY_OR_BUDGET_FAILURE',
+                     'error_type':type(exc).__name__}
+         try:
+-            if context_packet is not None: result=shadow_cycle(lake,top=top)
++            if context_packet is not None: result=shadow_cycle(lake,top=top,mode=mode)
+         except Exception as exc:
+             result={'shadow_cycle_failed':type(exc).__name__+': '+str(exc)[:180]}
+         watch_record={'utc':datetime.now(timezone.utc).isoformat(),
+@@ -62,7 +64,7 @@ def run(lake, hours=48, interval_seconds=900, top=8):
+             log.write(json.dumps(watch_record,ensure_ascii=False,default=str)+'\n')
+         # Store compact, machine-verifiable observations. Raw details remain in
+         # watch_log.jsonl, forward_observations.sqlite and shadow.sqlite.
+-        context_store=ContextStore(lake.root)
++        context_store=ContextStore(lake.root,mode=mode)
+         try:
+             context_store.record('WATCH_CYCLE',str(lake.root/'watch_log.jsonl'),{
+                 'cycles_completed':state['cycles_completed']+1,

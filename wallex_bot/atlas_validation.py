@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 
 from .atlas_signals import features, strategies, trade_path
+from .atlas_mode import ExecutionMode,require_mode
 
 
 def _now():
@@ -221,8 +222,9 @@ def _read_trials(lake):
 
 
 def validate_archive(lake, *, fee=.001, slippage=.0005, resolution='15', max_symbols=8,
-                     min_bars=180):
+                     min_bars=180,mode=ExecutionMode.BACKTEST):
     """Read archived genuine candles; never modify model, trade/account or memory ledgers."""
+    require_mode(mode,permitted=(ExecutionMode.BACKTEST,),operation='validate_archive')
     _finite_cost(fee, slippage)
     if resolution not in ('5','15','30','60'):
         raise ValueError('Stage4 validation requires supported intraday resolution')
@@ -326,8 +328,9 @@ def validate_archive(lake, *, fee=.001, slippage=.0005, resolution='15', max_sym
     return output
 
 
-def store_report(lake, report):
+def store_report(lake, report,mode=ExecutionMode.BACKTEST):
     """Persist only a research report, never an order/memory/model mutation."""
+    require_mode(mode,permitted=(ExecutionMode.BACKTEST,),operation='store_report')
     path=Path(lake.root)/'reports'/'stage4_validation.json'
     path.parent.mkdir(parents=True,exist_ok=True)
     from os import replace

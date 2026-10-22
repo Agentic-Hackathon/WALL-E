@@ -18,6 +18,7 @@ import hashlib
 from .live_scout import measure_book
 from .market import depth
 from .atlas_context import ContextStore,make_packet
+from .atlas_mode import ExecutionMode,require_mode
 
 class AgentState(TypedDict,total=False):
     symbol:str
@@ -43,7 +44,8 @@ def select_symbol(lake):
     return max(markets)[1]
 
 
-def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.001):
+def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.001,mode=ExecutionMode.SHADOW):
+    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='agent.cycle')
     try:
         from langgraph.graph import StateGraph,START,END
         from langgraph.checkpoint.sqlite import SqliteSaver
@@ -54,7 +56,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
     import torch
     def context_node(state:AgentState):
         # Trusted local code selects tool/skill scope. No article can widen it.
-        packet=make_packet(lake,phase='agent-cycle',token_budget=1800)
+        packet=make_packet(lake,phase='agent-cycle',token_budget=1800,mode=mode)
         return {'context_packet':packet}
     model=verified_champion(lake.root/'models')
     def market_node(state:AgentState):
@@ -141,7 +143,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
         compiled=graph.compile(checkpointer=SqliteSaver(conn))
         output=compiled.invoke({'symbol':symbol},config={'configurable':{'thread_id':thread_id}})
     finally:conn.close()
-    memory=ContextStore(lake.root)
+    memory=ContextStore(lake.root,mode=mode)
     try:
         evidence={'symbol':symbol,'decision':output['decision'],'model_digest':output['prediction'].get('model_sha256'),
                   'source':'LangGraph-shadow-ledger','context_skills':[x['name'] for x in output['context_packet']['task_skills']]}

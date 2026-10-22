@@ -7,6 +7,7 @@ from __future__ import annotations
 import collections,datetime as dt,hashlib,json,re,sqlite3,time
 from pathlib import Path
 from .atlas_skills import skill_index,tools_for,skills_for
+from .atlas_mode import ExecutionMode,require_mode,ModeSafetyError
 
 GENESIS='GENESIS'
 KINDS=frozenset({'WATCH_CYCLE','GRAPH_DECISION','RESEARCH_INCIDENT','REVIEW_CANDIDATE'})
@@ -43,8 +44,16 @@ def _clean(value,depth=0):
 
 class ContextStore:
     """Long-term evidence lives on disk; short-term packets are bounded views."""
-    def __init__(self,root):
+    def __init__(self,root,mode=ExecutionMode.SHADOW):
+        self.mode=require_mode(mode,permitted=(ExecutionMode.BACKTEST,ExecutionMode.SHADOW),operation='ContextStore')
         self.path=Path(root)/'context_memory.sqlite'
+        # A BACKTEST may inspect existing past evidence, but MUST NOT create a
+        # context database, WAL, lesson or operational decision record.
+        if self.mode is ExecutionMode.BACKTEST:
+            self.db=(sqlite3.connect(self.path.as_uri()+'?mode=ro',uri=True,timeout=30)
+                     if self.path.is_file() else None)
+            if self.db is not None:self.db.execute('PRAGMA query_only=ON')
+            return
         self.path.parent.mkdir(parents=True,exist_ok=True)
         self.db=sqlite3.connect(self.path,timeout=30)
         self.db.execute('PRAGMA busy_timeout=30000')
@@ -62,7 +71,11 @@ class ContextStore:
         ''')
         self.db.commit()
 
+    def _require_writable(self,operation):
+        require_mode(self.mode,permitted=(ExecutionMode.SHADOW,),operation=operation)
+
     def record(self,kind,source_ref,payload,source_digest=None):
+        self._require_writable('ContextStore.record')
         if kind not in KINDS:raise ValueError('Unrecognized event kind')
         if not isinstance(source_ref,str) or not source_ref or len(source_ref)>512:raise ValueError('Evidence reference required')
         clean=_clean(payload)
@@ -87,6 +100,7 @@ class ContextStore:
         return event_hash
 
     def propose_lesson(self,event_hash,hypothesis):
+        self._require_writable('ContextStore.propose_lesson')
         if not re.fullmatch(r'[0-9a-f]{64}',str(event_hash)):raise ValueError('Valid real event hash required')
         row=self.db.execute('SELECT 1 FROM context_events WHERE event_hash=?',(event_hash,)).fetchone()
         if not row:raise ValueError('Cannot attach lesson to unverified source event')
@@ -98,17 +112,23 @@ class ContextStore:
 
     def recent(self,limit=12):
         if not 1<=limit<=40:raise ValueError('Bounded recent-events query required')
+        # A historical replay MUST NOT see operational memories from later
+        # timestamps. Until PIT memory retrieval is implemented, reveal none.
+        if self.mode is ExecutionMode.BACKTEST or self.db is None:return []
         rows=self.db.execute('''SELECT observed_at_utc,kind,source_ref,source_sha256,payload_json,event_hash
             FROM context_events ORDER BY id DESC LIMIT ?''',(limit,)).fetchall()
         return [{'observed_at_utc':t,'kind':k,'source_ref':s,'source_sha256':h,'payload':json.loads(p),'event_hash':e}
                 for t,k,s,h,p,e in rows]
 
     def review_candidates(self):
+        # A backtest cannot consult hindsight-validated operational lessons.
+        if self.mode is ExecutionMode.BACKTEST or self.db is None:return []
         # Candidates are *never* promoted by reading a model's self-generated claims.
         rows=self.db.execute("SELECT id,event_hash,hypothesis FROM context_lessons WHERE status='CANDIDATE' ORDER BY id DESC LIMIT 30").fetchall()
         return [{'id':i,'event_hash':h,'hypothesis':s,'status':'CANDIDATE_UNVALIDATED'} for i,h,s in rows]
 
     def validate_lesson_from_evidence(self,lesson_id,validation_ref,validation_digest):
+        self._require_writable('ContextStore.validate_lesson_from_evidence')
         """Independent real evidence can promote a hypothesis, not a trading rule.
         Deliberately leaves strategy/model/weights unchanged.
         """
@@ -123,6 +143,7 @@ class ContextStore:
         return {'lesson_id':lesson_id,'status':'VALIDATED_EVIDENCE_ONLY','auto_change_model':False}
 
     def verify(self):
+        if self.db is None:return {'hash_chain_valid':True,'events_verified':0}
         previous=GENESIS
         count=0
         for row in self.db.execute('''SELECT observed_at_utc,kind,source_ref,source_sha256,payload_json,prev_hash,event_hash
@@ -135,13 +156,17 @@ class ContextStore:
         return {'hash_chain_valid':True,'events_verified':count}
 
     def status(self):
+        if self.db is None:
+            return {'database':str(self.path),'event_types':{},'lesson_statuses':{},
+                    'memory_policy':'BACKTEST_READ_ONLY_NO_DB_CREATED',**self.verify()}
         kinds=dict(self.db.execute('SELECT kind,COUNT(*) FROM context_events GROUP BY kind').fetchall())
         lessons=dict(self.db.execute('SELECT status,COUNT(*) FROM context_lessons GROUP BY status').fetchall())
         return {'database':str(self.path),'event_types':kinds,'lesson_statuses':lessons,
                 'memory_policy':'Append-only evidence; compact packets are read-only views; unvalidated lessons never control orders',
                 **self.verify()}
 
-    def close(self):self.db.close()
+    def close(self):
+        if self.db is not None:self.db.close()
 
 
 def _event_card(event):
@@ -155,14 +180,15 @@ def _event_card(event):
             'metrics':{key:payload[key] for key in permitted if key in payload}}
 
 
-def make_packet(lake,phase='watch',token_budget=1800):
+def make_packet(lake,phase='watch',token_budget=1800,mode=ExecutionMode.SHADOW):
     """Small deterministic context, not a raw transcript or an LLM instruction from web.
 
     Pinned guardrails live at both ends, while references to live facts remain
     in the immutable source ledgers and database.
     """
     if not 650<=int(token_budget)<=3000:raise ValueError('Token budget must be 650..3000')
-    store=ContextStore(lake.root)
+    mode=require_mode(mode,permitted=(ExecutionMode.BACKTEST,ExecutionMode.SHADOW),operation='make_packet')
+    store=ContextStore(lake.root,mode=mode)
     try:
         if not store.verify()['hash_chain_valid']:raise RuntimeError('Context hash chain corrupted; fail closed')
         recent=[_event_card(x) for x in store.recent(limit=12)] if store.status()['events_verified'] else []
@@ -188,7 +214,8 @@ def make_packet(lake,phase='watch',token_budget=1800):
             # Catalog remains available by name; do not remove pinned policy.
             packet['pinned_start']['tool_menu']=[{'name':x['name'],'permission':x['permission']} for x in tools_for(phase)]
         if len(_json(packet))>max_chars:raise RuntimeError('Pinned safety context does not fit bounded context budget')
-        packet['summary']={'token_budget_upper_estimate':token_budget,'actual_characters':len(_json(packet)),
+        packet['summary']={'execution_mode':mode.value,'memory_read_only':mode is ExecutionMode.BACKTEST,
+                           'token_budget_upper_estimate':token_budget,'actual_characters':len(_json(packet)),
                           'recent_events_included':len(packet['working_memory']),
                           'skills_loaded':len(packet['task_skills']),
                           'evidence_source':'local hash-chained SQLite and packaged SKILL.md only',
@@ -197,12 +224,12 @@ def make_packet(lake,phase='watch',token_budget=1800):
     finally:store.close()
 
 
-def inspect(lake,phase='watch'):
-    store=ContextStore(lake.root)
+def inspect(lake,phase='watch',mode=ExecutionMode.SHADOW):
+    store=ContextStore(lake.root,mode=mode)
     try:
         result={'memory':store.status(),'unvalidated_lessons':store.review_candidates(),
                 'tool_count_all_registered':len(__import__('wallex_bot.atlas_skills',fromlist=['TOOLS']).TOOLS),
                 'active_phase':phase}
-        result['compact_packet']=make_packet(lake,phase)
+        result['compact_packet']=make_packet(lake,phase,mode=mode)
         return result
     finally:store.close()

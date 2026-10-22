@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse,json,sys,datetime,traceback,os
 from pathlib import Path
 from .atlas_archive import Lake,ALL_RESOLUTIONS
+from .atlas_mode import cli_mode,mode_status,ExecutionMode
 
 
 def pretty(value):print(json.dumps(value,ensure_ascii=False,indent=2,default=str))
@@ -13,7 +14,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status'])
     p.add_argument('--days',type=int,default=7)
     p.add_argument('--minutes',type=int,default=10)
     p.add_argument('--hours',type=int,default=48)
@@ -28,7 +29,12 @@ def main(argv=None):
     p.add_argument('--fee',type=float,default=.001)
     p.add_argument('--slippage',type=float,default=.0005)
     p.add_argument('--top',type=int,default=8)
+    p.add_argument('--mode',choices=('BACKTEST','SHADOW','LIVE'),default=None,
+                   help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
     args=p.parse_args(argv)
+    effective_mode=cli_mode(args.command,args.mode)
+    if args.command=='mode-status':
+        pretty(mode_status());return
     lake=Lake()
     try:
         if args.command in ('context-status','context-preview','context-review'):
@@ -47,13 +53,13 @@ def main(argv=None):
             if args.command=='liquidation-status':
                 pretty(liquidation_status(lake.root))
             else:
-                pretty(liquidate_paper_positions(lake, fee=args.fee, require_watch_deadline=True))
+                pretty(liquidate_paper_positions(lake, fee=args.fee, require_watch_deadline=True,mode=ExecutionMode.SHADOW))
             return
         if args.command=='validate':
             from .atlas_validation import validate_archive,store_report
             result=validate_archive(lake,fee=args.fee,slippage=args.slippage,
-                                    resolution=args.resolution,max_symbols=args.top)
-            filename=store_report(lake,result)
+                                    resolution=args.resolution,max_symbols=args.top,mode=ExecutionMode.BACKTEST)
+            filename=store_report(lake,result,mode=ExecutionMode.BACKTEST)
             pretty({'report_path':str(filename),**result});return
         if args.command=='broker-status':
             from .atlas_broker import broker_status
@@ -70,14 +76,14 @@ def main(argv=None):
             pretty(audit_v3(lake));return
         if args.command=='watch':
             from .atlas_watch import run as watch
-            pretty(watch(lake,hours=args.hours,top=args.top));return
+            pretty(watch(lake,hours=args.hours,top=args.top,mode=ExecutionMode.SHADOW));return
         if args.command=='capture-live':
             from .atlas_stream import capture
             if not lake.symbols('tmn-spot'):lake.discover()
             pretty(capture(lake,minutes=args.minutes,max_markets=min(args.top,24)));return
         if args.command=='agent-cycle':
             from .atlas_agent import cycle
-            pretty(cycle(lake,symbol=args.symbol));return
+            pretty(cycle(lake,symbol=args.symbol,mode=ExecutionMode.SHADOW));return
         if args.command=='mcp-smoke':
             from .mcp_smoke import run as mcp_check
             pretty(mcp_check());return
@@ -180,7 +186,7 @@ def main(argv=None):
             if args.command=='run' and not promoted_this_run:
                 pretty({'shadow_not_started':'No new model was promoted in this run; refusing silent fallback to older model'})
             else:
-                try:pretty({'shadow':shadow_cycle(lake,top=args.top,fee=args.fee)})
+                try:pretty({'shadow':shadow_cycle(lake,top=args.top,fee=args.fee,mode=ExecutionMode.SHADOW)})
                 except (RuntimeError,ImportError,ValueError) as e:pretty({'shadow_not_started':str(e)})
     finally:lake.close()
 

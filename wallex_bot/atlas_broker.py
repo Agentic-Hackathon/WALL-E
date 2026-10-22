@@ -22,6 +22,7 @@ import json
 import math
 import re
 import sqlite3
+from .atlas_mode import ExecutionMode,require_mode
 
 
 class BrokerSafetyError(RuntimeError):
@@ -157,7 +158,8 @@ class ShadowBroker:
     No second price or risk implementation exists here. Genuine book data must
     be passed by the existing real Wallex observation call site.
     """
-    def __init__(self, paper_account):
+    def __init__(self, paper_account, mode=ExecutionMode.SHADOW):
+        require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='ShadowBroker')
         self.paper = paper_account
 
     def submit(self, intent: OrderIntent, *, forecast: dict | None = None,

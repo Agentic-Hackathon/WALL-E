@@ -24,6 +24,7 @@ import sqlite3
 import time
 
 from .atlas_broker import BrokerSafetyError, OrderIntent, ShadowBroker
+from .atlas_mode import ExecutionMode,require_mode
 from .atlas_shadow import PaperAccount
 from . import market
 from .live_scout import _levels  # parse genuine Wallex order-book levels, not mocked quotes
@@ -140,7 +141,7 @@ def _observed_exit_book(raw, quantity):
 
 
 def liquidate_paper_positions(lake, *, fee=.001, require_watch_deadline=True,
-                              max_fetch_seconds=15.0):
+                              max_fetch_seconds=15.0,mode=ExecutionMode.SHADOW):
     """Close paper holdings once, using actual newly queried Wallex bid depth.
 
     On missing/invalid quotes, record a failure and RETAIN the position.
@@ -148,6 +149,7 @@ def liquidate_paper_positions(lake, *, fee=.001, require_watch_deadline=True,
     duplicate submissions with identical evidence remain atomic and safe.
     There is *no real-order transport* or fabricated market fixture.
     """
+    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='liquidate_paper_positions')
     if not isinstance(fee, (float, int)) or isinstance(fee, bool) or not math.isfinite(fee) or not 0 <= fee < .05:
         raise ValueError('Explicit finite research fee required; NOT an exchange-verified fee')
     if not isinstance(max_fetch_seconds, (int, float)) or not 0 < max_fetch_seconds <= 30:
