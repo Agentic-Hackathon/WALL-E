@@ -1,0 +1,363 @@
+diff --git a/CHANGELOG_STAGE10_EDGE_TRIAGE_FA.md b/CHANGELOG_STAGE10_EDGE_TRIAGE_FA.md
+new file mode 100644
+index 0000000..00bf0bb
+--- /dev/null
++++ b/CHANGELOG_STAGE10_EDGE_TRIAGE_FA.md
+@@ -0,0 +1,34 @@
++# Stage 10 — تحلیل شواهد موجود: Edge و اختلاف زمان‌بندی
++
++## مبنا و هدف
++
++مبنا: سورس commit محلی `0bc8af2` در شاخه `integration/atlas-operational-audit`؛ فهرست منابع و مجوزهای قبلی دست‌نخورده باقی مانده‌اند. کد این مرحله مستقلاً نوشته شده است؛ هیچ کد مخزن ثالث کپی نشده است.
++
++این مرحله در پاسخ به گزارش Stage 9 ساخته شد: در هفت بازار، جمعاً ۱۰۳ بررسی معتبر داشتیم که در هیچ‌یک `q10` از برآورد هزینه عبور نکرده بود. گزارش مرحله نهم همچنین ۱۹ RuntimeError، سه ConnectionError و دو ReadTimeout نشان داد. **این آمار ورودی از گزارش کاربر است و اجرای Stage 10 روی دیتابیس محلی او هنوز باید صورت بگیرد.**
++
++## تغییرات
++
++- `wallex_bot/atlas_edge_triage.py`: نمایش صرفاً خواندنی فواصل q10، q50 و q90 از هزینه فرضی دوطرفه، اسپرد واقعی زمان Quote و حاشیه ایمنی؛ همه به log basis points؛ q50/q90 تنها شاخص تشخیصی‌اند نه مجوز خرید.
++- تعیین اختلاف زمان دریافت Quote اولیه نسبت به timestamp ویژگی آخرین کندل و اختلاف زمان Quote نتیجه نسبت به deadline تعریف‌شده. این دو اختلاف باعث می‌شوند ارزیابی quote-to-quote را نتوان بدون کالیبراسیون، معادل هدف آموزش close-to-close گرفت.
++- دسته‌بندی `REJECTED` با واژگان ازپیش‌تعیین‌شده و فقط از متن خطای ثبت‌شده. متن‌های آزاد و مسیرهای حساس نمایش داده نمی‌شوند؛ خطاهای ناشناخته به‌صورت `RUNTIME_ERROR_UNCLASSIFIED_FROM_STORED_EVIDENCE` باقی می‌مانند.
++- اصلاح باگ قدیمی برچسب `median_forecast_mae_log_return` در `atlas_forward.py`: مقدار اکنون واقعاً Median است. میانگین در `mean_forecast_mae_log_return` اضافه شد. هر دو تنها Proxy بازده Quote هستند.
++- CLI: `python -m wallex_bot.atlas_cli edge-triage`، کاملاً read-only و بدون ساخت Lake.
++
++## محدودیت‌های عمدی
++
++- **هیچ** تغییری در RiskGate، قاعده q10، تنظیمات کارمزد، مدل، Champion، Strategy، ShadowBroker، Watch، موجودی یا دسترسی LIVE وجود ندارد.
++- هیچ شبیه‌سازی بازار، منبع قیمت جایگزین، Fill ساختگی، درخواست شبکه، API خصوصی یا سفارش واقعی وجود ندارد.
++- فایل‌های SQLite فقط با `mode=ro` و `PRAGMA query_only` بررسی می‌شوند؛ در صورت نبودشان ایجاد نمی‌شوند.
++- گزارش Stage 10 به‌صورت مستقل تمام SHA-256 receiptها را دوباره تأیید نمی‌کند. نتیجه `MATCH` مربوط به بازپخش Stage 8 با ارزیابی کیفیت مدل متفاوت است.
++- هزینه‌ها **فرضی** هستند، اجازه نمادهای مسابقه/حساب و کارمزد واقعی هنوز مستقل بررسی نشده است.
++- q50 بالاتر از هزینه، شرط کافی برای اجرای معامله نیست. هیچ تنظیم ریسک یا روش معاملاتی بدون ارزیابی OOS ارتقا نمی‌یابد.
++- تمامی شاخص‌های زمانی و آماری فقط از واقعیت ذخیره‌شده می‌آیند؛ سطرهای ناقص برای فواصل و هزینه حذف می‌شوند و تعداد بررسی معتبر صریح گزارش می‌شود.
++- کد این مرحله برای اجرای دلخواه Python در فضای Sandbox امنیتی نیست؛ قرارداد مسیرهای رسمی خواندنی است.
++
++## آزمون
++
++بر نسخه منطبق در محیط ساخت: `112 passed, 5 skipped`؛ تست‌های جدید فقط قراردادها و غیاب فایل‌ها و رشته خطاهای واقعی موجود در سورس را ارزیابی می‌کنند. این تست‌ها نه ۴۸ساعت شواهد آینده‌نگر ایجاد می‌کنند، نه سودآوری را اثبات می‌کنند.
++
++## بارم مسابقه
++
++کمک اصلی: استدلال راهبرد (۴۰)، بازتولیدپذیری (۲۵)، Backtest/Shadow (۲۰)، و تشخیص ضعف عملیاتی. هیچ ادعایی درباره امتیاز قطعی، افزایش PnL یا عملکرد LIVE نداریم.
+diff --git a/QUICKSTART_STAGE10_EDGE_TRIAGE_FA.md b/QUICKSTART_STAGE10_EDGE_TRIAGE_FA.md
+new file mode 100644
+index 0000000..4f5e205
+--- /dev/null
++++ b/QUICKSTART_STAGE10_EDGE_TRIAGE_FA.md
+@@ -0,0 +1,30 @@
++# نصب Stage 10 — بدون اینترنت و بدون سفارش
++
++پایه: `integration/atlas-operational-audit` با HEAD `0bc8af2`. اجرای Watch را در مرز یک چرخه متوقف کنید؛ به دیتابیس‌ها و مدل‌ها دست نزنید.
++
++ZIP پچ را در **ریشه** `wallex_agent_v3` استخراج کنید. بسته تنها Patch، اسکریپت نصب و README اولیه را دارد؛ فایل‌های Python و مستندات جدید فقط با Git Patch ایجاد می‌شوند تا خطای `already exists` رخ ندهد.
++
++```bash
++cd /d/Hackaton/Wallex/wallex_agent_v3
++conda activate shbk
++bash scripts/apply_stage10_triage.sh
++```
++
++پس از نصب:
++
++```bash
++python -m wallex_bot.atlas_cli edge-triage
++python -m wallex_bot.atlas_cli forward-report
++python -m wallex_bot.atlas_cli mode-status
++```
++
++برای بررسی هویت نسخه:
++
++```bash
++git log -1 --oneline
++python -m pytest -q
++```
++
++از خروجی `edge-triage` این فیلدها برای تصمیم توسعه بعدی مهم‌اند: `classified_rejections`، `q10_minus_cost_log_bps`، `q50_exceeds_assumed_cost_count_diagnostic_only`، `quote_received_after_feature_timestamp_minutes` و `future_quote_arrives_after_due_minutes`. تمام مقادیر مربوط به تاریخچه واقعی موجود است؛ هیچ مشاهده‌ای ساخته نمی‌شود.
++
++وجود `q50_exceeds` مثبت به معنی مجوز خرید نیست. آستانه q10 و محافظت‌های ریسک همچنان باید پابرجا بمانند تا تحلیل قوی‌تری خارج از نمونه و با کارمزد تأییدشده انجام شود.
+diff --git a/tests/test_stage10_edge_triage_no_market_fixtures.py b/tests/test_stage10_edge_triage_no_market_fixtures.py
+new file mode 100644
+index 0000000..32cd6fd
+--- /dev/null
++++ b/tests/test_stage10_edge_triage_no_market_fixtures.py
+@@ -0,0 +1,51 @@
++"""No invented market data or fabricated market returns. Contracts only."""
++import ast
++from pathlib import Path
++from wallex_bot.atlas_edge_triage import edge_triage_report, read_cost_and_timing, read_shadow_errors, classify_recorded_error
++
++
++def test_empty_location_never_creates_db_or_directories(tmp_path):
++    before=list(tmp_path.iterdir())
++    result=edge_triage_report(tmp_path)
++    assert result['forecast_cost_and_timing']['status']=='NO_EXISTING_FORWARD_LEDGER'
++    assert result['shadow_errors']['status']=='NO_EXISTING_SHADOW_LEDGER'
++    assert not result['order_submission'] and not result['writes_or_permission_changes']
++    assert list(tmp_path.iterdir())==before
++
++
++def test_missing_subdirectory_no_side_effects(tmp_path):
++    root=tmp_path/'does_not_exist'
++    assert read_cost_and_timing(root)['status']=='NO_EXISTING_FORWARD_LEDGER'
++    assert read_shadow_errors(root)['status']=='NO_EXISTING_SHADOW_LEDGER'
++    assert not root.exists()
++
++
++def test_known_source_error_is_categorized_without_exposing_payload():
++    assert classify_recorded_error('RuntimeError: Latest genuine candle is stale; refresh market archive')=='STALE_GENUINE_CANDLE'
++    assert classify_recorded_error('RuntimeError: arbitrary message including secrets')=='RUNTIME_ERROR_UNCLASSIFIED_FROM_STORED_EVIDENCE'
++    assert classify_recorded_error('ReadTimeout: arbitrary message')=='NETWORK_READTIMEOUT'
++    assert classify_recorded_error(None)=='ERROR_NOT_RECORDED'
++
++
++def test_audit_has_no_http_writes_sql_modifications_or_market_fixtures():
++    source=(Path(__file__).parents[1]/'wallex_bot'/'atlas_edge_triage.py').read_text('utf-8')
++    tree=ast.parse(source)
++    imports=set()
++    for n in ast.walk(tree):
++        if isinstance(n,ast.Import): imports.update(x.name.split('.')[0] for x in n.names)
++        if isinstance(n,ast.ImportFrom) and n.module:imports.add(n.module.split('.')[0])
++    assert not imports.intersection({'requests','urllib','socket','http','torch','market','wallex_api'})
++    for forbidden in ('INSERT INTO','UPDATE forecasts','DELETE FROM','CREATE TABLE','WALLEX_API_KEY'):
++        assert forbidden not in source
++
++
++def test_cli_registration_is_read_only_early_dispatch():
++    src=(Path(__file__).parents[1]/'wallex_bot'/'atlas_cli.py').read_text('utf8')
++    assert "args.command=='edge-triage'" in src
++    assert src.index("args.command=='edge-triage'")<src.index('lake=Lake()')
++
++
++def test_forward_median_field_no_longer_uses_mean():
++    src=(Path(__file__).parents[1]/'wallex_bot'/'atlas_forward.py').read_text('utf8')
++    assert "'median_forecast_mae_log_return':round(float(np.median(abs(actual-predicted)))" in src
++    assert "'mean_forecast_mae_log_return':round(float(np.mean(abs(actual-predicted)))" in src
+diff --git a/wallex_bot/atlas_cli.py b/wallex_bot/atlas_cli.py
+index 89a2b23..343d490 100644
+--- a/wallex_bot/atlas_cli.py
++++ b/wallex_bot/atlas_cli.py
+@@ -14,7 +14,7 @@ def main(argv=None):
+     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
+         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
+     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
+-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report'])
++        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage'])
+     p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
+     p.add_argument('--days',type=int,default=7)
+     p.add_argument('--minutes',type=int,default=10)
+@@ -35,6 +35,10 @@ def main(argv=None):
+                    help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
+     args=p.parse_args(argv)
+     effective_mode=cli_mode(args.command,args.mode)
++    if args.command=='edge-triage':
++        from .atlas_edge_triage import edge_triage_report
++        from .atlas_archive import root_path
++        pretty(edge_triage_report(root_path()));return
+     if args.command=='operations-report':
+         from .atlas_operational import operational_report
+         from .atlas_archive import root_path
+diff --git a/wallex_bot/atlas_edge_triage.py b/wallex_bot/atlas_edge_triage.py
+new file mode 100644
+index 0000000..493c4ba
+--- /dev/null
++++ b/wallex_bot/atlas_edge_triage.py
+@@ -0,0 +1,185 @@
++"""Stage 10: read-only economic edge and timing audit on GENUINE archived receipts.
++
++No market data is manufactured, fetched, adjusted or inserted. No risk-policy
++mutation, model promotion, hypothetical fills, account writes or trade calls.
++Source: Wallex Atlas locally recorded forward/Shadow receipt schemas.
++"""
++from __future__ import annotations
++import collections
++import math
++import statistics
++import json
++from pathlib import Path
++from .atlas_operational import _read_connection, _table
++
++# Only source-code-known RuntimeError literals are classified. Raw messages,
++# symbols and arbitrary JSON content are never echoed from historical events.
++_ERROR_RULES = (
++    ('Latest genuine candle is stale', 'STALE_GENUINE_CANDLE'),
++    ('Insufficient genuine contiguous context', 'INSUFFICIENT_CONTIGUOUS_HISTORY'),
++    ('Recent real indicators missing', 'NONFINITE_INDICATOR_FEATURES'),
++    ('Uncalibrated/inconsistent quantile predictions', 'INVALID_OR_CROSSED_QUANTILES'),
++    ('Cannot mark equity: real bid observations missing', 'MISSING_OBSERVED_BID_FOR_HELD_ASSET'),
++    ('Persistent paper audit corrupted', 'INVALID_SHADOW_AUDIT_CHAIN'),
++    ('No approved explicit champion', 'MISSING_APPROVED_CHAMPION'),
++    ('Champion checkpoint has changed', 'CHAMPION_FILE_CHANGED'),
++    ('Champion provenance mismatch', 'CHAMPION_PROVENANCE_MISMATCH'),
++    ('Insufficient balanced genuine windows', 'INSUFFICIENT_BALANCED_TRAINING_WINDOWS'),
++    ('No usable continuous genuine market segments', 'NO_CONTIGUOUS_MARKET_SEGMENTS'),
++    ('Paper trade must own its atomic SQLite transaction', 'ATOMIC_TRANSACTION_CONFLICT'),
++)
++
++
++def classify_recorded_error(value):
++    if not isinstance(value, str):
++        return 'ERROR_NOT_RECORDED'
++    exception = value.split(':', 1)[0].strip()
++    if exception in ('ReadTimeout', 'ConnectionError', 'ConnectTimeout'):
++        return 'NETWORK_' + exception.upper()
++    if exception != 'RuntimeError':
++        return 'OTHER_RECORDED_EXCEPTION' if exception else 'ERROR_NOT_RECORDED'
++    for prefix, label in _ERROR_RULES:
++        if prefix in value:
++            return label
++    return 'RUNTIME_ERROR_UNCLASSIFIED_FROM_STORED_EVIDENCE'
++
++
++def _safe_number(value):
++    try:
++        number=float(value)
++        return number if math.isfinite(number) else None
++    except (TypeError,ValueError,OverflowError):
++        return None
++
++
++def _median(seq):
++    finite = [n for x in seq if (n := _safe_number(x)) is not None]
++    return round(statistics.median(finite), 6) if finite else None
++
++
++def _range(seq):
++    finite = [n for x in seq if (n := _safe_number(x)) is not None]
++    if not finite:
++        return {'min': None, 'median': None, 'max': None}
++    return {'min': round(min(finite), 6), 'median': round(statistics.median(finite), 6), 'max': round(max(finite), 6)}
++
++
++def read_shadow_errors(root):
++    db = _read_connection(Path(root)/'shadow.sqlite')
++    if db is None:
++        return {'status': 'NO_EXISTING_SHADOW_LEDGER'}
++    try:
++        if not _table(db, 'events'):
++            return {'status': 'NO_EVENTS_TABLE'}
++        grouped = collections.Counter()
++        recent_ids = collections.defaultdict(list)
++        for event_id, action, payload in db.execute('SELECT id,action,payload FROM events WHERE action=? ORDER BY id', ('REJECTED',)):
++            try:
++                item = json.loads(payload)
++                label = classify_recorded_error(item.get('error') if isinstance(item,dict) else None)
++            except (ValueError, TypeError):
++                label = 'INVALID_EVENT_PAYLOAD'
++            grouped[label] += 1
++            if len(recent_ids[label]) < 5:
++                recent_ids[label].append(event_id)
++        return {'status':'READ_ONLY','classified_rejections':dict(sorted(grouped.items())),
++                'event_ids_for_local_private_investigation':dict(sorted(recent_ids.items())),
++                'unclassified_is_not_necessarily_a_single_root_cause': True,
++                'free_text_error_messages_exposed': False}
++    finally:
++        db.close()
++
++
++def read_cost_and_timing(root):
++    db = _read_connection(Path(root)/'forward_observations.sqlite')
++    if db is None:
++        return {'status':'NO_EXISTING_FORWARD_LEDGER'}
++    try:
++        if not all(_table(db, t) for t in ('quotes', 'forecasts', 'outcomes')):
++            return {'status':'INCOMPLETE_FORWARD_SCHEMA'}
++        data = db.execute('''
++            SELECT f.symbol,f.feature_end_ts,f.q10,f.q50,f.q90,f.fee_per_side,
++                   f.due_epoch,f.horizon_seconds,f.status,
++                   orig.observed_epoch,orig.best_bid,orig.best_ask,
++                   o.actual_mid_log_return,future.observed_epoch
++            FROM forecasts f JOIN quotes orig ON orig.id=f.origin_quote_id
++            LEFT JOIN outcomes o ON o.forecast_id=f.id
++            LEFT JOIN quotes future ON future.id=o.future_quote_id
++            ORDER BY f.symbol,orig.observed_epoch,f.id''').fetchall()
++        grouped=collections.defaultdict(list)
++        for record in data:
++            grouped[record[0]].append(record)
++        output=[]
++        total_checks=0
++        for sym, rows in sorted(grouped.items()):
++            all_gaps=[];fee_bps=[];spread_bps=[];threshold_bps=[];q10_bps=[];q50_bps=[]
++            from_feature_age=[];arrival_lags=[];valid=0;scored=0
++            q10_pass=q50_pass=q90_pass=0
++            nonoverlap=0;next_due=-math.inf
++            stale_feature=0
++            for (_,feature_ts,q10,q50,q90,fee,due,horizon,status,epoch,bid,ask,actual,future_epoch) in rows:
++                if _safe_number(feature_ts) is not None and _safe_number(epoch) is not None:
++                    feature_age=float(epoch)-float(feature_ts)
++                    from_feature_age.append(feature_age/60)
++                    if feature_age>float(horizon): stale_feature += 1
++                if _safe_number(future_epoch) is not None and _safe_number(due) is not None:
++                    arrival_lags.append((float(future_epoch)-float(due))/60)
++                if actual is not None and future_epoch is not None:
++                    scored+=1
++                    if _safe_number(epoch) is not None and _safe_number(due) is not None and float(epoch)>=next_due:
++                        nonoverlap += 1
++                        next_due=float(due)
++                try:
++                    nums=[float(v) for v in (q10,q50,q90,fee,bid,ask)]
++                except (TypeError,ValueError,OverflowError): continue
++                if not all(map(math.isfinite,nums)): continue
++                if not (0 < bid < ask and 0 <= fee < 0.05 and q10<=q50<=q90): continue
++                edge=2*math.log1p(fee)+math.log(ask/bid)+0.001
++                valid +=1
++                total_checks+=1
++                threshold_bps.append(edge*10000)
++                fee_bps.append(2*math.log1p(fee)*10000)
++                spread_bps.append(math.log(ask/bid)*10000)
++                q10_bps.append(q10*10000)
++                q50_bps.append(q50*10000)
++                all_gaps.append((q10-edge)*10000)
++                q10_pass+=int(q10>edge)
++                q50_pass+=int(q50>edge)
++                q90_pass+=int(q90>edge)
++            output.append({
++                'symbol':sym,'forecasts':len(rows),'scored_with_later_actual_quote':scored,
++                'valid_fee_and_book_checks':valid,
++                'q10_exceeds_assumed_cost_count':q10_pass,
++                'q50_exceeds_assumed_cost_count_diagnostic_only':q50_pass,
++                'q90_exceeds_assumed_cost_count_diagnostic_only':q90_pass,
++                'q10_minus_cost_log_bps':_range(all_gaps),
++                'q10_forecast_log_bps':_range(q10_bps),
++                'q50_forecast_log_bps':_range(q50_bps),
++                'total_cost_log_bps':_range(threshold_bps),
++                'assumed_roundtrip_fee_log_bps':_median(fee_bps),
++                'observed_spread_log_bps':_range(spread_bps),
++                'policy_safety_log_bps':10,
++                'quote_received_after_feature_timestamp_minutes':_range(from_feature_age),
++                'feature_age_exceeds_full_prediction_horizon_count':stale_feature,
++                'future_quote_arrives_after_due_minutes':_range(arrival_lags),
++                'nonoverlapping_scored_horizons_upper_bound':nonoverlap,
++            })
++        return {'status':'READ_ONLY','total_forecasts':len(data),
++                'total_valid_cost_checks':total_checks,'symbols':output,
++                'time_anchor_warning':'Model trained on close[t+h]/close[t] with feature timestamp at candle t; forward observation due uses origin-quote time plus horizon, not original feature timestamp.',
++                'target_warning':'Forward outcomes are observed quote-mid returns, not training candle-close returns; timing differences and selection effects prevent calibrated OOS performance claims.',
++                'fee_warning':'Fees recorded are research assumptions; depth is top-of-book evidence, not executable fill confirmation.',
++                'q50_and_q90_counts_do_not_authorize_trading':True,
++                'receipt_hash_chains_not_reverified_by_this_report':True,
++                'policy_safety_constant_is_current_source_value_log_return':0.001}
++    finally:
++        db.close()
++
++
++def edge_triage_report(root):
++    return {'mode':'EXISTING_RECEIPTS_READ_ONLY_EDGE_TRIAGE',
++            'network_or_model_requests':False,'order_submission':False,
++            'writes_or_permission_changes':False,
++            'shadow_errors':read_shadow_errors(root),
++            'forecast_cost_and_timing':read_cost_and_timing(root),
++            'risk_gate_policy_unchanged':True}
+diff --git a/wallex_bot/atlas_forward.py b/wallex_bot/atlas_forward.py
+index 7302b5f..5aae7a8 100644
+--- a/wallex_bot/atlas_forward.py
++++ b/wallex_bot/atlas_forward.py
+@@ -140,7 +140,9 @@ class ForwardLedger:
+             predicted=np.array([r[2] for r in data],dtype=float)
+             net=np.array([r[5] for r in data],dtype=float)
+             result['forecast_vs_quote_proxy_diagnostics']={
+-                'median_forecast_mae_log_return':round(float(np.mean(abs(actual-predicted))),9),
++                'median_forecast_mae_log_return':round(float(np.median(abs(actual-predicted))),9),
++                'mean_forecast_mae_log_return':round(float(np.mean(abs(actual-predicted))),9),
++                'absolute_error_definition':'Median and mean of absolute log-return errors against later real quote midpoints; neither matches training candle-close targets exactly',
+                 'directional_accuracy':round(float(np.mean((actual>0)==(predicted>0))),6),
+                 'real_mid_log_return_mean':round(float(np.mean(actual)),9),
+                 'observed_ask_to_future_bid_net_mean':round(float(np.mean(net)),9),

@@ -140,7 +140,9 @@ class ForwardLedger:
             predicted=np.array([r[2] for r in data],dtype=float)
             net=np.array([r[5] for r in data],dtype=float)
             result['forecast_vs_quote_proxy_diagnostics']={
-                'median_forecast_mae_log_return':round(float(np.mean(abs(actual-predicted))),9),
+                'median_forecast_mae_log_return':round(float(np.median(abs(actual-predicted))),9),
+                'mean_forecast_mae_log_return':round(float(np.mean(abs(actual-predicted))),9),
+                'absolute_error_definition':'Median and mean of absolute log-return errors against later real quote midpoints; neither matches training candle-close targets exactly',
                 'directional_accuracy':round(float(np.mean((actual>0)==(predicted>0))),6),
                 'real_mid_log_return_mean':round(float(np.mean(actual)),9),
                 'observed_ask_to_future_bid_net_mean':round(float(np.mean(net)),9),
