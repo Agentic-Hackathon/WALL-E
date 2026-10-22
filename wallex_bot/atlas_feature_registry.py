@@ -7,13 +7,13 @@ from __future__ import annotations
 
 import hashlib
 import math
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-RECIPE_VERSION='ATLAS_ADVANCED_FEATURE_RECIPE_V3_PIT_SAFE_RESEARCH_ONLY'
+RECIPE_VERSION='ATLAS_ADVANCED_FEATURE_RECIPE_V3_1_PROVENANCE_RESEARCH_ONLY'
 TIMEFRAMES={'1m':'1','5m':'5','15m':'15','30m':'30','1h':'60','4h':'240','1D':'1D'}
 SECONDS={'1':60,'5':300,'15':900,'30':1800,'60':3600,'240':14400,'1D':86400}
 
@@ -25,10 +25,12 @@ class FeatureDefinition:
     source:str='verified_closed_ohlcv'; output_dtype:str='float64'
     recipe_version:str=RECIPE_VERSION
 
-def _d(name,family,formula,lookback,inputs=('open','high','low','close','volume'),timeframe='15'):
+def _d(name,family,formula,lookback,inputs=('open','high','low','close','volume'),timeframe='TIMEFRAME_TEMPLATE'):
     return FeatureDefinition(name,family,timeframe,formula,lookback,lookback,inputs,
         'NaN; never impute/forward-fill', 'NaN when undefined; never substitute price/volume',
-        'candle close only; as-of join by close epoch')
+        'max(candle_close, all dependency receipts); unknown legacy availability is ineligible',
+        source=('provenance_verified_order_book_snapshot' if family=='microstructure' else
+                'aligned_verified_cross_asset_candles' if family=='cross_asset' else 'verified_closed_ohlcv'))
 
 # Definitions are intentionally explicit: their formula, data dependency and
 # warmup travel with every report and can be disabled/grouped for ablation.
@@ -67,15 +69,25 @@ def registry_payload():
     digest=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     return {'recipe_version':RECIPE_VERSION,'implementation_sha256':digest,'feature_count':len(REGISTRY),
             'definitions':[asdict(x) for x in REGISTRY],
+            'timeframe_instances':[asdict(bind_timeframe(x,res)) for x in REGISTRY
+                for res in (('snapshot',) if x.family=='microstructure' else tuple(SECONDS))],
+            'extension_registries':{'NEWS_ENHANCED':'wallex_bot.atlas_news_features.registry'},
+            'profiles':{'CORE':'UNCHANGED_CHAMPION_FEATURES_ONLY','ADVANCED':'V3_1_RESEARCH_ONLY',
+                        'NEWS_ENHANCED':'CORE_PLUS_NEWS_PIT_V1_RESEARCH_ONLY'},
             'champion_recipe_unchanged':True,'promotion':'DISABLED'}
+
+def bind_timeframe(definition,resolution):
+    allowed=('snapshot',) if definition.family=='microstructure' else tuple(SECONDS)
+    if resolution not in allowed:raise ValueError('unsupported feature timeframe instance')
+    return replace(definition,timeframe=resolution)
 
 def sync_requirements(profile='advanced'):
     """Return demand derived from definitions, never a hidden fixed 48h constant."""
-    if profile=='watch_core':
+    if profile in ('watch_core','CORE','NEWS_ENHANCED'):
         # Existing Champion still consumes only 15m.  The per-asset gate remains
         # strict for that input while V3 stays a separate research recipe.
         return {'15':{'warmup_bars':151,'warmup_hours':37.75,'required':True}}
-    if profile!='advanced':raise ValueError('unknown feature requirement profile')
+    if profile not in ('advanced','ADVANCED'):raise ValueError('unknown feature requirement profile')
     # Max feature warmup by timeframe.  1D is recorded but intentionally not
     # backfilled beyond DataSync's 72h startup safety ceiling.
     return {'1':{'warmup_bars':60,'warmup_hours':1.0,'required':True},
@@ -114,7 +126,11 @@ def compute_ohlcv_features(frame):
     return x[['timestamp']+cols].replace([np.inf,-np.inf],np.nan)
 
 def align_asof(base, other, *, base_seconds=900, other_seconds=60):
-    """Backward PIT join: source feature may be used only after its candle closes."""
+    """Retrospective close-clock alignment ONLY, not historical PIT evidence.
+
+    Use atlas_feature_provenance.align_available with verified receipt columns
+    for any historical training/decision pipeline.
+    """
     left=base[['timestamp']].copy();left['available_at']=left.timestamp+base_seconds
     right=other.copy();right['available_at']=right.timestamp+other_seconds
     return pd.merge_asof(left.sort_values('available_at'),right.drop(columns='timestamp').sort_values('available_at'),on='available_at',direction='backward',allow_exact_matches=True)
@@ -122,6 +138,10 @@ def align_asof(base, other, *, base_seconds=900, other_seconds=60):
 def compute_microstructure_features(measured):
     """Map only an actual stored/received depth measurement; never infer a book from OHLCV."""
     if not isinstance(measured,dict):raise ValueError('real measured order-book mapping required')
+    provenance=measured.get('provenance',{})
+    if (not isinstance(provenance,dict) or not isinstance(provenance.get('source_sha256'),str)
+            or len(provenance['source_sha256'])!=64 or not provenance.get('observed_at')):
+        return {'book_spread_bps':np.nan,'book_imbalance':np.nan}
     spread=measured.get('spread_bps');imbalance=measured.get('top5_quote_imbalance')
     if not all(isinstance(x,(int,float)) and math.isfinite(x) for x in (spread,imbalance)):
         return {'book_spread_bps':np.nan,'book_imbalance':np.nan}

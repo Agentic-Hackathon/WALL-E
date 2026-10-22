@@ -21,6 +21,7 @@ PROTOCOL = 'ATLAS_PIT_MEMORY_RETRIEVAL_V1'
 HALF_LIFE_HOURS = 24.0
 CANDIDATE_CAP = 2000
 KIND_IMPORTANCE = {
+    'NEWS_EVIDENCE': 0.55,
     'RESEARCH_INCIDENT': 0.88,
     'GRAPH_DECISION': 0.70,
     'REVIEW_CANDIDATE': 0.48,
@@ -28,8 +29,8 @@ KIND_IMPORTANCE = {
 }
 PURPOSE_MATCH = {
     'watch': ('WATCH_CYCLE','RESEARCH_INCIDENT'),
-    'agent-cycle': ('GRAPH_DECISION','RESEARCH_INCIDENT'),
-    'research': ('RESEARCH_INCIDENT','REVIEW_CANDIDATE'),
+    'agent-cycle': ('GRAPH_DECISION','RESEARCH_INCIDENT','NEWS_EVIDENCE'),
+    'research': ('RESEARCH_INCIDENT','REVIEW_CANDIDATE','NEWS_EVIDENCE'),
     'audit': ('REVIEW_CANDIDATE','RESEARCH_INCIDENT'),
 }
 SYMBOL_PATTERN = re.compile(r'^[A-Z0-9]{2,24}$')
@@ -119,6 +120,9 @@ def compact_metadata(event):
         if n is not None and n>=0:out[k]=int(n)
     symbol=p.get('symbol')
     if isinstance(symbol,str) and SYMBOL_PATTERN.fullmatch(symbol):out['symbol']=symbol
+    for name in ('article_id','processing_version','model_version','available_at','analysis_available_at'):
+        value=p.get(name)
+        if isinstance(value,str) and re.fullmatch(r'[A-Za-z0-9_@:/+.\-]{1,128}',value):out[name]=value
     e=p.get('error_type')
     if isinstance(e,str) and re.fullmatch(r'[A-Za-z][A-Za-z0-9_]{0,63}',e):out['error_type']=e
     actions=p.get('shadow_actions')

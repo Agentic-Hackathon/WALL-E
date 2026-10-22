@@ -14,7 +14,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','account-read-status','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit','feature-audit-v3','challenger-preflight','train-challenger-v2','challenger-evaluate','data-quality-audit','data-sync-status','data-sync-plan','data-sync-run'])
+        'benchmark','news','finbert','news-audit','news-evidence','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','account-read-status','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit','feature-audit-v3','challenger-preflight','train-challenger-v2','challenger-evaluate','data-quality-audit','data-sync-status','data-sync-plan','data-sync-run'])
     p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
     p.add_argument('--checkpoint-dir',default=None,help='Exact Stage13 saved research run directory, never auto-select checkpoints')
     p.add_argument('--days',type=int,default=7)
@@ -38,6 +38,9 @@ def main(argv=None):
     p.add_argument('--max-windows',type=int,default=8,help='Maximum public source windows per bounded data-sync run')
     p.add_argument('--sync-resolutions',default=None,help='Comma-separated demanded target resolutions; default comes from active model metadata')
     p.add_argument('--package-id',type=int,default=None,help='Optional read-only package lookup; never enables order submission')
+    p.add_argument('--allow-news-model-download',action='store_true',help='Download pinned public FinBERT safe weights for local research')
+    p.add_argument('--news-device',choices=('cpu','cuda'),default='cpu')
+    p.add_argument('--news-batch-size',type=int,default=8)
     p.add_argument('--fee',type=float,default=.001)
     p.add_argument('--slippage',type=float,default=.0005)
     p.add_argument('--top',type=int,default=8)
@@ -46,6 +49,16 @@ def main(argv=None):
                    help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
     args=p.parse_args(argv)
     effective_mode=cli_mode(args.command,args.mode)
+    if args.command=='news-audit':
+        from .atlas_news_audit import build_reports
+        from .atlas_archive import root_path
+        pretty(build_reports(root_path(),args.output_dir));return
+    if args.command=='news-evidence':
+        from .atlas_news_features import advisory_packet
+        from .atlas_news_pipeline import now_utc
+        from .atlas_archive import root_path
+        if not args.symbol:p.error('news-evidence requires --symbol')
+        pretty(advisory_packet(root_path(),args.symbol,args.as_of_utc or now_utc()));return
     if args.command=='challenger-evaluate':
         from .atlas_challenger_eval import evaluate
         from .atlas_archive import root_path
@@ -247,7 +260,8 @@ def main(argv=None):
             if args.command=='news':return
         if args.command=='finbert':
             from .atlas_news import finbert_score
-            pretty(finbert_score(lake));return
+            pretty(finbert_score(lake,device=args.news_device,batch_size=args.news_batch_size,
+                                 allow_download=args.allow_news_model_download));return
         promoted_this_run=False
         if args.command in ('train-deep','run'):
             from .atlas_deep import train_real, promote_champion

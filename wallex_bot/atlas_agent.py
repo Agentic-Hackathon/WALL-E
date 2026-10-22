@@ -113,8 +113,20 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
             if not isinstance(score,list):continue
             scores={str(x['label']).lower():float(x['score']) for x in score}
             if scores.get('negative',0)>.80:negative.append(a['url'])
+        # New scores stay advisory; they are deliberately not copied into the
+        # legacy strong_negative_urls veto consumed by the existing risk node.
+        from .atlas_news_pipeline import NewsStore
+        try:
+            with NewsStore(lake.root) as store:
+                advisory=store.evidence_at(state['symbol'],asof,limit=20)
+                news_features=store.features_at(state['symbol'],asof)
+                memory=store.record_memory(state['symbol'],asof,mode)
+        except Exception as exc:
+            advisory=[];news_features={'status':'ADVISORY_UNAVAILABLE','error_type':type(exc).__name__};memory=None
         return {'news':{'known_articles':len(relevant),'strong_negative_urls':negative[:10],
-                        'point_in_time':'available_at<=decision_asof_only'}}
+                        'point_in_time':'available_at<=decision_asof_only',
+                        'advisory_evidence':advisory,'research_news_features':news_features,
+                        'news_memory_receipt':memory,'authority':'ADVISORY_ONLY_NO_NEW_VETO'}}
     def predictive_node(state:AgentState):
         result=predict_latest(lake,model,state['symbol'])
         return {'prediction':result}

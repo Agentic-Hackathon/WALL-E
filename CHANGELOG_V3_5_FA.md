@@ -1,5 +1,7 @@
 # V3.5 — Local Research and Shadow Dashboard
 
+- Milestone 4: receiptهای نسخه‌دار خبر واقعی، retry/dedup، FinBERT pinned انگلیسی و cache، ۱۴ feature خبری PIT پژوهشی، evidence مشاوره‌ای و حافظهٔ محدود اضافه شد؛ قراردادهای timeframe/provenance/سلامت Milestone 3 اصلاح شدند. Champion، RiskGate و مجوز LIVE حفظ شدند.
+
 - Milestone 3: registry پژوهشی V3 با ۵۲ feature، محاسبهٔ PIT-safe چندتایم‌فریمی، health/coverage/redundancy reports، نیاز warmup متصل به DataSync و readiness مستقل هر market در Watch افزوده شد؛ Champion، RiskGate و LIVE تغییر نکردند.
 
 - Milestone 2.1: `DataSyncManager` برای sync محدود و resumable هنگام startup/Watch، plan/status/run CLI، lease SQLite، fail-closed شدن Agent/Watch روی دادهٔ نامعتبر و بررسی حساب read-only افزوده شد؛ LIVE، Champion، Risk Gate و Transformerها تغییری نکردند.

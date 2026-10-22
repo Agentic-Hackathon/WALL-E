@@ -295,13 +295,31 @@ class DataSyncManager:
                 bars=len(eligible[-1]) if eligible else 0
                 ready=bars>=int(need['warmup_bars'])
                 reason='VERIFIED_CLOSED_WARMUP_AVAILABLE' if ready else 'INSUFFICIENT_VERIFIED_CLOSED_BARS'
+                if ready and profile in ('watch_core','CORE','NEWS_ENHANCED'):
+                    from .atlas_feature_health import diagnose_frame
+                    diagnosis=diagnose_frame(eligible[-1],period,latest_quote_epoch=reference)
+                    ready=diagnosis.get('can_use_unchanged_champion',False)
+                    reason=diagnosis['status']
+                elif ready:
+                    from .atlas_feature_registry import compute_ohlcv_features
+                    matrix=compute_ohlcv_features(eligible[-1]).drop(columns='timestamp')
+                    ready=bool(np.isfinite(matrix.iloc[-1].to_numpy(dtype=float)).all())
+                    reason='FINITE_FEATURES_READY' if ready else 'NONFINITE_ADVANCED_FEATURES'
+                if ready and reference-(int(eligible[-1].timestamp.iloc[-1])+period)>2*period:
+                    ready=False;reason='STALE_CLOSED_INPUT'
             except (ValueError,RuntimeError,OSError,pd.errors.ParserError):
                 bars=0;ready=False;reason='MISSING_OR_UNVERIFIED_TIMEFRAME'
             items.append({'resolution':resolution,'required_warmup_bars':need['warmup_bars'],
                           'required_warmup_hours':need['warmup_hours'],'verified_closed_bars':bars,
                           'ready':ready,'reason':reason})
-        return {'symbol':symbol,'profile':profile,'ready':all(x['ready'] for x in items),
-                'reason':'FEATURE_REQUIREMENTS_READY' if all(x['ready'] for x in items) else 'FEATURE_REQUIREMENTS_NOT_READY',
+        news_status=None
+        if profile=='NEWS_ENHANCED':
+            from .atlas_news_pipeline import NewsStore
+            with NewsStore(self.lake.root) as news:
+                news_status=news.features_at(symbol,datetime.fromtimestamp(reference,timezone.utc).isoformat())
+        ready=all(x['ready'] for x in items) and (news_status is None or news_status['ready'])
+        return {'symbol':symbol,'profile':profile,'ready':ready,'news_status':news_status,
+                'reason':'FEATURE_REQUIREMENTS_READY' if ready else 'FEATURE_REQUIREMENTS_NOT_READY',
                 'timeframes':items,'live_execution':'HARD_DISABLED'}
 
     def run_continuous(self, stop_event, *, interval_seconds=60, max_cycles=None, **run_kwargs):

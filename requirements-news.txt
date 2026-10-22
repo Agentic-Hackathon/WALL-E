@@ -1,0 +1,8 @@
+# Optional Milestone 4 news stack, observed in the shbk validation environment.
+# Install only in a dedicated environment; do not change the working shared env.
+# Keep the user's compatible torch build (tested: 2.11.0+cu128) for GPU/CPU.
+requests==2.34.2
+langdetect==1.0.9
+transformers==5.17.0
+safetensors==0.8.0
+huggingface-hub==1.31.0

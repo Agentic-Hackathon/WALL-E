@@ -47,7 +47,7 @@ def _rss_date(raw):
     except (TypeError, ValueError, IndexError, OverflowError):
         return iso_utc(raw)
 
-def harvest_rss(lake, hours=48):
+def _legacy_harvest_rss(lake, hours=48):
     """Fallback to genuine, timestamped publisher RSS; never retrospective leakage."""
     if not 1<=hours<=72:raise ValueError('RSS window must be 1..72 hours')
     db=_open_db(lake)
@@ -105,7 +105,7 @@ def harvest_rss(lake, hours=48):
             'leakage_control':'Article available from first successful observed_at, never retroactively'}
 
 
-def harvest_news(lake,queries=None,hours=48):
+def _legacy_harvest_news(lake,queries=None,hours=48):
     if not 1<=hours<=72:raise ValueError('news harvest 1..72h')
     queries=queries or ['(bitcoin OR ethereum OR cryptocurrency OR crypto)']
     db=_open_db(lake); got=0;skipped=0;failures=[]
@@ -159,7 +159,7 @@ def news_known_at(lake,asof_iso,query_token=None):
              'available_at':x[4],'sentiment':json.loads(x[5]) if x[5] else None} for x in rows]
 
 
-def finbert_score(lake,max_articles=250):
+def _legacy_finbert_score(lake,max_articles=250):
     # Optional transformer inference; WEIGHTS LICENSE must be reviewed before competition/commercial use.
     try:from transformers import pipeline
     except ImportError as e:raise RuntimeError('Install transformers and torch for FinBERT scoring') from e
@@ -177,3 +177,18 @@ def finbert_score(lake,max_articles=250):
         return {'scored':len(rows),'model':'ProsusAI/finbert',
                 'warning':'Text sentiment != validated trading forecast; review model-weight license.'}
     finally:db.close()
+
+
+def harvest_news(lake,queries=None,hours=48):
+    from .atlas_news_ingestion import harvest
+    return harvest(lake,hours=hours,queries=queries)
+
+
+def harvest_rss(lake,hours=48):
+    from .atlas_news_ingestion import harvest
+    return harvest(lake,hours=hours,rss_only=True)
+
+
+def finbert_score(lake,max_articles=250,**kwargs):
+    from .atlas_news_pipeline import sentiment_score
+    return sentiment_score(lake.root,max_articles=max_articles,**kwargs)

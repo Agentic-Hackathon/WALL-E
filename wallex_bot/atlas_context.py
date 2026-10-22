@@ -10,7 +10,7 @@ from .atlas_skills import skill_index,tools_for,skills_for
 from .atlas_mode import ExecutionMode,require_mode,ModeSafetyError
 
 GENESIS='GENESIS'
-KINDS=frozenset({'WATCH_CYCLE','GRAPH_DECISION','RESEARCH_INCIDENT','REVIEW_CANDIDATE'})
+KINDS=frozenset({'WATCH_CYCLE','GRAPH_DECISION','RESEARCH_INCIDENT','REVIEW_CANDIDATE','NEWS_EVIDENCE'})
 SECRET_KEYS=frozenset({'api_key','apikey','authorization','password','token','secret','clientid','client_id','private_key'})
 POLICY=(
     'Trusted fixed contest policy: SPOT ONLY; research archive may cover all markets but live trading requires independently verified contest allowlist and package permissions.',

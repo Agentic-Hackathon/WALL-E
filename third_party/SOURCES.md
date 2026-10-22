@@ -13,3 +13,11 @@
 | https://github.com/TauricResearch/TradingAgents | `e8f5503e9b86d5c2710b0c76b1f686703968c9df` | Apache-2.0 | مطالعهٔ ساختار نقش‌ها؛ کد در این مرحله کپی نشده است |
 | https://github.com/Lumiwealth/lumibot | `b529372528d2a1bba7f0f5e0183f6b4be8de1d7c` | GPL-3.0 | فقط مطالعهٔ مفهومی؛ هیچ کدی کپی یا مشتق نمی‌شود |
 | https://github.com/AI4Finance-Foundation/FinRL-Trading | `4409abe925c904e570be78ebfb5e77ac3491dff8` | Apache-2.0 | مطالعهٔ risk overlay/target weight؛ کد در این مرحله کپی نشده است |
+
+## Milestone 4 — مدل خبری پژوهشی
+
+- Model: `ProsusAI/finbert`, revision `0bc2ac10dda6929bcb1f77ccc43c7ec5c424f031`؛ model card رسمی: https://huggingface.co/ProsusAI/finbert/blob/0bc2ac10dda6929bcb1f77ccc43c7ec5c424f031/README.md
+- مجوز وزن‌ها در model card: **CC-BY-NC-SA-4.0**؛ مدل فقط در پژوهش محلی و مسیر مشاوره‌ای استفاده شده است. این ثبت به معنی احراز مجوز استفادهٔ مسابقه/تجاری نیست.
+- safetensors SHA-256: `e5897858ff819aad7629b96ce521ae5477952d03634ef5dd30ed2d76357a9f00`؛ tokenizer و config نیز با hash در receipt مدل ثبت می‌شوند. هیچ وزن مدلی در Git commit نمی‌شود.
+- مدل انگلیسی است؛ عنوان‌های فارسی/زبان نامطمئن خودکار به آن فرستاده نمی‌شوند. خروجی تخمین مدل است، نه برچسب حقیقت.
+- از `requests`، `langdetect` و `transformers` نصب‌شده استفاده شد؛ کد ثالث کپی نشد. طراحی NewsStore و PIT به‌صورت مستقل روی archive/RSS و حافظهٔ داخلی موجود نوشته شد.
