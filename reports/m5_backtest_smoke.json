@@ -1,0 +1,76 @@
+{
+  "mode": "BACKTEST",
+  "graph": "memory -> actual cutoff news -> research agent disposition",
+  "scope": "isolated research graph, not operational SHADOW trading graph",
+  "external_LLM_called": false,
+  "broker_imported": false,
+  "operational_stores_unchanged": true,
+  "champion_manifest_unchanged": true,
+  "before": {
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\context_memory.sqlite": "b4c490f56b79b216b8fa244d169e99ba7bc11171a3bd67972d66b3d2a87a6bd6",
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\news.sqlite": "1e1cfe7bf705791a5d9bd25d7e4485098908be2b1c67caf4f91bd624efbd99b2",
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\paper.sqlite": null,
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\shadow.sqlite": "64887a21a38acea12cfb248a5bcc8dce4f556e1d9e9f0cd632ef3e56802b6b2d"
+  },
+  "after": {
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\context_memory.sqlite": "b4c490f56b79b216b8fa244d169e99ba7bc11171a3bd67972d66b3d2a87a6bd6",
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\news.sqlite": "1e1cfe7bf705791a5d9bd25d7e4485098908be2b1c67caf4f91bd624efbd99b2",
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\paper.sqlite": null,
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\shadow.sqlite": "64887a21a38acea12cfb248a5bcc8dce4f556e1d9e9f0cd632ef3e56802b6b2d"
+  },
+  "prediction": {
+    "symbol": "PEPETMN",
+    "sample_id": "3ca00cd8daa9e6d681f245143f9f637aa3f501fa5b575a39556f12608ac971b7",
+    "decision_time": "2026-10-22T13:15:00+00:00",
+    "horizon": 0.75,
+    "feature_recipe": {
+      "version": "ATLAS_EXISTING_V1",
+      "columns": [
+        "log_open_relative_last",
+        "log_high_relative_last",
+        "log_low_relative_last",
+        "log_close_relative_last",
+        "log1p_volume",
+        "ret1",
+        "ret3",
+        "ret6",
+        "ret12",
+        "ret24",
+        "macd_hist",
+        "rsi14",
+        "natr14",
+        "volatility12",
+        "volume_ratio",
+        "obv_slope",
+        "stoch_k",
+        "adx14",
+        "mfi14",
+        "bb_z",
+        "roc12"
+      ],
+      "warmup_bars": 55,
+      "context": 96,
+      "missing_policy": "exclude nonfinite input windows; no price/news imputation",
+      "normalization": "per observed input window; no statistics from future rows",
+      "optional_dependency": null,
+      "availability": "retrospective closed bars for prices, actual receipt cutoff for optional inputs",
+      "definition_sha256": "a2ddc1e90f5da383abb3b49e3d16b6385b022b3fb75a6256a52afadf8b77f131",
+      "eligible_common_rows": 671,
+      "status": "ELIGIBLE_RETROSPECTIVE_RESEARCH"
+    },
+    "model_sha256": "4f422406f03d57a7d8c0ca7891695a1057821c2d4083a197f0e4b0dca28a5fad",
+    "q10": -0.007830741349607706,
+    "q50": 0.0029086677823215723,
+    "q90": 0.014715781202539802,
+    "calibration_version": "INDEPENDENT_RESIDUAL_QUANTILE_SHIFT_REARRANGEMENT_V1",
+    "data_readiness": "FROZEN_RETROSPECTIVE_REPLAY_NOT_LIVE_PIT",
+    "inference_latency_seconds": 0.1720000000204891,
+    "authority": "RESEARCH_ONLY_NO_ORDER",
+    "retrospective_warning": "Model/calibration were fitted after this historical cutoff; replay is not prospective evidence"
+  },
+  "news_summary": {
+    "related_articles": 0,
+    "scored_articles": 0
+  },
+  "disposition": "REPLAY_ONLY_NO_EXECUTION_NO_LLM_REQUIRED"
+}

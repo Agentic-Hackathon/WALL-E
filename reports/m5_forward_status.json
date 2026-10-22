@@ -1,0 +1,13 @@
+{
+  "status": {
+    "counts": {},
+    "outcomes": "NEVER_SYNTHESIZED",
+    "orders": "NO_INTERFACE"
+  },
+  "reconciliation": {
+    "resolved": 0,
+    "pending_real_future_quotes": 0,
+    "orders": "NO_INTERFACE"
+  },
+  "reason": "No eligible trained 48/72-hour prospective model; no predictions/outcomes fabricated"
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "group": "A",
+    "architecture": "patchtst",
+    "head": "ordered",
+    "seeds": 3,
+    "validation_pinball_mean": 0.001107473035356116,
+    "test_pinball_mean": 0.0011884423514601733,
+    "test_pinball_seed_std": 6.758999488598404e-05
+  },
+  {
+    "group": "C",
+    "architecture": "patchtst",
+    "head": "ordered",
+    "seeds": 3,
+    "validation_pinball_mean": 0.001141353603401691,
+    "test_pinball_mean": 0.0012054718977505758,
+    "test_pinball_seed_std": 5.309524126808001e-05
+  },
+  {
+    "group": "A",
+    "architecture": "itransformer",
+    "head": "ordered",
+    "seeds": 3,
+    "validation_pinball_mean": 0.0013927001691177296,
+    "test_pinball_mean": 0.00894526501691587,
+    "test_pinball_seed_std": 0.011601324971180955
+  },
+  {
+    "group": "A",
+    "architecture": "itransformer",
+    "head": "raw",
+    "seeds": 3,
+    "validation_pinball_mean": 0.001496224459925743,
+    "test_pinball_mean": 0.002608639852661758,
+    "test_pinball_seed_std": 0.0008035122218191775
+  },
+  {
+    "group": "C",
+    "architecture": "itransformer",
+    "head": "ordered",
+    "seeds": 3,
+    "validation_pinball_mean": 0.0015314754622061406,
+    "test_pinball_mean": 0.002279518320649068,
+    "test_pinball_seed_std": 0.001239103098609854
+  },
+  {
+    "group": "A",
+    "architecture": "itransformer",
+    "head": "penalty",
+    "seeds": 3,
+    "validation_pinball_mean": 0.001561142326843752,
+    "test_pinball_mean": 0.0026799290975490285,
+    "test_pinball_seed_std": 0.0011727806355193479
+  }
+]

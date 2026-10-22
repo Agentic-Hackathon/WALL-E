@@ -1,0 +1,61 @@
+{
+  "run_directory": "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1",
+  "contracts": {
+    "CLOSE_TO_CLOSE_RETURN": {
+      "formula": "log(close(t+h)/close(t))",
+      "execution_price": false,
+      "available": "retrospective verified closed candles only"
+    },
+    "MID_TO_MID_RETURN": {
+      "formula": "log(actual_future_mid/actual_mid)",
+      "requires": "two hash-verified actual quote receipts at declared times"
+    },
+    "ASK_TO_FUTURE_BID_NET_PROXY": {
+      "formula": "future_bid*(1-exit_fee)/(ask*(1+entry_fee))-1",
+      "requires": "actual quotes, verified fee; never fills"
+    },
+    "POSITIVE_AFTER_COST_OPPORTUNITY": {
+      "formula": "verified net quote proxy > 0",
+      "requires": "same real quote and verified cost evidence"
+    },
+    "QUANTILE_RETURN_FORECAST": {
+      "formula": "conditional quantiles .1/.5/.9 of declared log-return label",
+      "realized_pnl": false
+    }
+  },
+  "candle_timestamp": "open; close=timestamp+period",
+  "decision_time": "closed candle end",
+  "receipt_policy": "unknown legacy timestamps remain null; historical availability NOT asserted",
+  "feature_available_at": "conservative latest recorded source receipt if entire symbol has receipts; otherwise null",
+  "target_observed_at": "same conservative receipt bound, never target candle close relabelled as receipt",
+  "evaluation_track": "RETROSPECTIVE_CLOSED_BAR_ASSUMPTION_NOT_PROSPECTIVE_PIT",
+  "purge": "target_end < next boundary - one bar; global across symbols",
+  "gaps": "split contiguous verified segments; no interpolation",
+  "manifest": "SHA256 verified bytes before loading; exact filenames and hashes frozen",
+  "source_code_sha256": {
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\wallex_bot\\atlas_m5_baselines.py": "5f3df6e87c270b1f36bc4b13eba08db867b2e3f14d2a96b75cb4d7d464e40dea",
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\wallex_bot\\atlas_m5_data.py": "6636114405afdeaca22b50785973c168edd1b5033d7ba65069733aade34ec391",
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\wallex_bot\\atlas_m5_models.py": "bf9d5c7d7e7bdd5fef56f112de561c7e254b3b82a523ad4f2e52e29ba6f0448d",
+    "D:\\Hackaton\\Wallex\\wallex_agent_v3\\wallex_bot\\atlas_m5_research.py": "9c544f1f06df084070032193c1e76f4921f01e5ddc6dc41d214a5a8bc604891f"
+  },
+  "walk_forward_48_72": "INSUFFICIENT_REAL_TRAINING_HISTORY",
+  "research_45m": "one fixed retrospective holdout, not repeated walk-forward",
+  "multiple_testing": "every arm/seed recorded; correlated time and asset samples not independent; no significance claim",
+  "delivery_source_sha256": {
+    "wallex_bot\\atlas_m5_baselines.py": "5f3df6e87c270b1f36bc4b13eba08db867b2e3f14d2a96b75cb4d7d464e40dea",
+    "wallex_bot\\atlas_m5_data.py": "ca8ea08a5c2a495cdae29a835e88f2316c7c15be7765f9614b4a69110215091e",
+    "wallex_bot\\atlas_m5_inference.py": "1145dd8c7e4bc0922a96e3ba1f25e0948709f56d9caedd866420ce42c3a732ce",
+    "wallex_bot\\atlas_m5_models.py": "faf97ae8b689e2f841ea00843cf410bb277bd41241d457d06bba39c02845728c",
+    "wallex_bot\\atlas_m5_report.py": "52d04dee2b42eb0754c05daee5d578d387fbecec7507a7f0204ec78875a12389",
+    "wallex_bot\\atlas_m5_research.py": "213f37e2a69cb205609dcf74b5d2b6119fbc284eba85ce8a87ff2d495d1a2887"
+  },
+  "implementation_commit": "9ac101a6f99442451796501aa4affd1c4cd05af3",
+  "universe_selection_warning": "Top-8 ranked by current observed catalog turnover, not a PIT historical universe; selection/survivorship bias possible",
+  "code_evolution": "Initial source hashes retained separately; resume acceptance added after the primary run; all model input matrices are independently hashed",
+  "input_transform_audit": {
+    "core_prices": "log relative to last observed close inside each input window",
+    "volume": "log1p actual volume",
+    "normalization": "mean/std of input window only; scale floor 1e-6; final clip [-20,20]",
+    "label": "natural log return, not arithmetic executable return"
+  }
+}

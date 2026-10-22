@@ -1,0 +1,10 @@
+{
+  "directory": "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\resume_acceptance",
+  "paused_after_epoch": 1,
+  "resumed_through_epoch": 17,
+  "best_epoch": 2,
+  "early_stopping_epoch": 17,
+  "validation_curve_max_abs_difference": 0.0,
+  "best_checkpoint_restored": true,
+  "reference_directory": "atlas_store\\research_challengers\\milestone5\\m5_20261022_frozen_v1\\A_itransformer_ordered_17"
+}

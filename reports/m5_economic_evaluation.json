@@ -1,0 +1,49 @@
+{
+  "status": "NO_VERIFIED_ECONOMIC_EDGE",
+  "live": "HARD_DISABLED",
+  "selected_by_validation": "A_patchtst_ordered_17",
+  "horizons_48_72": "INSUFFICIENT_REAL_TRAINING_HISTORY",
+  "fee_verified": false,
+  "executable_pnl": null,
+  "gross_return": null,
+  "net_return": null,
+  "max_drawdown": null,
+  "turnover": null,
+  "portfolio_exposure": null,
+  "liquidity_constraints": "insufficient real future book coverage",
+  "cash_TMN_return": 0,
+  "buy_hold_executable_return": null,
+  "reason": "Close-to-close overlapping research labels are neither trades nor verified fills. No fee or executable spread assumptions are passed off as actual costs.",
+  "close_log_return_sensitivity_only": [
+    {
+      "hypothetical_round_trip_cost": 0,
+      "q10_exceeds_assumed_cost_fraction": 0.0,
+      "actual_positive_label_fraction": 0.46464646464646464,
+      "executable": false
+    },
+    {
+      "hypothetical_round_trip_cost": 0.001,
+      "q10_exceeds_assumed_cost_fraction": 0.0,
+      "actual_positive_label_fraction": 0.35353535353535354,
+      "executable": false
+    },
+    {
+      "hypothetical_round_trip_cost": 0.002,
+      "q10_exceeds_assumed_cost_fraction": 0.0,
+      "actual_positive_label_fraction": 0.2828282828282828,
+      "executable": false
+    },
+    {
+      "hypothetical_round_trip_cost": 0.005,
+      "q10_exceeds_assumed_cost_fraction": 0.0,
+      "actual_positive_label_fraction": 0.10101010101010101,
+      "executable": false
+    },
+    {
+      "hypothetical_round_trip_cost": 0.01,
+      "q10_exceeds_assumed_cost_fraction": 0.0,
+      "actual_positive_label_fraction": 0.030303030303030304,
+      "executable": false
+    }
+  ]
+}

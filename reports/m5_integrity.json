@@ -1,0 +1,26 @@
+{
+  "base": "905047a",
+  "implementation_commit": "9ac101a6f99442451796501aa4affd1c4cd05af3",
+  "protected_files": [
+    "wallex_bot/atlas_deep.py",
+    "wallex_bot/atlas_risk.py",
+    "wallex_bot/atlas_broker.py",
+    "wallex_bot/atlas_shadow.py",
+    "wallex_bot/atlas_agent.py",
+    "wallex_bot/atlas_data_sync.py",
+    "wallex_bot/atlas_feature_recipe.py"
+  ],
+  "protected_source_diff_empty": true,
+  "champion_manifest_unchanged_during_smoke": true,
+  "operational_stores_unchanged_during_smoke": true,
+  "LIVE": "HARD_DISABLED",
+  "automatic_promotion": false,
+  "source_sha256": {
+    "wallex_bot\\atlas_m5_baselines.py": "5f3df6e87c270b1f36bc4b13eba08db867b2e3f14d2a96b75cb4d7d464e40dea",
+    "wallex_bot\\atlas_m5_data.py": "ca8ea08a5c2a495cdae29a835e88f2316c7c15be7765f9614b4a69110215091e",
+    "wallex_bot\\atlas_m5_inference.py": "1145dd8c7e4bc0922a96e3ba1f25e0948709f56d9caedd866420ce42c3a732ce",
+    "wallex_bot\\atlas_m5_models.py": "faf97ae8b689e2f841ea00843cf410bb277bd41241d457d06bba39c02845728c",
+    "wallex_bot\\atlas_m5_report.py": "52d04dee2b42eb0754c05daee5d578d387fbecec7507a7f0204ec78875a12389",
+    "wallex_bot\\atlas_m5_research.py": "213f37e2a69cb205609dcf74b5d2b6119fbc284eba85ce8a87ff2d495d1a2887"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "passed": 190,
+  "skipped": 5,
+  "failed": 0,
+  "errors": 0,
+  "baseline": {
+    "passed": 174,
+    "skipped": 5
+  },
+  "junit": "reports\\m5_pytest.xml",
+  "command": "$env:PYTEST_DISABLE_PLUGIN_AUTOLOAD='1'; conda run --no-capture-output -n shbk python -m pytest -q --junitxml=reports/m5_pytest.xml",
+  "plugin_autoload_disabled": true,
+  "synthetic_market_data": false
+}

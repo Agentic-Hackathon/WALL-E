@@ -1,0 +1,16 @@
+{
+  "comparison": "validation-selected PatchTST seed vs LightGBM quantile",
+  "positive_difference_favors": "LightGBM",
+  "sample_pairs": 99,
+  "time_blocks": 5,
+  "block_seconds": 2700,
+  "mean_paired_loss_difference": 1.671152887357001e-05,
+  "equal_block_mean_difference": 2.5053705634869416e-05,
+  "descriptive_block_bootstrap_95_interval": [
+    -5.710880275252505e-05,
+    0.00010721621402226389
+  ],
+  "independent_sample_claim": false,
+  "corrected_significance_claim": false,
+  "warning": "Very few overlapping-horizon time blocks; market dependence, multiple comparisons and historical universe selection prevent a robust superiority claim"
+}
