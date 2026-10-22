@@ -1,0 +1,80 @@
+{
+  "stage": "8.1_AUDIT_NOT_FINAL_COVERAGE",
+  "requirements": [
+    {
+      "requirement": "core_data_sync",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_data_sync.py"
+    },
+    {
+      "requirement": "feature_registry",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_feature_registry.py"
+    },
+    {
+      "requirement": "news_pit_archive",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_news_pipeline.py"
+    },
+    {
+      "requirement": "shared_watch_agent",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_orchestration.py"
+    },
+    {
+      "requirement": "research_memory",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_memory.py"
+    },
+    {
+      "requirement": "forecast_models",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_prospective.py"
+    },
+    {
+      "requirement": "allocation_proposals",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_portfolio.py"
+    },
+    {
+      "requirement": "deadline_sampler",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_study.py"
+    },
+    {
+      "requirement": "historical_pattern_retrieval",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": null
+    },
+    {
+      "requirement": "dynamic_partial_position_shadow",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": null
+    },
+    {
+      "requirement": "news_value_added",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "reports/m5_model_ablation.csv"
+    },
+    {
+      "requirement": "verified_economic_edge",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "reports/m7_portfolio_evaluation.json"
+    },
+    {
+      "requirement": "formal_48h_coverage",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "reports/m7_session_integrity.json"
+    },
+    {
+      "requirement": "official_rules_file",
+      "status": "IMPLEMENTED",
+      "evidence": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\file.txt"
+    },
+    {
+      "requirement": "live_authorization",
+      "status": "BLOCKED",
+      "evidence": null
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+[
+  {
+    "repository": "FinMem",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\FinMem",
+    "commit": "be814aa47970de9bf2fdd6a1d5a60ae5cf361b46",
+    "license": "MIT",
+    "license_files": [
+      {
+        "path": "third_party\\FinMem\\LICENSE",
+        "sha256": "e6af707d1fa3fbbb67372c6fbee76c44d6c253d67478aa0338df3c6d49331f89"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "additive PIT memory layers and Atlas product ranking, not FinMem additive ranking",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "FinRL-Trading",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\FinRL-Trading",
+    "commit": "4409abe925c904e570be78ebfb5e77ac3491dff8",
+    "license": "Apache-2.0",
+    "license_files": [
+      {
+        "path": "third_party\\FinRL-Trading\\LICENSE",
+        "sha256": "afae3377fdbd0537635360e91585f3c5b478ffe8eb5308f1ddcb37b76a7325d2"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "portfolio state and risk separation; existing RiskGate retained",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "Freqtrade",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\Freqtrade",
+    "commit": "c051e9065c5b677f03817dd1f83cb980af1ed684",
+    "license": "GPL-3.0",
+    "license_files": [
+      {
+        "path": "third_party\\Freqtrade\\LICENSE",
+        "sha256": "53927bd0b739d38c87a0a82236fd9b070c2dfff11c0c119be50372005d5047ad"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "prefix causality checks; Atlas protections never disabled",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "grid_trading_bot",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\grid_trading_bot",
+    "commit": "fbda3dd5558a168f11e1a9733e12e1d9d8b3e1fc",
+    "license": "MIT",
+    "license_files": [
+      {
+        "path": "third_party\\grid_trading_bot\\LICENSE.txt",
+        "sha256": "9a397d167f2b2aaccc9cb765d595b94e95d859406c40371c6c716f73428626eb"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "Atlas risk-first/circuit-breaker contracts already exist",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "hindsight",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\hindsight",
+    "commit": "5111eeaf969c26c74443f5fd1d5dfbd30b32a9af",
+    "license": "MIT, placeholder copyright",
+    "license_files": [
+      {
+        "path": "third_party\\hindsight\\LICENSE",
+        "sha256": "ac200f20bf7d946f4965de294fb6e9a70438ab7632ccf6dac1fa20b319123e5d"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "separate prospective evidence; baselines, leakage and short-window skepticism",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "Hummingbot",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\Hummingbot",
+    "commit": "9af100d6822da7d2d0291a906c730ef172284ee2",
+    "license": "Apache-2.0",
+    "license_files": [
+      {
+        "path": "third_party\\Hummingbot\\LICENSE",
+        "sha256": "76e406e8470e0f9cbb16eabe494e20b1a7c9c955801d40f63bd059a4ffc9c21e"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "observation identity, leases and reconciliation; existing broker tracker retained",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "lumibot",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\lumibot",
+    "commit": "b529372528d2a1bba7f0f5e0183f6b4be8de1d7c",
+    "license": "GPL-3.0",
+    "license_files": [
+      {
+        "path": "third_party\\lumibot\\LICENSE",
+        "sha256": "a0719d4fd5ffe2be61e89920eed6ed5819050a5a8ce973b1464aa704e473c0e6"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "Atlas risk-first/circuit-breaker contracts already exist",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "NautilusTrader",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\NautilusTrader",
+    "commit": "a51ae015c150ef68f62d9295e3efa9534f492a4a",
+    "license": "LGPL-3.0",
+    "license_files": [
+      {
+        "path": "third_party\\NautilusTrader\\LICENSE",
+        "sha256": "ee907919ec88c9c017b1f8b608db20960b6598aefcc4fe58820bde955d65ed3c"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "state-only deterministic replay; no publishing execution commands",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "trading-bot",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\trading-bot",
+    "commit": "688087e64f79f545c7e40ee6e889c9ce92e03693",
+    "license": "UNSPECIFIED",
+    "license_files": [],
+    "status": "BLOCKED_BY_LICENSE",
+    "existing_capability": "Atlas risk-first/circuit-breaker contracts already exist",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  },
+  {
+    "repository": "TradingAgents",
+    "path": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\third_party\\TradingAgents",
+    "commit": "e8f5503e9b86d5c2710b0c76b1f686703968c9df",
+    "license": "Apache-2.0",
+    "license_files": [
+      {
+        "path": "third_party\\TradingAgents\\LICENSE",
+        "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+      }
+    ],
+    "status": "CONCEPTUAL_ONLY",
+    "existing_capability": "structured roles in existing LangGraph",
+    "copied_external_lines": 0,
+    "external_code_executed": false,
+    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
+    "measured_change": null,
+    "replay_test": null
+  }
+]
