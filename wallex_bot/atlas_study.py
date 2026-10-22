@@ -38,7 +38,7 @@ def settings(symbols=('BTCTMN','PEPETMN'),hours=48,shadow=True):
 
 def prepare(root,directory,config=None,*,require_committed=True):
     root=Path(root).resolve();directory=Path(directory).resolve();config=config or settings()
-    if 'milestone7' not in directory.parts or 'research_challengers' not in directory.parts:raise ValueError('NEW_MILESTONE7_SESSION_REQUIRED')
+    if not {'milestone7','milestone8'}.intersection(directory.parts) or 'research_challengers' not in directory.parts:raise ValueError('NEW_MILESTONE7_OR_MILESTONE8_SESSION_REQUIRED')
     if (directory/'study_contract.json').exists():
         contract=json.loads((directory/'study_contract.json').read_text())
         validate(root,contract)
@@ -245,11 +245,18 @@ def persist_research_evidence(directory,ledger):
             finally:db.close()
     finally:memory.close()
 
-def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop=None):
+def _research_hook_safe(hook,lake,directory,ledger,contract):
+    try:return hook(lake,directory,ledger,contract)
+    except Exception as exc:
+        failure={'status':'M8_RESEARCH_HOOK_FAILED_SAFE_NO_FALLBACK_ORDER','error_type':type(exc).__name__,'reason_code':str(exc)[:150]}
+        ledger.event('M8_RESEARCH_HOOK_FAILED_SAFE',failure);return failure
+
+def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop=None,startup_hook=None,research_hook=None):
     from .atlas_archive import Lake
     from .atlas_data_sync import DataSyncManager
     from .atlas_agent import cycle
     root=Path(root).resolve();directory=Path(directory).resolve();contract=json.loads((directory/'study_contract.json').read_text());validate(root,contract)
+    if (startup_hook or research_hook) and contract['settings'].get('research_profile')!='ATLAS_M8_AGENTIC_V1':raise ValueError('M8_HOOKS_REQUIRE_SEPARATE_FROZEN_M8_PROFILE')
     if max_inference_cycles is not None and max_inference_cycles<1:raise ValueError('INVALID_CYCLE_BOUND')
     if max_runtime_seconds is not None and max_runtime_seconds<=0:raise ValueError('INVALID_RUNTIME_BOUND')
     process_started=time.monotonic()
@@ -265,11 +272,20 @@ def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop
         while not stop.is_set() and time.time()<runtime['deadline_epoch']:
             if max_runtime_seconds is not None and time.monotonic()-process_started>=max_runtime_seconds:break
             fast_validate(contract)
+            if research_hook and time.time()>=runtime.get('next_review',0):
+                latest=ledger.db.execute('SELECT max(observed_epoch) FROM quotes').fetchone()[0]
+                if latest is not None and latest>runtime.get('last_review_quote',0) and 2<=time.time()-latest<=15:
+                    runtime['last_review_quote']=latest;runtime['next_review']=time.time()+5
+                    with ledger.db:ledger.db.execute("INSERT OR REPLACE INTO study_runtime_v7 VALUES('session',?)",(_canon(runtime),))
+                    _research_hook_safe(research_hook,lake,directory,ledger,contract)
             if time.time()<runtime['next_inference']:
                 stop.wait(min(1.,runtime['next_inference']-time.time()));continue
             validate(root,contract)
             report={'started':time.time(),'models':{},'shadow':[]}
             report['sync']=DataSyncManager(lake).run(symbols=contract['settings']['symbols'],target_resolutions=('15',),target_warmup_hours={'15':37.75},max_windows=8,retries=1,purpose='m7-inference')
+            if startup_hook:
+                try:report['intelligence_sync']=startup_hook(lake,directory,contract)
+                except Exception as exc:report['intelligence_sync']={'status':'FAILED_SAFE_OPTIONAL_INTELLIGENCE_SYNC','error_type':type(exc).__name__}
             for symbol in contract['settings']['symbols']:
                 if stop.is_set():break
                 started=time.time()
@@ -287,6 +303,10 @@ def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop
                 except Exception as exc:report['models'][symbol]={'error_type':type(exc).__name__,'reason':str(exc)[:120]}
             propose_portfolio(lake,directory,ledger,contract)
             persist_research_evidence(directory,ledger)
+            if research_hook:
+                report['agentic']=_research_hook_safe(research_hook,lake,directory,ledger,contract)
+                runtime['last_review_quote']=ledger.db.execute('SELECT max(observed_epoch) FROM quotes').fetchone()[0] or 0
+                runtime['next_review']=time.time()+5
             ledger.event('INFERENCE_CYCLE',report);runtime['cycles']+=1;cycles+=1;runtime['next_inference']=time.time()+900
             with ledger.db:ledger.db.execute("INSERT OR REPLACE INTO study_runtime_v7 VALUES('session',?)",(_canon(runtime),))
             print(json.dumps({'cycle':runtime['cycles'],'model_status':report['models'],'proposals_only':True}),flush=True)

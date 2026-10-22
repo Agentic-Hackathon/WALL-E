@@ -42,7 +42,7 @@ def parse_rss(raw):
         output.append({'url':link,'title':title,'published_at':pub,'raw':ET.tostring(entry,encoding='unicode')})
     return output
 
-def harvest(lake,*,hours=48,queries=None,rss_only=False,retries=1):
+def _harvest(lake,*,hours=48,queries=None,rss_only=False,retries=1,score_sentiment=True,source_budget=6):
     from .atlas_news import API,RSS_FEEDS,iso_utc
     if not 1<=hours<=72:raise ValueError('news window must be 1..72 hours')
     receipts=[]
@@ -57,7 +57,9 @@ def harvest(lake,*,hours=48,queries=None,rss_only=False,retries=1):
         # Existing publisher feeds are a dependable fallback even when GDELT
         # returns duplicates rather than genuinely new items.
         sources.extend((name,url,None) for name,url in RSS_FEEDS.items())
-        for source,url,params in sources:
+        previous_source_start=0.
+        for source,url,params in sources[:source_budget]:
+            time.sleep(max(0,.4-(time.monotonic()-previous_source_start)));previous_source_start=time.monotonic()
             started=now_utc();raw,transport=fetch_public(url,params=params,retries=retries)
             record={'source':source,'started_at':started,'status':'SUCCESS','new_articles':0,'duplicates':0,'invalid_articles':0,'entries_seen':0,**transport}
             if raw is None:record['status']='FAILED'
@@ -91,9 +93,40 @@ def harvest(lake,*,hours=48,queries=None,rss_only=False,retries=1):
     from .atlas_news_pipeline import sentiment_score,MODEL_REVISION
     from pathlib import Path
     model_root=Path(lake.root)/'news_models'/'models--ProsusAI--finbert'/'snapshots'/MODEL_REVISION
-    scoring=sentiment_score(lake.root,max_articles=32,device='cpu') if (model_root/'model.safetensors').is_file() else {'status':'SENTIMENT_MODEL_UNAVAILABLE','scored':0}
+    scoring=(sentiment_score(lake.root,max_articles=32,device='cpu') if (model_root/'model.safetensors').is_file() else {'status':'SENTIMENT_MODEL_UNAVAILABLE','scored':0}) if score_sentiment else {'status':'SENTIMENT_LICENSE_OR_PROFILE_GUARD','scored':0}
     with NewsStore(lake.root) as store:after=store.summary()
     return {'protocol':'ATLAS_NEWS_INGESTION_V1','before':before,'migration':migration,'after':after,'source_runs':receipts,
             'fetched_articles_count_attempted':sum(r['new_articles'] for r in receipts),
             'duplicates':sum(r['duplicates'] for r in receipts),'processing':processing,'sentiment':scoring,
             'content_scope':'PUBLISHER_FEED_HEADLINE_ONLY','errors':[r for r in receipts if r['status']!='SUCCESS']}
+
+
+def harvest(lake,*,hours=48,queries=None,rss_only=False,retries=1,score_sentiment=True,source_budget=6,min_interval_seconds=0):
+    """M8 shared SQLite lease and persistent polling cursor, never key access.
+
+    Legacy explicit research CLI retains its default sentiment behavior. New
+    competition-facing startup passes score_sentiment=False until licensed.
+    """
+    import uuid
+    if not 1<=source_budget<=6 or not 0<=min_interval_seconds<=3600:raise ValueError('INVALID_NEWS_SYNC_BUDGET')
+    owner=uuid.uuid4().hex
+    with NewsStore(lake.root) as store:
+        store.db.executescript('''CREATE TABLE IF NOT EXISTS news_sync_lease_v8(name TEXT PRIMARY KEY,owner TEXT,expires REAL);
+            CREATE TABLE IF NOT EXISTS news_sync_cursor_v8(name TEXT PRIMARY KEY,finished REAL,result TEXT);''');store.db.commit()
+        store.db.execute('BEGIN IMMEDIATE')
+        try:
+            lease=store.db.execute("SELECT owner,expires FROM news_sync_lease_v8 WHERE name='public-news'").fetchone()
+            cursor=store.db.execute("SELECT finished,result FROM news_sync_cursor_v8 WHERE name='public-news'").fetchone()
+            if lease and lease[1]>time.time():store.db.rollback();return {'status':'NEWS_LEASE_HELD_NO_DUPLICATE_REQUEST','source_runs':[],'errors':[]}
+            if cursor and time.time()-cursor[0]<min_interval_seconds:
+                store.db.rollback();return {'status':'NEWS_POLL_INTERVAL_CACHE_HIT','source_runs':[],'errors':[],'last_finished':cursor[0]}
+            store.db.execute("INSERT OR REPLACE INTO news_sync_lease_v8 VALUES('public-news',?,?)",(owner,time.time()+300));store.db.commit()
+        except Exception:store.db.rollback();raise
+    try:
+        result=_harvest(lake,hours=hours,queries=queries,rss_only=rss_only,retries=retries,score_sentiment=score_sentiment,source_budget=source_budget)
+        with NewsStore(lake.root) as store:
+            with store.db:store.db.execute("INSERT OR REPLACE INTO news_sync_cursor_v8 VALUES('public-news',?,?)",(time.time(),json.dumps(result,sort_keys=True)))
+        return result
+    finally:
+        with NewsStore(lake.root) as store:
+            with store.db:store.db.execute("DELETE FROM news_sync_lease_v8 WHERE name='public-news' AND owner=?",(owner,))

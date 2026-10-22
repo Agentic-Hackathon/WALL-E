@@ -10,12 +10,14 @@ from .atlas_forward import _sha
 from .atlas_review import review,ROLES
 
 VERSION='ATLAS_AGENTIC_EVIDENCE_BOARD_V1'
-ABLATIONS=('rule_only','forecast_only','forecast_technical','forecast_news','forecast_patterns','forecast_memory','full')
+ABLATIONS=('rule_only','forecast_only','forecast_technical','forecast_news','forecast_patterns','forecast_memory','full',
+    'without_agent_review','without_news','without_patterns','without_memory')
 
 
 def board(evidence,*,arm='full'):
     if arm not in ABLATIONS:raise ValueError('UNKNOWN_PREDECLARED_ABLATION')
-    stamp=evidence['decision_time'];symbol=evidence['symbol'];base=review(evidence)
+    stamp=evidence['decision_time'];symbol=evidence['symbol']
+    base=review(evidence) if arm!='without_agent_review' else {'agents':[],'proposal':{'proposed_action':'ADVISORY_REVIEW_REMOVED_FOR_ABLATION'}}
     agents=[];messages=[];votes=[]
     def agent(name,facts,signal,recommendation,limitations,status='OBSERVED_EVIDENCE'):
         ids=facts.get('evidence_ids',[]) if isinstance(facts,dict) else []
@@ -47,7 +49,7 @@ def board(evidence,*,arm='full'):
     finite=all(type(q.get(k)) in (float,int) and math.isfinite(q[k]) for k in ('q10','q50','q90'))
     if finite and not q['q10']<=q['q50']<=q['q90']:finite=False
     forecast_used=arm!='rule_only'
-    technical_used=arm in ('rule_only','forecast_technical','full')
+    technical_used=arm in ('rule_only','forecast_technical','full','without_news','without_patterns','without_memory')
     veto=[]
     if not evidence.get('readiness',{}).get('ready'):veto.append('asset_data_not_ready')
     portfolio=evidence.get('portfolio',{})
@@ -57,12 +59,12 @@ def board(evidence,*,arm='full'):
     if technical_used and flag is not True:veto.append('technical_not_confirmed')
     # Only actual stamped/validated news could veto. NC-licensed FinBERT is
     # explicitly not authorized for competition-derived decisions here.
-    news=evidence.get('news',{});news_used=arm in ('forecast_news','full')
+    news=evidence.get('news',{});news_used=arm in ('forecast_news','full','without_patterns','without_memory')
     news_eligible=bool(news.get('decision_use_licensed')) and bool(news.get('value_added_validated'))
     if news_used and news_eligible and news.get('strong_negative_evidence'):veto.append('validated_negative_news')
     for role,enabled,validated in [('News Analyst',news_used,news_eligible),
-        ('Historical Pattern Retrieval Agent',arm in ('forecast_patterns','full'),bool(pattern.get('decision_path_eligible'))),
-        ('Research Memory Agent',arm in ('forecast_memory','full'),False)]:
+        ('Historical Pattern Retrieval Agent',arm in ('forecast_patterns','full','without_news','without_memory'),bool(pattern.get('decision_path_eligible'))),
+        ('Research Memory Agent',arm in ('forecast_memory','full','without_news','without_patterns'),False)]:
         messages.append({'from':role,'to':'Portfolio Analyst','type':'EVIDENCE_QUALIFICATION',
             'enabled_in_arm':enabled,'decision_qualified':validated,'reason':'No value-added validation means no fabricated numerical vote'})
     if flag is not None and finite and flag!=(q['q50']>0):

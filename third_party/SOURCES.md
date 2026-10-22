@@ -81,3 +81,24 @@ No audio code, fitted encoder, external trading connectors or synthetic market
 data are imported. Recipe, actual receipt availability, labels, embargo and
 temporal de-overlap are Atlas-specific glue; historical close outcomes are
 never described as order fills or trading PnL.
+
+M8 agentic board adapts the TradingAgents structured critique workflow using
+Atlas's own seven-role review and existing LangGraph/SqliteSaver, not the
+TradingAgents runtime. Existing FinMem-inspired ResearchMemory and M7 capped
+target-weight allocator are called functionally before the new Shadow adapter.
+No FinMem additive score or trading framework was silently substituted.
+All source comments distinguish independently authored adapters from direct
+library integration. GPL/LGPL and unspecified-license clones remain study-only.
+
+FinBERT's actual pinned local README.md was re-read: its front matter still
+declares cc-by-nc-sa-4.0. M8 competition-facing news ingestion does not run it
+and the decision board cannot apply its scores as a trading vote.
+Candidate alternative reviewed (NOT downloaded or executed):
+https://huggingface.co/mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis/blob/main/README.md
+declares Apache-2.0 but uses Financial PhraseBank. The dataset's own card
+https://huggingface.co/datasets/takala/financial_phrasebank declares
+CC-BY-NC-SA-3.0 and asks commercial users to obtain an appropriate license.
+Therefore the candidate was not assumed cleared for contest use; no remote
+accuracy/profit claims are adopted as Atlas results. Existing 14 news features
+are wired into four local research arms with train-only scaling and a strict
+data/availability guard, not fabricated neutral scores.

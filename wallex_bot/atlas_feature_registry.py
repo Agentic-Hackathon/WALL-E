@@ -71,7 +71,8 @@ def registry_payload():
             'definitions':[asdict(x) for x in REGISTRY],
             'timeframe_instances':[asdict(bind_timeframe(x,res)) for x in REGISTRY
                 for res in (('snapshot',) if x.family=='microstructure' else tuple(SECONDS))],
-            'extension_registries':{'NEWS_ENHANCED':'wallex_bot.atlas_news_features.registry'},
+            'extension_registries':{'NEWS_ENHANCED':'wallex_bot.atlas_news_features.registry',
+                'M8_TECHNICAL_EVIDENCE':'wallex_bot.atlas_technical_evidence.technical_registry'},
             'profiles':{'CORE':'UNCHANGED_CHAMPION_FEATURES_ONLY','ADVANCED':'V3_1_RESEARCH_ONLY',
                         'NEWS_ENHANCED':'CORE_PLUS_NEWS_PIT_V1_RESEARCH_ONLY'},
             'champion_recipe_unchanged':True,'promotion':'DISABLED'}

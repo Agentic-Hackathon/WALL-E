@@ -15,6 +15,23 @@ from .atlas_liquidation import _save_atomic
 
 VERSION='ATLAS_TECHNICAL_EVIDENCE_V4_1'
 
+def technical_registry():
+    definitions=[]
+    specs=[('tenkan9','(highest9+lowest9)/2',9),('kijun26','(highest26+lowest26)/2',26),
+        ('senkou_a_computed_now','(Tenkan9+Kijun26)/2; display +26 bars, available NOW',26),
+        ('senkou_b_computed_now','(highest52+lowest52)/2; display +26 bars, available NOW',52),
+        ('cloud_at_current_a','SenkouA computed 26 bars ago',52),('cloud_at_current_b','SenkouB computed 26 bars ago',78),
+        ('supertrend_trailing_band_v1','stateful final bands HL2 +/- 3*WilderATR14, prior close band resets',15)]
+    specs.extend(('fibonacci_retracement_'+str(r),'UP: H-r*(H-L); DOWN: L+r*(H-L), two opposite CONFIRMED pivots',5) for r in (.236,.382,.5,.618,.786))
+    specs.extend(('fibonacci_extension_'+str(r),'UP: L+r*(H-L); DOWN: H-r*(H-L), confirmed pivots only',5) for r in (1.272,1.618,2.))
+    for name,formula,warmup in specs:
+        definitions.append({'name':name,'formula':formula,'version':VERSION,'warmup_bars':warmup,
+            'inputs':['verified closed OHLCV'],'timeframe':'CLOSED_TIMEFRAME_TEMPLATE','missing_policy':'None; no imputation',
+            'zero_denominator_policy':'undefined ratios are None; Fibonacci requires H>L',
+            'availability':'max(all dependency receipts, last dependency close, pivot confirmation close)',
+            'provenance':'actual chunk SHA-256 + implementation SHA-256','authority':'RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE'})
+    return {'version':VERSION,'definitions':definitions,'implementation_sha256_LF':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()}
+
 def number(value):
     return float(value) if isinstance(value,(float,int,np.number)) and math.isfinite(value) else None
 
@@ -85,6 +102,11 @@ def compute(frame,period=900):
         'missing_indicators':[k for k,v in indicators.items() if v is None],
         'warmup':{'ichimoku_current_cloud':78,'fibonacci':'two opposite pivots confirmed with 2 closed right bars','supertrend':15},
         'missing_policy':'None/explicit reason, no imputation','champion_features_changed':False,'decision_authority':'RESEARCH_EVIDENCE_ONLY'}
+    payload['legacy_indicator_audit']={'psar_gap':'V3 is close/rolling-low3-1, NOT full Parabolic SAR; not used as PSAR signal',
+        'historical_vol20':'V3 output is per-bar log-return std; registry annualization wording is inaccurate',
+        'atr14_pct':'V3 uses simple rolling True Range; new SuperTrend explicitly uses Wilder EWM',
+        'supertrend_dir':'V3 simplified expression is not trailing SuperTrend; separate corrected field above',
+        'RSI_warmup':'14 return changes require 15 closed bars; undefined down denominator remains missing'}
     payload['evidence_sha256']=_sha(payload);return payload
 
 
