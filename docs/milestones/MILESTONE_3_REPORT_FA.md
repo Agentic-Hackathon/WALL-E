@@ -64,4 +64,4 @@ conda run -n shbk python -m pytest -q
 
 ## Commit
 
-hash commit اصلی پس از ثبت این گزارش افزوده می‌شود.
+commit اصلی: `4a808d7119dd45b74f9b930dd4517da7b08da9ac` (`feat: add per-asset feature readiness and registry`).
