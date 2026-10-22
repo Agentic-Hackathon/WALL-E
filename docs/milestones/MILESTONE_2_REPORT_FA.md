@@ -100,7 +100,10 @@ conda run --no-capture-output -n shbk python -m wallex_bot.atlas_cli archive-all
 
 ## Commit Hash
 
-`PENDING_MILESTONE_2_AUDIT_COMMIT` — پس از ثبت commit اصلی، hash واقعی در commit تکمیلی provenance وارد می‌شود.
+
+commit اصلی Milestone 2: `73fe81714a8a772aced4c9785c575a6b597da076` (`feat: add PIT-safe market data coverage audit`).
+
+این commit تکمیلی فقط provenance را در گزارش ثبت می‌کند و هیچ دادهٔ بازار، مدل، ریسک یا اجرای عملیاتی را تغییر نمی‌دهد.
 
 ## Next Actions
 
