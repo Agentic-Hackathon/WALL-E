@@ -14,7 +14,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit','challenger-preflight','train-challenger-v2','challenger-evaluate','data-quality-audit'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','account-read-status','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit','challenger-preflight','train-challenger-v2','challenger-evaluate','data-quality-audit','data-sync-status','data-sync-plan','data-sync-run'])
     p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
     p.add_argument('--checkpoint-dir',default=None,help='Exact Stage13 saved research run directory, never auto-select checkpoints')
     p.add_argument('--days',type=int,default=7)
@@ -33,6 +33,11 @@ def main(argv=None):
     p.add_argument('--backoff-seconds',type=float,default=.5,help='Exponential retry backoff base for public-data GETs')
     p.add_argument('--output-dir',default='reports',help='Output directory for read-only data-quality audit reports')
     p.add_argument('--probe-symbol',default=None,help='Optional public UDF contract probe; records observed response grids without orders')
+    p.add_argument('--sync-scope',choices=('priority','tmn','spot','catalog'),default='priority')
+    p.add_argument('--sync-hours',type=float,default=None,help='Recent warmup window for data sync, bounded to 1..72 hours')
+    p.add_argument('--max-windows',type=int,default=8,help='Maximum public source windows per bounded data-sync run')
+    p.add_argument('--sync-resolutions',default=None,help='Comma-separated demanded target resolutions; default comes from active model metadata')
+    p.add_argument('--package-id',type=int,default=None,help='Optional read-only package lookup; never enables order submission')
     p.add_argument('--fee',type=float,default=.001)
     p.add_argument('--slippage',type=float,default=.0005)
     p.add_argument('--top',type=int,default=8)
@@ -125,6 +130,19 @@ def main(argv=None):
         if args.command=='data-quality-audit':
             from .atlas_data_quality import build_reports
             pretty(build_reports(lake,args.output_dir,probe_symbol=args.probe_symbol));return
+        if args.command in ('data-sync-status','data-sync-plan','data-sync-run'):
+            from .atlas_data_sync import DataSyncManager
+            manager=DataSyncManager(lake)
+            resolutions=tuple(x.strip() for x in args.sync_resolutions.split(',') if x.strip()) if args.sync_resolutions else None
+            if args.command=='data-sync-status':pretty(manager.status());return
+            if args.command=='data-sync-plan':
+                pretty(manager.plan(top=args.top,scope=args.sync_scope,warmup_hours=args.sync_hours,target_resolutions=resolutions));return
+            pretty(manager.run(top=args.top,scope=args.sync_scope,warmup_hours=args.sync_hours,target_resolutions=resolutions,
+                               max_windows=args.max_windows,delay=args.delay,retries=args.retries,
+                               backoff_seconds=args.backoff_seconds,workers=args.workers,purpose='cli-data-sync-run'));return
+        if args.command=='account-read-status':
+            from .wallex_api import account_connection_status
+            pretty(account_connection_status(args.package_id));return
         if args.command=='status':pretty(lake.status());return
         if args.command=='forward-report':
             from .atlas_forward import report

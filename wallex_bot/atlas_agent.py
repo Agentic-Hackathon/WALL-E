@@ -20,6 +20,7 @@ from .market import depth
 from .atlas_context import ContextStore,make_packet
 from .atlas_rationale import explain_for_state
 from .atlas_mode import ExecutionMode,require_mode
+from .atlas_data_sync import DataSyncManager
 
 class AgentState(TypedDict,total=False):
     symbol:str
@@ -56,11 +57,28 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
     lake=lake or Lake()
     symbol=symbol or select_symbol(lake)
     import torch
+    model=verified_champion(lake.root/'models')
+    # A market without recent, SHA-verified, continuous model input cannot
+    # enter the graph or reach the paper broker. Startup sync is bounded and
+    # uses public GET only; it never backfills the catalog during this cycle.
+    try:
+        cfg=torch.load(model,map_location='cpu',weights_only=True)['config']
+        required_resolution=cfg['resolution']
+        sync=DataSyncManager(lake)
+        sync_result=sync.run(top=1,scope='catalog',target_resolutions=(required_resolution,),
+                             max_windows=4,purpose='agent-startup',symbols=(symbol,))
+        ready=sync.market_readiness(symbol,required_resolution)
+    except Exception as exc:
+        sync_result={'status':'DATA_SYNC_CHECK_FAILED','error_type':type(exc).__name__}
+        ready={'ready':False,'reason':'DATA_SYNC_CHECK_FAILED'}
+    if not ready.get('ready'):
+        return {'decision':'NO_PAPER_ACTION_DATA_NOT_READY','symbol':symbol,'data_sync':sync_result,
+                'data_readiness':ready,'trade_execution':'DISABLED',
+                'guarantee':'No graph forecast, broker intent, paper action or real order was created.'}
     def context_node(state:AgentState):
         # Trusted local code selects tool/skill scope. No article can widen it.
         packet=make_packet(lake,phase='agent-cycle',token_budget=1800,mode=mode,symbol=state.get('symbol'))
         return {'context_packet':packet}
-    model=verified_champion(lake.root/'models')
     def market_node(state:AgentState):
         raw=depth(state['symbol'])  # REAL currently observed Wallex depth
         book=measure_book(raw,notional_tmn=250000,fee_rate=fee)

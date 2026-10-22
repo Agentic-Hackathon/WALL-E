@@ -9,6 +9,7 @@ from .atlas_shadow import shadow_cycle, PaperAccount
 from . import market
 from .atlas_context import ContextStore,make_packet
 from .atlas_mode import ExecutionMode,require_mode
+from .atlas_data_sync import DataSyncManager
 
 
 def _save_state(path, state):
@@ -37,25 +38,36 @@ def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
     deadline=float(state['deadline_epoch'])
     while time.time()<deadline:
         started=time.monotonic()
-        # All source observations are actual exchange history. Caching prevents
-        # duplicate stable window requests; interruptions preserve existing data.
-        summary=lake.harvest(scope='tmn-spot',days=2,resolutions=('1',),
-                             max_markets=top,chunk_hours=3,delay=.4)
-        derived=lake.materialize_derived(['15'])
+        # Bounded startup/continuous reconciliation: no full-catalog backfill
+        # may block a watch cycle. DataSync reuses the archive progress ledger.
+        sync=DataSyncManager(lake)
+        sync_result=sync.run(top=top,scope='priority',warmup_hours=48,max_windows=top,
+                             delay=.4,retries=2,backoff_seconds=.5,workers=1,purpose='watch-cycle')
+        summary=sync_result.get('harvest',sync_result)
+        derived={'requested_by_data_sync':sync_result.get('derived_requested',[])}
         news=harvest_news(lake,hours=24)
-        try:
-            context_packet=make_packet(lake,phase='watch',mode=mode)
-        except Exception as exc:
-            # A compromised/invalid memory chain cannot influence an action.
+        readiness=[sync.market_readiness(symbol) for symbol in sync_result['plan']['symbols']]
+        if not readiness or not all(item['ready'] for item in readiness):
+            # Fail closed: a Watch cycle must not let an unverified market reach
+            # the shadow-decision path, even though that path is paper-only.
             context_packet=None
-            result={'shadow_cycle_skipped':'CONTEXT_INTEGRITY_OR_BUDGET_FAILURE',
-                    'error_type':type(exc).__name__}
-        try:
-            if context_packet is not None: result=shadow_cycle(lake,top=top,mode=mode)
-        except Exception as exc:
-            result={'shadow_cycle_failed':type(exc).__name__+': '+str(exc)[:180]}
+            result={'shadow_cycle_skipped':'DATA_SYNC_INPUT_NOT_READY',
+                    'readiness':readiness}
+        else:
+            try:
+                context_packet=make_packet(lake,phase='watch',mode=mode)
+            except Exception as exc:
+                # A compromised/invalid memory chain cannot influence an action.
+                context_packet=None
+                result={'shadow_cycle_skipped':'CONTEXT_INTEGRITY_OR_BUDGET_FAILURE',
+                        'error_type':type(exc).__name__}
+            try:
+                if context_packet is not None: result=shadow_cycle(lake,top=top,mode=mode)
+            except Exception as exc:
+                result={'shadow_cycle_failed':type(exc).__name__+': '+str(exc)[:180]}
         watch_record={'utc':datetime.now(timezone.utc).isoformat(),
-                'downloaded_chunks':summary['complete'],'failed_chunks':summary['failed'],
+                'downloaded_chunks':summary.get('complete',0),'failed_chunks':summary.get('failed',0),
+                'data_sync_status':sync_result.get('status'),
                 'news':news,'derived':derived,'shadow':result,
                 'context_engineering':{'enabled':context_packet is not None,
                     'skills_loaded':len(context_packet['task_skills']) if context_packet else 0,
@@ -68,8 +80,8 @@ def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
         try:
             context_store.record('WATCH_CYCLE',str(lake.root/'watch_log.jsonl'),{
                 'cycles_completed':state['cycles_completed']+1,
-                'downloaded_chunks':summary['complete'],
-                'failed_chunks':summary['failed'],
+                'downloaded_chunks':summary.get('complete',0),
+                'failed_chunks':summary.get('failed',0),
                 'observed_markets':top,
                 'shadow_actions':[r.get('action','ERROR') for r in result.get('events',[])],
                 'recorded_news':news.get('fetched_articles_count_attempted',0)})

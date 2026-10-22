@@ -213,7 +213,7 @@ class Lake:
                 'retrieved_at':received,'available_at':available}
 
     def harvest(self, scope='all-spot',days=7,resolutions=('15','60'),chunk_hours=3,max_markets=None,
-                delay=0.35,retries=2,backoff_seconds=.5,workers=1):
+                delay=0.35,retries=2,backoff_seconds=.5,workers=1,windows=None):
         """Fetch bounded public-history windows with resumable, auditable retries.
 
         SQLite writes deliberately remain on this caller thread.  Workers issue
@@ -227,8 +227,11 @@ class Lake:
         if not 0<=retries<=6 or not .05<=backoff_seconds<=60:raise ValueError('invalid retry/backoff policy')
         if not 1<=workers<=8:raise ValueError('workers must be 1..8')
         if any(res not in ALL_RESOLUTIONS for res in resolutions):raise ValueError('unsupported resolution')
-        symbols=self.symbols(scope)
-        if not symbols: self.discover(); symbols=self.symbols(scope)
+        if windows is not None and not isinstance(windows,(list,tuple)):raise ValueError('windows must be a list of explicit source windows')
+        # An explicit reconciliation window already names the exact catalog
+        # market.  Do not call discovery merely to service that bounded task.
+        symbols=self.symbols(scope) if windows is None else []
+        if windows is None and not symbols: self.discover(); symbols=self.symbols(scope)
         if max_markets is not None:
             # A limited research watch uses the highest observed real quote turnover,
             # never alphabetical symbol order or invented popularity scores.
@@ -245,21 +248,39 @@ class Lake:
                    'workers':workers,'min_request_start_spacing_seconds':delay,
                    'count_units':'source_window_chunks','errors':[]}
         tasks=[]
-        for symbol in symbols:
-            for resolution in resolutions:
-                src=DERIVED.get(resolution,(resolution,1))[0]
+        if windows is not None:
+            symbols=sorted({str(x[0]) for x in windows})
+            summaries['symbols_count']=len(symbols)
+            summaries['explicit_window_mode']=True
+            for item in windows:
+                if not isinstance(item,(list,tuple)) or len(item)!=4:raise ValueError('window must be (symbol,resolution,begin,end)')
+                symbol,resolution,left,right=item
+                if resolution not in NATIVE:raise ValueError('explicit windows must use native source resolution only')
                 period=period_seconds(resolution)
-                stop=end//period*period
-                size=max(period, (chunk_hours*3600//period)*period)
-                start=((begin+size-1)//size)*size
-                for left in range(start,stop,size):
-                    right=min(stop,left+size)
-                    if self.has(symbol,resolution,left,right):
-                        summaries['cached']+=1
-                        self._progress(symbol,resolution,left,right,src,'CACHED_VALID',finished_at=utcnow())
-                        continue
-                    self._progress(symbol,resolution,left,right,src,'QUEUED')
-                    tasks.append((symbol,resolution,src,period,left,right))
+                if not isinstance(left,int) or not isinstance(right,int) or left%period or right%period or right<=left:
+                    raise ValueError('explicit source window is not resolution-aligned')
+                if self.has(symbol,resolution,left,right):
+                    summaries['cached']+=1
+                    self._progress(symbol,resolution,left,right,resolution,'CACHED_VALID',finished_at=utcnow())
+                    continue
+                self._progress(symbol,resolution,left,right,resolution,'QUEUED')
+                tasks.append((symbol,resolution,resolution,period,left,right))
+        else:
+            for symbol in symbols:
+                for resolution in resolutions:
+                    src=DERIVED.get(resolution,(resolution,1))[0]
+                    period=period_seconds(resolution)
+                    stop=end//period*period
+                    size=max(period, (chunk_hours*3600//period)*period)
+                    start=((begin+size-1)//size)*size
+                    for left in range(start,stop,size):
+                        right=min(stop,left+size)
+                        if self.has(symbol,resolution,left,right):
+                            summaries['cached']+=1
+                            self._progress(symbol,resolution,left,right,src,'CACHED_VALID',finished_at=utcnow())
+                            continue
+                        self._progress(symbol,resolution,left,right,src,'QUEUED')
+                        tasks.append((symbol,resolution,src,period,left,right))
         limiter_lock=Lock()
         next_request=[0.0]
         def wait_turn():
@@ -293,7 +314,8 @@ class Lake:
             if 'error' in result:
                 summaries['failed']+=1
                 reason=result['error']
-                self._progress(symbol,resolution,left,right,src,'FAILED',result['attempts'],reason,
+                unavailable=any(token in reason.lower() for token in ('no data','empty/mismatched','no genuinely observed'))
+                self._progress(symbol,resolution,left,right,src,'SOURCE_UNAVAILABLE' if unavailable else 'FAILED',result['attempts'],reason,
                                result['started_at'],result['finished_at'])
                 with self.db:
                     self.db.execute('INSERT INTO incidents(symbol,resolution,begin,end,created_at,error) VALUES(?,?,?,?,?,?)',
@@ -359,7 +381,7 @@ class Lake:
         if strict and len(answer)!=1:raise RuntimeError('Market data contains gaps; cannot use as continuous')
         return answer
 
-    def materialize_derived(self, resolutions=None):
+    def materialize_derived(self, resolutions=None, symbols=None):
         """Derive every possible higher interval from genuine verified base observations.
         No additional exchange requests and no partial-bucket fabrication.
         """
@@ -368,7 +390,7 @@ class Lake:
         for target in wanted:
             if target not in DERIVED:raise ValueError('Only supported derived resolution')
             src=DERIVED[target][0];step=period_seconds(target)
-            for sym in self.symbols('all-spot'):
+            for sym in (list(symbols) if symbols is not None else self.symbols('all-spot')):
                 try:segs=self.load(sym,src)
                 except ValueError:continue
                 for frame in segs:

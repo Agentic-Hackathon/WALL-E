@@ -1,0 +1,38 @@
+{
+  "report_kind": "Milestone 2.1 operational status snapshot",
+  "captured_at_utc": "2026-10-22T13:42:14.168743+00:00",
+  "component": "DataSyncManager",
+  "mode": "PUBLIC_DATA_ONLY",
+  "live_execution": "HARD_DISABLED",
+  "lease": {
+    "name": "global-public-data-sync",
+    "held_at_snapshot": false,
+    "coordination": "SQLite lease with expiry; a second scheduler returns LEASE_HELD_BY_ANOTHER_DATASYNC"
+  },
+  "resume_source": "catalog.sqlite.download_progress",
+  "last_completed_run": {
+    "status": "COMPLETED",
+    "purpose": "cli-data-sync-run",
+    "market": "PEPETMN",
+    "source_resolution": "1",
+    "target_resolution": "15",
+    "complete": 1,
+    "cached": 0,
+    "failed": 0,
+    "retries": 0
+  },
+  "current_planning_rule": {
+    "scope_order": ["priority active Spot/TMN", "other Spot/TMN", "catalog"],
+    "warmup_hours_bounds": [1, 72],
+    "settlement_grace_source_bars": 1,
+    "request_unit": "exact missing run of verified source timestamps",
+    "source_unavailable": "persist and skip a previously unavailable containing interval",
+    "gap_policy": "never fill or interpolate"
+  },
+  "account_read_check": {
+    "api_key_state_at_test": "WALLEX_API_KEY_UNSET",
+    "connection": "NOT_ATTEMPTED",
+    "fee_status": "NOT_AVAILABLE_WITHOUT_READ_RESPONSE",
+    "contest_credit_status": "UNKNOWN"
+  }
+}

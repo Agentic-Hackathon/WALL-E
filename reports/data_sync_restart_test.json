@@ -1,0 +1,27 @@
+{
+  "report_kind": "Milestone 2.1 restart and resume acceptance snapshot",
+  "tested_at_utc": "2026-10-22T13:42:14.168743+00:00",
+  "procedure": [
+    "Ran data-sync-run in one process against PEPETMN using the persistent catalog.sqlite ledger.",
+    "Started a separate Python process and ran data-sync-status.",
+    "Ran an immediate second dry-run plan at the same settled source boundary."
+  ],
+  "persistent_ledger": "atlas_store/catalog.sqlite.download_progress",
+  "separate_process_status": {
+    "last_run_status": "COMPLETED",
+    "lease_held": false,
+    "last_completed_window_utc": ["2026-10-22T13:39:00+00:00", "2026-10-22T13:40:00+00:00"],
+    "downloaded_chunks": 1,
+    "failed_chunks": 0
+  },
+  "resume_outcome": {
+    "same_boundary_extra_requests": 0,
+    "next_plan_only_after_real_clock_advance": true,
+    "duplicate_write_or_conflict": false
+  },
+  "controlled_outage_test": {
+    "method": "transport failure injected before public response; no candle/quote was fabricated",
+    "result": "FAILED progress persisted, zero chunk rows were written, existing archive write path was not invoked",
+    "not_a_claim": "This does not prove all real-world provider outage modes."
+  }
+}

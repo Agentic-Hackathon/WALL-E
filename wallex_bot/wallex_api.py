@@ -59,6 +59,41 @@ class WallexReadClient:
                 'unavailableMarkets':out['unavailableMarkets']}
 
 
+def account_connection_status(package_id: int | None=None)->dict:
+    """Optional allowlisted private-read diagnostic; never exposes the API key.
+
+    Fee and contest-credit classification are reported as unknown unless an
+    explicitly documented read-only response provides them.  In particular this
+    function never reads arbitrary local files such as pass.txt.
+    """
+    if not os.environ.get('WALLEX_API_KEY'):
+        return {'status':'WALLEX_API_KEY_UNSET','connection':'NOT_ATTEMPTED','live_execution':'HARD_DISABLED',
+                'fee_status':'NOT_AVAILABLE_WITHOUT_READ_RESPONSE','contest_credit_status':'UNKNOWN'}
+    client=WallexReadClient();result={'status':'READ_ONLY_CHECK','live_execution':'HARD_DISABLED',
+        'fee_status':'NOT_AVAILABLE_NO_ALLOWLISTED_FEE_READ_ENDPOINT','contest_credit_status':'UNKNOWN_NOT_INFERRED_FROM_BALANCE'}
+    try:
+        accounts=client.sub_accounts()
+        result['connection']='SUCCESS_READ_ONLY'
+        result['subaccounts']=[{'type':x.get('type'),'active':x.get('isActive'),'suspended':x.get('isSuspend')}
+                               for x in accounts]
+    except WallexAPIError as exc:
+        result['connection']='FAILED_READ_ONLY';result['connection_error']=str(exc);return result
+    try:
+        balances=client.balances_detail();tmn=balances.get('TMN',{})
+        result['tmn_available']=tmn.get('available');result['tmn_total']=tmn.get('total')
+    except WallexAPIError as exc:
+        result['balances_status']='UNAVAILABLE';result['balances_error']=str(exc)
+    if package_id is not None:
+        try:
+            detail=client.package_details(package_id)
+            result['package_read_status']='SUCCESS_READ_ONLY'
+            result['package_unavailable_market_count']=len(detail['unavailableMarkets'])
+            result['contest_credit_status']='PACKAGE_DETAILS_READ__BALANCE_CLASSIFICATION_STILL_UNKNOWN'
+        except (WallexAPIError,ValueError) as exc:
+            result['package_read_status']='FAILED_READ_ONLY';result['package_error']=str(exc)
+    return result
+
+
 def read_organizer_allowlist(path: str | Path)->list[str]:
     import json
     if not Path(path).is_file():
