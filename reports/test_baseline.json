@@ -1,0 +1,24 @@
+{
+  "audit": {
+    "observed_at_utc": "2026-10-22T12:29:00Z",
+    "source_commit_at_start": "af7b9bf",
+    "purpose": "Milestone 1 reproducible project test baseline"
+  },
+  "validated_command": "conda run -n shbk python -m pytest -q",
+  "validated_runtime": "conda environment shbk",
+  "result": {
+    "status": "PASSED",
+    "passed": 139,
+    "skipped": 5,
+    "failed": 0,
+    "collection_errors": 0,
+    "duration_seconds": 5.47
+  },
+  "skip_detail": "pytest -q reported five skips but did not enumerate individual skip reasons in the captured summary; reasons are not inferred here.",
+  "contrast_default_runtime": {
+    "command": "python -m pytest -q",
+    "status": "COLLECTION_ERROR",
+    "cause": "The default CPU-only Python environment has a NumPy ABI mismatch with installed compiled scientific packages. This does not invalidate the passing shbk baseline."
+  },
+  "interpretation": "The suite establishes the current tested behavioral baseline only. It does not establish profitability, exchange connectivity, fee correctness, or readiness for real trading."
+}

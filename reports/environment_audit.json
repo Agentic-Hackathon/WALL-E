@@ -1,0 +1,66 @@
+{
+  "audit": {
+    "observed_at_utc": "2026-10-22T12:32:43Z",
+    "scope": "Milestone 1 read-only architecture and environment audit",
+    "source_commit_at_start": "af7b9bf",
+    "branch": "integration/atlas-milestone-1-audit"
+  },
+  "git": {
+    "baseline_tag": "baseline-v3.4",
+    "tracked_changes_at_start": false,
+    "untracked_user_handoff_artifacts_present": true,
+    "untracked_artifacts_modified_or_committed_by_audit": false
+  },
+  "validated_runtime": {
+    "command_prefix": "conda run -n shbk python",
+    "python": "3.12.3",
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "torch": "2.11.0+cu128",
+    "cuda_available": true,
+    "cuda_runtime": "12.8",
+    "gpu": "NVIDIA GeForce RTX 4080 SUPER",
+    "gpu_memory_mib": {
+      "total": 16376,
+      "free": 14994
+    }
+  },
+  "nonvalidated_default_runtime": {
+    "python": "3.12.7",
+    "torch": "2.11.0+cpu",
+    "cuda_available": false,
+    "numpy": "2.2.6",
+    "status": "UNSUITABLE_FOR_PROJECT_TEST_BASELINE",
+    "reason": "NumPy ABI incompatibility with installed compiled SciPy/sklearn/numexpr/bottleneck packages during test collection"
+  },
+  "dependency_health": {
+    "command": "conda run -n shbk python -m pip check",
+    "status": "NONZERO_UNRELATED_SHARED_ENVIRONMENT_CONFLICTS",
+    "action_taken": "None; no broad change to a shared user environment was authorized or needed for the passing project baseline."
+  },
+  "operational_store_read_only_snapshot": {
+    "path": "atlas_store",
+    "assets": 469,
+    "spot_markets": 373,
+    "spot_tmn_markets": 187,
+    "complete_chunks": 3760,
+    "candles_reported_by_cli": 374249,
+    "chunk_resolutions": {
+      "1": 1860,
+      "15": 317,
+      "60": 1583
+    },
+    "archive_bytes": 248876354,
+    "archive_files": 3809,
+    "note": "Values are a time-stamped observation. An independently running watch process may change the operational store; this audit neither started nor controlled it."
+  },
+  "execution_safety": {
+    "mode_contract": "ATLAS_EXECUTION_MODE_V1",
+    "live_status": "HARD_DISABLED",
+    "real_exchange_order_submission": false,
+    "no_live_orders": true,
+    "broker_status": "DRY_RUN_ONLY",
+    "wallex_live_submit_transport": "NOT_IMPLEMENTED",
+    "submitted_exchange_orders": 0
+  }
+}
