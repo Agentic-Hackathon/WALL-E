@@ -208,3 +208,19 @@ def test_real_candle_features_do_not_change_when_future_rows_are_removed():
     if not parts:pytest.skip('not enough real contiguous archived candles')
     frame=parts[-1];full=compute_ohlcv_features(frame);prefix=compute_ohlcv_features(frame.iloc[:90].copy())
     pd.testing.assert_frame_equal(full.iloc[:90],prefix)
+
+def test_microstructure_is_recomputed_from_real_hash_verified_snapshot_only():
+    from wallex_bot.atlas_feature_provenance import microstructure_at
+    path=Path('atlas_store/forward_observations.sqlite').resolve()
+    if not path.exists():pytest.skip('no actual quote archive')
+    db=sqlite3.connect(path.as_uri()+'?mode=ro',uri=True)
+    try:
+        row=db.execute('SELECT symbol,observed_epoch FROM quotes ORDER BY observed_epoch DESC LIMIT 1').fetchone()
+        earliest=db.execute('SELECT MIN(observed_epoch) FROM quotes').fetchone()[0]
+    finally:db.close()
+    if row is None:pytest.skip('no actual stored order-book receipt')
+    value=microstructure_at(path.parent,row[0],row[1])
+    assert value['status']=='VERIFIED_REAL_SNAPSHOT_AT_CUTOFF'
+    assert value['features']['book_spread_bps']>0
+    assert -1<=value['features']['book_imbalance']<=1
+    assert microstructure_at(path.parent,row[0],earliest-1)['status']=='NO_REAL_SNAPSHOT_AT_CUTOFF'

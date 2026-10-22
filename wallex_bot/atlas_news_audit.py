@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from .atlas_archive import Lake
-from .atlas_feature_provenance import annotate_receipts
+from .atlas_feature_provenance import annotate_receipts,microstructure_at
 from .atlas_feature_registry import REGISTRY,registry_payload,compute_ohlcv_features
 from .atlas_feature_audit_v3 import _closed_segment,_feature_rows
 from .atlas_news_pipeline import NewsStore,now_utc,canonical,MODEL_ID,MODEL_REVISION,UNDERSTANDING,aware
@@ -47,6 +47,7 @@ def contract_report(lake,asof):
         'microstructure':[{'name':x.name,'source':x.source,'provenance_required_by_compute':True} for x in REGISTRY if x.family=='microstructure'],
         'timeframe_templates_and_instances':True,'definitions':registry_payload()['feature_count'],
         'cmf20_pepetmn_1m':cmf,'candle_provenance':provenance,
+        'actual_book_computation_path':{symbol:microstructure_at(lake.root,symbol,aware(asof).timestamp()) for symbol in ('BTCTMN','ETHTMN')},
         'profiles':{'CORE':'unchanged Champion finite 96-bar context + 55 warmup and freshness',
                     'ADVANCED':'separate research feature set; optional for CORE',
                     'NEWS_ENHANCED':'CORE plus actual news model evidence and source coverage; optional for CORE'},
