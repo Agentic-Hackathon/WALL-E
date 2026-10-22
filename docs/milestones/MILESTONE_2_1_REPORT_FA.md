@@ -63,4 +63,4 @@ conda run -n shbk python -m pytest -q
 
 ## Commit
 
-commit اصلی Milestone 2.1 پس از نهایی‌شدن این گزارش ثبت می‌شود؛ hash در commit تکمیلی provenance ثبت خواهد شد.
+commit اصلی Milestone 2.1: `a1883d6fb99383e28bef05f62680408e65868337` (`feat: automate bounded startup data sync`).
