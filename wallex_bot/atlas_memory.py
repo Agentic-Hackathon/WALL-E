@@ -148,3 +148,77 @@ def rank_rows(rows,*,as_of_utc=None,symbol=None,purpose='watch',limit=12):
                    -dt.datetime.fromisoformat(item['observed_at_utc'].replace('Z','+00:00')).timestamp(),
                    item['event_hash']))
     return result[:limit]
+
+
+class ResearchMemory:
+    """M6 additive layers in the existing ContextStore, not a replacement.
+
+    FinMem-inspired deterministic factors reuse score_event. Event creation,
+    observation AND availability must precede retrieval cutoff. No lesson can
+    mutate a model or risk policy. References only; no headline instructions.
+    """
+    TYPES=frozenset({'RECENT_MARKET_CONTEXT','NEWS_EVENT','PAST_FORECAST','MATURED_FORECAST_OUTCOME',
+        'DECISION_RISK_VETO','RESEARCH_LESSON','STRATEGY_PERFORMANCE_EVIDENCE'})
+    def __init__(self,root,mode='SHADOW'):
+        from .atlas_context import ContextStore
+        from .atlas_mode import ExecutionMode
+        self.store=ContextStore(root,mode=mode);self.db=self.store.db
+        if self.store.mode is ExecutionMode.SHADOW:
+            self.db.execute('''CREATE TABLE IF NOT EXISTS research_memory_v6(
+                seq INTEGER PRIMARY KEY, event_id TEXT UNIQUE NOT NULL,symbol TEXT NOT NULL,
+                observed REAL NOT NULL, available REAL NOT NULL, created REAL NOT NULL,
+                memory_type TEXT NOT NULL,importance REAL NOT NULL,source_hash TEXT NOT NULL,
+                evaluation_status TEXT NOT NULL,payload TEXT NOT NULL,previous_hash TEXT NOT NULL,event_hash TEXT NOT NULL)''')
+            self.db.commit()
+    def exists(self):
+        return self.db is not None and self.db.execute("SELECT 1 FROM sqlite_master WHERE name='research_memory_v6'").fetchone() is not None
+    def record(self,event_id,symbol,observed,available,memory_type,source_hash,payload,evaluation_status='OBSERVED_EVIDENCE_ONLY'):
+        import time,json
+        from .atlas_context import _clean,_json,_sha
+        self.store._require_writable('ResearchMemory.record')
+        if memory_type not in self.TYPES or not SYMBOL_PATTERN.fullmatch(symbol) or not re.fullmatch('[0-9a-f]{64}',source_hash):raise ValueError('INVALID_MEMORY_CONTRACT')
+        created=time.time();observed=float(observed);available=float(available)
+        if not all(math.isfinite(x) for x in (observed,available)) or observed>created or available<observed or available>created:raise ValueError('INVALID_MEMORY_AVAILABILITY')
+        message=_json(_clean(payload));imp=importance('GRAPH_DECISION' if memory_type=='DECISION_RISK_VETO' else 'NEWS_EVIDENCE',{})
+        self.db.execute('BEGIN IMMEDIATE')
+        try:
+            existing=self.db.execute('SELECT source_hash,payload,event_hash FROM research_memory_v6 WHERE event_id=?',(event_id,)).fetchone()
+            if existing:
+                if existing[:2]!=(source_hash,message):raise ValueError('MEMORY_IDEMPOTENCY_CONFLICT')
+                self.db.commit();return existing[2]
+            if not self.verify():raise RuntimeError('RESEARCH_MEMORY_CHAIN_INVALID')
+            prev=self.db.execute('SELECT event_hash FROM research_memory_v6 ORDER BY seq DESC LIMIT 1').fetchone()
+            previous=prev[0] if prev else 'GENESIS'
+            fields=[event_id,symbol,observed,available,created,memory_type,imp,source_hash,evaluation_status,message,previous]
+            sha=_sha(_json(fields))
+            self.db.execute('INSERT INTO research_memory_v6(event_id,symbol,observed,available,created,memory_type,importance,source_hash,evaluation_status,payload,previous_hash,event_hash) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',(*fields,sha))
+            self.db.commit();return sha
+        except Exception:self.db.rollback();raise
+    def verify(self):
+        from .atlas_context import _sha,_json
+        if not self.exists():return True
+        previous='GENESIS'
+        for row in self.db.execute('SELECT event_id,symbol,observed,available,created,memory_type,importance,source_hash,evaluation_status,payload,previous_hash,event_hash FROM research_memory_v6 ORDER BY seq'):
+            if row[-2]!=previous or _sha(_json(list(row[:-1])))!=row[-1]:return False
+            previous=row[-1]
+        return True
+    def retrieve(self,symbol,asof,limit=12):
+        import json
+        cutoff=utc_time(asof);epoch=cutoff.timestamp()
+        if not 1<=limit<=40:raise ValueError('BOUNDED_MEMORY_QUERY_REQUIRED')
+        if not self.exists():return []
+        if not self.verify():raise RuntimeError('RESEARCH_MEMORY_CHAIN_INVALID')
+        rows=self.db.execute('SELECT event_id,symbol,observed,available,created,memory_type,importance,source_hash,evaluation_status,payload,event_hash FROM research_memory_v6 WHERE observed<=? AND available<=? AND created<=? ORDER BY seq DESC LIMIT 2000',(epoch,epoch,epoch)).fetchall()
+        result=[]
+        for key,sym,obs,avail,created,kind,imp,source,status,payload,sha in rows:
+            event={'observed_at_utc':dt.datetime.fromtimestamp(created,dt.timezone.utc).isoformat(),'kind':'GRAPH_DECISION','payload':{'symbol':sym}}
+            score=score_event(event,as_of_utc=cutoff,symbol=symbol,purpose='research')
+            result.append({'event_id':key,'symbol':sym,'observation_time':obs,'availability_time':avail,'created_at':created,
+                'memory_type':kind,'importance':imp,'recency':score['factors']['recency'],'relevance':score['factors']['relevance'],
+                'source_hash':source,'evaluation_status':status,'event_hash':sha,'payload':json.loads(payload),
+                'score':imp*score['factors']['recency']*score['factors']['relevance']})
+        return sorted(result,key=lambda r:(-r['score'],r['event_id']))[:limit]
+    def status(self):
+        return {'chain_valid':self.verify(),'layers':dict(self.db.execute('SELECT memory_type,count(*) FROM research_memory_v6 GROUP BY memory_type')) if self.exists() else {},
+            'authority':'EVIDENCE_ONLY_NO_RISK_OR_MODEL_MUTATION','time_policy':'observation AND availability AND actual creation <= cutoff'}
+    def close(self):self.store.close()

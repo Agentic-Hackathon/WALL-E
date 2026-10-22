@@ -31,3 +31,19 @@
 - Atlas `DLinear_ridge` independently implements the decomposition idea with a 25-point endpoint-padded moving average inside the observed window, scalar **log-return** target and train-only ridge fit. This differs from the reference's multistep price target and SGD; it is not claimed as a paper reproduction.
 - Existing Atlas `atlas_deep.py` backbones, V1/V2/V3 feature recipes, verified archive reader, DataSyncManager, BACKTEST memory and news contracts are reused unchanged. New M5 orchestration/training/calibration/report code is independently authored.
 - Existing installed LightGBM quantile estimator and scikit-learn Ridge are used through public interfaces; no implementation copied. FinBERT remains research/advisory-only under the M4 license restriction; M5 trained no news model.
+
+## Milestone 6 — conceptual references, no copied implementation
+
+All seven repositories were inspected, with LICENSE read before implementation. Existing Atlas modules were extended rather than importing another trading framework. No code from these repositories is executed by Atlas.
+
+| Repository | Inspected commit | License | Inspected capability and Atlas use |
+|---|---|---|---|
+| TradingAgents | `e8f5503e9b86d5c2710b0c76b1f686703968c9df` | Apache-2.0 | `tradingagents/graph/trading_graph.py`: role separation; seven structured deterministic review roles inside existing LangGraph. Concept only. |
+| FinMem | `be814aa47970de9bf2fdd6a1d5a60ae5cf361b46` | MIT | `puppy/memory_functions/compound_score.py`: layered evidence ranking. Atlas retains its own bounded product score, not FinMem's additive formula. Additive tables in ContextStore. |
+| Hindsight | `5111eeaf969c26c74443f5fd1d5dfbd30b32a9af` | MIT with placeholder copyright | `WRITEUP.md`: leakage, null/baseline and regime skepticism. Prospective partition distinct from M5 results; no claimed repo profits adopted. |
+| FinRL-Trading / FinRL-X | `4409abe925c904e570be78ebfb5e77ac3491dff8` | Apache-2.0 | `src/strategies/adaptive_rotation/risk_manager.py`: global state/stop separation; existing RiskGate unchanged, isolated 5M Shadow portfolio. No DRL or source code ported. |
+| https://github.com/nautechsystems/nautilus_trader | `a51ae015c150ef68f62d9295e3efa9534f492a4a` | LGPL-3.0 | `crates/event_store/src/replay.rs`: state-only replay without publishing commands. Concept only; no LGPL code copied. |
+| https://github.com/freqtrade/freqtrade | `c051e9065c5b677f03817dd1f83cb980af1ed684` | GPL-3.0 | `docs/lookahead-analysis.md`: prefix/truncated input comparisons. Concept only; no GPL code copied; risk protections are NOT disabled. |
+| https://github.com/hummingbot/hummingbot | `9af100d6822da7d2d0291a906c730ef172284ee2` | Apache-2.0 | `hummingbot/connector/client_order_tracker.py`: stable identities and reconciliation. Atlas already has an order tracker; only observation identity/lease/reconcile extended. No connectors copied or enabled. |
+
+The last three references are shallow, filtered sparse checkouts under third_party. Paths were discovered using Git tree listings, not guessed. License bytes/commit/path evidence are exported in reports/m6_reference_repositories.json. No futures, leverage, short or withdrawal code was imported.

@@ -18,7 +18,7 @@ def _save_state(path, state):
     tmp.replace(path)
 
 
-def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
+def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW,stop_event=None):
     require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='watch.run')
     if not 1<=hours<=72:raise ValueError('Research watch hours must be 1..72')
     if interval_seconds<60 or interval_seconds>3600:raise ValueError('Polling interval outside safe range')
@@ -37,6 +37,9 @@ def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
         _save_state(session_path,state)
     deadline=float(state['deadline_epoch'])
     while time.time()<deadline:
+        if stop_event is not None and stop_event.is_set():
+            _save_state(session_path,state)
+            return {'status':'STOPPED_GRACEFULLY_RESUMABLE','cycles':state['cycles_completed'],'watch_session_state':str(session_path)}
         started=time.monotonic()
         # Bounded startup/continuous reconciliation: no full-catalog backfill
         # may block a watch cycle. DataSync reuses the archive progress ledger.
@@ -100,7 +103,9 @@ def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
         state['last_cycle_finished_utc']=datetime.now(timezone.utc).isoformat()
         _save_state(session_path,state)
         delay=interval_seconds-(time.monotonic()-started)
-        if delay>0:time.sleep(min(delay,max(0,deadline-time.time())))
+        if delay>0:
+            if stop_event is None:time.sleep(min(delay,max(0,deadline-time.time())))
+            else:stop_event.wait(min(delay,max(0,deadline-time.time())))
 
     # Stage 3: settlement has one atomic Broker/RiskGate path. No direct
     # position deletion or cash mutation is permitted in this watch loop.

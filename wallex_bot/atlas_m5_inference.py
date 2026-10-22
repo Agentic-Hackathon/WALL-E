@@ -45,7 +45,7 @@ def logical_hash(path):
     try:return hashlib.sha256('\n'.join(db.iterdump()).encode()).hexdigest()
     finally:db.close()
 
-def smoke(root,run):
+def smoke(root,run,*,report_path=None):
     from typing import TypedDict
     from langgraph.graph import StateGraph,START,END
     from .atlas_context import make_packet
@@ -79,7 +79,9 @@ def smoke(root,run):
         'champion_manifest_unchanged':champion==current,'before':before,'after':after,
         'prediction':prediction,'news_summary':state['news']['summary'],'disposition':state['disposition']}
     if before!=after or champion!=current:raise RuntimeError('OPERATIONAL_ISOLATION_FAILURE')
-    save(Path('reports')/'m5_backtest_smoke.json',report)
+    # Acceptance/replay must not replace frozen historical milestone evidence.
+    # Explicit report generation opts into a destination.
+    if report_path is not None:save(Path(report_path),report)
     return report
 
 class ProspectiveLedger:

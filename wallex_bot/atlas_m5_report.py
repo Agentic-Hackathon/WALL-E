@@ -65,7 +65,7 @@ def build(run,reports='reports'):
             'plugin_autoload_disabled':True,'synthetic_market_data':False}
         save(reports/'m5_test_results.json',tests)
     else:raise ValueError('ACTUAL_JUNIT_REPORT_REQUIRED')
-    smoke_result=smoke('atlas_store',run);ledger=ProspectiveLedger(run/'prospective.sqlite')
+    smoke_result=smoke('atlas_store',run,report_path=reports/'m5_backtest_smoke.json');ledger=ProspectiveLedger(run/'prospective.sqlite')
     try:save(reports/'m5_forward_status.json',{'status':ledger.status(),'reconciliation':ledger.reconcile('atlas_store'),
         'reason':'No eligible trained 48/72-hour prospective model; no predictions/outcomes fabricated'})
     finally:ledger.close()

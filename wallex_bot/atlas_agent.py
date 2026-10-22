@@ -33,6 +33,8 @@ class AgentState(TypedDict,total=False):
     explanation:dict
     context_packet:dict
     advisory_rationale:dict
+    review:dict
+    evidence:dict
 
 
 def select_symbol(lake):
@@ -47,7 +49,7 @@ def select_symbol(lake):
     return max(markets)[1]
 
 
-def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.001,mode=ExecutionMode.SHADOW):
+def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.001,mode=ExecutionMode.SHADOW,enable_llm=False,paper_root=None,sync_enabled=True):
     require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='agent.cycle')
     try:
         from langgraph.graph import StateGraph,START,END
@@ -55,6 +57,9 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
     except ImportError as e:
         raise RuntimeError('LangGraph optional dependencies not installed; run pip install -r requirements-agent.txt') from e
     lake=lake or Lake()
+    from types import SimpleNamespace
+    account_lake=SimpleNamespace(root=Path(paper_root).resolve()) if paper_root is not None else lake
+    account_lake.root.mkdir(parents=True,exist_ok=True)
     symbol=symbol or select_symbol(lake)
     import torch
     model=verified_champion(lake.root/'models')
@@ -65,8 +70,8 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
         cfg=torch.load(model,map_location='cpu',weights_only=True)['config']
         required_resolution=cfg['resolution']
         sync=DataSyncManager(lake)
-        sync_result=sync.run(top=1,scope='catalog',target_resolutions=(required_resolution,),
-                             max_windows=4,purpose='agent-startup',symbols=(symbol,))
+        sync_result=(sync.run(top=1,scope='catalog',target_resolutions=(required_resolution,),
+                             max_windows=4,purpose='agent-startup',symbols=(symbol,)) if sync_enabled else {'status':'SYNC_DISABLED'})
         ready=sync.market_readiness(symbol,required_resolution)
     except Exception as exc:
         sync_result={'status':'DATA_SYNC_CHECK_FAILED','error_type':type(exc).__name__}
@@ -78,11 +83,35 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
     def context_node(state:AgentState):
         # Trusted local code selects tool/skill scope. No article can widen it.
         packet=make_packet(lake,phase='agent-cycle',token_budget=1800,mode=mode,symbol=state.get('symbol'))
+        from .atlas_memory import ResearchMemory
+        research=ResearchMemory(lake.root,mode=mode)
+        try:
+            packet['research_memory']=[{k:r[k] for k in ('event_id','memory_type','source_hash','evaluation_status','recency','relevance')}
+                for r in research.retrieve(state['symbol'],pd.Timestamp.now(tz='UTC').isoformat(),limit=8)]
+        finally:research.close()
         return {'context_packet':packet}
     def market_node(state:AgentState):
         raw=depth(state['symbol'])  # REAL currently observed Wallex depth
         book=measure_book(raw,notional_tmn=250000,fee_rate=fee)
-        return {'observations':{'book':book,'observed_at_unix':time.time(),
+        stamp=time.time()
+        from .atlas_forward import ForwardLedger
+        observer=ForwardLedger(lake.root)
+        try:
+            quote_id=observer.record_real_quote(state['symbol'],raw,book,stamp)
+            quote_hash=observer.db.execute('SELECT receipt_sha256 FROM quotes WHERE id=?',(quote_id,)).fetchone()[0]
+        finally:observer.close()
+        account=PaperAccount(account_lake)
+        try:
+            if not account.verify():raise RuntimeError('PAPER_CHAIN_INVALID')
+            bids={}
+            for held, in account.db.execute('SELECT symbol FROM positions'):
+                bids[held]=measure_book(depth(held),notional_tmn=250000,fee_rate=fee)['best_bid_tmn']
+            equity=account.update_equity_from_observed_quotes(bids,fee=fee)
+            portfolio={'cash_tmn':float(account.get('cash_tmn')),'positions':account.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall(),
+                'stopped':account.get('stopped')=='1','equity':equity,'all_held_assets_marked_from_real_bids':True}
+        finally:account.close()
+        return {'observations':{'book':book,'observed_at_unix':stamp,'quote_id':quote_id,'quote_receipt_sha256':quote_hash,'portfolio':portfolio,
+                    'observation_id':hashlib.sha256(json.dumps({'symbol':state['symbol'],'raw':raw,'received':stamp},sort_keys=True).encode()).hexdigest(),
                     'data_provenance':'Wallex public REST depth, local observed timestamp'}}
     def indicators_node(state:AgentState):
         cfg=torch.load(model,map_location='cpu',weights_only=True)['config']
@@ -98,12 +127,17 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
             match=df[df.symbol==state['symbol']]
             if len(match): chosen=str(match.iloc[-1].strategy)
         flag=bool(states[chosen].iloc[-1]) if chosen in states else None
+        import math
+        regime={k:float(f[k].iloc[-1]) for k in ('ret24','volatility12','adx14') if k in f and math.isfinite(float(f[k].iloc[-1]))}
+        if 'adx14' in regime:regime['descriptive_state']='TRENDING_ADX_GE_25' if regime['adx14']>=25 else 'LOW_ADX'
         return {'technical':{'selected_strategy':chosen,'current_signal':flag,
                              'last_candle_ts':int(seg.timestamp.iloc[-1]),
+                             'regime_evidence':regime,
                              'selection_origin':'chronological_training_selection' if chosen else 'none'}}
     def news_node(state:AgentState):
         asof=pd.Timestamp.now(tz='UTC').isoformat()
-        articles=news_known_at(lake,asof)
+        try:articles=news_known_at(lake,asof)
+        except Exception:articles=[]  # Optional news outage is not a Core veto.
         relevant=[a for a in articles if any(word in a['title'].lower() for word in
                          ('crypto','bitcoin','ethereum','exchange','wallex'))]
         # Models are not allowed to score historical headlines retroactively before observed availability.
@@ -128,21 +162,32 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
                         'advisory_evidence':advisory,'research_news_features':news_features,
                         'news_memory_receipt':memory,'authority':'ADVISORY_ONLY_NO_NEW_VETO'}}
     def predictive_node(state:AgentState):
+        seconds=__import__('wallex_bot.market',fromlist=['ALLOWED_RESOLUTIONS']).ALLOWED_RESOLUTIONS[required_resolution]
+        segment=lake.load(state['symbol'],required_resolution)[-1]
+        if int(segment.timestamp.iloc[-1])+seconds>time.time():raise RuntimeError('UNCLOSED_MODEL_INPUT')
         result=predict_latest(lake,model,state['symbol'])
+        if time.time()-(result['feature_end_ts']+seconds)>2*seconds:raise RuntimeError('STALE_MODEL_INPUT')
+        result['model_sha256']=hashlib.sha256(model.read_bytes()).hexdigest()
+        result['feature_source_receipts']=[{'file':f,'sha256':sha} for f,sha in lake.db.execute(
+            "SELECT filename,sha256 FROM chunks WHERE symbol=? AND resolution=? AND status='COMPLETE' ORDER BY filename",(state['symbol'],required_resolution))]
         return {'prediction':result}
     def risk_node(state:AgentState):
-        veto=[]
-        if state['technical'].get('current_signal') is False:veto.append('technical_strategy_veto')
-        if state['technical'].get('current_signal') is None:veto.append('technical_strategy_unverified')
-        if state['news']['strong_negative_urls']:veto.append('observed_finbert_high_negative_news')
-        if state['observations']['book']['spread_bps']>70:veto.append('wide_spread')
-        if not state['observations']['book']['hypothetical_full_roundtrip_depth_available']:
-            veto.append('insufficient_visible_book_depth')
-        return {'veto_reasons':veto}
+        from .atlas_review import review
+        cutoff=time.time()
+        evidence={'symbol':state['symbol'],'decision_time':cutoff,'available_at':cutoff,
+            'observation_id':state['observations']['observation_id'],'technical':state['technical'],
+            'news':state['news'],'prediction':state['prediction'],'readiness':ready,
+            'book':state['observations']['book'],'portfolio':state['observations']['portfolio'],
+            'quote_id':state['observations']['quote_id'],'quote_receipt_sha256':state['observations']['quote_receipt_sha256'],
+            'regime':state['technical'].get('regime_evidence',{}),
+            'memory_references':state['context_packet'].get('research_memory',[])}
+        result=review(evidence)
+        return {'veto_reasons':result['proposal']['veto_reasons'],'review':result,'evidence':evidence}
     def rationale_node(state:AgentState):
         # Stage 7: advisory ONLY; its sole output is text+evidence receipt.
         # No downstream trading inputs depend on this node, even if the local
         # LLM returns untrusted instructions or is offline.
+        if not enable_llm:return {'advisory_rationale':{'status':'OPTIONAL_LLM_DISABLED','authority':'ADVISORY_ONLY'}}
         try:
             advisory=explain_for_state(lake.root,state)
         except Exception as exc:
@@ -152,16 +197,21 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
 
     def shadow_node(state:AgentState):
         # PAPER only. Guarded, persistent and explainable; never invokes Wallex order APIs.
-        account=PaperAccount(lake)
+        if time.time()-state['observations']['observed_at_unix']>60:raise RuntimeError('STALE_ORDER_EVIDENCE')
+        account=PaperAccount(account_lake)
         try:
-            evidence=state['prediction'].copy()
-            if state['veto_reasons']:
-                evidence['quantile_log_returns']=dict(evidence['quantile_log_returns'])
-                evidence['quantile_log_returns']['q10']=None
+            from .atlas_review import broker_evidence
+            evidence=broker_evidence(state['prediction'],state['review'])
             stamp=state['observations']['observed_at_unix']
-            intent_id='agent-'+hashlib.sha256((state['symbol']+'|'+str(stamp)+'|'+str(model)).encode()).hexdigest()[:48]
+            intent_id='agentv6-'+hashlib.sha256((state['symbol']+'|'+str(state['prediction']['feature_end_ts'])+'|'+str(model)).encode()).hexdigest()[:48]
             action=ShadowBroker(account).submit(OrderIntent(intent_id,state['symbol'],'AUTO'),
                 forecast=evidence,book=state['observations']['book'],fee=fee).reason
+            from .atlas_orchestration import DecisionLedger
+            row=account.db.execute("SELECT payload FROM events WHERE json_extract(payload,'$.client_order_id')=? ORDER BY id DESC LIMIT 1",(intent_id,)).fetchone()
+            risk_replay=json.loads(row[0]).get('risk_replay_inputs') if row else None
+            ledger=DecisionLedger(account_lake.root)
+            try:ledger.record(state['evidence'],state['review'],action,risk_replay)
+            finally:ledger.close()
             with account.db:
                 account.log(state['symbol'],'MULTI_AGENT_EXPLANATION',{
                     'market_observation':state['observations'],'technical':state['technical'],
@@ -171,7 +221,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
                     'llm_advisory':state.get('advisory_rationale',{'status':'NO_RATIONALE'})})
         finally:account.close()
         return {'decision':action,'explanation':{'model_file':str(model),'veto':state['veto_reasons'],
-                 'audit_db':str(lake.root/'shadow.sqlite'),
+                 'audit_db':str(account_lake.root/'shadow.sqlite'),
                  'trade_execution':'DISABLED',
                  'llm_advisory':state.get('advisory_rationale',{'status':'NO_RATIONALE'})}}
     graph=StateGraph(AgentState)
@@ -195,8 +245,17 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
                   'source':'LangGraph-shadow-ledger','context_skills':[x['name'] for x in output['context_packet']['task_skills']]}
         memory_hash=memory.record('GRAPH_DECISION',str(lake.root/'shadow.sqlite'),evidence)
     finally:memory.close()
+    from .atlas_memory import ResearchMemory
+    structured=ResearchMemory(lake.root,mode=mode)
+    try:
+        stamp=output['evidence']['decision_time']
+        structured.record('decision-'+output['review']['proposal']['source_evidence_hash'],symbol,stamp,time.time(),
+            'DECISION_RISK_VETO',output['review']['review_sha256'],{'symbol':symbol,'decision':output['decision'],
+                'veto_reasons':output['veto_reasons'],'model_sha256':output['prediction'].get('model_sha256')})
+    finally:structured.close()
     return {'decision':output['decision'],'explanation':output['explanation'],
             'context_memory_event_sha256':memory_hash,
             'context_policy':'trusted fixed context + lazy skills + bounded SQLite-backed memory',
             'symbol':symbol,'checkpoint_db':str(dbpath),
+            'review':output['review'],'observation_id':output['observations']['observation_id'],
             'guarantee':'NO REAL ORDER FUNCTIONS EXIST IN THIS AGENT'}

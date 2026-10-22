@@ -191,6 +191,13 @@ class PaperAccount:
 
 
 def shadow_cycle(lake,models_dir=None,top=8,fee=.001,mode=ExecutionMode.SHADOW,allowed_symbols=None):
+    """M6: Watch and direct Shadow calls use the same LangGraph contract."""
+    require_mode(mode,permitted=(ExecutionMode.SHADOW,),operation='shadow_cycle')
+    from .atlas_orchestration import run_assets
+    return run_assets(lake,models_dir=models_dir,top=top,fee=fee,mode=mode,allowed_symbols=allowed_symbols)
+
+
+def _legacy_shadow_cycle(lake,models_dir=None,top=8,fee=.001,mode=ExecutionMode.SHADOW,allowed_symbols=None):
     """One autonomous cycle on REAL Wallex quotes and previously trained checkpoints.
     Never read private API keys, never submit orders or withdrawal requests.
     """
