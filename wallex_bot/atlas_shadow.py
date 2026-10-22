@@ -1,5 +1,7 @@
 """Persistent, real-quote-only PAPER ledger; never places Wallex orders.
 Hypothetical execution assumptions are distinguished from observed market data.
+Stage 2 source note: risk-first broker separation is independently implemented
+from the conceptual literature registered in third_party/SOURCES.md; no external code copied.
 """
 from __future__ import annotations
 import json,sqlite3,time,hashlib
@@ -10,6 +12,7 @@ from .atlas_deep import predict_latest, verified_champion
 from .live_scout import measure_book
 from .atlas_forward import ForwardLedger
 from .atlas_risk import RiskGate
+from .atlas_broker import ShadowBroker, OrderIntent
 
 
 def now():return datetime.now(timezone.utc).isoformat()
@@ -25,6 +28,9 @@ class PaperAccount:
                 entry_price REAL NOT NULL,entry_at TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS events(id INTEGER PRIMARY KEY, observed_at TEXT NOT NULL, symbol TEXT NOT NULL,
                 action TEXT NOT NULL, payload TEXT NOT NULL, prev_hash TEXT NOT NULL, hash TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS broker_intents(
+                client_order_id TEXT PRIMARY KEY, symbol TEXT NOT NULL,
+                fingerprint TEXT NOT NULL, action TEXT NOT NULL);
         ''');self.db.commit()
         with self.db:
             self.db.execute('INSERT OR IGNORE INTO kv VALUES(?,?)',('cash_tmn',str(starting_tmn)))
@@ -48,16 +54,43 @@ class PaperAccount:
             prev=h
         return True
 
-    def trade(self,symbol,decision,book,fee=.001):
-        cash=float(self.get('cash_tmn'))
-        positions=self.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
-        gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
-        # Preserve the source observation for the audit without inventing a
-        # missing quote.  Numeric values are consumed only after gate approval.
-        quote={'bid_tmn':book.get('best_bid_tmn'),'ask_tmn':book.get('best_ask_tmn'),
-               'observed_spread_bps':book.get('spread_bps')} if isinstance(book,dict) else {'unavailable':True}
-        with self.db:
+    def trade(self,symbol,decision,book,fee=.001,*,client_order_id=None,expected_side='AUTO'):
+        """Atomic shadow mutation and idempotency, gated by existing RiskGate.
+
+        Repeated client_order_id with IDENTICAL evidence returns the same result
+        without any extra cash mutation, position or audit event. Reusing the ID
+        with different book, forecast or side fails closed.
+        """
+        import re
+        if client_order_id is not None and (not isinstance(client_order_id,str) or
+                not re.fullmatch(r'[A-Za-z0-9:_-]{8,120}',client_order_id)):
+            raise ValueError('Invalid client_order_id')
+        if expected_side not in ('AUTO','BUY','SELL'):
+            raise ValueError('Invalid expected side')
+        evidence={'symbol':symbol,'decision':decision,'book':book,'fee':fee,
+                  'expected_side':expected_side}
+        fingerprint=hashlib.sha256(json.dumps(evidence,sort_keys=True,ensure_ascii=False,
+                allow_nan=False,separators=(',',':')).encode('utf8')).hexdigest()
+        if self.db.in_transaction:
+            raise RuntimeError('Paper trade must own its atomic SQLite transaction')
+        self.db.execute('BEGIN IMMEDIATE')
+        try:
+            if client_order_id is not None:
+                previous=self.db.execute('SELECT symbol,fingerprint,action FROM broker_intents WHERE client_order_id=?',
+                    (client_order_id,)).fetchone()
+                if previous is not None:
+                    if previous[0]!=symbol or previous[1]!=fingerprint:
+                        raise ValueError('Idempotency conflict: identifier reused with different evidence')
+                    self.db.commit()
+                    return previous[2]
+            cash=float(self.get('cash_tmn'))
+            positions=self.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
+            gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
             action=gate.action
+            if (expected_side=='BUY' and action=='PAPER_SELL') or (expected_side=='SELL' and action=='PAPER_BUY'):
+                action='BROKER_SIDE_MISMATCH_NO_ORDER'
+            quote={'bid_tmn':book.get('best_bid_tmn'),'ask_tmn':book.get('best_ask_tmn'),
+                   'observed_spread_bps':book.get('spread_bps')} if isinstance(book,dict) else {'unavailable':True}
             holdings={s:(qty,cost) for s,qty,cost in positions}
             if action=='PAPER_SELL':
                 bid=float(book['best_bid_tmn'])
@@ -71,12 +104,22 @@ class PaperAccount:
                 qty=(invest/(1+fee))/ask
                 self._set('cash_tmn',cash-invest)
                 self.db.execute('INSERT INTO positions VALUES(?,?,?,?,?)',(symbol,qty,invest,ask,now()))
-            self.log(symbol,action,{'forecast':decision,'source':'genuine_wallex_rest_depth',
+            self.log(symbol,action,{'forecast':decision,
+                  'source':'genuine_wallex_rest_depth' if action in ('PAPER_BUY','PAPER_SELL')
+                           else 'unverified_or_incomplete_observation_no_execution',
                   'quote':quote,'fee_assumption':fee,
                   'fill_assumption':'HYPOTHETICAL at observed best bid/ask; not an exchange execution',
                   'risk_gate':gate.audit_payload(),
+                  'client_order_id':client_order_id,
                   'paper_cash_tmn':self.get('cash_tmn')})
-        return action
+            if client_order_id is not None:
+                self.db.execute('INSERT INTO broker_intents VALUES(?,?,?,?)',
+                    (client_order_id,symbol,fingerprint,action))
+            self.db.commit()
+            return action
+        except Exception:
+            self.db.rollback()
+            raise
 
     def update_equity_from_observed_quotes(self, bid_by_symbol,fee=.001):
         """Only mark-to-market using FRESH actual observed bids of all held symbols.
@@ -142,7 +185,10 @@ def shadow_cycle(lake,models_dir=None,top=8,fee=.001):
                     raise RuntimeError('Latest genuine candle is stale; refresh market archive')
                 observer.record_forecast(symbol,prediction['feature_end_ts'],model_digest,
                     prediction['quantile_log_returns'],int(model_cfg['horizon'])*seconds,fee,quote_id)
-                action=paper.trade(symbol,prediction,measured,fee)
+                # Broker delegates to PaperAccount's atomic idempotent RiskGate path.
+                intent_id='shadow-'+hashlib.sha256((str(quote_id)+'|'+symbol+'|'+model_digest).encode()).hexdigest()[:48]
+                action=ShadowBroker(paper).submit(OrderIntent(intent_id,symbol,'AUTO'),
+                    forecast=prediction,book=measured,fee=fee).reason
                 output.append({'symbol':symbol,'action':action,'book_spread_bps':measured['spread_bps'],
                                'q10':prediction['quantile_log_returns']['q10'],
                                'q50':prediction['quantile_log_returns']['q50']})

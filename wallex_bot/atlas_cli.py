@@ -1,4 +1,6 @@
-"""One-command autonomous RESEARCH pipeline. It never submits exchange orders."""
+"""One-command autonomous RESEARCH pipeline. It never submits exchange orders.
+Stage 2 broker status is read-only; source concepts in third_party/SOURCES.md.
+"""
 from __future__ import annotations
 import argparse,json,sys,datetime,traceback,os
 from pathlib import Path
@@ -11,7 +13,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status'])
     p.add_argument('--days',type=int,default=7)
     p.add_argument('--minutes',type=int,default=10)
     p.add_argument('--hours',type=int,default=48)
@@ -40,6 +42,9 @@ def main(argv=None):
                              'note':'CANDIDATE lessons never alter risk gates, models, orders or policy'})
             finally:store.close()
             return
+        if args.command=='broker-status':
+            from .atlas_broker import broker_status
+            pretty(broker_status(lake.root));return
         if args.command=='status':pretty(lake.status());return
         if args.command=='forward-report':
             from .atlas_forward import report

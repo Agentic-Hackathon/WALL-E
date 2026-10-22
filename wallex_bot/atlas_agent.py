@@ -1,6 +1,7 @@
 """Durable multi-specialist LangGraph research/shadow agent.
 All market facts come from Wallex records; only REAL article headlines are considered.
 Has NO order-submission tool; persistent session memory lives in SQLite.
+Stage 2 source: abstract broker pattern, independently authored; see third_party/SOURCES.md.
 """
 from __future__ import annotations
 import json, sqlite3, time
@@ -12,6 +13,8 @@ from .atlas_signals import features,strategies
 from .atlas_news import news_known_at
 from .atlas_deep import predict_latest, verified_champion
 from .atlas_shadow import PaperAccount
+from .atlas_broker import ShadowBroker,OrderIntent
+import hashlib
 from .live_scout import measure_book
 from .market import depth
 from .atlas_context import ContextStore,make_packet
@@ -110,7 +113,10 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
             if state['veto_reasons']:
                 evidence['quantile_log_returns']=dict(evidence['quantile_log_returns'])
                 evidence['quantile_log_returns']['q10']=None
-            action=account.trade(state['symbol'],evidence,state['observations']['book'],fee)
+            stamp=state['observations']['observed_at_unix']
+            intent_id='agent-'+hashlib.sha256((state['symbol']+'|'+str(stamp)+'|'+str(model)).encode()).hexdigest()[:48]
+            action=ShadowBroker(account).submit(OrderIntent(intent_id,state['symbol'],'AUTO'),
+                forecast=evidence,book=state['observations']['book'],fee=fee).reason
             with account.db:
                 account.log(state['symbol'],'MULTI_AGENT_EXPLANATION',{
                     'market_observation':state['observations'],'technical':state['technical'],
