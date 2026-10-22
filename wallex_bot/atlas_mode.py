@@ -49,6 +49,8 @@ def cli_mode(command, requested=None):
     """Validate explicit command mode, never silently downcast LIVE to SHADOW."""
     designated = {
         'validate': ExecutionMode.BACKTEST,
+        'challenger-preflight': ExecutionMode.BACKTEST,
+        'train-challenger-v2': ExecutionMode.BACKTEST,
         'benchmark': ExecutionMode.BACKTEST,
         'watch': ExecutionMode.SHADOW,
         'shadow-cycle': ExecutionMode.SHADOW,
