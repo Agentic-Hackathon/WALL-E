@@ -1,0 +1,17 @@
+.env
+.env.*
+*.key
+*.pem
+__pycache__/
+.pytest_cache/
+*.pyc
+atlas_store/
+data/
+runs/
+state/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.log
+third_party/*
+!third_party/SOURCES.md

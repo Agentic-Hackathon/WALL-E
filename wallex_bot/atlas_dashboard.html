@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wallex Atlas | داشبورد پژوهش و معاملات</title>
+<style>
+:root{color-scheme:dark;--bg:#0a101a;--panel:#131e30;--panel2:#17253a;--border:#273a52;--text:#e9f1fb;--muted:#96a9c0;--green:#48d9b1;--red:#fa788a;--blue:#67b6ff;--gold:#efbc72}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% 0,#122338,transparent 35%),var(--bg);font:14px/1.7 Tahoma,Arial,sans-serif;color:var(--text)}
+header{max-width:1600px;margin:auto;padding:22px 24px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:25px;font-weight:800;letter-spacing:-.5px}.brand span{color:var(--blue)}.small{font-size:11px;color:var(--muted)}.subhead{font-size:12px;color:var(--muted)}.pill{border:1px solid var(--border);border-radius:20px;padding:5px 12px;background:#17253b;color:var(--muted);font-size:12px}
+.badge{display:inline-block;border:1px solid #47627c;border-radius:6px;padding:2px 8px;font-size:11px;color:#bdd4f1;background:#23334c}.badge.warn{color:var(--gold);border-color:#6d573d;background:#30291e}.badge.green{color:var(--green);border-color:#315b55;background:#17302e}.badge.red{color:var(--red);border-color:#683b4c;background:#34212e}
+main{max-width:1600px;padding:0 24px 50px;margin:auto}.notice{padding:12px 16px;border:1px solid #61523b;border-radius:11px;background:#252219;color:#ebcc91;margin:10px 0 18px;font-size:12px}.metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.card,.metric{background:linear-gradient(155deg,#162338,#101928);border:1px solid var(--border);border-radius:14px;box-shadow:0 5px 22px #0001}.metric{padding:16px}.metric .label{color:var(--muted);font-size:12px}.metric .value{font:bold 22px/1.9 Tahoma,Arial;direction:ltr;text-align:right}.metric .hint{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:14px;margin-top:14px}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.card{padding:16px;min-width:0}.head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.head h2{font-size:15px;margin:0}.hint{color:var(--muted);font-size:11px}.controls{display:flex;gap:7px;flex-wrap:wrap;align-items:center}select,button{background:#223149;color:#f0f7ff;padding:8px 11px;border:1px solid #36506b;border-radius:8px;font:inherit;cursor:pointer}button:hover{background:#314862}select{max-width:150px}button.active{border-color:var(--blue);color:var(--blue)}
+.chartarea{position:relative;height:365px;width:100%;background:#0e1928;border:1px solid #20344e;border-radius:10px;overflow:hidden}#chart{display:block;width:100%;height:100%}#tooltip{position:absolute;display:none;direction:ltr;font:12px/1.7 monospace;padding:8px;background:#16283eee;border:1px solid #41617f;border-radius:8px;pointer-events:none;z-index:5;white-space:pre}
+.legend{display:flex;gap:17px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin-top:10px}.up{color:var(--green)}.down{color:var(--red)}.accent{color:var(--blue)}.num{direction:ltr;display:inline-block;unicode-bidi:isolate}.divider{height:1px;background:var(--border);margin:14px 0}.big{font-size:26px;font-weight:750;direction:ltr;display:inline-block}.empty{padding:22px 10px;color:#8097ac;text-align:center;font-size:12px;border:1px dashed #314459;border-radius:8px}.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kv>div{border:1px solid #263b54;background:#0c1829;border-radius:10px;padding:10px}.kv .small{display:block}
+.tablewrap{overflow:auto;max-height:330px}table{border-collapse:collapse;width:100%;min-width:490px;font-size:12px}th,td{text-align:right;padding:9px 8px;border-bottom:1px solid #26344a;vertical-align:middle}th{position:sticky;top:0;background:#152238;color:#aac1d7;font-size:11px}td{color:#d6e5f7}tr:hover td{background:#1b2b42}td .small{display:block}.newslist,.activity{max-height:360px;overflow-y:auto}.newsitem,.event{padding:12px 0;border-bottom:1px solid #26374d}.newsitem:last-child,.event:last-child{border-bottom:0}.newsitem a{color:#e2edff;text-decoration:none}.newsitem a:hover{text-decoration:underline}.newsitem .small,.event .small{font-size:11px}.fact{color:#efbc72;font-size:12px}.status{display:flex;align-items:center;gap:7px}.dot{width:9px;height:9px;border-radius:50%;background:#79899e}.dot.active{background:var(--green);box-shadow:0 0 7px #48d9b155}.dot.warn{background:var(--gold)}
+footer{padding-top:20px;font-size:11px;color:#8296ae;text-align:center}
+@media(max-width:1120px){.metrics{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.bottom{grid-template-columns:1fr}}@media(max-width:650px){header{padding:14px}main{padding:0 12px 30px}.metrics{grid-template-columns:repeat(2,1fr)}.chartarea{height:280px}.kv{grid-template-columns:1fr}.card{padding:12px}}
+</style></head>
+<body>
+<header>
+ <div><div class="brand">Wallex <span>Atlas</span> <span class="pill">Monitor 3.5</span></div><div class="subhead">داشبورد محلی پژوهش و Shadow — فقط داده‌های واقعی ثبت‌شده</div></div>
+ <div class="controls"><span id="clock" class="small"></span><span id="heartbeat" class="pill">در حال خواندن آرشیو…</span><button id="refresh">به‌روزرسانی</button></div>
+</header>
+<main>
+<div class="notice">این نسخه <strong>معامله واقعی انجام نمی‌دهد</strong>. خریدوفروش‌های نمایش‌داده‌شده با عنوان «Shadow» فرضی هستند. اخبار فعلاً ورودی مدل Transformer نیستند؛ اثر مالی خبر تا زمان ارزیابی معتبر «تأییدنشده» است. نمودار فقط کندل‌های واقعی ذخیره‌شده را نمایش می‌دهد.</div>
+<section class="metrics">
+ <div class="metric"><div class="label">جلسه Watch</div><div class="value" id="m-watch">—</div><div class="hint" id="m-watchhint">—</div></div>
+ <div class="metric"><div class="label">کندل‌های ذخیره‌شده</div><div class="value" id="m-bars">—</div><div class="hint">مجموع آرشیو، شامل بازه‌های مشتق‌شده</div></div>
+ <div class="metric"><div class="label">پیش‌بینی‌های ثبت‌شده</div><div class="value" id="m-forecasts">—</div><div class="hint" id="m-scored">—</div></div>
+ <div class="metric"><div class="label">معاملات Shadow</div><div class="value" id="m-trades">—</div><div class="hint">هیچ معامله واقعی از این مسیر انجام نمی‌شود</div></div>
+ <div class="metric"><div class="label">اخبار آرشیوشده</div><div class="value" id="m-news">—</div><div class="hint" id="m-champion">—</div></div>
+</section>
+<div class="grid">
+ <section class="card">
+  <div class="head"><h2>نمودار قیمت — OHLCV واقعی</h2><div class="controls"><select id="symbol" aria-label="بازار"></select><select id="resolution" aria-label="بازه زمانی"><option value="1">۱ دقیقه</option><option value="5">۵ دقیقه</option><option value="15" selected>۱۵ دقیقه</option><option value="30">۳۰ دقیقه</option><option value="60">۱ ساعت</option><option value="180">۳ ساعت</option><option value="240">۴ ساعت</option><option value="360">۶ ساعت</option><option value="480">۸ ساعت</option><option value="720">۱۲ ساعت</option><option value="1D">روزانه</option><option value="2D">۲ روزه</option><option value="3D">۳ روزه</option></select></div></div>
+  <div class="chartarea"><canvas id="chart"></canvas><div id="tooltip"></div></div>
+  <div class="legend"><span class="up">● کندل صعودی</span><span class="down">● کندل نزولی</span><span class="accent">— SMA20 محاسبه‌شده از کندل‌های واقعی پیوسته</span><span class="small" id="chartmeta"></span></div>
+ </section>
+ <section class="card">
+  <div class="head"><h2>پیش‌بینی مدل فعلی</h2><span id="forecastBadge" class="badge warn">مدرک جدید در انتظار</span></div>
+  <div class="small">Champion پژوهشی: <span id="champion">—</span></div><div class="divider"></div>
+  <div id="predMain" class="empty">هنوز پیش‌بینی ثبت‌شده‌ای برای این بازار وجود ندارد.</div>
+  <div class="divider"></div>
+  <div class="kv"><div><span class="small">آخرین قیمت Ask مشاهده‌شده</span><strong id="ask">—</strong></div><div><span class="small">نتیجه واقعی آینده</span><strong id="future">—</strong></div><div><span class="small">آخرین کندل تاییدشده</span><strong id="candleTime">—</strong></div><div><span class="small">عمر داده کندلی</span><strong id="candleAge">—</strong></div></div>
+  <div class="divider"></div><div class="hint">q10 / q50 / q90 پیش‌بینی بازده لگاریتمی‌اند، نه احتمال قطعی رشد یا درصد سود تضمین‌شده. نمایش این مقادیر به معنی تصمیم خرید نیست.</div>
+ </section>
+</div>
+<div class="card" style="margin-top:14px"><div class="head"><h2>سلامت موتور Agentic و ارزیابی گذشته</h2><span class="badge">شفافیت پژوهش</span></div><div id="agentStatus" class="kv" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))"></div><div class="divider"></div><div id="research" class="hint">هنوز گزارش پژوهشی جدید تولید نشده است.</div></div>
+<div class="bottom">
+ <section class="card"><div class="head"><h2>تصمیم‌ها و تراکنش‌های Shadow</h2><span class="badge">همراه دلیل تصمیم</span></div><div id="events" class="activity empty">در حال خواندن لاگ…</div></section>
+ <section class="card"><div class="head"><h2>اخبار و احساس خبر</h2><span class="badge warn">تأثیر مالی تأییدنشده</span></div><div class="hint" style="margin-bottom:10px">اخبار بر اساس زمان نخستین مشاهده ثبت شده‌اند؛ ارتباط عنوان با نماد صرفاً متنی است. هیچ اثر معاملاتی به خبر نسبت داده نمی‌شود مگر جداگانه اعتبارسنجی شود.</div><div id="news" class="newslist empty">در حال خواندن آرشیو اخبار…</div></section>
+ <section class="card"><div class="head"><h2>سبد سرمایه و دارایی</h2><span class="badge">تفکیک واقعی / فرضی</span></div>
+   <h3 style="font-size:13px;color:var(--blue)">سبد فرضی Shadow</h3><div id="paperAccount" class="kv"></div><div id="positions" class="tablewrap" style="margin-top:12px"></div>
+   <div class="divider"></div><h3 style="font-size:13px;color:var(--gold)">موجودی واقعی API والکس (فقط خواندنی)</h3><div id="realAccount" class="empty">در حال بررسی دسترسی…</div>
+ </section>
+ <section class="card"><div class="head"><h2>استراتژی‌های تکنیکال منتخب</h2><span class="badge warn">بک‌تست تاریخی فرضی</span></div><div class="hint" style="margin-bottom:10px">نتایج موجود از آزمایش گذشته؛ کارمزد و لغزش فرض شده‌اند و انتخاب‌های متعدد می‌توانند باعث خوش‌بینی شوند. این جدول عملکرد اقتصادی Champion را اثبات نمی‌کند.</div><div id="strats" class="tablewrap"></div><div class="divider"></div><div class="small">وضعیت ادغام خبر در Transformer: <b style="color:var(--gold)">فعلاً غیرفعال</b></div>
+ </section>
+</div>
+<footer>Localhost فقط‌خواندنی · رویدادها، مدل و قیمت‌ها فقط از آرشیو واقعی دستگاه شما · عدم دسترسی به Fill واقعی در Atlas فعلی صریحاً گزارش می‌شود</footer>
+</main>
+<script>
+'use strict';
+const el=id=>document.getElementById(id);
+const state={sym:'BTCTMN',res:'15',data:null,forecasts:null};
+const fmt=(n,d=2)=>n==null||!Number.isFinite(Number(n))?'—':Number(n).toLocaleString('en-US',{maximumFractionDigits:d});
+const utc=sec=>!sec?'—':new Date(Number(sec)*1000).toLocaleString('fa-IR',{dateStyle:'short',timeStyle:'short'});
+const dt=t=>!t?'—':new Date(t).toLocaleString('fa-IR',{dateStyle:'short',timeStyle:'short'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const numColor=n=>Number(n)>0?'up':Number(n)<0?'down':'';
+const pct=(n,d=2)=>n==null?'—':`${n>=0?'+':''}${fmt(100*Number(n),d)}٪`;
+const read=async (path)=>{let r=await fetch(path,{cache:'no-store'});if(!r.ok)throw Error('پاسخ معتبر از منبع ذخیره‌شده دریافت نشد');return r.json()};
+const withSym=path=>`${path}${path.includes('?')?'&':'?'}symbol=${encodeURIComponent(state.sym)}`;
+const empty=msg=>`<div class="empty">${esc(msg)}</div>`;
+function updateMetrics(s){
+ const w=s.watch||{},c=s.catalog||{},sh=s.shadow||{},f=s.forward||{};
+ el('m-watch').textContent=w.status==='RUNNING'?'RUNNING':w.status||'—';el('m-watchhint').textContent=`${fmt(w.cycles_completed,0)} چرخه · آخرین تکمیل ${w.last_cycle_age_minutes==null?'نامشخص':fmt(w.last_cycle_age_minutes,1)+' دقیقه قبل'}`;
+ el('m-bars').textContent=fmt(c.candle_rows,0);el('m-forecasts').textContent=fmt(f.forecasts,0);el('m-scored').textContent=`${fmt(f.scored,0)} نتیجه آینده · ${fmt(f.quotes,0)} دریافت دفتر سفارش`;
+ el('m-trades').textContent=fmt(sh.trades_count,0);el('m-news').textContent=fmt(s.news_count,0);el('m-champion').textContent=s.champion?.architecture||'Champion تعیین نشده';
+ const agent=s.agent||{};el('agentStatus').innerHTML=`<div><span class=small>حافظه Agentic</span><strong>${fmt(agent.context_events,0)} رویداد</strong></div><div><span class=small>یادگیری عمیق</span><strong>${esc(s.champion?.architecture||'بدون Champion')}</strong></div><div><span class=small>ارزیابی استراتژی‌های اندیکاتوری</span><strong>${agent.strategy_benchmark_stored?'دارای گزارش':'گزارشی نیست'}</strong></div><div><span class=small>اخبار در ورودی مدل</span><strong style=color:var(--gold)>هنوز ادغام نشده</strong></div><div><span class=small>گراف کامل LangGraph در Watch</span><strong style=color:var(--gold)>هنوز به Watch متصل نیست</strong></div><div><span class=small>فیلتر اندیکاتوری روی معاملات Watch</span><strong style=color:var(--gold)>فقط در پژوهش؛ نه Watch</strong></div>`;
+ el('champion').textContent=s.champion?.name||'مدل تأییدشده موجود نیست';
+ el('clock').textContent=`سرور: ${dt(s.server_utc)}`;let age=w.last_cycle_age_minutes;
+ el('heartbeat').textContent=w.status==='RUNNING'&&age!=null&&age<=35?'● جلسه فعال':`● ${w.status||'نامشخص'} — ${age==null?'بدون ثبت چرخه':fmt(age,1)+' دقیقه از چرخه'}`;
+ let list=c.symbols||[], select=el('symbol');if(!select.options.length&&list.length){
+   for(let sym of list){let o=document.createElement('option');o.value=sym;o.textContent=sym;select.appendChild(o)}
+   if(!list.includes(state.sym))state.sym=list[0];select.value=state.sym;
+ }
+}
+function renderChart(payload){
+ state.data=payload;const bars=payload.bars||[],frame=el('chart').parentElement,cv=el('chart');
+ const dpr=window.devicePixelRatio||1,w=Math.max(310,frame.clientWidth),h=Math.max(260,frame.clientHeight);
+ cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);const ctx=cv.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+ if(!bars.length){ctx.fillStyle='#9aadc3';ctx.textAlign='center';ctx.font='14px Tahoma';ctx.fillText('کندل معتبر واقعی برای این نماد / بازه موجود نیست',w/2,h/2);el('chartmeta').textContent=payload.reason||'';return}
+ const pad={l:18,r:85,t:25,b:36};const plotW=w-pad.l-pad.r,plotH=h-pad.t-pad.b;
+ let min=Math.min(...bars.map(b=>b.low)),max=Math.max(...bars.map(b=>b.high));if(min===max)max=min*1.001;
+ const span=max-min;min-=span*.05;max+=span*.05;
+ const y=v=>pad.t+(max-v)/(max-min)*plotH;
+ const barW=plotW/bars.length;
+ ctx.strokeStyle='#26364a';ctx.lineWidth=.8;ctx.font='11px monospace';ctx.textBaseline='middle';ctx.textAlign='right';
+ for(let i=0;i<=5;i++){let price=max-(max-min)*i/5,Y=y(price);ctx.beginPath();ctx.moveTo(pad.l,Y);ctx.lineTo(w-pad.r+6,Y);ctx.stroke();ctx.fillStyle='#93a8bf';ctx.fillText(fmt(price,price>1000?0:5),w-7,Y)}
+ for(let i=0;i<5;i++){let idx=Math.min(bars.length-1,Math.round((bars.length-1)*i/4)),X=pad.l+(idx+.5)*barW;ctx.fillStyle='#8da7bb';ctx.textAlign='center';ctx.fillText(new Date(bars[idx].t*1000).toLocaleDateString('fa-IR',{month:'short',day:'numeric'}),X,h-14)}
+ ctx.lineWidth=1;
+ bars.forEach((b,i)=>{let x=pad.l+(i+.5)*barW, up=b.close>=b.open;ctx.strokeStyle=ctx.fillStyle=up?'#48d9b1':'#fa788a';ctx.beginPath();ctx.moveTo(x,y(b.high));ctx.lineTo(x,y(b.low));ctx.stroke();
+  let top=y(Math.max(b.open,b.close)),bot=y(Math.min(b.open,b.close));ctx.fillRect(x-Math.min(9,Math.max(1,barW*.35)),top,Math.min(18,Math.max(2,barW*.7)),Math.max(1.5,bot-top));
+ });
+ // SMA20 is computed exclusively from consecutively observed bars.
+ ctx.strokeStyle='#69b6ff';ctx.lineWidth=1.6;let begun=false,rolling=[];
+ bars.forEach((b,i)=>{if(i>0 && b.t-bars[i-1].t!==({1:60,5:300,15:900,30:1800,60:3600,180:10800,240:14400,360:21600,480:28800,720:43200,'1D':86400,'2D':172800,'3D':259200}[state.res]||900)){rolling=[];begun=false}
+  rolling.push(b.close);if(rolling.length>20)rolling.shift();if(rolling.length===20){let avg=rolling.reduce((a,v)=>a+v,0)/20,x=pad.l+(i+.5)*barW;if(!begun){ctx.beginPath();ctx.moveTo(x,y(avg));begun=true}else{ctx.lineTo(x,y(avg))}}else if(begun){ctx.stroke();begun=false}
+ });if(begun)ctx.stroke();
+ // Visibly separate gaps instead of silently stitching them.
+ if(payload.gaps?.length){let indexes=new Map(bars.map((b,i)=>[b.t,i]));for(let gap of payload.gaps){let i=indexes.get(gap.before);if(i!=null){let x=pad.l+i*barW;ctx.strokeStyle='#e8ba71';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,h-pad.b);ctx.stroke();ctx.setLineDash([])}}}
+ const latest=bars.at(-1);el('chartmeta').textContent=`${bars.length} کندل · ${payload.gaps?.length||0} شکاف · ${payload.verified_files} فایل دارای هش معتبر`;
+ el('candleTime').textContent=utc(latest?.t);el('candleAge').textContent=payload.age_minutes==null?'—':`${fmt(payload.age_minutes,1)} دقیقه`;
+ cv.onmousemove=e=>{const rect=cv.getBoundingClientRect(),x=e.clientX-rect.left,idx=Math.max(0,Math.min(bars.length-1,Math.floor((x-pad.l)/barW)));let b=bars[idx];if(x<pad.l||x>w-pad.r){el('tooltip').style.display='none';return}
+  let tip=el('tooltip');tip.textContent=`${new Date(b.t*1000).toISOString().slice(0,16)} UTC\nO ${fmt(b.open,5)} H ${fmt(b.high,5)}\nL ${fmt(b.low,5)} C ${fmt(b.close,5)}\nVolume ${fmt(b.volume,3)}`;
+  tip.style.display='block';tip.style.left=Math.min(w-215,Math.max(0,x+12))+'px';tip.style.top='10px';};cv.onmouseleave=()=>{el('tooltip').style.display='none'};
+}
+function renderPred(p){state.forecasts=p;let f=(p.rows||[])[0];if(!f){el('forecastBadge').textContent='پیش‌بینی واقعی ثبت نشده';el('predMain').innerHTML=empty('پیش‌بینی ثبت‌شده برای این نماد وجود ندارد. تابع watch در آینده داده ثبت می‌کند؛ بدون پیش‌بینی تازه، جهت حرکت را حدس نمی‌زنیم.');el('ask').textContent='—';el('future').textContent='—';return}
+ const q=Number(f.q50);el('forecastBadge').className='badge '+(q>0?'green':q<0?'red':'warn');el('forecastBadge').textContent=q>0?'پیش‌بینی رشد':q<0?'پیش‌بینی افت':'پیش‌بینی خنثی';
+ el('predMain').className='';el('predMain').innerHTML=`<div class="hint">پیش‌بینی ثبت‌شده در ${utc(f.observed_epoch)}</div><div class="big ${numColor(q)}">${q>0?'↗':q<0?'↘':'↔'} ${pct(q,3)}</div>
+  <div class="kv" style="margin-top:12px"><div><span class="small">q10 بدبینانه</span><b class="${numColor(f.q10)} num">${pct(f.q10,3)}</b></div><div><span class="small">q90 خوش‌بینانه</span><b class="${numColor(f.q90)} num">${pct(f.q90,3)}</b></div></div>
+  <div class="small" style="margin-top:10px">افق ${fmt(f.horizon_seconds/60,0)} دقیقه · وضعیت ${esc(f.status)} · مدل ${esc(f.model_sha256)}</div>`;
+ el('ask').textContent=fmt(f.best_ask,5);el('future').textContent=f.actual_mid_log_return==null?'در انتظار قیمت واقعی بعدی':pct(f.actual_mid_log_return,3)+' (واقعی، Mid-to-Mid)';
+}
+function renderShadow(s){const rows=s.events||[];if(!rows.length){el('events').className='activity';el('events').innerHTML=empty('هنوز تصمیم Shadow ثبت نشده. هیچ خرید یا فروش واقعی در این ماژول وجود ندارد.')}else{
+ el('events').className='activity';el('events').innerHTML=rows.map(r=>{let cls=r.action.includes('BUY')?'green':r.action.includes('SELL')?'red':r.action==='REJECTED'?'warn':'';
+  let reason=r.action==='INSUFFICIENT_RISK_ADJUSTED_EDGE'?'بازده محتاطانه پیش‌بینی‌شده، هزینه و ریسک ورود را پوشش نمی‌دهد':r.action==='NO_TRUSTED_FORECAST'?'پیش‌بینی معتبر موجود نیست':r.action==='REJECTED'?(r.reason||'خطا/داده ناکافی'):r.action==='FRESH_REAL_BID_MARK_TO_MARKET'?'ارزش‌گذاری فرضی با Bid واقعاً مشاهده‌شده':r.reason;
+  return `<div class="event"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><strong>${esc(r.symbol)}</strong><span class="badge ${cls}">${esc(r.action)}</span></div>
+   <div class="small">${esc(dt(r.observed_at))}</div><div>${esc(reason)}</div>${r.q50!=null?`<div class="small">q50: <span class="num ${numColor(r.q50)}">${pct(r.q50,3)}</span></div>`:''}${Array.isArray(r.veto_reasons)&&r.veto_reasons.length?`<div class="fact">مانع ریسک: ${esc(r.veto_reasons.join('، '))}</div>`:''}</div>`}).join('')}
+ const kv=el('paperAccount');kv.innerHTML=`<div><span class="small">وجه نقد فرضی (TMN)</span><strong class="num">${fmt(s.cash_tmn,0)}</strong></div><div><span class="small">سرمایه اولیه فرضی</span><strong class="num">${fmt(s.initial_tmn,0)}</strong></div><div><span class="small">تعداد موقعیت باز Shadow</span><strong class="num">${fmt((s.positions||[]).length,0)}</strong></div><div><span class="small">مدار توقف ریسک</span><strong>${s.stopped?'فعال':'فعال نشده'}</strong></div>`;
+ el('positions').innerHTML=!(s.positions||[]).length?empty('هیچ دارایی باز در سبد فرضی نیست.'): `<table><thead><tr><th>نماد</th><th>تعداد</th><th>هزینه ورود فرضی</th></tr></thead><tbody>${s.positions.map(p=>`<tr><td>${esc(p.symbol)}</td><td class="num">${fmt(p.quantity,8)}</td><td class="num">${fmt(p.entry_cost,0)}</td></tr>`).join('')}</tbody></table>`;
+}
+function renderNews(p){const rows=p.rows||[];if(!rows.length){el('news').className='newslist';el('news').innerHTML=empty('هیچ خبر ثبت‌شده‌ای در آرشیو موجود نیست.');return}
+ el('news').className='newslist';el('news').innerHTML=rows.map(r=>{let fin=r.sentiment, best=Array.isArray(fin)&&fin.length?fin.slice().sort((a,b)=>(b.score||0)-(a.score||0))[0]:null;
+  let safeUrl=String(r.url||'');if(!/^https?:\/\//i.test(safeUrl))safeUrl='#';
+  return `<div class="newsitem"><a target="_blank" rel="noopener noreferrer" href="${esc(safeUrl)}">${esc(r.title)}</a><div class="small">${esc(r.source)} · مشاهده‌شده: ${esc(dt(r.first_observed_at))} ${r.symbol_title_match?'<span class="badge green">نام این ارز در عنوان دیده شد</span>':''}</div><div class="small">${best?'احساس عنوان: '+esc(best.label)+' ('+fmt(best.score*100,1)+'٪)':'احساس عنوان: ارزیابی نشده'} · <span class="fact">تأثیر واقعی و سیگنال معامله: تأییدنشده</span></div></div>`}).join('');
+}
+function renderStrategies(p){const rows=p.rows||[];if(!rows.length){el('strats').innerHTML=empty('استراتژی منتخب آرشیوشده برای این ارز در دسترس نیست؛ این به معنی عملکرد صفر نیست.');return}
+ el('strats').innerHTML=`<table><thead><tr><th>استراتژی</th><th>بازه آموزش</th><th>بازه ارزیابی</th><th>معاملات</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.strategy)}</td><td class="num ${numColor(r.train_return_pct)}">${r.train_return_pct==null?'—':fmt(r.train_return_pct)+'٪'}</td><td class="num ${numColor(r.holdout_return_pct)}">${r.holdout_return_pct==null?'—':fmt(r.holdout_return_pct)+'٪'}</td><td class="num">${esc(r.holdout_trades)}</td></tr>`).join('')}</tbody></table>`;
+}
+function renderAccount(a){if(!a.connected){el('realAccount').innerHTML=`<div class="small">اطلاعات حساب واقعی در دسترس نیست (${esc(a.reason||'NO_CONNECTION')}). کلید API نباید داخل رابط وارد شود؛ اگر قبلاً فقط در ترمینال دیگری تعریف شده، این برنامه به آن دسترسی ندارد.</div><div class="fact">هیچ Fill واقعی از Atlas ثبت نشده است.</div>`;return}
+ const b=a.nonzero_balances||{},rows=Object.entries(b);el('realAccount').className='';el('realAccount').innerHTML=`<div class="badge warn">تعلق کلید به حساب مسابقه مستقلاً تأیید نشده است</div><div class="small">دریافت در: ${esc(dt(a.read_at_utc))}</div><div class="tablewrap">${!rows.length?empty('موجودی مثبت گزارش نشده'): `<table><thead><tr><th>دارایی</th><th>کل</th><th>قابل استفاده</th></tr></thead><tbody>${rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${fmt(v.total,8)}</td><td class="num">${fmt(v.available,8)}</td></tr>`).join('')}</tbody></table>`}</div><div class="small">تاریخچه اجرای سفارش واقعی در این نسخه به API متصل نیست.</div>`;
+}
+async function refreshAll(){el('refresh').disabled=true;try{
+  const sum=await read('/api/summary');updateMetrics(sum);
+  const [bars,fs,sh,nw,ss]=await Promise.all([read(withSym('/api/candles')+'&resolution='+state.res),read(withSym('/api/forecasts')),read(withSym('/api/shadow')),read(withSym('/api/news')),read(withSym('/api/strategies'))]);
+  renderChart(bars);renderPred(fs);renderShadow(sh);renderNews(nw);renderStrategies(ss);
+ }catch(err){el('heartbeat').textContent='خطا در خواندن داده · '+err.message}finally{el('refresh').disabled=false}}
+async function researchRefresh(){try{const r=await read('/api/research');if(r.status==='NOT_RUN')return;const c=r.champion||{}, list=r.indicator_challengers||[];el('research').innerHTML=`<div><b>ارزیابی پس از انتخاب Champion:</b> ${esc(c.status||'نامشخص')} · تعداد پنجره قابل ارزیابی: <span class=num>${fmt(c.prediction_count,0)}</span> · ${esc(r.pricing_caveat||'')}</div><div style="margin-top:7px"><b>ارزیابی اندیکاتورها:</b> ${fmt(list.length,0)} نماد · بازه هدف ${fmt(r.hours_requested,0)} ساعت · تنها داده پیوسته واقعی · معاملات فرضی با کارمزد و لغزش فرضی</div><div class=small>آخرین اجرا: ${esc(dt(r.generated_at_utc))}. اگر Champion هنوز داده پس از انتخاب ندارد، صفر معامله را با بازده صفر یا سود ناموفق اشتباه نگیرید.</div>`}catch{el('research').textContent='گزارش ارزیابی در دسترس نیست'}}
+async function accountRefresh(){try{renderAccount(await read('/api/account'))}catch{el('realAccount').textContent='در حال حاضر امکان خواندن موجودی واقعی نیست'}}
+el('symbol').addEventListener('change',()=>{state.sym=el('symbol').value;refreshAll()});el('resolution').addEventListener('change',()=>{state.res=el('resolution').value;refreshAll()});el('refresh').onclick=()=>{refreshAll();accountRefresh()};
+window.addEventListener('resize',()=>{if(state.data)renderChart(state.data)});
+refreshAll();accountRefresh();researchRefresh();setInterval(refreshAll,20000);setInterval(accountRefresh,60000);setInterval(researchRefresh,60000);
+</script>
+</body></html>

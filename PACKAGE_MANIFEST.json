@@ -1,0 +1,219 @@
+{
+  "release": "Wallex Atlas V3",
+  "generated": "2026-10-22",
+  "tests": "22 passed, 5 skipped, no invented market prices",
+  "verified_wallex_live_account_tests": false,
+  "execution_mode": "RESEARCH_AND_PAPER_ONLY",
+  "files": [
+    {
+      "path": ".gitignore",
+      "size": 131,
+      "sha256": "387725172d12abaef321b5affd8dd17e9c41fe229f8bfea8b5a2f506eb51b7d3"
+    },
+    {
+      "path": "CHALLENGE_RULES_ORIGINAL.txt",
+      "size": 24072,
+      "sha256": "327c40e4409b233c4b68c80d838bf1cad70fa544754d831672f337665bfb994f"
+    },
+    {
+      "path": "DAORI_300_SCORECARD_FA.md",
+      "size": 4631,
+      "sha256": "480127e2492f6ce4c9f126e8a84c40237ff2a0032affbf4319c81d3d6b62b775"
+    },
+    {
+      "path": "README_FA.md",
+      "size": 11952,
+      "sha256": "ead16283604f1b4ea42ea7ba68c6a55c64592e25d574e8aaec2921b455e4cc92"
+    },
+    {
+      "path": "requirements-agent.txt",
+      "size": 324,
+      "sha256": "d858cdf6ff5ad5a2d4054ef94e1a1ab64311668547f547ac1b4c50b481132bc2"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 299,
+      "sha256": "5c5ab6807aba679ed3022d9e1800a1392793d6d86578d3fa2def6359da79d9fc"
+    },
+    {
+      "path": "run_archive_all.sh",
+      "size": 102,
+      "sha256": "5718589ec1f5a5cd3ea8dd023ad408f98e9dda8fa2f15ef34d2dc41dd4aca03a"
+    },
+    {
+      "path": "start.sh",
+      "size": 397,
+      "sha256": "87711043dc20664d443d134f54d68156bc2babe8b303666e3c5495f42a7633d0"
+    },
+    {
+      "path": "tests/test_atlas_zero_synthetic_contracts.py",
+      "size": 2259,
+      "sha256": "56d93df7a50d155b38ba8e4d14135a818f4448b7eb54214bb5b7e3978059eb5d"
+    },
+    {
+      "path": "tests/test_diagnostics_real_only.py",
+      "size": 1058,
+      "sha256": "985a021355376ee28fabca6e41aa59e08478d9bdf5921a54d6050b9e053b5528"
+    },
+    {
+      "path": "tests/test_live_scout_real_only.py",
+      "size": 2011,
+      "sha256": "4c22992946e9ab12744f1dc94c1ea7e3bff24865129e2153980061cfab4623d8"
+    },
+    {
+      "path": "tests/test_real_only.py",
+      "size": 1916,
+      "sha256": "172c5dbe3eb5c063e3eabc83817f9464c8782e1191d10594c54af3973c8c7847"
+    },
+    {
+      "path": "tests/test_segment_contract_no_market_fixtures.py",
+      "size": 1468,
+      "sha256": "7a0fa25ab4ee09b95ebece388bc283029678a5990271e3aa070558830362dace"
+    },
+    {
+      "path": "tests/test_training_audit_no_synthetic.py",
+      "size": 1303,
+      "sha256": "b03baf492fcb15c63181d9f10c607d90686a8f6fa2e9d74931a97d57d993d138"
+    },
+    {
+      "path": "wallex_bot/__init__.py",
+      "size": 80,
+      "sha256": "13a1ca1beaf1b22637183928ea78d9a91b888b0b40f657281dbc1389a8262ccf"
+    },
+    {
+      "path": "wallex_bot/atlas_agent.py",
+      "size": 7270,
+      "sha256": "e8815eadb2dbb7a57ab1c74b3b10e01a0d051ce2004c9d4da8df59e720506475"
+    },
+    {
+      "path": "wallex_bot/atlas_archive.py",
+      "size": 14666,
+      "sha256": "8a194854263fb1a42aed0449d2e8d33fcd1ed166f3c7eb0ea69c43b6658677d2"
+    },
+    {
+      "path": "wallex_bot/atlas_cli.py",
+      "size": 8404,
+      "sha256": "e000613d42a9e44e004740c7ad7e0d457bb564791211685859533b6542afdc19"
+    },
+    {
+      "path": "wallex_bot/atlas_deep.py",
+      "size": 9196,
+      "sha256": "e97a5ce3ea0adc96e437b1db23aceb9d1f3118b624afb82a46f0eb2baf4e9122"
+    },
+    {
+      "path": "wallex_bot/atlas_news.py",
+      "size": 5461,
+      "sha256": "5dc0f3696136411a2213f30a162b7677b2ad5082253e2649bd415aa76a9f36aa"
+    },
+    {
+      "path": "wallex_bot/atlas_shadow.py",
+      "size": 10024,
+      "sha256": "f5a1f17c0e08d9bcc9e91b17fbd1e339670ba82e6a71014b640be7b47919cdc1"
+    },
+    {
+      "path": "wallex_bot/atlas_signals.py",
+      "size": 8686,
+      "sha256": "3a7896ef269528146d08d31cbf6e15cae83c9a545e69e786310c48a1beb9c4c7"
+    },
+    {
+      "path": "wallex_bot/atlas_stream.py",
+      "size": 3661,
+      "sha256": "f6d398f4edab575ea68f2e263c6ad75f50d641e8064ae1e53c7a0d5c20af59e8"
+    },
+    {
+      "path": "wallex_bot/atlas_watch.py",
+      "size": 3182,
+      "sha256": "1460b106f95bd942166732a132241a1b59a3154f2b6748d74e4a9b870c8f9fb8"
+    },
+    {
+      "path": "wallex_bot/audit.py",
+      "size": 2593,
+      "sha256": "366161537f1b6cd70d3e43e68f965026ddd99d61f67f09bcc477c7a60375e042"
+    },
+    {
+      "path": "wallex_bot/challenger_audit.py",
+      "size": 9692,
+      "sha256": "7bc82f8c05be27d5b257c2933b3d5a5ce8da01f5dc64ce7825835e2a1ddb8137"
+    },
+    {
+      "path": "wallex_bot/cli.py",
+      "size": 33047,
+      "sha256": "fa6e615511c96d51115d2d7962070619acc6ea5d82505808b14811b013dbbb1b"
+    },
+    {
+      "path": "wallex_bot/diagnostics.py",
+      "size": 10104,
+      "sha256": "654c55fe1d99b4fb7362098b85c9963b93499fc1a5af2755bcd8d3cfb5547b33"
+    },
+    {
+      "path": "wallex_bot/features.py",
+      "size": 1777,
+      "sha256": "924534935707d2e83e1c71099bad8e41463de0cfe8acbbb8bd0b90a27e648546"
+    },
+    {
+      "path": "wallex_bot/graph_demo.py",
+      "size": 2636,
+      "sha256": "0fbb84f7c90e43222b45c198f23f2078de9c1801603cdf441234717187032369"
+    },
+    {
+      "path": "wallex_bot/learning.py",
+      "size": 1825,
+      "sha256": "0f9721555e299307edfaf344302aef813a93bcb00a18501fba59a04efb1a6c09"
+    },
+    {
+      "path": "wallex_bot/live_scout.py",
+      "size": 13655,
+      "sha256": "213fbbfba3685a6a3f08fb26f1d6291365f368098d84d2e77f6c3fdcf663268d"
+    },
+    {
+      "path": "wallex_bot/market.py",
+      "size": 8309,
+      "sha256": "427e5961e0a21eadd03486b6bad9188d376fbaeee9ffcc11b1c6bbd5d1c77dee"
+    },
+    {
+      "path": "wallex_bot/mcp_client.py",
+      "size": 1244,
+      "sha256": "ab0dfab6ad4ee9405ce7c7add1bcc84244079de0520b43c507d3964d4cfefeaa"
+    },
+    {
+      "path": "wallex_bot/mcp_server.py",
+      "size": 2689,
+      "sha256": "fafa953a24f2622ac095a7e95a5c72950aff4d99af928fd9c200ba2ac27e9ace"
+    },
+    {
+      "path": "wallex_bot/mcp_smoke.py",
+      "size": 1798,
+      "sha256": "c88fa12bd3e39b3b59e310d9d44a874f0bd64b0c7de5f33f9b915937d1f59efc"
+    },
+    {
+      "path": "wallex_bot/research_data.py",
+      "size": 17468,
+      "sha256": "601300df93650493239b06c7571e506cd7f83d55d6d0de0bdcf902bf895ab55c"
+    },
+    {
+      "path": "wallex_bot/segmented_eval.py",
+      "size": 8453,
+      "sha256": "5eb522fc6f0e82556d7e654d66508748bdb53d902f0706e693d90a6b4ebd3b9e"
+    },
+    {
+      "path": "wallex_bot/simulator.py",
+      "size": 4843,
+      "sha256": "7d03329513dec4a9b86fece328678202925aa20bc0f32d09f739b4b1145151c2"
+    },
+    {
+      "path": "wallex_bot/strategy.py",
+      "size": 2695,
+      "sha256": "299d07ff6457ed9c06804ff0eadccb037a8b31efcfe945516831b4d41042e18e"
+    },
+    {
+      "path": "wallex_bot/walkforward.py",
+      "size": 3955,
+      "sha256": "c2def3de56136c0c4c8292c6b36a31f066709a8a679812dea170940eb1d17231"
+    },
+    {
+      "path": "wallex_bot/wallex_api.py",
+      "size": 4583,
+      "sha256": "a43b98d267f1b7d1f58c7c9b723f15d094c148b6fc90dc446c3aabf4f545509a"
+    }
+  ]
+}

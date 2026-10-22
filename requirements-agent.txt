@@ -1,0 +1,9 @@
+# Extra dependencies on top of the original requirements.txt.
+# All user-provided market data remains REAL exchange observations.
+torch>=2.4
+langgraph>=0.5
+langgraph-checkpoint-sqlite>=2.0
+mcp==1.30.0
+websockets>=12.0
+# Optional headline sentiment (requires review of pretrained model weights licence):
+# transformers>=4.45
