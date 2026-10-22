@@ -1,0 +1,49 @@
+{
+  "status": "REGISTRY_DERIVED_DEMAND",
+  "advanced": {
+    "1": {
+      "warmup_bars": 60,
+      "warmup_hours": 1.0,
+      "required": true
+    },
+    "5": {
+      "warmup_bars": 60,
+      "warmup_hours": 5.0,
+      "required": true
+    },
+    "15": {
+      "warmup_bars": 151,
+      "warmup_hours": 37.75,
+      "required": true
+    },
+    "30": {
+      "warmup_bars": 60,
+      "warmup_hours": 30.0,
+      "required": true
+    },
+    "60": {
+      "warmup_bars": 60,
+      "warmup_hours": 60.0,
+      "required": true
+    },
+    "240": {
+      "warmup_bars": 30,
+      "warmup_hours": 120.0,
+      "required": true
+    },
+    "1D": {
+      "warmup_bars": 30,
+      "warmup_hours": 720.0,
+      "required": true
+    }
+  },
+  "watch_core": {
+    "15": {
+      "warmup_bars": 151,
+      "warmup_hours": 37.75,
+      "required": true
+    }
+  },
+  "automatic_startup_cap_hours": 72,
+  "longer_history": "reported_missing; never silently backfilled"
+}

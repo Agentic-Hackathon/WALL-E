@@ -134,7 +134,8 @@ class DataSyncManager:
             (symbol,resolution,begin,end)).fetchone()
         return bool(row and row[0]=='SOURCE_UNAVAILABLE'), (row[1] if row else None)
 
-    def plan(self, *, top=8, scope='priority', warmup_hours=None, target_resolutions=None, now=None, symbols=None):
+    def plan(self, *, top=8, scope='priority', warmup_hours=None, target_resolutions=None,
+             target_warmup_hours=None, now=None, symbols=None):
         if scope not in ('priority','tmn','spot','catalog'):raise ValueError('invalid sync scope')
         demand=self._model_demand()
         targets=tuple(target_resolutions or (demand['target_resolution'],))
@@ -146,12 +147,15 @@ class DataSyncManager:
         symbols=list(symbols) if symbols is not None else self._priority_symbols(int(top),scope)
         if not symbols or any(not isinstance(x,str) or not x.isalnum() or x!=x.upper() for x in symbols):
             raise ValueError('sync symbols must be nonempty uppercase catalog symbols')
-        windows=[];unavailable=[]
+        warmup_by_target={};windows=[];unavailable=[]
         for target in targets:
+            target_warmup=float((target_warmup_hours or {}).get(target,warmup))
+            if not 1<=target_warmup<=72:raise ValueError('target warmup hours must stay within 1..72')
+            warmup_by_target[target]=target_warmup
             source=DERIVED.get(target,(target,1))[0]
             step=period_seconds(source);chunk=max(step,(3*3600//step)*step)
             stop=max(0,(int(reference)//step-SOURCE_SETTLEMENT_BARS)*step)
-            start=max(0,stop-int(warmup*3600)); start=(start//chunk)*chunk
+            start=max(0,stop-int(target_warmup*3600)); start=(start//chunk)*chunk
             for symbol in symbols:
                 for left in range(start,stop,chunk):
                     right=min(stop,left+chunk)
@@ -168,11 +172,20 @@ class DataSyncManager:
                         if known:
                             item['reason']=reason;unavailable.append(item)
                         else:windows.append(item)
+        # Several derived timeframes can share an identical native missing run.
+        # Make one public request, then derive each demanded complete target.
+        merged={}
+        for item in windows:
+            key=(item['symbol'],item['source_resolution'],item['begin'],item['end'])
+            if key not in merged:merged[key]={**item,'target_resolutions':[item['target_resolution']]}
+            elif item['target_resolution'] not in merged[key]['target_resolutions']:
+                merged[key]['target_resolutions'].append(item['target_resolution'])
+        windows=list(merged.values())
         # Most-recent missing windows first, but rotate across markets deterministically.
         windows.sort(key=lambda x:(-x['end'],x['symbol'],x['source_resolution']))
         return {'generated_at_utc':utcnow(),'purpose':'STARTUP_OR_WATCH_PUBLIC_DATA_SYNC','scope':scope,
                 'symbols':symbols,'target_resolutions':list(targets),'model_demand':demand,
-                'warmup_hours':warmup,'planned_windows':windows,'source_unavailable_windows':unavailable,
+                'warmup_hours':warmup,'target_warmup_hours':warmup_by_target,'planned_windows':windows,'source_unavailable_windows':unavailable,
                 'network_requests_planned':len(windows),'network_requests_skipped_known_unavailable':len(unavailable),
                 'dry_run':True}
 
@@ -191,13 +204,21 @@ class DataSyncManager:
         with self.lake.db:
             self.lake.db.execute('DELETE FROM data_sync_leases WHERE name=? AND owner=?',('global-public-data-sync',self.owner))
 
-    def run(self, *, top=8, scope='priority', warmup_hours=None, target_resolutions=None,
+    def run(self, *, top=8, scope='priority', warmup_hours=None, target_resolutions=None, target_warmup_hours=None,
             max_windows=8, delay=.35, retries=2, backoff_seconds=.5, workers=1, purpose='startup',symbols=None):
-        plan=self.plan(top=top,scope=scope,warmup_hours=warmup_hours,target_resolutions=target_resolutions,symbols=symbols)
+        plan=self.plan(top=top,scope=scope,warmup_hours=warmup_hours,target_resolutions=target_resolutions,
+                       target_warmup_hours=target_warmup_hours,symbols=symbols)
         selected=plan['planned_windows'][:max(0,int(max_windows))]
         plan['selected_windows']=selected;plan['dry_run']=False
         if not selected:
-            return {'status':'NO_SYNC_NEEDED_OR_ALL_PENDING_UNAVAILABLE','plan':plan,'complete':0,'cached':0,'failed':0}
+            derived=sorted({target for target in plan['target_resolutions'] if target in DERIVED})
+            # Source may already be verified while a demanded higher-timeframe
+            # bucket has not yet been materialized.  Derivation is local, only
+            # accepts complete buckets, and needs no public request or lease.
+            materialized=self.lake.materialize_derived(derived,symbols=plan['symbols']) if derived else None
+            return {'status':'NO_SYNC_NEEDED_DERIVED_MATERIALIZED' if derived else 'NO_SYNC_NEEDED_OR_ALL_PENDING_UNAVAILABLE',
+                    'plan':plan,'derived_requested':derived,'derived':materialized,
+                    'complete':0,'cached':0,'failed':0}
         if not self._acquire():
             return {'status':'LEASE_HELD_BY_ANOTHER_DATASYNC','plan':plan,'complete':0,'cached':0,'failed':0}
         run_id=None
@@ -209,7 +230,7 @@ class DataSyncManager:
             raw_windows=[(x['symbol'],x['source_resolution'],x['begin'],x['end']) for x in selected]
             outcome=self.lake.harvest(resolutions=tuple(sorted({x[1] for x in raw_windows})),windows=raw_windows,
                                       delay=delay,retries=retries,backoff_seconds=backoff_seconds,workers=workers)
-            derived=sorted({x['target_resolution'] for x in selected if x['target_resolution'] in DERIVED})
+            derived=sorted({target for x in selected for target in x.get('target_resolutions',[x['target_resolution']]) if target in DERIVED})
             if derived:self.lake.materialize_derived(derived,symbols=sorted({x['symbol'] for x in selected}))
             result={'status':'COMPLETED','plan':plan,'harvest':outcome,'derived_requested':derived,
                     'complete':outcome['complete'],'cached':outcome['cached'],'failed':outcome['failed'],
@@ -247,6 +268,41 @@ class DataSyncManager:
         return {'symbol':symbol,'target_resolution':target,'source_resolution':source,'ready':target_ready,
                 'reason':'VERIFIED_RECENT_CONTIGUOUS_INPUT' if target_ready else 'MISSING_OR_STALE_VERIFIED_INPUT',
                 'missing_windows':len(missing),'warmup_hours':plan['warmup_hours']}
+
+    def feature_sync_plan(self, *, symbols, profile='advanced', now=None):
+        """Translate the versioned V3 registry into bounded native-data demand."""
+        from .atlas_feature_registry import sync_requirements
+        requirements=sync_requirements(profile)
+        # The 72h ceiling prevents startup from silently becoming a historical
+        # backfill. Longer recipes are reported as insufficient until existing
+        # verified archive history is available.
+        bounded={res:min(72.0,float(item['warmup_hours'])) for res,item in requirements.items()}
+        plan=self.plan(top=len(symbols),scope='catalog',symbols=symbols,now=now,
+                       target_resolutions=tuple(requirements),target_warmup_hours=bounded)
+        return {**plan,'feature_profile':profile,'feature_requirements':requirements,
+                'automatic_warmup_cap_hours':72,'bounded_target_warmup_hours':bounded}
+
+    def feature_readiness(self, symbol, profile='advanced', now=None):
+        """Per-asset fail-closed readiness without making a peer market fail."""
+        from .atlas_feature_registry import SECONDS, sync_requirements
+        reference=float(time.time() if now is None else now);items=[]
+        for resolution,need in sync_requirements(profile).items():
+            period=SECONDS[resolution];closed_before=(int(reference)//period)*period
+            try:
+                segments=self.lake.load(symbol,resolution)
+                eligible=[part[part.timestamp.astype('int64')+period<=closed_before] for part in segments]
+                eligible=[part for part in eligible if len(part)]
+                bars=len(eligible[-1]) if eligible else 0
+                ready=bars>=int(need['warmup_bars'])
+                reason='VERIFIED_CLOSED_WARMUP_AVAILABLE' if ready else 'INSUFFICIENT_VERIFIED_CLOSED_BARS'
+            except (ValueError,RuntimeError,OSError,pd.errors.ParserError):
+                bars=0;ready=False;reason='MISSING_OR_UNVERIFIED_TIMEFRAME'
+            items.append({'resolution':resolution,'required_warmup_bars':need['warmup_bars'],
+                          'required_warmup_hours':need['warmup_hours'],'verified_closed_bars':bars,
+                          'ready':ready,'reason':reason})
+        return {'symbol':symbol,'profile':profile,'ready':all(x['ready'] for x in items),
+                'reason':'FEATURE_REQUIREMENTS_READY' if all(x['ready'] for x in items) else 'FEATURE_REQUIREMENTS_NOT_READY',
+                'timeframes':items,'live_execution':'HARD_DISABLED'}
 
     def run_continuous(self, stop_event, *, interval_seconds=60, max_cycles=None, **run_kwargs):
         """Run bounded reconciliation periodically until the supplied event stops it.

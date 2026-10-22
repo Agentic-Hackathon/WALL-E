@@ -1,0 +1,210 @@
+{
+  "status": "READ_ONLY_REAL_ARCHIVE",
+  "alignments": [
+    {
+      "symbol": "PEPETMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 250,
+      "aligned_rows": 250,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "PEPETMN",
+      "base_resolution": "15",
+      "source_resolution": "5",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 250,
+      "aligned_rows": 250,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "PEPETMN",
+      "base_resolution": "15",
+      "source_resolution": "30",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 250,
+      "aligned_rows": 250,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "PEPETMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 250,
+      "aligned_rows": 250,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "PEPETMN",
+      "base_resolution": "15",
+      "source_resolution": "240",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 250,
+      "aligned_rows": 250,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "PEPETMN",
+      "base_resolution": "15",
+      "source_resolution": "1D",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 250,
+      "aligned_rows": 250,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "BTCTMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "BTCTMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "PUMPTMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "PUMPTMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "ETHTMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 247,
+      "aligned_rows": 247,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "ETHTMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 247,
+      "aligned_rows": 247,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "USOONTMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "USOONTMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "BNBTMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "BNBTMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "USDTTMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 214,
+      "aligned_rows": 214,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "USDTTMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 214,
+      "aligned_rows": 214,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "DOGETMN",
+      "base_resolution": "15",
+      "source_resolution": "1",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    },
+    {
+      "symbol": "DOGETMN",
+      "base_resolution": "15",
+      "source_resolution": "60",
+      "status": "PIT_ASOF_ALIGNED",
+      "base_rows": 249,
+      "aligned_rows": 249,
+      "uses_future_data": false,
+      "forward_fill_prices": false
+    }
+  ],
+  "rules": {
+    "join": "backward_asof_by_candle_close",
+    "future_data": false,
+    "forward_fill_prices": false
+  }
+}

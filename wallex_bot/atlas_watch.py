@@ -41,17 +41,20 @@ def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
         # Bounded startup/continuous reconciliation: no full-catalog backfill
         # may block a watch cycle. DataSync reuses the archive progress ledger.
         sync=DataSyncManager(lake)
-        sync_result=sync.run(top=top,scope='priority',warmup_hours=48,max_windows=top,
+        feature_plan=sync.feature_sync_plan(symbols=sync._priority_symbols(top,'priority'),profile='watch_core')
+        sync_result=sync.run(top=top,scope='priority',target_resolutions=('15',),
+                             target_warmup_hours={'15':37.75},max_windows=top,
                              delay=.4,retries=2,backoff_seconds=.5,workers=1,purpose='watch-cycle')
         summary=sync_result.get('harvest',sync_result)
         derived={'requested_by_data_sync':sync_result.get('derived_requested',[])}
         news=harvest_news(lake,hours=24)
-        readiness=[sync.market_readiness(symbol) for symbol in sync_result['plan']['symbols']]
-        if not readiness or not all(item['ready'] for item in readiness):
-            # Fail closed: a Watch cycle must not let an unverified market reach
-            # the shadow-decision path, even though that path is paper-only.
+        readiness=[sync.feature_readiness(symbol,'watch_core') for symbol in sync_result['plan']['symbols']]
+        eligible=[item['symbol'] for item in readiness if item['ready']]
+        if not eligible:
+            # Fail closed per asset: an unhealthy market cannot reach Shadow,
+            # but one unhealthy peer no longer suppresses healthy peers.
             context_packet=None
-            result={'shadow_cycle_skipped':'DATA_SYNC_INPUT_NOT_READY',
+            result={'shadow_cycle_skipped':'NO_ELIGIBLE_MARKET_DATA',
                     'readiness':readiness}
         else:
             try:
@@ -62,12 +65,13 @@ def run(lake, hours=48, interval_seconds=900, top=8,mode=ExecutionMode.SHADOW):
                 result={'shadow_cycle_skipped':'CONTEXT_INTEGRITY_OR_BUDGET_FAILURE',
                         'error_type':type(exc).__name__}
             try:
-                if context_packet is not None: result=shadow_cycle(lake,top=top,mode=mode)
+                if context_packet is not None: result=shadow_cycle(lake,top=len(eligible),mode=mode,allowed_symbols=eligible)
             except Exception as exc:
                 result={'shadow_cycle_failed':type(exc).__name__+': '+str(exc)[:180]}
         watch_record={'utc':datetime.now(timezone.utc).isoformat(),
                 'downloaded_chunks':summary.get('complete',0),'failed_chunks':summary.get('failed',0),
-                'data_sync_status':sync_result.get('status'),
+                'data_sync_status':sync_result.get('status'),'feature_sync_requirements':feature_plan['feature_requirements'],
+                'eligible_markets':eligible,'ineligible_markets':[x['symbol'] for x in readiness if not x['ready']],
                 'news':news,'derived':derived,'shadow':result,
                 'context_engineering':{'enabled':context_packet is not None,
                     'skills_loaded':len(context_packet['task_skills']) if context_packet else 0,

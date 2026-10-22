@@ -190,7 +190,7 @@ class PaperAccount:
     def close(self):self.db.close()
 
 
-def shadow_cycle(lake,models_dir=None,top=8,fee=.001,mode=ExecutionMode.SHADOW):
+def shadow_cycle(lake,models_dir=None,top=8,fee=.001,mode=ExecutionMode.SHADOW,allowed_symbols=None):
     """One autonomous cycle on REAL Wallex quotes and previously trained checkpoints.
     Never read private API keys, never submit orders or withdrawal requests.
     """
@@ -205,7 +205,13 @@ def shadow_cycle(lake,models_dir=None,top=8,fee=.001,mode=ExecutionMode.SHADOW):
             try:volume=float(m.get('quote_volume_24h') or 0)
             except (ValueError,TypeError):volume=0
             metas.append((volume,m['symbol']))
-    symbols=[s for _,s in sorted(metas,reverse=True)[:top]]
+    ranked=[s for _,s in sorted(metas,reverse=True)]
+    if allowed_symbols is not None:
+        allowed=set(allowed_symbols)
+        if not allowed or any(not isinstance(s,str) or not s.isalnum() or s!=s.upper() for s in allowed):
+            raise ValueError('allowed_symbols must be a nonempty uppercase set')
+        ranked=[s for s in ranked if s in allowed]
+    symbols=ranked[:top]
     paper=PaperAccount(lake); observer=ForwardLedger(lake.root); output=[]
     model_digest=hashlib.sha256(Path(checkpoint).read_bytes()).hexdigest()
     try:

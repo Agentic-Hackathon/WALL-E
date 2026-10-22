@@ -99,10 +99,12 @@ def test_watch_cannot_issue_a_shadow_decision_when_sync_is_not_ready(tmp_path,mo
     lake=Lake(tmp_path/'lake')
     class UnreadySync:
         def __init__(self,_lake):pass
+        def _priority_symbols(self,_top,_scope):return ['BTCTMN']
+        def feature_sync_plan(self,**_kwargs):return {'feature_requirements':{}}
         def run(self,**_kwargs):
             return {'status':'COMPLETED','complete':0,'failed':0,
                     'plan':{'symbols':['BTCTMN']},'derived_requested':[]}
-        def market_readiness(self,_symbol):
+        def feature_readiness(self,_symbol,_profile):
             return {'symbol':'BTCTMN','ready':False,'reason':'MISSING_OR_STALE_VERIFIED_INPUT'}
     class Context:
         def __init__(self,*_args,**_kwargs):pass

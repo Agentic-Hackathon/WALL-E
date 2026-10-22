@@ -1,5 +1,7 @@
 # V3.5 — Local Research and Shadow Dashboard
 
+- Milestone 3: registry پژوهشی V3 با ۵۲ feature، محاسبهٔ PIT-safe چندتایم‌فریمی، health/coverage/redundancy reports، نیاز warmup متصل به DataSync و readiness مستقل هر market در Watch افزوده شد؛ Champion، RiskGate و LIVE تغییر نکردند.
+
 - Milestone 2.1: `DataSyncManager` برای sync محدود و resumable هنگام startup/Watch، plan/status/run CLI، lease SQLite، fail-closed شدن Agent/Watch روی دادهٔ نامعتبر و بررسی حساب read-only افزوده شد؛ LIVE، Champion، Risk Gate و Transformerها تغییری نکردند.
 
 - Risk Gate مستقل و قطعی `atlas_risk.py` اضافه شد؛ تمام intentهای Shadow پیش از هر تغییر دفتر از همین دروازه عبور می‌کنند، با سقف‌های قبلی، بررسی نقدشوندگی/اسپرد واقعی، stop-loss و circuit breaker. این تغییر همچنان هیچ سفارش واقعی ارسال نمی‌کند.
