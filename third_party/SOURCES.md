@@ -21,3 +21,13 @@
 - safetensors SHA-256: `e5897858ff819aad7629b96ce521ae5477952d03634ef5dd30ed2d76357a9f00`؛ tokenizer و config نیز با hash در receipt مدل ثبت می‌شوند. هیچ وزن مدلی در Git commit نمی‌شود.
 - مدل انگلیسی است؛ عنوان‌های فارسی/زبان نامطمئن خودکار به آن فرستاده نمی‌شوند. خروجی تخمین مدل است، نه برچسب حقیقت.
 - از `requests`، `langdetect` و `transformers` نصب‌شده استفاده شد؛ کد ثالث کپی نشد. طراحی NewsStore و PIT به‌صورت مستقل روی archive/RSS و حافظهٔ داخلی موجود نوشته شد.
+
+## Milestone 5 — DLinear reference
+
+- Repository: https://github.com/cure-lab/LTSF-Linear
+- HEAD inspected: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (public `git ls-remote`, 2026-10-22).
+- License read at that revision: [Apache-2.0](https://github.com/cure-lab/LTSF-Linear/blob/0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6/LICENSE).
+- Actual source inspected: `models/DLinear.py`; moving-average decomposition and separate linear trend/residual maps. No source copied, no external repository executed.
+- Atlas `DLinear_ridge` independently implements the decomposition idea with a 25-point endpoint-padded moving average inside the observed window, scalar **log-return** target and train-only ridge fit. This differs from the reference's multistep price target and SGD; it is not claimed as a paper reproduction.
+- Existing Atlas `atlas_deep.py` backbones, V1/V2/V3 feature recipes, verified archive reader, DataSyncManager, BACKTEST memory and news contracts are reused unchanged. New M5 orchestration/training/calibration/report code is independently authored.
+- Existing installed LightGBM quantile estimator and scikit-learn Ridge are used through public interfaces; no implementation copied. FinBERT remains research/advisory-only under the M4 license restriction; M5 trained no news model.
