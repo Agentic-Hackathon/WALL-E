@@ -5,6 +5,7 @@ from the conceptual literature registered in third_party/SOURCES.md; no external
 """
 from __future__ import annotations
 import json,sqlite3,time,hashlib
+from dataclasses import asdict
 from pathlib import Path
 from datetime import datetime,timezone
 from . import market
@@ -98,6 +99,37 @@ class PaperAccount:
                 gate=self.risk.final_tmn_liquidation(symbol,book,cash,positions,fee)
             else:
                 gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
+            # Stage 8: evidence for OFFLINE replay. These are the actual persisted
+            # input fields consumed by this deterministic RiskGate, NOT inferred
+            # prices, recreated historical market observations or live orders.
+            # Existing/legacy rows without this evidence remain explicitly unreplayable.
+            replay_inputs = {
+                'protocol': 'ATLAS_RISK_REPLAY_V1',
+                'symbol': symbol,
+                'forecast': {'quantile_log_returns': {
+                    key: ((decision.get('quantile_log_returns') or {}).get(key)
+                          if isinstance(decision, dict) and isinstance(decision.get('quantile_log_returns'),dict)
+                          else None)
+                    for key in ('q10','q50')}},
+                'book': {key: book.get(key) if isinstance(book,dict) else None
+                         for key in ('best_bid_tmn','best_ask_tmn','spread_bps',
+                                     'top5_ask_notional_tmn','best_bid_quantity')},
+                'cash_tmn': cash,
+                'positions': [[s, qty, cost] for s,qty,cost in positions],
+                'stopped': self.get('stopped') == '1',
+                'fee_assumption': fee,
+                'expected_side': expected_side,
+                'purpose': purpose,
+                'client_order_id': client_order_id,
+                'policy_limits': asdict(self.risk.limits),
+                'risk_source_sha256': hashlib.sha256(
+                    Path(__file__).with_name('atlas_risk.py').read_bytes()).hexdigest(),
+                'model_sha256': (decision.get('model_sha256') if isinstance(decision,dict) else None),
+                'gate_decision': gate.audit_payload(),
+            }
+            replay_canonical=json.dumps(replay_inputs,sort_keys=True,ensure_ascii=False,
+                                        separators=(',',':'),allow_nan=False)
+            replay_hash=hashlib.sha256(replay_canonical.encode('utf-8')).hexdigest()
             action=gate.action
             if (expected_side=='BUY' and action=='PAPER_SELL') or (expected_side=='SELL' and action=='PAPER_BUY'):
                 action='BROKER_SIDE_MISMATCH_NO_ORDER'
@@ -123,7 +155,9 @@ class PaperAccount:
                   'fill_assumption':'HYPOTHETICAL at observed best bid/ask; not an exchange execution',
                   'risk_gate':gate.audit_payload(),
                   'client_order_id':client_order_id,'purpose':purpose,
-                  'paper_cash_tmn':self.get('cash_tmn')})
+                  'paper_cash_tmn':self.get('cash_tmn'),
+                  'risk_replay_inputs':replay_inputs,
+                  'risk_replay_sha256':replay_hash})
             if client_order_id is not None:
                 self.db.execute('INSERT INTO broker_intents VALUES(?,?,?,?)',
                     (client_order_id,symbol,fingerprint,action))

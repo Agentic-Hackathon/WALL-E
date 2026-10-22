@@ -14,7 +14,8 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision'])
+    p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
     p.add_argument('--days',type=int,default=7)
     p.add_argument('--minutes',type=int,default=10)
     p.add_argument('--hours',type=int,default=48)
@@ -34,6 +35,10 @@ def main(argv=None):
                    help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
     args=p.parse_args(argv)
     effective_mode=cli_mode(args.command,args.mode)
+    if args.command=='replay-decision':
+        from .atlas_replay import replay_decision
+        from .atlas_archive import root_path
+        pretty(replay_decision(root_path(),event_id=args.event_id));return
     if args.command=='rationale-status':
         from .atlas_rationale import rationale_status
         from .atlas_archive import root_path

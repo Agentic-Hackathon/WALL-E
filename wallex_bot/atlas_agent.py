@@ -137,6 +137,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
                     'market_observation':state['observations'],'technical':state['technical'],
                     'news':state['news'],'model_prediction':state['prediction'],
                     'veto_reasons':state['veto_reasons'],'paper_action':action,
+                    'broker_client_order_id':intent_id,
                     'llm_advisory':state.get('advisory_rationale',{'status':'NO_RATIONALE'})})
         finally:account.close()
         return {'decision':action,'explanation':{'model_file':str(model),'veto':state['veto_reasons'],

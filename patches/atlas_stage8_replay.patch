@@ -1,0 +1,451 @@
+diff --git a/CHANGELOG_STAGE8_DECISION_REPLAY_FA.md b/CHANGELOG_STAGE8_DECISION_REPLAY_FA.md
+new file mode 100644
+index 0000000..af45f31
+--- /dev/null
++++ b/CHANGELOG_STAGE8_DECISION_REPLAY_FA.md
+@@ -0,0 +1,21 @@
++# Stage 8 — Replay قابل ممیزی تصمیم‌های Shadow
++
++**مبنای Git:** `0b917d9` روی `integration/atlas-llm-rationale`
++**شاخه هدف:** `integration/atlas-decision-replay`
++**منبع مفهومی:** deterministic/event-sourced replay در NautilusTrader مطابق `reference_projects_integration_playbook.md`. هیچ کد خارجی کپی نشده؛ لایسنس مرجع در این بسته بازبینی نشده و ادعایی درباره آن نداریم.
++
++- `atlas_shadow.py`: از این مرحله به بعد، *پیش از تغییر حساب کاغذی* تمام فیلدهای مورد استفاده RiskGate (`q10`/`q50`، ۵ فیلد مشتق از دفتر سفارش، نقدینگی کاغذی، سبد، stopped، کارمزد فرضی، جهت، منظور فروش نهایی)، نسخه پارامترهای RiskLimits، هش فایل `atlas_risk.py` و تصمیم دقیق Gate در رویداد هش‌شده `shadow.sqlite` ذخیره می‌شود.
++- `atlas_replay.py`: حالت فقط‌خواندنی SQLite؛ اعتبارسنجی تمام زنجیره رویدادهای PaperAccount، Snapshot و هش آن، هش فایل کد RiskGate و مقادیر سیاست ریسک؛ محاسبه مجدد `RiskGate.evaluate` یا `final_tmn_liquidation` بدون هیچ شبکه، مدل، LLM، دست‌کاری DB، یا ارسال سفارش.
++- `atlas_agent.py`: ثبت شناسه یکسان Broker در رویداد توضیح LangGraph برای ارتباط آینده میان استدلال و اجرای فرضی، بدون اثر روی پارامترهای سفارش.
++- `atlas_cli.py`: `replay-decision [--event-id N]`، به‌صورت پیش‌فرض تازه‌ترین رویداد تصمیم Paper را می‌خواند.
++- `tests/test_stage8_replay_without_synthetic_market.py`: هشت تست تازه با دفتر سفارش **خالی** و رویدادهای صرفاً متادیتایی (بدون قیمت، کندل، خبر یا پرشدن ساختگی).
++
++## محدودیت‌های اثبات
++
++1. **فقط RiskGate بازپخش می‌شود، نه کل Transformer، اندیکاتورها، LLM، زمان دریافت اطلاعات، اجرای سفارش یا سود واقعی**. حتی `MATCH` ادعا نمی‌کند که قیمت قابل معامله بوده یا سفارش اجرا شده است.
++2. رویدادهای قدیمی فاقد snapshot با `LEGACY_NO_RISK_SNAPSHOT` گزارش می‌شوند، نه بازسازی حدسی.
++3. اگر سورس/پارامتر RiskGate از زمان تصمیم تغییر کرده باشد بازپخش با `RISK_CODE_VERSION_MISMATCH` یا `RISK_POLICY_VERSION_MISMATCH` متوقف می‌شود؛ **بازپخش کد قدیمی با کد فعلی جعل نمی‌شود**.
++4. زنجیره هش داخل همان DB است؛ برای گواهی در برابر بازنویسی کامل DB، لازم است سرزنجیره دوره‌ای در مخزن مستقل/commit ذخیره شود.
++5. قاعده BACKTEST بدون حافظه عملیاتی و LIVE hard-disabled دست‌نخورده باقی می‌ماند.
++
++**بارم مورد هدف:** بازتولیدپذیری (۲۵)، منطق استراتژی (۴۰)، ریسک (۳۰). بهبود سود خارج نمونه و صحت هزینه واقعی هنوز تأیید نشده‌اند.
+diff --git a/QUICKSTART_STAGE8_REPLAY_FA.md b/QUICKSTART_STAGE8_REPLAY_FA.md
+new file mode 100644
+index 0000000..6e29c34
+--- /dev/null
++++ b/QUICKSTART_STAGE8_REPLAY_FA.md
+@@ -0,0 +1,38 @@
++# راه‌اندازی Stage 8: بازپخش فقط‌خواندنی RiskGate
++
++1. اگر `watch` فعال است، آن را در مرز یک چرخه متوقف کنید. فایل ZIP پچ را در **ریشه** `wallex_agent_v3` استخراج کنید. برخلاف Stage 7، این بسته فایل‌های راهنما و سورسِ درون Git Patch را از قبل استخراج نمی‌کند؛ بنابراین نباید با `already exists` برخورد کنید.
++2. روی `integration/atlas-llm-rationale`، commit `0b917d9` باشید. سپس:
++
++```bash
++cd /d/Hackaton/Wallex/wallex_agent_v3
++conda activate shbk
++bash scripts/apply_stage8_replay.sh
++```
++
++3. بدون نیاز به API key، Ollama یا شبکه، رویداد جدیدتر را بررسی کنید:
++
++```bash
++python -m wallex_bot.atlas_cli replay-decision
++python -m wallex_bot.atlas_cli replay-decision --event-id 1
++```
++
++برای تصمیم‌های ثبت‌شده **پیش از نصب Stage 8**، `LEGACY_NO_RISK_SNAPSHOT` انتظار می‌رود. **تنها تصمیم‌های جدید** که واقعاً توسط Watch/Agent با داده واقعی ثبت می‌شوند قابل بازپخش خواهند بود.
++
++4. همان Session قبلی را با فرمان قبلی از سر بگیرید (اطلاعات Session پاک نمی‌شوند):
++
++```bash
++python -m wallex_bot.atlas_cli watch --mode SHADOW --hours 48
++```
++
++5. بعد از ایجاد یک تصمیم جدید (حتی HOLD/REJECTED به علت نبود داده واقعی)، دستور بازپخش را اجرا کنید. اگر آخرین رویداد جدید از نوع خطای عمومی خارج از Broker باشد، احتمالاً `LEGACY_NO_RISK_SNAPSHOT` می‌بینید؛ از روی گزارش رویدادهای Shadow، شناسه یک رویداد Broker را با `--event-id` مشخص کنید.
++
++## وضعیت‌های خروجی
++
++- `MATCH`: تصمیم *RiskGate* با ورودی و سورسِ ثبت‌شده دوباره همان نتیجه را داده است؛ **سود یا اجرای واقعی نیست**.
++- `LEGACY_NO_RISK_SNAPSHOT`: داده کافی از قبل ثبت نشده است.
++- `AUDIT_HASH_CHAIN_INVALID`/`SNAPSHOT_HASH_MISMATCH`: عدم تطابق تمامیت، بازپخش رد می‌شود.
++- `RISK_CODE_VERSION_MISMATCH`/`RISK_POLICY_VERSION_MISMATCH`: نسخه RiskGate یکسان نیست؛ رد.
++- `DECISION_DIVERGENCE`: اختلاف واقعی در نتیجه RiskGate و رویداد ثبت‌شده؛ بررسی اجباری، معامله جدید از این فرمان صادر نمی‌شود.
++- `NO_EXISTING_SHADOW_LEDGER`: دفتر Shadow وجود ندارد.
++
++فرمان‌ها هیچ سفارش واقعی نمی‌فرستند. هر تصمیم واقعی مسابقه نیازمند مجوزهای مستقل و زیرساخت اجرای زنده‌ای است که هنوز فعال نشده است.
+diff --git a/tests/test_stage8_replay_without_synthetic_market.py b/tests/test_stage8_replay_without_synthetic_market.py
+new file mode 100644
+index 0000000..ab30a0a
+--- /dev/null
++++ b/tests/test_stage8_replay_without_synthetic_market.py
+@@ -0,0 +1,107 @@
++"""Stage 8: all tests use empty/unavailable books, not fabricated market data.
++
++No price, candle, market quote, trade fill, outcome or news is fabricated.
++The only generated decisions are RiskGate refusals on MISSING observations.
++"""
++from __future__ import annotations
++
++import inspect
++import sqlite3
++
++import pytest
++
++from wallex_bot.atlas_archive import Lake
++from wallex_bot.atlas_broker import OrderIntent,ShadowBroker,OrderState
++from wallex_bot.atlas_shadow import PaperAccount
++from wallex_bot.atlas_replay import replay_decision
++from wallex_bot import atlas_replay,atlas_agent
++
++
++def test_no_ledger_is_not_created_by_replay(tmp_path):
++    assert replay_decision(tmp_path)['status']=='NO_EXISTING_SHADOW_LEDGER'
++    assert not (tmp_path/'shadow.sqlite').exists()
++
++
++def test_missing_observations_are_replayed_as_refusal_not_fake_fill(tmp_path):
++    lake=Lake(tmp_path)
++    p=PaperAccount(lake)
++    try:
++        original=ShadowBroker(p).submit(OrderIntent('stage8-missing-0001','BTCTMN'),
++                                        forecast={},book={},fee=.001)
++        assert original.state==OrderState.PAPER_NOT_EXECUTED
++        assert original.reason=='REJECTED'
++        assert p.verify()
++    finally:p.close();lake.close()
++    result=replay_decision(tmp_path)
++    assert result['status']=='MATCH'
++    assert result['recorded_action']==result['recomputed_action']=='REJECTED'
++    assert result['risk_reason']=='MISSING_OR_INVALID_OBSERVED_BOOK'
++    assert result['full_model_or_execution_replay'] is False
++    assert result['exchange_orders']==0
++
++
++def test_replay_does_not_write_or_duplicate_an_existing_event(tmp_path):
++    lake=Lake(tmp_path)
++    p=PaperAccount(lake)
++    try:
++        p.trade('BTCTMN',{}, {},.001,client_order_id='stage8-repeat-00001')
++        before=p.db.execute('SELECT id,hash,payload FROM events').fetchall()
++        before_cash=p.get('cash_tmn')
++        assert replay_decision(tmp_path)['status']=='MATCH'
++        assert replay_decision(tmp_path,event_id=1)['status']=='MATCH'
++        after=p.db.execute('SELECT id,hash,payload FROM events').fetchall()
++        assert before==after
++        assert before_cash==p.get('cash_tmn')
++        assert p.db.execute('SELECT COUNT(*) FROM positions').fetchone()[0]==0
++    finally:p.close();lake.close()
++
++
++def test_legacy_event_has_explicit_no_snapshot(tmp_path):
++    lake=Lake(tmp_path)
++    p=PaperAccount(lake)
++    try:
++        with p.db:p.log('SYSTEM','LEGACY_AUDIT_EVENT',{'no_market_data':True})
++    finally:p.close();lake.close()
++    result=replay_decision(tmp_path,event_id=1)
++    assert result['status']=='LEGACY_NO_RISK_SNAPSHOT'
++    assert result['exchange_orders']==0
++
++
++def test_tampering_with_paper_event_refuses_all_replay(tmp_path):
++    lake=Lake(tmp_path)
++    p=PaperAccount(lake)
++    try:
++        p.trade('BTCTMN',{}, {},.001)
++        p.db.execute("UPDATE events SET action='CHANGED' WHERE id=1")
++        p.db.commit()
++    finally:p.close();lake.close()
++    assert replay_decision(tmp_path)['status']=='AUDIT_HASH_CHAIN_INVALID'
++
++
++def test_changed_risk_code_fails_closed_without_fabricated_observations(tmp_path,monkeypatch):
++    lake=Lake(tmp_path)
++    p=PaperAccount(lake)
++    try:p.trade('BTCTMN',{}, {},.001)
++    finally:p.close();lake.close()
++    monkeypatch.setattr(atlas_replay,'_risk_source_hash',lambda:'CHANGED_CODE')
++    assert replay_decision(tmp_path)['status']=='RISK_CODE_VERSION_MISMATCH'
++
++
++def test_unknown_invalid_ids_do_not_change_storage(tmp_path):
++    with pytest.raises(ValueError):replay_decision(tmp_path,event_id=0)
++    with pytest.raises(ValueError):replay_decision(tmp_path,event_id=True)
++    assert not (tmp_path/'shadow.sqlite').exists()
++
++
++def test_stage8_source_does_not_import_external_data_or_order_api():
++    source=inspect.getsource(atlas_replay)
++    assert 'import requests' not in source
++    assert 'WallexReadClient' not in source
++    assert 'depth(' not in source
++    assert 'market.depth' not in source
++    assert 'PaperAccount(' not in source
++    assert 'sqlite3.connect' in source and '?mode=ro' in source
++    original_agent=inspect.getsource(atlas_agent.cycle)
++    # LLM remains after risk but outside order submission arguments.
++    assert "'risk_agent','llm_rationale_agent','shadow_execution_agent'" in original_agent
++    assert 'broker_client_order_id' in original_agent
+diff --git a/wallex_bot/atlas_agent.py b/wallex_bot/atlas_agent.py
+index 92617d6..c1a2e09 100644
+--- a/wallex_bot/atlas_agent.py
++++ b/wallex_bot/atlas_agent.py
+@@ -137,6 +137,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
+                     'market_observation':state['observations'],'technical':state['technical'],
+                     'news':state['news'],'model_prediction':state['prediction'],
+                     'veto_reasons':state['veto_reasons'],'paper_action':action,
++                    'broker_client_order_id':intent_id,
+                     'llm_advisory':state.get('advisory_rationale',{'status':'NO_RATIONALE'})})
+         finally:account.close()
+         return {'decision':action,'explanation':{'model_file':str(model),'veto':state['veto_reasons'],
+diff --git a/wallex_bot/atlas_cli.py b/wallex_bot/atlas_cli.py
+index 8d227b8..ff892cf 100644
+--- a/wallex_bot/atlas_cli.py
++++ b/wallex_bot/atlas_cli.py
+@@ -14,7 +14,8 @@ def main(argv=None):
+     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
+         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
+     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
+-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status'])
++        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision'])
++    p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
+     p.add_argument('--days',type=int,default=7)
+     p.add_argument('--minutes',type=int,default=10)
+     p.add_argument('--hours',type=int,default=48)
+@@ -34,6 +35,10 @@ def main(argv=None):
+                    help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
+     args=p.parse_args(argv)
+     effective_mode=cli_mode(args.command,args.mode)
++    if args.command=='replay-decision':
++        from .atlas_replay import replay_decision
++        from .atlas_archive import root_path
++        pretty(replay_decision(root_path(),event_id=args.event_id));return
+     if args.command=='rationale-status':
+         from .atlas_rationale import rationale_status
+         from .atlas_archive import root_path
+diff --git a/wallex_bot/atlas_replay.py b/wallex_bot/atlas_replay.py
+new file mode 100644
+index 0000000..baa77ef
+--- /dev/null
++++ b/wallex_bot/atlas_replay.py
+@@ -0,0 +1,163 @@
++"""Stage 8: deterministic READ-ONLY replay of previously recorded RiskGate decisions.
++
++Conceptual provenance: event-sourced deterministic replay in NautilusTrader,
++see reference_projects_integration_playbook.md and third_party/SOURCES.md.
++Entire implementation independently authored: NO third-party code was copied.
++
++This is a replay of RiskGate on the originally recorded observations and ledger
++state. It does NOT regenerate past model forecasts, re-fetch past books, run an
++LLM, validate actual order fills, or re-run a full historical strategy.
++"""
++from __future__ import annotations
++
++from dataclasses import asdict
++from pathlib import Path
++from typing import Any
++import hashlib
++import json
++import sqlite3
++
++from .atlas_risk import RiskGate
++
++PROTOCOL='ATLAS_RISK_REPLAY_V1'
++
++
++def _canonical(value: Any) -> str:
++    return json.dumps(value,sort_keys=True,ensure_ascii=False,
++                      separators=(',',':'),allow_nan=False)
++
++
++def _sha(value: str) -> str:
++    return hashlib.sha256(value.encode('utf-8')).hexdigest()
++
++
++def _risk_source_hash() -> str:
++    return hashlib.sha256(Path(__file__).with_name('atlas_risk.py').read_bytes()).hexdigest()
++
++
++def _read_only_events(db: sqlite3.Connection):
++    previous='GENESIS'
++    count=0
++    for row in db.execute('''SELECT id,observed_at,symbol,action,payload,prev_hash,hash
++                              FROM events ORDER BY id'''):
++        identity,at,sym,action,payload,prev,h=row
++        if prev!=previous or _sha(prev+'|'+at+'|'+sym+'|'+action+'|'+payload)!=h:
++            return None,count
++        previous=h
++        count+=1
++    return previous,count
++
++
++def replay_decision(root, *, event_id: int | None = None) -> dict:
++    """Return an auditable result without creating, changing or querying live data.
++
++    At least one complete Stage-8 replay envelope must have been recorded by
++    genuine Shadow execution. An older event cannot be silently reconstructed.
++    The entire existing paper hash chain must be intact before replay.
++    """
++    if event_id is not None and (type(event_id) is not int or event_id<1):
++        raise ValueError('event_id must be a positive existing integer')
++    path=Path(root)/'shadow.sqlite'
++    result={'mode':'READ_ONLY_RISK_GATE_REPLAY','exchange_orders':0,
++            'no_market_or_model_requests':True,'read_only':True,
++            'paper_fills_are_hypothetical':True}
++    if not path.is_file():
++        return {**result,'status':'NO_EXISTING_SHADOW_LEDGER'}
++    db=sqlite3.connect(path.resolve().as_uri()+'?mode=ro',uri=True,timeout=10)
++    try:
++        db.execute('PRAGMA query_only=ON')
++        try:
++            final_hash,count=_read_only_events(db)
++        except sqlite3.DatabaseError:
++            return {**result,'status':'LEDGER_UNREADABLE'}
++        if final_hash is None:
++            return {**result,'status':'AUDIT_HASH_CHAIN_INVALID','events_checked_before_failure':count}
++        if event_id is None:
++            # Prefer the latest recorded RiskGate snapshot, not a later generic
++            # network error or explanatory event lacking the pre-trade state.
++            # If no replayable row exists, return the newest legacy event and
++            # explicitly refuse to infer inputs from future or current data.
++            candidates=db.execute("""SELECT id,observed_at,symbol,action,payload,hash FROM events
++                WHERE action NOT IN ('MULTI_AGENT_EXPLANATION','FRESH_REAL_BID_MARK_TO_MARKET')
++                ORDER BY id DESC""")
++            row=None
++            legacy=None
++            for candidate in candidates:
++                if legacy is None:legacy=candidate
++                try:
++                    obj=json.loads(candidate[4])
++                    if isinstance(obj,dict) and 'risk_replay_inputs' in obj:
++                        row=candidate
++                        break
++                except (TypeError,ValueError):
++                    continue
++            if row is None:row=legacy
++        else:
++            row=db.execute("SELECT id,observed_at,symbol,action,payload,hash FROM events WHERE id=?",
++                           (event_id,)).fetchone()
++        if row is None:
++            return {**result,'status':'EVENT_NOT_FOUND','events_verified':count}
++        event_id,at,symbol,recorded_action,raw,receipt_hash=row
++        base={**result,'event_id':event_id,'observed_at_utc':at,'symbol':symbol,
++              'recorded_action':recorded_action,'event_hash':receipt_hash,'events_verified':count}
++        try:
++            payload=json.loads(raw)
++        except (ValueError,TypeError):
++            return {**base,'status':'INVALID_EVENT_PAYLOAD'}
++        if not isinstance(payload,dict):
++            return {**base,'status':'INVALID_EVENT_PAYLOAD'}
++        snapshot=payload.get('risk_replay_inputs')
++        expected_hash=payload.get('risk_replay_sha256')
++        if not isinstance(snapshot,dict) or not isinstance(expected_hash,str):
++            return {**base,'status':'LEGACY_NO_RISK_SNAPSHOT',
++                    'reason':'Event predates Stage 8; original pre-trade state cannot be reconstructed'}
++        try:
++            if _sha(_canonical(snapshot))!=expected_hash:
++                return {**base,'status':'SNAPSHOT_HASH_MISMATCH'}
++        except (ValueError,TypeError):
++            return {**base,'status':'INVALID_REPLAY_SNAPSHOT'}
++        if snapshot.get('protocol')!=PROTOCOL or snapshot.get('symbol')!=symbol:
++            return {**base,'status':'UNRECOGNIZED_REPLAY_PROTOCOL'}
++        recorded_code_hash=snapshot.get('risk_source_sha256')
++        current_code_hash=_risk_source_hash()
++        if recorded_code_hash!=current_code_hash:
++            return {**base,'status':'RISK_CODE_VERSION_MISMATCH',
++                    'recorded_risk_sha256':recorded_code_hash,
++                    'current_risk_sha256':current_code_hash}
++        gate=RiskGate()
++        if snapshot.get('policy_limits')!=asdict(gate.limits):
++            return {**base,'status':'RISK_POLICY_VERSION_MISMATCH'}
++        if (snapshot.get('expected_side') not in ('AUTO','BUY','SELL') or
++            snapshot.get('purpose') not in ('STRATEGY','FINAL_TMN') or
++            not isinstance(snapshot.get('positions'),list) or
++            not isinstance(snapshot.get('stopped'),bool)):
++            return {**base,'status':'INVALID_REPLAY_SNAPSHOT'}
++        try:
++            if snapshot['purpose']=='FINAL_TMN':
++                decision=gate.final_tmn_liquidation(
++                    symbol,snapshot['book'],snapshot['cash_tmn'],snapshot['positions'],
++                    snapshot['fee_assumption'])
++            else:
++                decision=gate.evaluate(symbol,snapshot['forecast'],snapshot['book'],
++                    snapshot['cash_tmn'],snapshot['positions'],snapshot['stopped'],
++                    snapshot['fee_assumption'])
++        except (KeyError,TypeError,ValueError,OverflowError):
++            return {**base,'status':'INVALID_REPLAY_SNAPSHOT'}
++        computed_action=decision.action
++        if ((snapshot['expected_side']=='BUY' and computed_action=='PAPER_SELL') or
++            (snapshot['expected_side']=='SELL' and computed_action=='PAPER_BUY')):
++            computed_action='BROKER_SIDE_MISMATCH_NO_ORDER'
++        matched=(snapshot.get('gate_decision')==decision.audit_payload() and
++                 recorded_action==computed_action and
++                 payload.get('risk_gate')==decision.audit_payload())
++        return {**base,'status':'MATCH' if matched else 'DECISION_DIVERGENCE',
++                'recomputed_action':computed_action,
++                'risk_reason':decision.reason,
++                'recorded_risk_sha256':recorded_code_hash,
++                'snapshot_sha256':expected_hash,
++                'model_sha256_recorded_not_reexecuted':snapshot.get('model_sha256'),
++                'risk_gate_deterministically_recomputed':True,
++                'full_model_or_execution_replay':False,
++                'why':'Same recorded pre-trade state, RiskGate source hash and policy; no external calls'}
++    finally:
++        db.close()
+diff --git a/wallex_bot/atlas_shadow.py b/wallex_bot/atlas_shadow.py
+index 0a010a4..022ae72 100644
+--- a/wallex_bot/atlas_shadow.py
++++ b/wallex_bot/atlas_shadow.py
+@@ -5,6 +5,7 @@ from the conceptual literature registered in third_party/SOURCES.md; no external
+ """
+ from __future__ import annotations
+ import json,sqlite3,time,hashlib
++from dataclasses import asdict
+ from pathlib import Path
+ from datetime import datetime,timezone
+ from . import market
+@@ -98,6 +99,37 @@ class PaperAccount:
+                 gate=self.risk.final_tmn_liquidation(symbol,book,cash,positions,fee)
+             else:
+                 gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
++            # Stage 8: evidence for OFFLINE replay. These are the actual persisted
++            # input fields consumed by this deterministic RiskGate, NOT inferred
++            # prices, recreated historical market observations or live orders.
++            # Existing/legacy rows without this evidence remain explicitly unreplayable.
++            replay_inputs = {
++                'protocol': 'ATLAS_RISK_REPLAY_V1',
++                'symbol': symbol,
++                'forecast': {'quantile_log_returns': {
++                    key: ((decision.get('quantile_log_returns') or {}).get(key)
++                          if isinstance(decision, dict) and isinstance(decision.get('quantile_log_returns'),dict)
++                          else None)
++                    for key in ('q10','q50')}},
++                'book': {key: book.get(key) if isinstance(book,dict) else None
++                         for key in ('best_bid_tmn','best_ask_tmn','spread_bps',
++                                     'top5_ask_notional_tmn','best_bid_quantity')},
++                'cash_tmn': cash,
++                'positions': [[s, qty, cost] for s,qty,cost in positions],
++                'stopped': self.get('stopped') == '1',
++                'fee_assumption': fee,
++                'expected_side': expected_side,
++                'purpose': purpose,
++                'client_order_id': client_order_id,
++                'policy_limits': asdict(self.risk.limits),
++                'risk_source_sha256': hashlib.sha256(
++                    Path(__file__).with_name('atlas_risk.py').read_bytes()).hexdigest(),
++                'model_sha256': (decision.get('model_sha256') if isinstance(decision,dict) else None),
++                'gate_decision': gate.audit_payload(),
++            }
++            replay_canonical=json.dumps(replay_inputs,sort_keys=True,ensure_ascii=False,
++                                        separators=(',',':'),allow_nan=False)
++            replay_hash=hashlib.sha256(replay_canonical.encode('utf-8')).hexdigest()
+             action=gate.action
+             if (expected_side=='BUY' and action=='PAPER_SELL') or (expected_side=='SELL' and action=='PAPER_BUY'):
+                 action='BROKER_SIDE_MISMATCH_NO_ORDER'
+@@ -123,7 +155,9 @@ class PaperAccount:
+                   'fill_assumption':'HYPOTHETICAL at observed best bid/ask; not an exchange execution',
+                   'risk_gate':gate.audit_payload(),
+                   'client_order_id':client_order_id,'purpose':purpose,
+-                  'paper_cash_tmn':self.get('cash_tmn')})
++                  'paper_cash_tmn':self.get('cash_tmn'),
++                  'risk_replay_inputs':replay_inputs,
++                  'risk_replay_sha256':replay_hash})
+             if client_order_id is not None:
+                 self.db.execute('INSERT INTO broker_intents VALUES(?,?,?,?)',
+                     (client_order_id,symbol,fingerprint,action))
