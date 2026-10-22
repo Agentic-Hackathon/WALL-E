@@ -1,0 +1,945 @@
+{
+  "protocol": "MILESTONE3_CONTRACT_FIXES_V3_1",
+  "generated_at": "2026-10-22T15:10:20.547306+00:00",
+  "per_asset_profiles": {
+    "BTCTMN": {
+      "CORE": {
+        "symbol": "BTCTMN",
+        "profile": "CORE",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 249,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "ADVANCED": {
+        "symbol": "BTCTMN",
+        "profile": "ADVANCED",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "1",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 1.0,
+            "verified_closed_bars": 3746,
+            "ready": false,
+            "reason": "NONFINITE_ADVANCED_FEATURES"
+          },
+          {
+            "resolution": "5",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 5.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 249,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "30",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 30.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "60",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 60.0,
+            "verified_closed_bars": 79,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "240",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 120.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "1D",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 720.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "NEWS_ENHANCED": {
+        "symbol": "BTCTMN",
+        "profile": "NEWS_ENHANCED",
+        "ready": false,
+        "news_status": {
+          "symbol": "BTCTMN",
+          "cutoff": "2026-10-22T15:10:20.547306+00:00",
+          "recipe_version": "ATLAS_NEWS_PIT_V1",
+          "features": {
+            "news_count_1h": 2,
+            "news_sentiment_1h": -0.0850342242820364,
+            "news_count_3h": 8,
+            "news_sentiment_3h": -0.011001138313548108,
+            "news_count_6h": 16,
+            "news_sentiment_6h": -0.12102732352034765,
+            "news_count_24h": 50,
+            "news_sentiment_24h": -0.012308253316830088,
+            "news_source_count_24h": 3,
+            "news_importance_24h": 0.9,
+            "news_age_hours": 0.3735681169444445,
+            "news_sentiment_momentum": 0.035993099238311246,
+            "news_intensity_1h_vs_24h": 0.96,
+            "news_missing_mask": 1
+          },
+          "status": "INSUFFICIENT_PIT_HISTORY",
+          "ready": false,
+          "source_windows": {
+            "1": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "3": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "6": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "24": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            }
+          },
+          "article_ids": [
+            "fefc31ac8a06f22b0edcb24eeae67a0f2d28568f5f5137ecad5c7d914af2c021",
+            "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+            "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+            "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+            "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+            "3aa226d95f101c18ed5c05de90d0a5ab00c2857bed3ad42657178908c3df32ad",
+            "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+            "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+            "38c1389f6e68f2015250821e9da90822d773e515380c6c22f3728fdb7d1ed636",
+            "39c8305b5c84ba18bdd0cb90350b711429b6147b9805f07352dd0b4d07f7e830",
+            "9593d367f59adacd0c2bffa858de151c4091f539cd79391f888827fbb93b0005",
+            "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+            "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+            "b9a9330ca46b15ffc70099383c8ec285aadd1242b5144183fbd041729b615924",
+            "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+            "cf56dc60dfba8f9c2c95022b3adf832fd6d20e707d374ca5e0676c4eb802dbf4",
+            "c063ddbb2b56bb4d0717617c3c02ae5f3a7a07835fa8e29179459a425a30aba9",
+            "9c610c46478855de786d72a4aa788ab752cf88c6280aafb3c474848e2593d356",
+            "665acdf56fe7bdfc61336835074faeb69152c4a71771b7f58e1e53e10cdf4dbc",
+            "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+            "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+            "74d681a2017e62d83117c83ce7260810b867af4cb17772a264890cefaa01a66b",
+            "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+            "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+            "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+            "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+            "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+            "de8b0451449a7a29d769b248069c441d1aca93127e9639cb0ce00f8815844f1e",
+            "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+            "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+            "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+            "03c8f534a20ffbb2ff704c44c32bb9ea1a87b99a22a5acb3f6f5785ef38ea27d",
+            "cc429022173abfb499a89c2a60bfec579373b8965429ea3b22f7cf177d0044d9",
+            "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+            "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248",
+            "39cdb497c773312a78029d6ade915afe4c50906015a228390173f8e9e6fd46f6",
+            "458fdcffb7b7b6a296418457927b742cb8094814715ed6148bd855a589886b72",
+            "b9c13f9d52eb267bcafd4e2f90b96e9d9db5fca8f84cc2d0042d53ca9155a7b9",
+            "c7220f0788d695e6219de69eba4bd608a28f8c3be6311abf3510878817a26e6d",
+            "f395a3e3a7221e90da5065d195ffd2f6f77e9eedc50f451c6edcf8f93b09bdfc",
+            "005303216cb5be632040a61b156be68822f2b512b135e636194572bcb7279a86",
+            "81674b2dda4150f50301d8bff8bf71cb80cdbb4e7a5372c02515cfe1ccf71fde",
+            "e6def5232248eedc16cedc1a7bac68621663f89dc9ba92243efc4ea9b16e1e8f",
+            "5a2f12d1702a1a8b04f5dfe3bf798664106f79669e82761094ad37f61869cb47",
+            "4adc09d4b5af179e6d88740f2d670c24b9c1c5f1b4ce4bc3d46d07b37f82de9e",
+            "81c67a369952d6caf3124d4f81e8dd362ed7d79fa095096d6df7b06c7e28fc5f",
+            "5a0f593021e20142179758c07c4811b77c4817c906a98febeddf2143c39f63bc",
+            "37b559cbebe20845fed5f681cce45191419b46619722e5d09f67da82e505b8ea",
+            "f92c92cf4c685e0fd2959473a11644abd1448eac32a7b9a81be1824fa77dd447",
+            "e4ac1dc64b299d41dc62d5b276a4dbe45f4fe45415d219944af071de2c3a0999"
+          ],
+          "authority": "CHALLENGER_RESEARCH_AND_ADVISORY_ONLY"
+        },
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 249,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      }
+    },
+    "ETHTMN": {
+      "CORE": {
+        "symbol": "ETHTMN",
+        "profile": "CORE",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 247,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "ADVANCED": {
+        "symbol": "ETHTMN",
+        "profile": "ADVANCED",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "1",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 1.0,
+            "verified_closed_bars": 3720,
+            "ready": false,
+            "reason": "NONFINITE_ADVANCED_FEATURES"
+          },
+          {
+            "resolution": "5",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 5.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 247,
+            "ready": false,
+            "reason": "NONFINITE_ADVANCED_FEATURES"
+          },
+          {
+            "resolution": "30",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 30.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "60",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 60.0,
+            "verified_closed_bars": 71,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "240",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 120.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "1D",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 720.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "NEWS_ENHANCED": {
+        "symbol": "ETHTMN",
+        "profile": "NEWS_ENHANCED",
+        "ready": false,
+        "news_status": {
+          "symbol": "ETHTMN",
+          "cutoff": "2026-10-22T15:10:20.547306+00:00",
+          "recipe_version": "ATLAS_NEWS_PIT_V1",
+          "features": {
+            "news_count_1h": 2,
+            "news_sentiment_1h": 0.009164217423723543,
+            "news_count_3h": 8,
+            "news_sentiment_3h": 0.07841029152459963,
+            "news_count_6h": 12,
+            "news_sentiment_6h": 0.06066998250037777,
+            "news_count_24h": 36,
+            "news_sentiment_24h": 0.03531528763317906,
+            "news_source_count_24h": 3,
+            "news_importance_24h": 0.9,
+            "news_age_hours": 0.3732297958333334,
+            "news_sentiment_momentum": -0.05150576507665423,
+            "news_intensity_1h_vs_24h": 1.3333333333333333,
+            "news_missing_mask": 1
+          },
+          "status": "INSUFFICIENT_PIT_HISTORY",
+          "ready": false,
+          "source_windows": {
+            "1": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "3": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "6": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "24": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            }
+          },
+          "article_ids": [
+            "b101d05c7c5fb7c0c627aa4cdfe95f2549282ef131d517f17aa46e4dd170f0bf",
+            "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+            "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+            "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+            "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+            "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+            "933c079c31dbd4f1b869916faf99b7293752621634a346649e9c7cfbafe3a9b1",
+            "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+            "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+            "193544b276c901f591d685ffddf61f6fea9c341deaddd7c9a55db621b95f7bab",
+            "d6e3b5b3f1bfac97abb26e9a6f15cc451e0287b11b0827912467de0a0b7cc573",
+            "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+            "9051338eaeef539b82a9e289a1adaef2911c7280229f4008f01a876ef23cecd5",
+            "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+            "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+            "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+            "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+            "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+            "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+            "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+            "fd2fdf235a26890a8fcad1d127b44e7520b86c1511b321446093c23d5f8520c5",
+            "10023cf7acded1ab64d56bcea229b075e11817d06f674ac7cf053264c8820df5",
+            "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+            "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+            "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+            "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+            "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248",
+            "39cdb497c773312a78029d6ade915afe4c50906015a228390173f8e9e6fd46f6",
+            "458fdcffb7b7b6a296418457927b742cb8094814715ed6148bd855a589886b72",
+            "b9c13f9d52eb267bcafd4e2f90b96e9d9db5fca8f84cc2d0042d53ca9155a7b9",
+            "005303216cb5be632040a61b156be68822f2b512b135e636194572bcb7279a86",
+            "5a2f12d1702a1a8b04f5dfe3bf798664106f79669e82761094ad37f61869cb47",
+            "4adc09d4b5af179e6d88740f2d670c24b9c1c5f1b4ce4bc3d46d07b37f82de9e",
+            "81c67a369952d6caf3124d4f81e8dd362ed7d79fa095096d6df7b06c7e28fc5f",
+            "5a0f593021e20142179758c07c4811b77c4817c906a98febeddf2143c39f63bc",
+            "37b559cbebe20845fed5f681cce45191419b46619722e5d09f67da82e505b8ea"
+          ],
+          "authority": "CHALLENGER_RESEARCH_AND_ADVISORY_ONLY"
+        },
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 247,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      }
+    },
+    "USDTTMN": {
+      "CORE": {
+        "symbol": "USDTTMN",
+        "profile": "CORE",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 214,
+            "ready": false,
+            "reason": "MODEL_INPUT_WINDOW_NONFINITE"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "ADVANCED": {
+        "symbol": "USDTTMN",
+        "profile": "ADVANCED",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "1",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 1.0,
+            "verified_closed_bars": 3217,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "5",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 5.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 214,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "30",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 30.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "60",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 60.0,
+            "verified_closed_bars": 45,
+            "ready": false,
+            "reason": "INSUFFICIENT_VERIFIED_CLOSED_BARS"
+          },
+          {
+            "resolution": "240",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 120.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          },
+          {
+            "resolution": "1D",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 720.0,
+            "verified_closed_bars": 0,
+            "ready": false,
+            "reason": "MISSING_OR_UNVERIFIED_TIMEFRAME"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "NEWS_ENHANCED": {
+        "symbol": "USDTTMN",
+        "profile": "NEWS_ENHANCED",
+        "ready": false,
+        "news_status": {
+          "symbol": "USDTTMN",
+          "cutoff": "2026-10-22T15:10:20.547306+00:00",
+          "recipe_version": "ATLAS_NEWS_PIT_V1",
+          "features": {
+            "news_count_1h": 1,
+            "news_sentiment_1h": 0.0011421330273151398,
+            "news_count_3h": 6,
+            "news_sentiment_3h": 0.020059774428956127,
+            "news_count_6h": 8,
+            "news_sentiment_6h": 0.021126420580556096,
+            "news_count_24h": 31,
+            "news_sentiment_24h": 0.03444197614649949,
+            "news_source_count_24h": 3,
+            "news_importance_24h": 0.9,
+            "news_age_hours": 0.3737866041666667,
+            "news_sentiment_momentum": -0.019984287553240956,
+            "news_intensity_1h_vs_24h": 0.7741935483870968,
+            "news_missing_mask": 1
+          },
+          "status": "INSUFFICIENT_PIT_HISTORY",
+          "ready": false,
+          "source_windows": {
+            "1": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "3": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "6": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "24": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            }
+          },
+          "article_ids": [
+            "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+            "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+            "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+            "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+            "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+            "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+            "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+            "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+            "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+            "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+            "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+            "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+            "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+            "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+            "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+            "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+            "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+            "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+            "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+            "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248",
+            "39cdb497c773312a78029d6ade915afe4c50906015a228390173f8e9e6fd46f6",
+            "458fdcffb7b7b6a296418457927b742cb8094814715ed6148bd855a589886b72",
+            "b77002b0d3a989ecff0736d4a69c086110ba46d09dd77d0b352af6e825cf9503",
+            "b9c13f9d52eb267bcafd4e2f90b96e9d9db5fca8f84cc2d0042d53ca9155a7b9",
+            "d62d4a550cf195f43b0414c1ae660f953964861823980f379109dffe6d1826cc",
+            "005303216cb5be632040a61b156be68822f2b512b135e636194572bcb7279a86",
+            "5a2f12d1702a1a8b04f5dfe3bf798664106f79669e82761094ad37f61869cb47",
+            "4adc09d4b5af179e6d88740f2d670c24b9c1c5f1b4ce4bc3d46d07b37f82de9e",
+            "81c67a369952d6caf3124d4f81e8dd362ed7d79fa095096d6df7b06c7e28fc5f",
+            "5a0f593021e20142179758c07c4811b77c4817c906a98febeddf2143c39f63bc",
+            "37b559cbebe20845fed5f681cce45191419b46619722e5d09f67da82e505b8ea"
+          ],
+          "authority": "CHALLENGER_RESEARCH_AND_ADVISORY_ONLY"
+        },
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 214,
+            "ready": false,
+            "reason": "MODEL_INPUT_WINDOW_NONFINITE"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      }
+    },
+    "PEPETMN": {
+      "CORE": {
+        "symbol": "PEPETMN",
+        "profile": "CORE",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 250,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "ADVANCED": {
+        "symbol": "PEPETMN",
+        "profile": "ADVANCED",
+        "ready": false,
+        "news_status": null,
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "1",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 1.0,
+            "verified_closed_bars": 3769,
+            "ready": false,
+            "reason": "NONFINITE_ADVANCED_FEATURES"
+          },
+          {
+            "resolution": "5",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 5.0,
+            "verified_closed_bars": 753,
+            "ready": false,
+            "reason": "NONFINITE_ADVANCED_FEATURES"
+          },
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 250,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "30",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 30.0,
+            "verified_closed_bars": 125,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "60",
+            "required_warmup_bars": 60,
+            "required_warmup_hours": 60.0,
+            "verified_closed_bars": 79,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          },
+          {
+            "resolution": "240",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 120.0,
+            "verified_closed_bars": 19,
+            "ready": false,
+            "reason": "INSUFFICIENT_VERIFIED_CLOSED_BARS"
+          },
+          {
+            "resolution": "1D",
+            "required_warmup_bars": 30,
+            "required_warmup_hours": 720.0,
+            "verified_closed_bars": 3,
+            "ready": false,
+            "reason": "INSUFFICIENT_VERIFIED_CLOSED_BARS"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      },
+      "NEWS_ENHANCED": {
+        "symbol": "PEPETMN",
+        "profile": "NEWS_ENHANCED",
+        "ready": false,
+        "news_status": {
+          "symbol": "PEPETMN",
+          "cutoff": "2026-10-22T15:10:20.547306+00:00",
+          "recipe_version": "ATLAS_NEWS_PIT_V1",
+          "features": {
+            "news_count_1h": 1,
+            "news_sentiment_1h": 0.0011421330273151398,
+            "news_count_3h": 6,
+            "news_sentiment_3h": 0.020059774428956127,
+            "news_count_6h": 8,
+            "news_sentiment_6h": 0.021126420580556096,
+            "news_count_24h": 29,
+            "news_sentiment_24h": 0.006568068822831156,
+            "news_source_count_24h": 3,
+            "news_importance_24h": 0.9,
+            "news_age_hours": 0.3737866041666667,
+            "news_sentiment_momentum": -0.019984287553240956,
+            "news_intensity_1h_vs_24h": 0.8275862068965517,
+            "news_missing_mask": 1
+          },
+          "status": "INSUFFICIENT_PIT_HISTORY",
+          "ready": false,
+          "source_windows": {
+            "1": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "3": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "6": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            },
+            "24": {
+              "healthy_sources": [
+                "COINDESK_RSS",
+                "COINTELEGRAPH_RSS",
+                "THEBLOCK_RSS"
+              ],
+              "coverage_complete": false,
+              "status": "INSUFFICIENT_PIT_HISTORY"
+            }
+          },
+          "article_ids": [
+            "a613f7fedb30516617b72c58320cd49de25c36c5753207194a9250245c382b6e",
+            "ed71aa7cb7eb5992ce19c6582f3793cf545db0f4b8b1016fdfaf8ddd77456afb",
+            "494d45baef86098e92405a57577042ac863d622e96478d47b07d4375194c4958",
+            "9bb98029ee8be56b30e6522c711a95b87d27790ac10c4b717d2f3a5bb87038c7",
+            "2e9def53da872485da990c6e9818fdc6aa103b8ee811bbe39b6b3ad44bcccde1",
+            "0a9898673b0af7159621e1707c8b9adbf27b67535f6ee41e8dd590d3806dde47",
+            "18f9c48eaf05af8efc7daf4ebfe6a7ed640e8262d32c7c1c03c74ffd9bb544c5",
+            "98d7d00b6c685e5b712d13f989c8bcea15074d81e4383b9890138a5e4d591d93",
+            "2df2c48ae0855100ddb33c04da65c5eced36495bf7ebc0bc5bd41c5e1df51afc",
+            "8a049b129c308a6d63d86db3202b511acac60ecd9dc84f3926a4ceb88df7c74a",
+            "2e0dbe572738abae36f8f64e08ff1dc373442658701fe70a1a62ed98f6e22b33",
+            "9d4a77e9b0efa620532b89d92d62111a681a727467312a6141cf1213d26de5dc",
+            "e42c14bc306953c3cc33260a2ac0c6d3deb59f118863892c8801a0dc37e7a2b9",
+            "707316604bca49a4da89f7963fba614276d83a133542885fc88c4b754044ea3f",
+            "1dc1e53e7cc112d8953496d3195c5a2728282731edac6d9f774004d1ae524b80",
+            "22080e4c6d886cf9ab08de39d364d43cdbe5c846bc7d5f6c523bd470b5bbe408",
+            "047cfaa2bce1ecb0e64aa7632684e639302942e1f002180a0c10e9528114d4cb",
+            "5119df153441cc6d9eaafde7034d632d19e019ba48ec63e198f05597deef9b42",
+            "07da9e90de2c4508e50dcee64f0c994714d61cc2249b35c019f0a97a12dfaaa0",
+            "b613d88a030397c6b92f4fcadde9a4676bae2a7c731e8d2a766084e87c159248",
+            "39cdb497c773312a78029d6ade915afe4c50906015a228390173f8e9e6fd46f6",
+            "458fdcffb7b7b6a296418457927b742cb8094814715ed6148bd855a589886b72",
+            "b9c13f9d52eb267bcafd4e2f90b96e9d9db5fca8f84cc2d0042d53ca9155a7b9",
+            "005303216cb5be632040a61b156be68822f2b512b135e636194572bcb7279a86",
+            "5a2f12d1702a1a8b04f5dfe3bf798664106f79669e82761094ad37f61869cb47",
+            "4adc09d4b5af179e6d88740f2d670c24b9c1c5f1b4ce4bc3d46d07b37f82de9e",
+            "81c67a369952d6caf3124d4f81e8dd362ed7d79fa095096d6df7b06c7e28fc5f",
+            "5a0f593021e20142179758c07c4811b77c4817c906a98febeddf2143c39f63bc",
+            "37b559cbebe20845fed5f681cce45191419b46619722e5d09f67da82e505b8ea"
+          ],
+          "authority": "CHALLENGER_RESEARCH_AND_ADVISORY_ONLY"
+        },
+        "reason": "FEATURE_REQUIREMENTS_NOT_READY",
+        "timeframes": [
+          {
+            "resolution": "15",
+            "required_warmup_bars": 151,
+            "required_warmup_hours": 37.75,
+            "verified_closed_bars": 250,
+            "ready": false,
+            "reason": "STALE_CLOSED_INPUT"
+          }
+        ],
+        "live_execution": "HARD_DISABLED"
+      }
+    }
+  },
+  "microstructure": [
+    {
+      "name": "book_spread_bps",
+      "source": "provenance_verified_order_book_snapshot",
+      "provenance_required_by_compute": true
+    },
+    {
+      "name": "book_imbalance",
+      "source": "provenance_verified_order_book_snapshot",
+      "provenance_required_by_compute": true
+    }
+  ],
+  "timeframe_templates_and_instances": true,
+  "definitions": 52,
+  "cmf20_pepetmn_1m": {
+    "status": "EXAMINED_REAL_VERIFIED_CANDLES",
+    "observed_bars": 3769,
+    "finite_cmf20": 22,
+    "nonfinite_rate": 0.9941629079331388,
+    "high_equals_low_bars": 2271,
+    "zero_volume_bars": 1331,
+    "windows_containing_undefined_clv": 3728,
+    "root_cause": "CLV denominator high-low equals zero on observed flat candles; a single NaN invalidates its full rolling CMF20 window. Zero rolling volume can also make CMF undefined.",
+    "policy": "V3 values preserved; no price/volume/CLV imputation",
+    "latest_cmf20_finite": false
+  },
+  "candle_provenance": [
+    {
+      "symbol": "BTCTMN",
+      "bars": 249,
+      "status": "LEGACY_AVAILABILITY_UNCERTAIN",
+      "known_available_bars": 0,
+      "candle_close_is_not_receipt": true
+    },
+    {
+      "symbol": "ETHTMN",
+      "bars": 247,
+      "status": "LEGACY_AVAILABILITY_UNCERTAIN",
+      "known_available_bars": 0,
+      "candle_close_is_not_receipt": true
+    },
+    {
+      "symbol": "USDTTMN",
+      "bars": 214,
+      "status": "LEGACY_AVAILABILITY_UNCERTAIN",
+      "known_available_bars": 0,
+      "candle_close_is_not_receipt": true
+    },
+    {
+      "symbol": "PEPETMN",
+      "bars": 250,
+      "status": "LEGACY_AVAILABILITY_UNCERTAIN",
+      "known_available_bars": 0,
+      "candle_close_is_not_receipt": true
+    }
+  ],
+  "actual_book_computation_path": {
+    "BTCTMN": {
+      "status": "STALE_REAL_SNAPSHOT",
+      "features": {
+        "book_spread_bps": null,
+        "book_imbalance": null
+      },
+      "provenance": {
+        "source_sha256": "46fd67d4d9dc125c31169683ff21004ab40a9fb73fd88b7a883493ef83d89b57",
+        "observed_at": "2026-10-22T13:44:08.058956+00:00",
+        "source": "forward_observations.sqlite.quotes",
+        "receipt_id_policy": "SHA256_CANONICAL_ACTUAL_QUOTE"
+      }
+    },
+    "ETHTMN": {
+      "status": "STALE_REAL_SNAPSHOT",
+      "features": {
+        "book_spread_bps": null,
+        "book_imbalance": null
+      },
+      "provenance": {
+        "source_sha256": "60ebd500d4685185c94cdb297201c178f362d8da1868e835361515a9e8028ef9",
+        "observed_at": "2026-10-22T13:44:10.277664+00:00",
+        "source": "forward_observations.sqlite.quotes",
+        "receipt_id_policy": "SHA256_CANONICAL_ACTUAL_QUOTE"
+      }
+    }
+  },
+  "profiles": {
+    "CORE": "unchanged Champion finite 96-bar context + 55 warmup and freshness",
+    "ADVANCED": "separate research feature set; optional for CORE",
+    "NEWS_ENHANCED": "CORE plus actual news model evidence and source coverage; optional for CORE"
+  },
+  "champion_changed": false,
+  "risk_gate_changed": false,
+  "live_execution": "HARD_DISABLED",
+  "protected_source_evidence": {
+    "wallex_bot/atlas_risk.py": {
+      "unchanged_from_368a262": true,
+      "comparison": "Git content normalized for Windows CRLF only",
+      "baseline_sha256": "8d71ca85b1eb4fab283d8cf05901f290e93c5ff0324c008b6c25ecf45f50881f",
+      "working_bytes_sha256": "0583cbb4f5aaced19447a5315c3ee92b3f570fd77e9b33c4e3a822bb3d97b6ee"
+    },
+    "wallex_bot/atlas_deep.py": {
+      "unchanged_from_368a262": true,
+      "comparison": "Git content normalized for Windows CRLF only",
+      "baseline_sha256": "406e935e39403f03565a4ddd1ca39cdbea41de9f8f6044dc7984be8eb7e8a8da",
+      "working_bytes_sha256": "406e935e39403f03565a4ddd1ca39cdbea41de9f8f6044dc7984be8eb7e8a8da"
+    },
+    "wallex_bot/atlas_signals.py": {
+      "unchanged_from_368a262": true,
+      "comparison": "Git content normalized for Windows CRLF only",
+      "baseline_sha256": "3a7896ef269528146d08d31cbf6e15cae83c9a545e69e786310c48a1beb9c4c7",
+      "working_bytes_sha256": "3a7896ef269528146d08d31cbf6e15cae83c9a545e69e786310c48a1beb9c4c7"
+    },
+    "wallex_bot/atlas_broker.py": {
+      "unchanged_from_368a262": true,
+      "comparison": "Git content normalized for Windows CRLF only",
+      "baseline_sha256": "b26c6c64f34b620e1048171925acae2184bfcfcf8d6eed971def9638e3f55e85",
+      "working_bytes_sha256": "2039c1fb20d5cb7f1bfe3b08c95d7b7bc0d7b5b9f7920f59baf862ca15bc5635"
+    }
+  },
+  "champion_verification": {
+    "selected_checkpoint": "patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+    "expected_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+    "actual_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+    "manifest_sha256": "fe01c14bf7a92b08e70f6a3634639b507a9383cae89f243661937ccfb42fc342",
+    "checkpoint_matches_manifest": true
+  }
+}

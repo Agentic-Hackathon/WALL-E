@@ -1,0 +1,191 @@
+{
+  "recipe_version": "ATLAS_NEWS_PIT_V1",
+  "feature_count": 14,
+  "definitions": [
+    {
+      "name": "news_count_1h",
+      "window_hours": 1,
+      "formula": "count distinct relevant article_id with available_at in (cutoff-1h,cutoff] and linking processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_sentiment_1h",
+      "window_hours": 1,
+      "formula": "sum(confidence*exp(-age/1h)*(Ppositive-Pnegative))/sum(weights); model processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_count_3h",
+      "window_hours": 3,
+      "formula": "count distinct relevant article_id with available_at in (cutoff-3h,cutoff] and linking processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_sentiment_3h",
+      "window_hours": 3,
+      "formula": "sum(confidence*exp(-age/3h)*(Ppositive-Pnegative))/sum(weights); model processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_count_6h",
+      "window_hours": 6,
+      "formula": "count distinct relevant article_id with available_at in (cutoff-6h,cutoff] and linking processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_sentiment_6h",
+      "window_hours": 6,
+      "formula": "sum(confidence*exp(-age/6h)*(Ppositive-Pnegative))/sum(weights); model processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_count_24h",
+      "window_hours": 24,
+      "formula": "count distinct relevant article_id with available_at in (cutoff-24h,cutoff] and linking processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_sentiment_24h",
+      "window_hours": 24,
+      "formula": "sum(confidence*exp(-age/24h)*(Ppositive-Pnegative))/sum(weights); model processed<=cutoff",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_source_count_24h",
+      "window_hours": 24,
+      "formula": "count distinct observed publisher/source IDs, not a proof of editorial independence",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_importance_24h",
+      "window_hours": 24,
+      "formula": "max versioned rule importance among relevant events",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_age_hours",
+      "window_hours": 24,
+      "formula": "hours since latest relevant available_at",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_sentiment_momentum",
+      "window_hours": 24,
+      "formula": "weighted sentiment 1h minus weighted sentiment 6h",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_intensity_1h_vs_24h",
+      "window_hours": 24,
+      "formula": "24*count1h/count24h; undefined when denominator=0",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    },
+    {
+      "name": "news_missing_mask",
+      "window_hours": 24,
+      "formula": "1 when any defined feature unavailable; 0 otherwise",
+      "recipe_version": "ATLAS_NEWS_PIT_V1",
+      "source": "news.sqlite immutable receipts + timestamped model estimates",
+      "missing_policy": "None; zero counts only under observed complete source coverage",
+      "availability_policy": "published, first_observed, linking_processed and model_processed all <= decision cutoff",
+      "supported_languages_for_sentiment": [
+        "en"
+      ],
+      "authority": "CHALLENGER_AND_ADVISORY_ONLY"
+    }
+  ],
+  "implementation_sha256": "7cfbeceb86a6aba7ef1feb1e40ba52671edaf012545fe0e3ad7cf392553698ef",
+  "champion_input_changed": false,
+  "normalization_fit": "TRAIN_ONLY_IF_INDEPENDENT_VALIDATION_AVAILABLE"
+}

@@ -1,0 +1,21 @@
+{
+  "captured_at": "2026-10-22T15:10:20.547306+00:00",
+  "articles": 102,
+  "invalid_availability_ids": [],
+  "content_integrity_failures": [],
+  "rule": "available=max(published,first_observed); linked/scored output requires processed_at<=cutoff",
+  "same_day_download_never_assumed_available_yesterday": true,
+  "earliest_available": "2026-10-22T05:49:17.079143+00:00",
+  "latest_available": "2026-10-22T14:47:56.920041+00:00",
+  "source_polling_coverage_24h": {
+    "healthy_sources": [
+      "COINDESK_RSS",
+      "COINTELEGRAPH_RSS",
+      "THEBLOCK_RSS"
+    ],
+    "coverage_complete": false,
+    "status": "INSUFFICIENT_PIT_HISTORY"
+  },
+  "source_publication_time_warning": "GDELT seendate is provider observation, not proven publisher time",
+  "accuracy": "NO_GROUND_TRUTH_LABELS_ACCURACY_NOT_ESTIMATED"
+}

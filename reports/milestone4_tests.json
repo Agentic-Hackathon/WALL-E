@@ -1,0 +1,11 @@
+{
+  "environment": "conda run -n shbk python",
+  "command": "python -m pytest -q",
+  "environment_override": {"PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"},
+  "override_reason": "Shared-environment pytest plugin autoload stalled at startup; all repository tests run with autoload disabled without package changes.",
+  "passed": 174,
+  "skipped": 5,
+  "elapsed_seconds": 12.98,
+  "new_tests": 19,
+  "synthetic_news_or_market_data": false
+}

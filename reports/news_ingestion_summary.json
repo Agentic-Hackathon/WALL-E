@@ -1,0 +1,87 @@
+{
+  "captured_at": "2026-10-22T15:10:20.547306+00:00",
+  "legacy_untouched": {
+    "articles": 97,
+    "scored": 0
+  },
+  "after": {
+    "articles": 102,
+    "receipts": 171,
+    "understood": 102,
+    "scored": 96,
+    "pit_valid": 102,
+    "protocol": "ATLAS_NEWS_PIT_V1"
+  },
+  "migration_this_run": {
+    "migrated": 0,
+    "duplicates": 0,
+    "invalid": 0
+  },
+  "processing_this_run": {
+    "processed": 0,
+    "version": "ATLAS_NEWS_RULE_LINKING_V1"
+  },
+  "model_runs": [
+    {
+      "authority": "RESEARCH_MODEL_ESTIMATE_ONLY",
+      "cached": 0,
+      "device": "cuda",
+      "error_type": "LocalEntryNotFoundError",
+      "finished_at": "2026-10-22T14:47:19.626374+00:00",
+      "model_license": "CC-BY-NC-SA-4.0",
+      "model_version": "ProsusAI/finbert@0bc2ac10dda6929bcb1f77ccc43c7ec5c424f031",
+      "scored": 0,
+      "status": "SENTIMENT_MODEL_UNAVAILABLE",
+      "unsupported_language": 6,
+      "started_at": "2026-10-22T14:47:12.168409+00:00",
+      "elapsed_seconds": 7.457965
+    },
+    {
+      "artifact_sha256": {
+        "README.md": "32d38310f6343e42bb827b47b8342babf6173cfb47f4d28b8b557b4d92f80cb1",
+        "config.json": "f6449ddda85eb726207a40be59c0cd3bd4b142ccb27298d5e45f9ae3396b1abe",
+        "model.safetensors": "e5897858ff819aad7629b96ce521ae5477952d03634ef5dd30ed2d76357a9f00",
+        "special_tokens_map.json": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+        "tokenizer_config.json": "ffc7913f6084b138dad68de5a0c2f0ee25ac983709260901e01f53be5796b9d9",
+        "vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+      },
+      "authority": "RESEARCH_MODEL_ESTIMATE_ONLY",
+      "cached": 0,
+      "device": "cuda",
+      "finished_at": "2026-10-22T14:49:37.491370+00:00",
+      "model_license": "CC-BY-NC-SA-4.0",
+      "model_version": "ProsusAI/finbert@0bc2ac10dda6929bcb1f77ccc43c7ec5c424f031",
+      "scored": 96,
+      "status": "COMPLETED",
+      "unsupported_language": 6,
+      "started_at": "2026-10-22T14:47:58.467474+00:00",
+      "elapsed_seconds": 99.023896
+    },
+    {
+      "authority": "RESEARCH_MODEL_ESTIMATE_ONLY",
+      "cached": 96,
+      "device": "cuda",
+      "finished_at": "2026-10-22T14:57:11.102427+00:00",
+      "model_license": "CC-BY-NC-SA-4.0",
+      "model_version": "ProsusAI/finbert@0bc2ac10dda6929bcb1f77ccc43c7ec5c424f031",
+      "scored": 0,
+      "status": "NO_PENDING_ENGLISH_ARTICLES",
+      "unsupported_language": 6,
+      "started_at": "2026-10-22T14:57:11.097427+00:00",
+      "elapsed_seconds": 0.005
+    }
+  ],
+  "before_investigation": {
+    "articles": 97,
+    "scored": 0,
+    "observed_at": "2026-10-22 prior to Milestone 4 changes"
+  },
+  "diagnosis": {
+    "dependencies_installed": true,
+    "initial_pinned_finbert_weights_cached": false,
+    "prior_finbert_called_automatically": false,
+    "prior_persistent_error_tracking": false,
+    "historical_exact_cause": "UNPROVEN_NO_HISTORICAL_PROCESSING_RECEIPTS",
+    "verified_initial_attempt": "SENTIMENT_MODEL_UNAVAILABLE/LocalEntryNotFoundError"
+  }
+}
