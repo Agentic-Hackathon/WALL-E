@@ -1,5 +1,5 @@
 """M6 report from persisted real observations; no historical result relabelling."""
-import argparse,json,sqlite3,subprocess,hashlib,xml.etree.ElementTree as ET
+import argparse,json,sqlite3,subprocess,hashlib,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from dataclasses import asdict
 from .atlas_m5_research import save
@@ -25,6 +25,11 @@ def build(root,session,reports):
     try:
         status=ledger.status();strategy=strategy_status(session,ledger);replay=decisions.replay()
         cycles=[json.loads(raw) for raw, in ledger.db.execute('SELECT payload FROM m6_cycles ORDER BY id')]
+        completed_graphs=sum('review' in action for cycle in cycles for action in cycle['shadow'])
+        from collections import Counter
+        action_counts=dict(Counter(action['decision'] for cycle in cycles for action in cycle['shadow'] if 'decision' in action))
+        lease=ledger.db.execute('SELECT owner,expires FROM m6_lease').fetchall()
+        active_lease=any(expires>time.time() for _,expires in lease)
         refs=[]
         for name,license,path,use in REFERENCES:
             folder=Path('third_party')/name
@@ -77,15 +82,18 @@ def build(root,session,reports):
             'future_tolerance_seconds':300,'matured_performance':None if not status['matured_scored'] else 'Review matched quote proxy groups before inference',
             'historical_M5_results_counted_as_prospective':False,'counterfactual_returns_are_fills':False})
         save(reports/'m6_strategy_horizon_readiness.json',strategy)
-        health={'completed_cycles':len(cycles),'foreground_process_still_running':False,
+        health={'completed_cycles':len(cycles),'foreground_process_still_running':None if active_lease else False,
+            'process_liveness_policy':'Lease presence is not verified process uptime; absent active lease means no collector currently owns this session',
             'scope':'bounded executions finished; this report proves no continuous 48h service uptime',
+            'initial_development_cycles_without_pipeline_hash':sum('pipeline_sha256' not in c for c in cycles),
+            'pipeline_policy':'New/resumed collection pins LF-normalized source digest; changed code requires a separate session. Initial bounded development cycles retain original input/model hashes but did not capture whole-pipeline source digest.',
             'public_depth_requests_observer':sum(c['quote_requests'] for c in cycles),
             'public_candle_complete_windows':sum(c.get('sync',{}).get('complete',0) for c in cycles),
             'quote_count':status['quote_count'],'download_cache_hits':sum(c.get('sync',{}).get('cached',0) for c in cycles),
             'model_cache_hits':sum(item.get('cached',0) for c in cycles for item in c['models'].values()),
             'network_errors':[e for c in cycles for e in c['errors']],
             'additional_agent_depth_receipts':'One actual depth per completed graph plus every held-asset mark; no holdings in this bounded run',
-            'cycles':cycles,'lease':ledger.db.execute('SELECT owner,expires FROM m6_lease').fetchall(),
+            'cycles':cycles,'lease':lease,
             'resume':'session deadline and model identities preserved across processes; no new capital on restart',
             'control':'Ctrl+C stops between bounded calls; finally releases lease; --no-sync disables Agent sync too',
             'LIVE':'HARD_DISABLED'}
@@ -119,11 +127,11 @@ Per-asset readiness و Fail-closed مستقل حفظ شد. Watch بررسی فن
 
 ## ۲. اجرای واقعی و فایل‌ها
 
-Session واقعی: `{session}`؛ archive اصلی دست‌نخورده از نظر داده پذیرفته‌شده باقی ماند و فقط دریافت محدود/مشتق‌سازی معتبر به آن افزوده شد. حساب این مطالعه در همان Session با سرمایه **فرضی** ۵ میلیون TMN جدا از حساب کاغذی قدیمی ساخته شد. شش چرخه کامل گراف روی دو بازار PEPETMN و BTCTMN در سه اجرای مستقل انجام شد؛ هر شش `NO_TRUSTED_FORECAST` با وتوی فنی شدند و هیچ Fill یا سفارش واقعی وجود نداشت. تمام Checkpointهای قدیمی نگه‌داری شدند.
+Session واقعی: `{session}`؛ archive اصلی دست‌نخورده از نظر داده پذیرفته‌شده باقی ماند و فقط دریافت محدود/مشتق‌سازی معتبر به آن افزوده شد. حساب این مطالعه در همان Session با سرمایه **فرضی** ۵ میلیون TMN جدا از حساب کاغذی قدیمی ساخته شد. {completed_graphs} چرخه کامل گراف در {len(cycles)} چرخه گردآورنده اجرا شد؛ توزیع تصمیم‌های واقعی Shadow: `{action_counts}`. هیچ سفارش یا Fill واقعی صرافی وجود نداشت. تمام Checkpointهای قدیمی نگه‌داری شدند.
 
 تعداد چرخه گردآورنده: **{len(cycles)}**؛ پیش‌بینی آینده‌نگر واقعی: **{sum(status['by_model'].values())}**؛ بالغ و امتیازدهی‌شده با Quote واقعی: **{status['matured_scored']}**. مدت بین اولین و آخرین Quote: **{status['observed_span_hours']:.6f} ساعت**، نه ۴۸ ساعت. اجراهای دوم/سوم پس از Restart همان Session را ادامه دادند؛ شمار پیش‌بینی ثبت‌شده به‌ترتیب `{[c['registered'] for c in cycles]}` بود؛ اجرای دوم **۱۰ Cache Hit مدل** و صفر پیش‌بینی تکراری جدید داشت. این اعداد موفقیت Uptime یا استراتژی نیستند.
 
-Observer تعداد {health['public_depth_requests_observer']} درخواست Depth عمومی داشت؛ گراف‌های Agent نیز شش Quote عمومی مستقل گرفتند. {health['public_candle_complete_windows']} Window کندل در DataSync اصلی تکمیل شد؛ دانلودها و syncهای Agent در ledger اصلی ثبت شده‌اند. Cache دانلود {health['download_cache_hits']} و خطاهای ثبت‌شده شبکه در Collector {len(health['network_errors'])} است. هیچ endpoint حساب/سفارش/برداشت یا API Key استفاده نشد. `pass.txt` خوانده نشد.
+Observer تعداد {health['public_depth_requests_observer']} درخواست Depth عمومی داشت؛ هر گراف Agent نیز Quote عمومی مستقل و در صورت وجود موقعیت، Bid واقعی دارایی‌های نگه‌داری‌شده را دریافت می‌کند. {health['public_candle_complete_windows']} Window کندل در DataSync گردآورنده تکمیل شد؛ دریافت‌های اضافی Sync خود Agent در ledger اصلی ثبت شده‌اند و در این شمار گردآورنده نیستند. Cache دانلود {health['download_cache_hits']} و خطاهای ثبت‌شده شبکه در Collector {len(health['network_errors'])} است. هیچ endpoint حساب/سفارش/برداشت یا API Key استفاده نشد. `pass.txt` خوانده نشد.
 
 پنج مدل از پیش تعیین‌شده: Champion بدون تغییر، LightGBM Quantile M5، PatchTST منتخب Validation در M5، Zero/Persistence و توزیع کوانتایل برچسب Train. مدل‌های پژوهشی فقط مشاهده دارند و به Broker دسترسی ندارند. ثبت یک گروه مدل در Timestamp و Quote مشترک انجام می‌شود؛ یک (مدل،نماد،Cutoff) دوباره ثبت نمی‌شود. شکست مدل‌ها و خطاها در Cycleها نگه‌داری می‌شوند. هیچ افق ۱۵/۶۰/۱۸۰دقیقه‌ای از خروجی ۴۵دقیقه‌ای ساخته نشد.
 
@@ -131,11 +139,13 @@ Observer تعداد {health['public_depth_requests_observer']} درخواست De
 
 حافظه جدید در جدول افزایشی `research_memory_v6` همان ContextStore است؛ هیچ رکورد قبلی بازنویسی نشد. وضعیت فعلی لایه‌ها: `{memory.status()['layers']}`؛ هر هفت نوع لایه پشتیبانی می‌شوند، اما Outcome/درس تأییدشدهٔ بدون شواهد ساخته نمی‌شود. مشاهده، دسترس‌پذیری و زمان واقعی ایجاد همگی باید <= Cutoff باشند. رتبه‌بندی importance/recency/relevance قطعی و محدود است. گراف فقط ID/Hash/وضعیت حافظه را در Context می‌بیند، نه متن خبری در جایگاه دستور. Replay هیچ حافظه‌ای ثبت نمی‌کند و زنجیره‌های قدیم و جدید معتبرند.
 
-فایل‌ها: `atlas_agent.py`, `atlas_shadow.py`, `atlas_watch.py`, `atlas_memory.py` توسعه یافتند؛ `atlas_review.py`, `atlas_orchestration.py`, `atlas_prospective.py`, `atlas_forward_watch.py`, `atlas_m6_report.py` و تست M6 اضافه شدند. تمام ده JSON الزامی و JUnit واقعی در reports موجودند. در Snapshot مقایسه، مسیر قبلی Watch روی **همان شواهد واقعی جدید** به‌صورت Counterfactual دوباره evaluate شد؛ این نتیجه اجرای تاریخی مسیر قبلی یا معامله قدیمی نیست.
+فایل‌ها: `atlas_agent.py`, `atlas_shadow.py`, `atlas_watch.py`, `atlas_memory.py` توسعه یافتند؛ `atlas_review.py`, `atlas_orchestration.py`, `atlas_prospective.py`, `atlas_forward_watch.py`, `atlas_m6_report.py` و تست M6 اضافه شدند. دو helper در `atlas_m5_inference.py` و `atlas_m5_report.py` نیز اصلاح شدند تا اجرای Smoke به‌صورت پیش‌فرض گزارش تاریخی M5 را بازنویسی نکند و فقط تولید صریح گزارش مقصد را بنویسد؛ مقادیر و فایل‌های گزارش M5 حفظ شدند. تمام ده JSON الزامی و JUnit واقعی در reports موجودند. در Snapshot مقایسه، مسیر قبلی Watch روی **همان شواهد واقعی جدید** به‌صورت Counterfactual دوباره evaluate شد؛ این نتیجه اجرای تاریخی مسیر قبلی یا معامله قدیمی نیست.
 
 ## ۳. تست‌ها و Replay
 
 **{tests['passed']} passed, {skipped} skipped، {failed} failed، {errors} errors**؛ Baseline برابر 190 passed, 5 skipped بود. هر ۱۹۰ تست قبلی حفظ شد. ۱۴ تست جدید مسیر مشترک، نبود خبر، آمادگی مستقل بازار، RiskGate سراسری، PIT حافظه/خبر، منع اختیار LLM/Promotion، ثبت آینده‌نگر واقعی، Timestamp مشترک، lease دو نمونه، Restart، منع جلو بردن ساعت و Replay بدون اثر جانبی را پوشش می‌دهد.
+
+یک اجرای میانی ۲۰۳ موفق، یک شکست و ۵ Skip داشت: مقایسه زیرمیلی‌ثانیه‌ای دو ساعت در تست تازه حافظه race ایجاد می‌کرد. تست با Cutoff واقعی قدیمی اصلاح شد تا دقیقاً جلوگیری از نشت بر اساس زمان ایجاد را بسنجد؛ اجرای کامل نهایی بالا عبور کرد. این شکست پنهان نشده و در JSON تست ثبت است.
 
 تست reconciliation یک Forecast از قبل ثبت‌شدهٔ legacy و همان Quoteهای واقعی مبدأ/آینده را در Fixture جدا کپی و نتیجه قبلی را بازتولید می‌کند؛ این تست **هیچ Outcome جدید آینده‌نگر M6 نیست**. برای M6 فعلی تعداد بالغ همان {status['matured_scored']} است. {len(replay)} تصمیم واقعی Replay شدند؛ همه Reviewها و تمام خروجی‌های RiskGate یکسان بودند. قیمت، کندل، خبر، سفارش و Fill آزمایشی جعلی تولید نشد.
 
@@ -148,6 +158,8 @@ Observer تعداد {health['public_depth_requests_observer']} درخواست De
 این مرحله معماری، ایمنی، بازتولید، ثبت شواهد و جداسازی پژوهش را بهتر می‌کند، نه امتیاز اقتصادی ادعایی. اجرای محدود تمام شده و **سرویس دائمی فعال نگذاشته‌ایم**. lease آزاد شده، Session قابل ادامه است و به‌تنهایی Scheduler یا فایل RUNNING اثبات زنده‌بودن فرآیند نیست. برای مطالعه ۴۸/۷۲ساعته باید فرمان foreground واقعاً روشن بماند و Coverage/Gapها بررسی شوند. افق Forecast ۴۵ دقیقه است و با دوره ارزیابی ۴۸ ساعت تعارض ندارد.
 
 Milestone 7: جمع‌آوری آینده‌نگر واقعی بیشتر، Quoteهای موعد با تلورانس ثابت، ارزیابی جفت‌شده/Block-aware روی نمادها، هزینه تأییدشده، Coverage خبر، بررسی اختلاف Shadow/Replay و سپس پژوهش تصمیم‌گیری؛ بدون انتخاب مدل با Test یا تغییر خودکار Risk/Champion. اگر Quote موعد از دست برود، بازسازی یا Interpolation مجاز نیست. Replay فعلی روی ورودی ذخیره‌شدهٔ تصمیم است، نه بازاجرای Bit-exact آموزش GPU.
+
+محدودیت نسخه‌بندی: سه چرخه محدود اولیه هنگام توسعه اجرا شدند و Hash کل سورس Pipeline را ثبت نکردند؛ Hash مدل، ورودی و رسیدهای واقعی آن‌ها محفوظ است. آن‌ها را مطالعه ثابت ۴۸ساعته با یک نسخه استراتژی محسوب نکنید. نسخه نهایی Hash سورس LF-normalized را به Session و پیش‌بینی مقید می‌کند و تغییر سورس در اجرای مداوم را متوقف می‌سازد. برای مطالعه رسمی بعدی، Session تازه بسازید.
 
 ## ۶. ورودی لازم و بازتولید
 

@@ -20,6 +20,12 @@ MODEL_NAMES=('champion','m5_lightgbm','m5_patchtst','zero','historical_quantiles
 HORIZON=2700
 QUOTE_TOLERANCE=300
 
+def pipeline_identity():
+    names=('atlas_agent.py','atlas_shadow.py','atlas_watch.py','atlas_memory.py','atlas_review.py',
+        'atlas_orchestration.py','atlas_prospective.py','atlas_forward_watch.py','atlas_risk.py',
+        'atlas_broker.py','atlas_deep.py','atlas_signals.py','atlas_data_sync.py','atlas_archive.py','atlas_news_pipeline.py')
+    return _sha({name:hashlib.sha256(Path(__file__).with_name(name).read_bytes().replace(b'\r\n',b'\n')).hexdigest() for name in names})
+
 def model_registry(root,m5=M5):
     import torch
     root=Path(root);m5=Path(m5);selection=json.loads((m5/'research_selection.json').read_text())
@@ -142,6 +148,7 @@ class ModelObservationLedger:
                 'data_quality_status':'ACTUAL_BYTES_VERIFIED_BEFORE_CURRENT_DECISION','prediction_available_at':decision,
                 'source_receipts':snapshot['source_receipts'],'input_sha256':snapshot['input_sha256'],
                 'input_verified_available_at':snapshot['verified_available_at'],'target_units':'NATURAL_LOG_RETURN',
+                'pipeline_source_sha256_LF_normalized':pipeline_identity(),
                 'trained_target':'CLOSE_TO_CLOSE_RETURN','model_target_end':snapshot['cutoff']+HORIZON,
                 'evaluated_target':'MID_TO_MID_RETURN_QUOTE_PROXY','quote_due':decision+HORIZON,
                 'quote_tolerance_seconds':QUOTE_TOLERANCE,'origin_quote_sha256':quote['receipt_sha256'],

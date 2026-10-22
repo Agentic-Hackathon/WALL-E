@@ -7,7 +7,7 @@ import argparse,json,time,threading,math
 from pathlib import Path
 from types import SimpleNamespace
 from datetime import datetime,timezone
-from .atlas_prospective import ModelObservationLedger,model_registry,input_snapshot,predict_models
+from .atlas_prospective import ModelObservationLedger,model_registry,input_snapshot,predict_models,pipeline_identity
 from .atlas_data_sync import DataSyncManager
 from .atlas_memory import ResearchMemory
 from .atlas_forward import _sha
@@ -60,6 +60,7 @@ def collect(lake,session_dir,*,top=2,hours=48,interval_seconds=900,max_cycles=No
     cycles=[]
     try:
         registry=model_registry(lake.root)
+        code_identity=pipeline_identity()
         identity=lambda models:_sha({name:{k:m[k] for k in ('model_sha256','recipe','forecast_horizon')} for name,m in models.items()})
         if path.exists():
             session=json.loads(path.read_text())
@@ -73,17 +74,21 @@ def collect(lake,session_dir,*,top=2,hours=48,interval_seconds=900,max_cycles=No
                 if identity(old)!=identity(registry):raise ValueError('SESSION_MODELS_CHANGED_USE_NEW_SESSION')
                 session['metadata_migration']='Champion training partition attribution clarified; original hash retained; model identities unchanged'
             session['models_identity_sha256']=identity(registry)
+            if session.get('pipeline_sha256') and session['pipeline_sha256']!=code_identity:raise ValueError('SESSION_PIPELINE_CHANGED_USE_NEW_SESSION')
+            if not session.get('pipeline_sha256'):session['initial_development_code_hash_unavailable']=True
+            session['pipeline_sha256']=code_identity
         else:
             started=time.time();session={'started_epoch':started,'deadline_epoch':started+hours*3600,'hours':hours,
                 'interval_seconds':interval_seconds,'shadow_enabled':shadow,'models_sha256':_sha(registry),
-                'status':'RUNNING','cycles_completed':0,'live':'HARD_DISABLED','models_identity_sha256':identity(registry)}
+                'status':'RUNNING','cycles_completed':0,'live':'HARD_DISABLED','models_identity_sha256':identity(registry),'pipeline_sha256':code_identity}
             _save_atomic(path,session)
         memory=ResearchMemory(lake.root)
         try:
             while time.time()<session['deadline_epoch'] and not stop_event.is_set() and (max_cycles is None or len(cycles)<max_cycles):
                 if not ledger.claim():break
+                if pipeline_identity()!=code_identity:raise RuntimeError('RUNNING_PIPELINE_SOURCE_CHANGED_STOPPED_SAFE')
                 start=time.monotonic();sync=DataSyncManager(lake);symbols=sync._priority_symbols(top,'priority')
-                cycle={'observed_at':time.time(),'symbols':symbols,'registered':0,'quote_requests':0,'errors':[],'models':{},'shadow':[]}
+                cycle={'observed_at':time.time(),'collector_instance_id':ledger.owner,'pipeline_sha256':code_identity,'symbols':symbols,'registered':0,'quote_requests':0,'errors':[],'models':{},'shadow':[]}
                 try:
                     cycle['sync']=sync.run(top=top,target_resolutions=('15',),target_warmup_hours={'15':37.75},max_windows=8,retries=1,
                         purpose='m6-prospective',symbols=symbols) if sync_enabled else {'status':'SYNC_DISABLED_INDEPENDENTLY'}
