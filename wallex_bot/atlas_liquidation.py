@@ -152,15 +152,33 @@ def liquidate_paper_positions(lake, *, fee=.001, require_watch_deadline=True,
         raise ValueError('Explicit finite research fee required; NOT an exchange-verified fee')
     if not isinstance(max_fetch_seconds, (int, float)) or not 0 < max_fetch_seconds <= 30:
         raise ValueError('Invalid maximum observation fetch age')
-    session = _session(lake.root, deadline_required=require_watch_deadline)
-    session_id = str(session.get('started_epoch')) if session else 'NO_WATCH_SESSION'
+    # An empty existing paper ledger is already flat; do not demand a deadline
+    # merely to acknowledge that nothing can be sold. Verify the audit chain
+    # FIRST. Any non-empty portfolio must still pass the unchanged deadline gate.
+    if require_watch_deadline and not (Path(lake.root)/'watch_session.json').is_file():
+        # Preserve exact Stage3 no-session fail-closed contract without creating a ledger.
+        raise BrokerSafetyError('No persisted watch session; final paper liquidation refused')
     paper = PaperAccount(lake)
     observations = []
     try:
         if not paper.verify():
             raise BrokerSafetyError('Paper audit chain invalid; no liquidation allowed')
-        broker = ShadowBroker(paper)
         existing = paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions ORDER BY symbol').fetchall()
+        # Preserve stage-3 no-session fail-closed contract. If a session exists,
+        # an empty portfolio cannot trigger an exchange lookup or any sell.
+        if require_watch_deadline and not (Path(lake.root)/'watch_session.json').is_file():
+            raise BrokerSafetyError('No persisted watch session; final paper liquidation refused')
+        if not existing:
+            return {'status':'ALREADY_FLAT' if require_watch_deadline else 'PAPER_FLAT',
+                    'mode':'PAPER_NO_OP_READ_ONLY',
+                    'paper_cash_tmn':float(paper.get('cash_tmn')),
+                    'remaining_paper_positions':0,'exchange_orders_submitted':0, 'exchange_fills_claimed':0,
+                    'observations':[], 'no_real_orders':True,
+                    'audit_hash_chain_valid':True,
+                    'note':'No closeout attempted; no position to liquidate'}
+        session = _session(lake.root, deadline_required=require_watch_deadline)
+        session_id = str(session.get('started_epoch')) if session else 'NO_WATCH_SESSION'
+        broker = ShadowBroker(paper)
         for symbol, quantity, entry_cost in existing:
             event = {'symbol': symbol, 'type': 'PAPER_TMN_CLOSEOUT',
                      'not_a_real_fill': True, 'fee_assumption': fee}

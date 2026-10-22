@@ -1,0 +1,563 @@
+diff --git a/CHANGELOG_STAGE4_VALIDATION_FA.md b/CHANGELOG_STAGE4_VALIDATION_FA.md
+new file mode 100644
+index 0000000..adb2640
+--- /dev/null
++++ b/CHANGELOG_STAGE4_VALIDATION_FA.md
+@@ -0,0 +1,27 @@
++# Stage 4 — اعتبارسنجی پژوهشی واقعی؛ بدون معامله
++
++**Baseline commit:** `1f43a04`، branch `integration/atlas-tmn-liquidation`.
++
++- Added `wallex_bot/atlas_validation.py`: genuine archived Wallex candles, verified-by-SHA Lake.load, train-selected technical candidate / strictly later chronological holdout, and buy-and-hold, seeded random-actions and independent ridge DLinear-inspired baseline on the same observed data.
++- Added Deflated Sharpe diagnostic on disjoint TRAIN blocks using archived nominal search trial count (not an effective independent-trials estimate), and CSCV/PBO **entirely inside TRAIN**. Missing candidate ledger or insufficient blocks => `INSUFFICIENT_EVIDENCE`, never invented metrics.
++- Added CLI `python -m wallex_bot.atlas_cli validate` writing **only** `atlas_store/reports/stage4_validation.json`.
++- Fixed early no-op paper closeout: with a persisted watch session AND an already-flat verified paper ledger, `liquidate-paper` returns `ALREADY_FLAT` before the deadline. Without any session, Stage3's fail-closed exception and no-file-creation contract remain unchanged. **Open positions still require the actual validated deadline.**
++- New contract tests create no prices, OHLCV, external news, simulated market outcomes or real orders.
++
++## منابع و مجوزها
++
++- **Hindsight** `Ajay03299/hindsight`, commit `5111eeaf969c26c74443f5fd1d5dfbd30b32a9af`; MIT according to existing `third_party/SOURCES.md` (license contains copyright template). Concepts only; no code copied.
++- Bailey & López de Prado, *The Deflated Sharpe Ratio*, J. Portfolio Management 2014, DOI `10.3905/jpm.2014.40.5.094`.
++- Bailey, Borwein, López de Prado, Zhu, *The Probability of Backtest Overfitting*; DOI `10.21314/JCF.2016.322`.
++- Zeng et al., *Are Transformers Effective for Time Series Forecasting?*, DLinear; independent minimal linear decomposition baseline, **not** an official model implementation or paper result.
++
++## محدودیت‌ها
++
++- No actual user's `atlas_store` present in this development environment. The **real numerical validation result remains unknown**, and must be run on their machine.
++- Open-price entry/exit after decision uses **real observed** candles but is still a hypothetical fill (no depth/order-book guarantee).
++- Fee and slippage are default research assumptions (`0.001` and `0.0005` each side), **not verified Wallex package costs**.
++- Nominal global number of rows in previous strategy CSV is not effective number of independent trials; resulting DSR is approximate with correlated candidates, especially when sample is short.
++- PBO is an in-sample CSCV selection instability diagnostic, **not** forward profits. Holdout is strictly chronological for economic evaluation.
++- Random baseline invents **decisions only**, never prices or outcomes. Decomposition baseline predicts future close-to-close but is executed hypothetically next open; not fully equivalent to Transformer model.
++- No comparison with champion after promotion without genuine forward snapshots; does not change `active_champion.json` or loosen RiskGate.
++- Does **not** improve proven profit or confirm challenge readiness; stage 4 primarily targets reproducibility 25, strategy rationale 40 and shadow/backtest 20 points, subject to judge review.
+diff --git a/QUICKSTART_STAGE4_VALIDATION_FA.md b/QUICKSTART_STAGE4_VALIDATION_FA.md
+new file mode 100644
+index 0000000..523d89c
+--- /dev/null
++++ b/QUICKSTART_STAGE4_VALIDATION_FA.md
+@@ -0,0 +1,31 @@
++# راهنمای Stage 4
++
++1. پس از حفظ نسخه فعلی و توقف Watch فقط در صورت تغییر سورس درحین اجرا، ZIP پچ را در **ریشه** `wallex_agent_v3` استخراج کنید (پوشه `atlas_store/` را حذف نکنید).
++2. محیط Git Bash و `shbk`:
++
++```bash
++cd /d/Hackaton/Wallex/wallex_agent_v3
++conda activate shbk
++bash scripts/apply_stage4_validation.sh
++```
++
++این اسکریپت **فقط** روی `integration/atlas-tmn-liquidation` در commit `1f43a04` و working tree تمیز کار می‌کند؛ شاخه `integration/atlas-validation` می‌سازد؛ پس از موفقیت تست‌ها commit می‌زند.
++
++3. ارزیابی بدون سفارش، بدون دانلود جدید و بدون تغییر مدل:
++
++```bash
++python -m wallex_bot.atlas_cli validate --resolution 15 --top 8
++```
++
++خروجی: `atlas_store/reports/stage4_validation.json`. پیش از خواندن عدد، `fee_verified_with_exchange: false` و `status` را ببینید. اگر آرشیو واقعی معتبر کم است، باید `INSUFFICIENT_EVIDENCE` ببینید؛ از این گزارش هیچ ادعای سود واقعی استخراج نکنید.
++
++4. بررسی پایانی Stage3:
++
++```bash
++python -m wallex_bot.atlas_cli liquidation-status
++python -m wallex_bot.atlas_cli liquidate-paper
++```
++
++اگر سبد کاغذی خالی و watch session وجود داشته باشد، فرمان دوم `ALREADY_FLAT` برمی‌گرداند، نه یک خرید یا فروش. اگر موقعیتی باز باشد، قبل از پایان زمان همچنان با `BrokerSafetyError` متوقف می‌شود. وضعیت ثبت‌شده `RUNNING` در watch به‌تنهایی گواه فعال بودن یک process نیست.
++
++**هیچ مدلی از طریق این ابزار promote نمی‌شود؛ Live همچنان خاموش است.**
+diff --git a/tests/test_atlas_validation_stage4_real_only.py b/tests/test_atlas_validation_stage4_real_only.py
+new file mode 100644
+index 0000000..83b6dc2
+--- /dev/null
++++ b/tests/test_atlas_validation_stage4_real_only.py
+@@ -0,0 +1,77 @@
++"""Contract tests only: no simulated market quotes, prices, candles or fills."""
++import inspect
++import json
++from pathlib import Path
++
++import pytest
++
++from wallex_bot.atlas_validation import validate_archive, deflated_sharpe, pbo_cscv, store_report
++from wallex_bot.atlas_archive import Lake
++from wallex_bot.atlas_liquidation import liquidate_paper_positions
++from wallex_bot.atlas_broker import BrokerSafetyError
++
++
++def test_empty_real_archive_fails_closed(tmp_path):
++    lake=Lake(tmp_path/'real_archive_empty')
++    try:
++        result=validate_archive(lake)
++        assert result['status']=='INSUFFICIENT_EVIDENCE_NO_CONTIGUOUS_GENUINE_HISTORY'
++        assert result['symbols']==[]
++        assert result['fee_verified_with_exchange'] is False
++        assert result['real_order_submission'] is False
++        assert result['nominal_selected_trial_count'] is None
++        assert 'NOT_SUPPORTED' in result['champion_backtest']
++        file=store_report(lake,result)
++        assert json.loads(file.read_text(encoding='utf8'))['status']==result['status']
++    finally:lake.close()
++
++
++def test_invalid_fees_denied_without_market_data(tmp_path):
++    lake=Lake(tmp_path/'empty')
++    try:
++        for fee,slip in [(-.01,0),(.001,-.5),(float('nan'),0),(.001,float('inf')),(True,0)]:
++            with pytest.raises(ValueError):validate_archive(lake,fee=fee,slippage=slip)
++        with pytest.raises(ValueError):validate_archive(lake,resolution='1D')
++        with pytest.raises(ValueError):validate_archive(lake,max_symbols=0)
++    finally:lake.close()
++
++
++def test_statistical_tests_abstain_without_real_return_series():
++    assert deflated_sharpe([],[],None)['status']=='INSUFFICIENT_EVIDENCE'
++    assert pbo_cscv([])['status']=='INSUFFICIENT_EVIDENCE'
++
++
++def test_stage4_does_not_contain_order_route():
++    import wallex_bot.atlas_validation as v
++    code=inspect.getsource(v)
++    assert 'WALLEX_API_KEY' not in code
++    assert 'createorder' not in code.lower()
++    assert 'market.depth' not in code
++
++
++def test_early_liquidation_reports_already_flat_without_market_api(tmp_path,monkeypatch):
++    from wallex_bot.atlas_shadow import PaperAccount
++    lake=Lake(tmp_path/'empty_paper')
++    try:
++        paper=PaperAccount(lake)
++        assert paper.verify()
++        paper.close()
++        # An existing persisted watch session was observed, not fabricated market data.
++        (lake.root/'watch_session.json').write_text('{"started_epoch": 1, "deadline_epoch": 2, "hours": 48}')
++        import wallex_bot.market as market
++        def forbidden(*a,**kw):
++            raise AssertionError('No market API request for an already-flat paper portfolio')
++        monkeypatch.setattr(market,'depth',forbidden)
++        report=liquidate_paper_positions(lake,require_watch_deadline=True)
++        assert report['status']=='ALREADY_FLAT'
++        assert report['remaining_paper_positions']==0
++        assert report['exchange_orders_submitted']==0
++    finally:lake.close()
++
++
++def test_report_uses_held_out_and_no_promote_path():
++    import wallex_bot.atlas_validation as v
++    code=inspect.getsource(v.validate_archive)
++    assert "'holdout'" in code
++    assert 'promote_champion' not in code
++    assert 'PaperAccount' not in code
+diff --git a/wallex_bot/atlas_cli.py b/wallex_bot/atlas_cli.py
+index c518c47..100e923 100644
+--- a/wallex_bot/atlas_cli.py
++++ b/wallex_bot/atlas_cli.py
+@@ -13,7 +13,7 @@ def main(argv=None):
+     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
+         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
+     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
+-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper'])
++        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate'])
+     p.add_argument('--days',type=int,default=7)
+     p.add_argument('--minutes',type=int,default=10)
+     p.add_argument('--hours',type=int,default=48)
+@@ -49,6 +49,12 @@ def main(argv=None):
+             else:
+                 pretty(liquidate_paper_positions(lake, fee=args.fee, require_watch_deadline=True))
+             return
++        if args.command=='validate':
++            from .atlas_validation import validate_archive,store_report
++            result=validate_archive(lake,fee=args.fee,slippage=args.slippage,
++                                    resolution=args.resolution,max_symbols=args.top)
++            filename=store_report(lake,result)
++            pretty({'report_path':str(filename),**result});return
+         if args.command=='broker-status':
+             from .atlas_broker import broker_status
+             pretty(broker_status(lake.root));return
+diff --git a/wallex_bot/atlas_liquidation.py b/wallex_bot/atlas_liquidation.py
+index af3268b..b1571c2 100644
+--- a/wallex_bot/atlas_liquidation.py
++++ b/wallex_bot/atlas_liquidation.py
+@@ -152,15 +152,33 @@ def liquidate_paper_positions(lake, *, fee=.001, require_watch_deadline=True,
+         raise ValueError('Explicit finite research fee required; NOT an exchange-verified fee')
+     if not isinstance(max_fetch_seconds, (int, float)) or not 0 < max_fetch_seconds <= 30:
+         raise ValueError('Invalid maximum observation fetch age')
+-    session = _session(lake.root, deadline_required=require_watch_deadline)
+-    session_id = str(session.get('started_epoch')) if session else 'NO_WATCH_SESSION'
++    # An empty existing paper ledger is already flat; do not demand a deadline
++    # merely to acknowledge that nothing can be sold. Verify the audit chain
++    # FIRST. Any non-empty portfolio must still pass the unchanged deadline gate.
++    if require_watch_deadline and not (Path(lake.root)/'watch_session.json').is_file():
++        # Preserve exact Stage3 no-session fail-closed contract without creating a ledger.
++        raise BrokerSafetyError('No persisted watch session; final paper liquidation refused')
+     paper = PaperAccount(lake)
+     observations = []
+     try:
+         if not paper.verify():
+             raise BrokerSafetyError('Paper audit chain invalid; no liquidation allowed')
+-        broker = ShadowBroker(paper)
+         existing = paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions ORDER BY symbol').fetchall()
++        # Preserve stage-3 no-session fail-closed contract. If a session exists,
++        # an empty portfolio cannot trigger an exchange lookup or any sell.
++        if require_watch_deadline and not (Path(lake.root)/'watch_session.json').is_file():
++            raise BrokerSafetyError('No persisted watch session; final paper liquidation refused')
++        if not existing:
++            return {'status':'ALREADY_FLAT' if require_watch_deadline else 'PAPER_FLAT',
++                    'mode':'PAPER_NO_OP_READ_ONLY',
++                    'paper_cash_tmn':float(paper.get('cash_tmn')),
++                    'remaining_paper_positions':0,'exchange_orders_submitted':0, 'exchange_fills_claimed':0,
++                    'observations':[], 'no_real_orders':True,
++                    'audit_hash_chain_valid':True,
++                    'note':'No closeout attempted; no position to liquidate'}
++        session = _session(lake.root, deadline_required=require_watch_deadline)
++        session_id = str(session.get('started_epoch')) if session else 'NO_WATCH_SESSION'
++        broker = ShadowBroker(paper)
+         for symbol, quantity, entry_cost in existing:
+             event = {'symbol': symbol, 'type': 'PAPER_TMN_CLOSEOUT',
+                      'not_a_real_fill': True, 'fee_assumption': fee}
+diff --git a/wallex_bot/atlas_validation.py b/wallex_bot/atlas_validation.py
+new file mode 100644
+index 0000000..623f82d
+--- /dev/null
++++ b/wallex_bot/atlas_validation.py
+@@ -0,0 +1,337 @@
++"""Real-observation-only stage-4 statistical diagnostics and costed baselines.
++
++Source: Hindsight by Ajay03299 @ 5111eeaf969c26c74443f5fd1d5dfbd30b32a9af
++(MIT per recorded third_party/SOURCES.md, copyright template caveat) and
++Bailey & Lopez de Prado, Deflated Sharpe Ratio (2014), Probability of
++Backtest Overfitting (2015). CONCEPTS ONLY; no third-party code copied.
++DLinear inspiration: Zeng et al., Are Transformers Effective for Time Series
++Forecasting? (2022); implementation below is an independent ridge-fitted
++trailing decomposition baseline, NOT a reproduction of paper checkpoints.
++
++No market fixtures, interpolated bars, fabricated trades or PnL.
++Fees/slippage are research assumptions until organizer/exchange verified.
++All fills are counterfactual observed OPEN prices, NOT executable bid/ask.
++"""
++from __future__ import annotations
++
++import hashlib
++import itertools
++import json
++import math
++from datetime import datetime, timezone
++from pathlib import Path
++from statistics import NormalDist
++
++import numpy as np
++import pandas as pd
++
++from .atlas_signals import features, strategies, trade_path
++
++
++def _now():
++    return datetime.now(timezone.utc).isoformat()
++
++
++def _finite_cost(fee, slippage):
++    if any(isinstance(x, bool) or not isinstance(x, (float, int)) or
++           not math.isfinite(x) or not 0 <= x < 0.05 for x in (fee, slippage)):
++        raise ValueError('Research fee and slippage must be finite non-negative fractions below 5%')
++
++
++def _series_metrics(log_returns):
++    z = np.asarray(log_returns, dtype=float)
++    if not len(z) or not np.isfinite(z).all():
++        return {'status': 'INSUFFICIENT_EVIDENCE'}
++    cumulative = np.cumsum(z)
++    peak = np.maximum.accumulate(np.r_[0., cumulative])
++    drawdown = 1 - np.exp(cumulative - peak[1:])
++    return {'status': 'COUNTERFACTUAL_ONLY', 'intervals': int(len(z)),
++            'net_return_pct': float(np.expm1(cumulative[-1]) * 100),
++            'max_drawdown_pct': float(max(0., drawdown.max(initial=0.)) * 100)}
++
++
++def _event_path(df, signal, start, end, fee, slippage, hold=3):
++    """Convert genuine observed-OPEN hypothetical round-trips to exit-index log returns.
++
++    Zero cash return between counterfactual exits is an accounting convention,
++    NOT a manufactured market price or observed fill. Events only from trade_path.
++    """
++    if end - start < hold + 3:
++        raise ValueError('Insufficient genuine intervals for round trips')
++    result = trade_path(df, signal, start, end, hold=hold, fee=fee, slippage=slippage)
++    ts_to_index = {int(t): i for i, t in enumerate(df.timestamp.to_numpy())}
++    out = np.zeros(end - start, dtype=float)
++    for event in result['events']:
++        idx = ts_to_index[int(event['exit_ts'])] - start
++        if not 0 <= idx < len(out):
++            raise RuntimeError('Observed exit timestamp not in original contiguous input')
++        r = float(event['net_return'])
++        if not math.isfinite(r) or r <= -1:
++            raise RuntimeError('Invalid hypothetical result from genuine observed opens')
++        out[idx] += math.log1p(r)
++    return out, result
++
++
++def _sharpe(returns):
++    z = np.asarray(returns, dtype=float)
++    if len(z) < 4 or not np.isfinite(z).all():
++        return None
++    sd = float(np.std(z, ddof=1))
++    return float(np.mean(z) / sd) if sd > 1e-12 else None
++
++
++def _blocks(logpath, block_size=8):
++    """Use contiguous, disjoint, real-observation-aligned diagnostic blocks."""
++    z = np.asarray(logpath, dtype=float)
++    usable = len(z) // block_size * block_size
++    return np.expm1(z[:usable].reshape(-1, block_size).sum(axis=1)) if usable else np.array([])
++
++
++def deflated_sharpe(selected_block_returns, attempted_train_sharpes, nominal_trials):
++    """Approximate Bailey & Lopez de Prado DSR selection diagnostic.
++
++    Requires >=8 blocks, >=4 nondegenerate comparable training candidates,
++    and an observed search-ledger trial count. Not an OOS profit certificate.
++    """
++    z = np.asarray(selected_block_returns, dtype=float)
++    tried = np.asarray([s for s in attempted_train_sharpes if s is not None and math.isfinite(s)], dtype=float)
++    if (len(z) < 8 or not np.isfinite(z).all() or len(tried) < 4 or
++            nominal_trials is None or int(nominal_trials) < len(tried)):
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Need >=8 genuine time blocks, >=4 varying candidates and complete trials ledger'}
++    sr = _sharpe(z)
++    if sr is None or np.std(tried, ddof=1) <= 1e-12:
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Undefined or degenerate Sharpe distribution'}
++    mu = float(np.mean(tried)); sigma = float(np.std(tried, ddof=1))
++    normal = NormalDist(); n = int(nominal_trials)
++    euler_gamma = 0.5772156649015329
++    sr_benchmark = mu + sigma * ((1-euler_gamma)*normal.inv_cdf(1-1/n) +
++                                  euler_gamma*normal.inv_cdf(1-1/(n*math.e)))
++    centered = z - z.mean()
++    sd = float(np.std(z, ddof=0))
++    if sd <= 1e-12:
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Zero return variation'}
++    skew = float(np.mean((centered/sd)**3)); kurt = float(np.mean((centered/sd)**4))
++    denom_squared = 1 - skew*sr + (kurt-1)*sr*sr/4
++    if denom_squared <= 1e-12:
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Invalid skew/kurtosis denominator'}
++    zscore = (sr - sr_benchmark) * math.sqrt(len(z)-1) / math.sqrt(denom_squared)
++    return {'status': 'APPROXIMATE_SELECTION_DIAGNOSTIC_NOT_OOS',
++            'probability_sr_exceeds_deflated_benchmark': float(normal.cdf(zscore)),
++            'observed_block_sharpe': sr, 'estimated_selection_benchmark_sharpe': sr_benchmark,
++            'nominal_tests_from_ledger': n, 'candidate_sharpes_observed_here': len(tried),
++            'block_count': len(z), 'limitations': 'Correlated candidates and short crypto samples; effective number of independent trials unknown'}
++
++
++def pbo_cscv(train_block_matrix, max_splits=252):
++    """CSCV over the TRAIN region only; never treat recombined folds as prospective OOS."""
++    x = np.asarray(train_block_matrix, dtype=float)
++    if x.ndim != 2 or x.shape[0] < 8 or x.shape[1] < 4 or x.shape[0] % 2 or not np.isfinite(x).all():
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Need >=8 even, disjoint time blocks and >=4 valid strategies'}
++    n, cols = x.shape
++    if (np.std(x, axis=0) < 1e-12).all():
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'All candidates have degenerate performance'}
++    combinations = math.comb(n, n//2)
++    if combinations > max_splits:
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Too many CSCV combinations for exhaustiveness; reduce diagnostic blocks without synthetic sampling'}
++    logits = []
++    for indices in itertools.combinations(range(n), n//2):
++        mask = np.zeros(n, dtype=bool); mask[list(indices)] = True
++        ins = [_sharpe(x[mask, k]) for k in range(cols)]
++        outs = [_sharpe(x[~mask, k]) for k in range(cols)]
++        if any(v is None for v in ins) or any(v is None for v in outs):
++            continue
++        chosen = int(np.argmax(ins))
++        out_scores = np.asarray(outs)
++        # Assign exact tied ranks mid-rank; ties do not count as strong evidence.
++        percentile = (np.sum(out_scores < out_scores[chosen]) +
++                      0.5 * np.sum(out_scores == out_scores[chosen])) / cols
++        if 0 < percentile < 1:
++            logits.append(float(math.log(percentile/(1-percentile))))
++    if len(logits) < 12:
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Too many degenerate/tied folds; no reliable PBO'}
++    return {'status': 'IN_SAMPLE_SELECTION_OVERFIT_DIAGNOSTIC',
++            'pbo_estimate': float(np.mean(np.asarray(logits) < 0)),
++            'valid_splits': len(logits), 'possible_splits': combinations,
++            'test_domain': 'CSCV splits entirely inside original chronological TRAIN period',
++            'warning': 'Not evidence of genuine future trading results; folds not chronological prospective OOS'}
++
++
++def _decomposed_features(close, index, window):
++    # Original observed closed-candle history only, never forward mean.
++    local = np.asarray(close[index-window+1:index+1], dtype=float)
++    if len(local) != window or np.any(~np.isfinite(local)) or np.any(local <= 0):
++        raise ValueError('Invalid real observed close window')
++    normalized = np.log(local / local[-1])
++    # Trailing moving average; first values use only observations actually in window.
++    trend = pd.Series(normalized).rolling(9, min_periods=1).mean().to_numpy()
++    return np.r_[trend, normalized-trend]
++
++
++def dlinear_baseline(df, split, fee, slippage, *, window=32, horizon=3):
++    """Independent DLinear-inspired trend+remainder linear heads, trained on real candles.
++
++    Ridge solution instead of copied implementations. Purged global per-symbol split:
++    every training label closes before split; validation decisions strictly later.
++    """
++    c = df.close.to_numpy(dtype=float)
++    if len(c) < 180 or split < window+80 or len(c)-split < 30:
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Not enough contiguous real bars for linear decomposition baseline'}, None
++    X = []; y = []
++    for idx in range(window-1, split-horizon):
++        X.append(_decomposed_features(c, idx, window))
++        y.append(float(math.log(c[idx+horizon]/c[idx])))
++    if len(X) < 80:
++        return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Insufficient purged training labels'}, None
++    x = np.asarray(X); y=np.asarray(y)
++    mean=x.mean(axis=0); sd=x.std(axis=0); sd[sd < 1e-10]=1.
++    scaled=(x-mean)/sd
++    # Two linear subcomponents, global Ridge solve; no synthetic training data.
++    system=scaled.T@scaled + np.eye(scaled.shape[1]) * max(0.1, len(scaled)*0.01)
++    coef=np.linalg.solve(system, scaled.T@(y-y.mean()))
++    intercept=float(y.mean())
++    signals=np.zeros(len(c), dtype=bool)
++    predictions=[]
++    for idx in range(split, len(c)-horizon-1):
++        xx=(_decomposed_features(c,idx,window)-mean)/sd
++        pred=float(intercept+xx@coef)
++        if not math.isfinite(pred):
++            return {'status': 'INSUFFICIENT_EVIDENCE', 'reason': 'Non-finite linear forecast'}, None
++        # Triple open-next-open turnover cost plus slight research margin.
++        signals[idx]=pred > 2*(fee+slippage)+.001
++        predictions.append(pred)
++    if len(predictions)<24:
++        return {'status':'INSUFFICIENT_EVIDENCE', 'reason':'Insufficient valid post-split predictions'},None
++    return {'status':'TRAIN_ONLY_RIDGE_DLINEAR_INSPIRED', 'fit_samples':len(X),
++            'validation_predictions':len(predictions), 'feature_window':window,
++            'horizon_closed_candles':horizon, 'fee_assumption':fee,
++            'warning':'Linear decomposition baseline is not the official DLinear training recipe'}, pd.Series(signals)
++
++
++def _read_trials(lake):
++    f = Path(lake.root)/'research'/'all_strategy_results.csv'
++    if not f.is_file():
++        return None, {'status':'NO_CANDIDATE_SEARCH_LEDGER'}
++    frame=pd.read_csv(f)
++    required={'symbol','segment','strategy','train_return_pct','holdout_return_pct'}
++    if not required.issubset(frame.columns) or len(frame)<4:
++        return None, {'status':'INVALID_CANDIDATE_SEARCH_LEDGER'}
++    return len(frame), {'status':'ARCHIVED_SEARCH_LEDGER','rows':len(frame),
++                        'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),
++                        'note':'Rows count nominal tried symbol/segment/strategy configurations, not effective independent hypotheses'}
++
++
++def validate_archive(lake, *, fee=.001, slippage=.0005, resolution='15', max_symbols=8,
++                     min_bars=180):
++    """Read archived genuine candles; never modify model, trade/account or memory ledgers."""
++    _finite_cost(fee, slippage)
++    if resolution not in ('5','15','30','60'):
++        raise ValueError('Stage4 validation requires supported intraday resolution')
++    if not isinstance(max_symbols,int) or not 1 <= max_symbols <= 40:
++        raise ValueError('max_symbols outside safe research bound')
++    if min_bars < 180:
++        raise ValueError('min_bars must be >=180 to avoid short non-informative segments')
++    n_trials, ledger=_read_trials(lake)
++    symbols = lake.symbols('tmn-spot')
++    # Selection by most recent genuine 15-minute archive timestamp, NOT backtest profits.
++    eligible=[]
++    for s in symbols:
++        try:
++            segs=lake.load(s,resolution)
++        except ValueError:
++            continue
++        for segment in segs:
++            if len(segment)>=min_bars:
++                eligible.append((int(segment.timestamp.iloc[-1]),s,segment))
++    eligible.sort(key=lambda v:(-v[0],v[1]))
++    used=set(); chosen=[]
++    for end,s,frame in eligible:
++        if s in used:continue
++        used.add(s);chosen.append((s,frame))
++        if len(chosen)>=max_symbols:break
++    output={'generated_at_utc':_now(), 'mode':'HISTORICAL_COUNTERFACTUAL_GENUINE_OPENS_ONLY',
++            'real_order_submission':False,'research_fee_assumption_per_side':fee,
++            'slippage_assumption_per_side':slippage, 'fee_verified_with_exchange':False,
++            'trial_ledger':ledger, 'screening_rule':'Most recent eligible contiguous segment, no return-based symbol ranking',
++            'nominal_selected_trial_count':n_trials,'resolution':resolution,
++            'symbols':[], 'champion_backtest':'NOT_SUPPORTED_WITHOUT_POST_PROMOTION_GENUINE_OUTCOMES',
++            'risk_notice':'Top-of-book fills, realized contest PnL and verified fees NOT established',
++            'decision_policy_integration':'OFF; diagnostics never promote models or relax RiskGate'}
++    if not chosen:
++        output['status']='INSUFFICIENT_EVIDENCE_NO_CONTIGUOUS_GENUINE_HISTORY'
++        return output
++    for sym, df in chosen:
++        n=len(df);split=int(n*.70);warmup=65
++        f=features(df); all_signals=strategies(f)
++        candidates=[]; log_by_candidate={}
++        for name, signal in all_signals.items():
++            train_log,train_eval=_event_path(df,signal,warmup,split,fee,slippage)
++            hold_log,hold_eval=_event_path(df,signal,split,n,fee,slippage)
++            log_by_candidate[name]=train_log
++            candidates.append({'name':name,'train':train_eval,'holdout':hold_eval})
++        eligible_candidates=[v for v in candidates if v['train']['number_of_round_trips']>=2]
++        if not eligible_candidates:
++            output['symbols'].append({'symbol':sym,'status':'INSUFFICIENT_TRAIN_TRADES','bars':n});continue
++        # Selection uses TRAIN only. HOLDOUT performance never participates.
++        winner=max(eligible_candidates,key=lambda x:(x['train']['net_return_pct'],-x['train']['max_trade_sequence_drawdown_pct']))
++        win_name=winner['name'];val_len=n-split
++        holdout_log,_=_event_path(df,all_signals[win_name],split,n,fee,slippage)
++        # Buy and hold entry/exit use actual OPEN at observed indices and same two-sided hypothetical cost.
++        real_opens=df.open.to_numpy(dtype=float)
++        hold_ret=((real_opens[n-1]*(1-slippage)*(1-fee))/
++                  (real_opens[split]*(1+slippage)*(1+fee))-1)
++        buy_hold={'status':'COUNTERFACTUAL_ONLY','net_return_pct':float(100*hold_ret),
++                  'entry_open_utc':int(df.timestamp.iloc[split]),
++                  'exit_open_utc':int(df.timestamp.iloc[n-1]),
++                  'fee_assumption':fee,'slippage_assumption':slippage}
++        # The random action baseline does not invent market returns, only a fixed decision rule.
++        rng=np.random.default_rng(20261022)
++        random_actions=pd.Series(np.zeros(n,dtype=bool))
++        random_actions.iloc[split:n]=rng.random(n-split)<.10
++        random_log,random_eval=_event_path(df,random_actions,split,n,fee,slippage)
++        dlinear_info,linear_actions=dlinear_baseline(df,split,fee,slippage)
++        if linear_actions is not None:
++            dlinear_log,dlinear_eval=_event_path(df,linear_actions,split,n,fee,slippage)
++            dlinear_info['holdout']= {k:v for k,v in dlinear_eval.items() if k!='events'}
++        # TRAIN-only CSCV. Candidate returns assigned at actual observed exit indices.
++        diagnostic_candidates=[v for v in eligible_candidates if v['train']['number_of_round_trips']>=4]
++        blocks={}
++        for v in diagnostic_candidates:
++            blocks[v['name']]=_blocks(log_by_candidate[v['name']],8)
++        sharpe_candidates=[name for name,z in blocks.items() if len(z)>=8 and _sharpe(z) is not None]
++        sharpe_dist=[_sharpe(blocks[name]) for name in sharpe_candidates]
++        selected_blocks=blocks.get(win_name, np.array([]))
++        dsr=deflated_sharpe(selected_blocks,sharpe_dist,n_trials)
++        if len(sharpe_candidates)>=4:
++            matrix=np.column_stack([blocks[name] for name in sharpe_candidates]);
++            if len(matrix)%2:matrix=matrix[:-1]
++            if len(matrix)>10:matrix=matrix[-10:]  # 10 choose 5 = 252 exhaustive CSCV partitions
++            pbo=pbo_cscv(matrix)
++        else:
++            pbo={'status':'INSUFFICIENT_EVIDENCE','reason':'<4 nondegenerate eligible train strategies with enough blocks'}
++        output['symbols'].append({
++            'symbol':sym,'status':'COUNTERFACTUAL_VALIDATION_ONLY',
++            'bars':n, 'data_start_utc':int(df.timestamp.iloc[0]),'data_end_utc':int(df.timestamp.iloc[-1]),
++            'train_end_utc':int(df.timestamp.iloc[split-1]),'holdout_start_utc':int(df.timestamp.iloc[split]),
++            'training_candidates_evaluated':len(candidates),
++            'training_selection_strategy':win_name,
++            'indicator_holdout':{k:v for k,v in winner['holdout'].items() if k!='events'},
++            'buy_and_hold_holdout':buy_hold,
++            'random_policy_holdout':{k:v for k,v in random_eval.items() if k!='events'},
++            'dlinear_holdout':dlinear_info,
++            'training_selection_dsr':dsr,'training_cscv_pbo':pbo,
++            'holdout_selected_minus_buy_hold_pct_points':float(winner['holdout']['net_return_pct']-buy_hold['net_return_pct']),
++            'holdout_selected_minus_random_pct_points':float(winner['holdout']['net_return_pct']-random_eval['net_return_pct']),
++            'decision_inclusion':'BLOCKED_UNTIL_VERIFIED_FEES_AND_PROSPECTIVE_PNL'})
++    output['status']='HISTORICAL_COUNTERFACTUAL_RESEARCH_ONLY'
++    return output
++
++
++def store_report(lake, report):
++    """Persist only a research report, never an order/memory/model mutation."""
++    path=Path(lake.root)/'reports'/'stage4_validation.json'
++    path.parent.mkdir(parents=True,exist_ok=True)
++    from os import replace
++    tmp=path.with_name(path.name+'.partial')
++    tmp.write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False),encoding='utf8')
++    replace(tmp,path)
++    return path
