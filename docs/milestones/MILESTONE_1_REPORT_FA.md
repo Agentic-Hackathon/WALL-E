@@ -61,7 +61,10 @@ conda run -n shbk python -m pytest -q
 
 ## Commit Hash
 
-`PENDING_FIRST_AUDIT_COMMIT` — hash دقیق در commit تکمیلی همین milestone ثبت می‌شود تا سند به hash واقعی و تغییرناپذیر اشاره کند.
+
+commit اصلی اسناد ممیزی: `71742a813a76c970d3738a25a15bf40a1974f60b` (`docs: add Milestone 1 architecture audit`).
+
+این commit تکمیلی فقط hash بالا را در گزارش ثبت می‌کند و هیچ کد یا تنظیم عملیاتی را تغییر نمی‌دهد.
 
 ## Next Actions
 
