@@ -19,7 +19,7 @@ def replay(run,*,sample_id=None):
     directory=Path(selection['directory']);result=json.loads((directory/'result.json').read_text())
     path=directory/'best.pt';sha=hashlib.sha256(path.read_bytes()).hexdigest()
     if sha!=selection['checkpoint_sha256'] or sha!=result['checkpoint_sha256']:raise ValueError('CHECKPOINT_HASH_MISMATCH')
-    b=load_bundle(run/'dataset_15_0.75');config=result['config'];X=b.arrays[config['group']]
+    b=load_bundle(run/('dataset_'+selection.get('dataset_key','15_0.75')));config=result['config'];X=b.arrays[config['group']]
     if digest(b.rows)!=config['dataset_sha256'] or digest(b.manifest)!=config['source_manifest_sha256'] or b.split['split_sha256']!=config['split_sha256']:
         raise ValueError('FROZEN_DATASET_PROVENANCE_MISMATCH')
     if hashlib.sha256(X.tobytes()).hexdigest()!=config['feature_input_sha256']:raise ValueError('FEATURE_INPUT_HASH_MISMATCH')

@@ -145,7 +145,9 @@ def train(bundle,group,architecture,head,seed,directory,*,max_epochs=120,resume=
             if stopped:break
             if pause_after_epoch is not None and epoch>=pause_after_epoch:
                 raise InterruptedError('RESEARCH_TRAINING_PAUSED_AFTER_DURABLE_CHECKPOINT')
-    best=torch.load(directory/'best.pt',map_location=device,weights_only=True);model.load_state_dict(best['state_dict']);model.eval()
+    best=torch.load(directory/'best.pt',map_location=device,weights_only=True)
+    if best['config']!=config or best['best_epoch']!=stopper.best_epoch:raise ValueError('BEST_CHECKPOINT_PROVENANCE_MISMATCH')
+    model.load_state_dict(best['state_dict']);model.eval()
     def predict(indices):
         outputs=[]
         with torch.inference_mode():

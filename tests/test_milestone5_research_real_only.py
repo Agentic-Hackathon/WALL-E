@@ -127,6 +127,7 @@ def test_research_ledger_rejects_retrospective_replay(bundle,tmp_path):
     try:
         with pytest.raises(ValueError,match='NO_ELIGIBLE'):ledger.record(replay(RUN))
         assert ledger.status()['counts']=={}
+        assert ledger.reconcile(ROOT/'atlas_store')['resolved']==0
     finally:ledger.close()
 
 def test_real_interruption_resume_and_best_restore(bundle):
@@ -152,3 +153,27 @@ def test_real_interruption_resume_and_best_restore(bundle):
         [x['validation_loss'] for x in reference['history']],rtol=1e-5,atol=1e-7)
     wrong=copy.copy(bundle);wrong.config={**bundle.config,'dataset_sha256':'tampered-nonfinancial-metadata'}
     with pytest.raises(ValueError,match='MISMATCH'):train(wrong,'A','itransformer','ordered',17,directory,resume=True)
+
+def test_three_real_seeds_and_research_checkpoint_isolation(bundle):
+    directories=set()
+    for group in 'AC':
+        for architecture in ('patchtst','itransformer'):
+            observed=set()
+            for seed in SEEDS:
+                path=RUN/f'{group}_{architecture}_ordered_{seed}'
+                result=json.loads((path/'result.json').read_text())
+                observed.add(result['config']['seed']);directories.add(path)
+                assert result['config']['no_automatic_promotion']
+                assert result['config']['dataset_sha256']==bundle.config['dataset_sha256']
+                assert hashlib.sha256((path/'best.pt').read_bytes()).hexdigest()==result['checkpoint_sha256']
+                assert 'research_challengers' in path.parts and 'models' not in path.parts
+            assert observed==set(SEEDS)
+    assert len(directories)==12
+
+def test_dataset_switch_cannot_reuse_completed_run_or_overwrite_reports(bundle):
+    from wallex_bot.atlas_m5_research import execute
+    report=ROOT/'reports/m5_model_comparison.csv'
+    before=report.read_bytes()
+    with pytest.raises(ValueError,match='CONTRACT_MISMATCH'):
+        execute(ROOT/'atlas_store',RUN,ROOT/'reports',dataset_key='60_48')
+    assert report.read_bytes()==before

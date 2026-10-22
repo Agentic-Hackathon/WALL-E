@@ -94,15 +94,32 @@ def preflight(root,run,reports):
     save(run/'preflight.json',{'coverage':coverage,'groups':groups})
     return b,coverage,groups
 
-def execute(root,run,reports):
+def execute(root,run,reports,*,dataset_key='15_0.75'):
     from .atlas_m5_baselines import evaluate
     reports=Path(reports);run=Path(run)
     if (run/'preflight.json').exists():
-        b=load_bundle(run/'dataset_15_0.75');p=json.loads((run/'preflight.json').read_text(encoding='utf8'));coverage=p['coverage'];groups=p['groups']
+        b=load_bundle(run/('dataset_'+dataset_key));p=json.loads((run/'preflight.json').read_text(encoding='utf8'));coverage=p['coverage'];groups=p['groups']
     else:b,coverage,groups=preflight(root,run,reports)
+    if dataset_key!='15_0.75':b=load_bundle(run/('dataset_'+dataset_key))
+    contract={'dataset_key':dataset_key,'dataset_sha256':b.config.get('dataset_sha256'),
+        'split_sha256':b.split.get('split_sha256')}
+    contract_path=run/'experiment_contract.json'
+    if contract_path.exists() and json.loads(contract_path.read_text())!=contract:
+        raise ValueError('RUN_DATASET_CONTRACT_MISMATCH_USE_NEW_RUN_DIRECTORY')
+    if (run/'results.json').exists():
+        old=json.loads((run/'results.json').read_text())
+        if any(r['config']['dataset_sha256']!=b.config.get('dataset_sha256') for r in old if 'config' in r):
+            raise ValueError('RUN_DATASET_CONTRACT_MISMATCH_USE_NEW_RUN_DIRECTORY')
+    if not contract_path.exists():save(contract_path,contract)
+    if dataset_key!='15_0.75':
+        groups=feature_groups()
+        groups.update({g:{**groups[g],**spec} for g,spec in optional_eligibility(root,b).items()})
+        for g in 'ABC':groups[g].update(eligible_common_rows=len(b.rows),status=b.split['status'])
+        save(reports/'m5_feature_groups.json',groups)
+    horizon_hours=b.config['horizon_hours']
     registry=[];results=[];curves=[]
     for item in coverage:
-        if item['horizon_hours']!=.75:
+        if f"{item['resolution']}_{item['horizon_hours']}"!=dataset_key:
             for architecture in ('itransformer','patchtst'):
                 registry.append({'experiment':f"{architecture}_{item['resolution']}_{item['horizon_hours']}",'status':item['split']['status'],'trained':False})
     for g in 'DEFG':registry.append({'experiment':g,'status':groups[g]['status'],'trained':False})
@@ -111,7 +128,7 @@ def execute(root,run,reports):
     base_dir=run/'baselines'
     baseline=json.loads((base_dir/'results.json').read_text()) if (base_dir/'results.json').exists() else evaluate(b,base_dir)
     for r in baseline:
-        r.update(architecture=r['name'],head='baseline',directory=str(base_dir),horizon_hours=.75)
+        r.update(architecture=r['name'],head='baseline',directory=str(base_dir),horizon_hours=horizon_hours)
         results.append(r);registry.append({'experiment':r['name'],'status':'COMPLETED','trained':True,'seed':r['seed']})
     plan=[(g,a,'ordered',s) for g in 'AC' for a in ('itransformer','patchtst') for s in SEEDS]
     plan += [('A','itransformer',head,s) for head in ('raw','penalty') for s in SEEDS]
@@ -123,7 +140,7 @@ def execute(root,run,reports):
         directory=run/f'{g}_{a}_{h}_{s}'
         if (directory/'result.json').exists():r=json.loads((directory/'result.json').read_text())
         else:r=train(b,g,a,h,s,directory,resume=(directory/'resume.pt').exists())
-        r.update(name=f'{g}_{a}_{h}_{s}',group=g,architecture=a,head=h,seed=s,horizon_hours=.75)
+        r.update(name=f'{g}_{a}_{h}_{s}',group=g,architecture=a,head=h,seed=s,horizon_hours=horizon_hours)
         results.append(r)
         for entry in registry:
             if entry['experiment']==r['name']:entry.update(status='COMPLETED',trained=True,checkpoint_sha256=r['checkpoint_sha256'])
@@ -141,7 +158,7 @@ def execute(root,run,reports):
         predictions=np.load(Path(r['directory'])/filename)['test_calibrated']
         for symbol in sorted({b.rows[i]['symbol'] for i in test}):
             positions=[j for j,i in enumerate(test) if b.rows[i]['symbol']==symbol]
-            symbols.append({'experiment':r['name'],'symbol':symbol,'horizon_hours':.75,**metrics(y[np.array(test)[positions]],predictions[positions])})
+            symbols.append({'experiment':r['name'],'symbol':symbol,'horizon_hours':horizon_hours,**metrics(y[np.array(test)[positions]],predictions[positions])})
     csvsave(reports/'m5_model_comparison.csv',comparison);csvsave(reports/'m5_quantile_calibration.csv',calibration);csvsave(reports/'m5_symbol_horizon_results.csv',symbols)
     # Selection uses validation alone, aggregated over all three seeds.
     deep=[r for r in results if 'epochs' in r];keys=sorted({(r['group'],r['architecture'],r['head']) for r in deep})
@@ -155,7 +172,7 @@ def execute(root,run,reports):
     aggregate.sort(key=lambda r:r['validation_pinball_mean']);save(reports/'m5_seed_summary.json',aggregate)
     key=aggregate[0];selected=min((r for r in deep if all(r[k]==key[k] for k in ('group','architecture','head'))),key=lambda r:r['validation']['pinball'])
     save(run/'research_selection.json',{'policy':'minimum mean validation pinball across seeds, then minimum validation seed; NOT test selected',
-        'selected':selected['name'],'directory':selected['directory'],'checkpoint_sha256':selected['checkpoint_sha256'],'promotion':False})
+        'selected':selected['name'],'directory':selected['directory'],'checkpoint_sha256':selected['checkpoint_sha256'],'dataset_key':dataset_key,'promotion':False})
     economic={'status':'NO_VERIFIED_ECONOMIC_EDGE','live':'HARD_DISABLED','selected_by_validation':selected['name'],
         'horizons_48_72':'INSUFFICIENT_REAL_TRAINING_HISTORY','fee_verified':False,'executable_pnl':None,
         'gross_return':None,'net_return':None,'max_drawdown':None,'turnover':None,'portfolio_exposure':None,'liquidity_constraints':'insufficient real future book coverage',
@@ -173,9 +190,11 @@ def main():
     parser=argparse.ArgumentParser(description='Read-only-model M5 research; no orders/promotion')
     parser.add_argument('command',choices=['preflight','run']);parser.add_argument('--root',default='atlas_store')
     parser.add_argument('--reports',default='reports');parser.add_argument('--run-directory')
+    parser.add_argument('--dataset-key',choices=['15_0.75','60_48','60_72','1D_48','1D_72','15_48','15_72'],default='15_0.75',
+        help='Train this frozen horizon only when its four-way split is eligible; use a separate run directory per dataset')
     args=parser.parse_args();run=Path(args.run_directory) if args.run_directory else Path(args.root)/'research_challengers'/'milestone5'/(datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')+'_'+uuid.uuid4().hex[:8])
     if args.command=='preflight':preflight(args.root,run,args.reports)
-    else:execute(args.root,run,args.reports)
+    else:execute(args.root,run,args.reports,dataset_key=args.dataset_key)
     print(str(run.resolve()))
 
 if __name__=='__main__':main()

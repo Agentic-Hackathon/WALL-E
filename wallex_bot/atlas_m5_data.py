@@ -6,6 +6,7 @@ are never relabelled as prospectively observable evidence.
 """
 from __future__ import annotations
 import hashlib,json,sqlite3
+from types import SimpleNamespace
 from pathlib import Path
 from dataclasses import dataclass
 from datetime import datetime,timezone
@@ -16,6 +17,7 @@ from .atlas_feature_health import _read_catalog_symbols,_verified_segments
 from .atlas_feature_recipe import challenger_features,POLICY
 from .atlas_deep import COLS
 from .atlas_feature_registry import compute_ohlcv_features,RECIPE_VERSION
+from .atlas_feature_provenance import annotate_receipts
 
 PROTOCOL='M5_GLOBAL_PURGED_FOUR_WAY_V1'
 SEEDS=(17,29,43)
@@ -86,7 +88,11 @@ def prepare(root,resolution='15',horizon_hours=.75,top=8,context=96):
     config={'resolution':resolution,'horizon_hours':horizon_hours,'horizon_bars':horizon,'context':context,
             'label_type':'CLOSE_TO_CLOSE_RETURN','evaluation_track':'RETROSPECTIVE_CLOSED_BAR_ASSUMPTION_NOT_PROSPECTIVE_PIT','protocol':PROTOCOL}
     if not path.exists():return Bundle(config,[],{},four_way_split([],horizon*period),[],[])
-    db=sqlite3.connect(path.as_uri()+'?mode=ro',uri=True);all_rows={};arrays={g:{} for g in 'ABC'};coverage=[];manifest=[]
+    db=sqlite3.connect(path.as_uri()+'?mode=ro',uri=True)
+    # One WAL read snapshot binds catalog manifest and segment queries even
+    # when an independent Watch/DataSync appends new immutable chunks.
+    db.execute('BEGIN')
+    all_rows={};arrays={g:{} for g in 'ABC'};coverage=[];manifest=[]
     try:
         symbols=_read_catalog_symbols(db,top)
         for symbol in symbols:
@@ -97,11 +103,11 @@ def prepare(root,resolution='15',horizon_hours=.75,top=8,context=96):
         now=datetime.now(timezone.utc).timestamp()
         for symbol in symbols:
             parts,files=_verified_segments(root,db,symbol,resolution);counts={g:0 for g in 'ABC'};raw_candidates=0;longest=0
-            receipt_rows=db.execute('''SELECT o.retrieved_at,o.available_at FROM chunk_observations o
-                WHERE symbol=? AND resolution=?''',(symbol,resolution)).fetchall()
-            latest_receipt=max((str(r[1]) for r in receipt_rows if r[1]),default=None)
-            # Missing receipt coverage is explicitly unknown; no source times are invented.
-            legacy=files>len(receipt_rows)
+            # Reuse the existing per-filename receipt validator, not a count
+            # comparison (duplicate observations could hide legacy files).
+            info=annotate_receipts(SimpleNamespace(root=root,db=db),symbol,resolution,parts[0]) if parts else None
+            legacy=info is None or not np.isfinite(info.available_at.iloc[-1])
+            latest_receipt=None if legacy else iso(float(info.available_at.iloc[-1]))
             for segment_id,raw in enumerate(parts):
                 frame=raw[raw.timestamp.astype('int64')+period<=now].reset_index(drop=True);longest=max(longest,len(frame))
                 raw_candidates+=max(0,len(frame)-horizon)
