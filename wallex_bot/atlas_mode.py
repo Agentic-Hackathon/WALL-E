@@ -51,6 +51,7 @@ def cli_mode(command, requested=None):
         'validate': ExecutionMode.BACKTEST,
         'challenger-preflight': ExecutionMode.BACKTEST,
         'train-challenger-v2': ExecutionMode.BACKTEST,
+        'challenger-evaluate': ExecutionMode.BACKTEST,
         'benchmark': ExecutionMode.BACKTEST,
         'watch': ExecutionMode.SHADOW,
         'shadow-cycle': ExecutionMode.SHADOW,
