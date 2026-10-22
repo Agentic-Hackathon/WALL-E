@@ -1,5 +1,7 @@
 # V3.5 — Local Research and Shadow Dashboard
 
+- Risk Gate مستقل و قطعی `atlas_risk.py` اضافه شد؛ تمام intentهای Shadow پیش از هر تغییر دفتر از همین دروازه عبور می‌کنند، با سقف‌های قبلی، بررسی نقدشوندگی/اسپرد واقعی، stop-loss و circuit breaker. این تغییر همچنان هیچ سفارش واقعی ارسال نمی‌کند.
+
 - Added zero-external-CDN, no-new-dependency RTL dashboard at `127.0.0.1:8765`.
 - Added safe, read-only JSON endpoints for status, actual SHA256-verified OHLCV candles, recorded forward forecasts, paper trade ledger, news receipts, historical strategy benchmark, read-only account balances, and retrospective research.
 - Added candlestick visual including real time gaps, SMA20 only across contiguous actual bars, interactive hover and 20-second refresh.

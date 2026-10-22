@@ -92,12 +92,18 @@ def run(lake, hours=48, interval_seconds=900, top=8):
                 try:
                     from .live_scout import measure_book
                     book=measure_book(market.depth(symbol),notional_tmn=250000,fee_rate=.001)
-                    proceeds=qty*book['best_bid_tmn']*(1-.001)
+                    positions=paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
                     cash=float(paper.get('cash_tmn'))
+                    gate=paper.risk.final_tmn_liquidation(symbol,book,cash,positions,.001)
+                    if gate.action!='PAPER_SELL':
+                        paper.log(symbol,'PAPER_END_CLOSE_REJECTED',{'risk_gate':gate.audit_payload(),
+                            'status':'position retained; no invented quote or bypass'})
+                        continue
+                    proceeds=qty*book['best_bid_tmn']*(1-.001)
                     paper._set('cash_tmn',cash+proceeds)
                     paper.db.execute('DELETE FROM positions WHERE symbol=?',(symbol,))
                     paper.log(symbol,'PAPER_END_OF_WATCH_SELL',{'observed_bid':book['best_bid_tmn'],
-                        'proceeds_tmn':proceeds,'NOT_A_REAL_FILL':True})
+                        'proceeds_tmn':proceeds,'risk_gate':gate.audit_payload(),'NOT_A_REAL_FILL':True})
                 except Exception as exc:
                     paper.log(symbol,'PAPER_END_CLOSE_FAILED',{'error':type(exc).__name__,
                         'status':'unvalued position; no invented quote'})

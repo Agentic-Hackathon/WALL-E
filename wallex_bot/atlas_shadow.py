@@ -2,19 +2,21 @@
 Hypothetical execution assumptions are distinguished from observed market data.
 """
 from __future__ import annotations
-import json,sqlite3,time,hashlib,math
+import json,sqlite3,time,hashlib
 from pathlib import Path
 from datetime import datetime,timezone
 from . import market
 from .atlas_deep import predict_latest, verified_champion
 from .live_scout import measure_book
 from .atlas_forward import ForwardLedger
+from .atlas_risk import RiskGate
 
 
 def now():return datetime.now(timezone.utc).isoformat()
 
 class PaperAccount:
     def __init__(self,lake,starting_tmn=5_000_000):
+        self.risk=RiskGate()
         self.db=sqlite3.connect(Path(lake.root)/'shadow.sqlite',timeout=20)
         self.db.execute('PRAGMA journal_mode=WAL')
         self.db.executescript('''
@@ -49,46 +51,30 @@ class PaperAccount:
     def trade(self,symbol,decision,book,fee=.001):
         cash=float(self.get('cash_tmn'))
         positions=self.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
-        bid=float(book['best_bid_tmn']);ask=float(book['best_ask_tmn'])
-        quote={'bid_tmn':bid,'ask_tmn':ask,'observed_spread_bps':book['spread_bps']}
-        if bid<=0 or ask<=bid:raise ValueError('Invalid actual Wallex bid/ask')
+        gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
+        # Preserve the source observation for the audit without inventing a
+        # missing quote.  Numeric values are consumed only after gate approval.
+        quote={'bid_tmn':book.get('best_bid_tmn'),'ask_tmn':book.get('best_ask_tmn'),
+               'observed_spread_bps':book.get('spread_bps')} if isinstance(book,dict) else {'unavailable':True}
         with self.db:
-            # Approximate liquidation equity from CURRENT observed bids; not actual realized PnL.
+            action=gate.action
             holdings={s:(qty,cost) for s,qty,cost in positions}
-            own=holdings.get(symbol)
-            q10=decision.get('quantile_log_returns',{}).get('q10')
-            q50=decision.get('quantile_log_returns',{}).get('q50')
-            if own:
-                qty,cost=own
-                # Exit on adverse evidence; uses actual currently observed bid.
-                if self.get('stopped')=='1' or (q50 is not None and (q50<0 or bid/(cost/qty)-1 < -0.012)):
-                    proceeds=qty*bid*(1-fee)
-                    self._set('cash_tmn',cash+proceeds)
-                    self.db.execute('DELETE FROM positions WHERE symbol=?',(symbol,))
-                    action='PAPER_SELL'
-                else:action='HOLD_POSITION'
-            elif self.get('stopped')=='1':
-                action='RISK_CIRCUIT_BREAKER_STOPPED'
-            else:
-                spread_log=math.log(ask/bid)
-                estimated_cost=2*math.log(1+fee)+spread_log+0.001
-                # Conservative q10 forecast must exceed cost: an ML-driven decision gate.
-                invest=min(cash*0.10,500_000.)
-                held_cost=sum(cost for _,_,cost in positions)
-                if q10 is None or not math.isfinite(q10):action='NO_TRUSTED_FORECAST'
-                elif q10<=estimated_cost:action='INSUFFICIENT_RISK_ADJUSTED_EDGE'
-                elif held_cost+invest>1_000_000.:action='PORTFOLIO_RISK_LIMIT'
-                elif book['top5_ask_notional_tmn']<invest*3:action='INSUFFICIENT_VISIBLE_LIQUIDITY'
-                elif invest<100_000:action='ORDER_BELOW_RESEARCH_MIN'
-                else:
-                    qty=(invest/(1+fee))/ask
-                    self._set('cash_tmn',cash-invest)
-                    self.db.execute('INSERT INTO positions VALUES(?,?,?,?,?)',(symbol,qty,invest,ask,now()))
-                    action='PAPER_BUY'
+            if action=='PAPER_SELL':
+                bid=float(book['best_bid_tmn'])
+                qty,_=holdings[symbol]
+                proceeds=qty*bid*(1-fee)
+                self._set('cash_tmn',cash+proceeds)
+                self.db.execute('DELETE FROM positions WHERE symbol=?',(symbol,))
+            elif action=='PAPER_BUY':
+                invest=gate.notional_tmn
+                ask=float(book['best_ask_tmn'])
+                qty=(invest/(1+fee))/ask
+                self._set('cash_tmn',cash-invest)
+                self.db.execute('INSERT INTO positions VALUES(?,?,?,?,?)',(symbol,qty,invest,ask,now()))
             self.log(symbol,action,{'forecast':decision,'source':'genuine_wallex_rest_depth',
                   'quote':quote,'fee_assumption':fee,
                   'fill_assumption':'HYPOTHETICAL at observed best bid/ask; not an exchange execution',
-                  'risk_limits':'10% cash per position; 20% of initial portfolio max',
+                  'risk_gate':gate.audit_payload(),
                   'paper_cash_tmn':self.get('cash_tmn')})
         return action
 
@@ -102,15 +88,15 @@ class PaperAccount:
         equity=float(self.get('cash_tmn'))
         for sym,qty in positions:equity+=qty*float(bid_by_symbol[sym])*(1-fee)
         with self.db:
-            peak=max(float(self.get('high_water_tmn')),equity)
-            self._set('high_water_tmn',peak)
-            drawdown=1-equity/peak
-            if drawdown>=.03:self._set('stopped',1)
-            self.log('PORTFOLIO','FRESH_REAL_BID_MARK_TO_MARKET',{'equity_tmn':equity,'drawdown_pct':100*drawdown,
-                        'paper_stopped':self.get('stopped')=='1',
+            assessed=self.risk.assess_equity(equity,float(self.get('high_water_tmn')),self.get('stopped')=='1')
+            self._set('high_water_tmn',assessed.high_water_tmn)
+            self._set('stopped','1' if assessed.stopped else '0')
+            self.log('PORTFOLIO','FRESH_REAL_BID_MARK_TO_MARKET',{'equity_tmn':equity,'drawdown_pct':100*assessed.drawdown_fraction,
+                        'paper_stopped':assessed.stopped,
+                        'risk_gate':{'max_drawdown_fraction':self.risk.limits.max_drawdown_fraction},
                         'price_source':'current actual Wallex bid of every held symbol',
                         'valuation':'hypothetical liquidation incl. assumed fee'})
-        return {'equity_tmn':equity,'drawdown_pct':100*drawdown,'stopped':self.get('stopped')=='1'}
+        return {'equity_tmn':equity,'drawdown_pct':100*assessed.drawdown_fraction,'stopped':assessed.stopped}
 
     def close(self):self.db.close()
 
