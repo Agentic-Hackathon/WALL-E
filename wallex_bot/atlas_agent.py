@@ -18,6 +18,7 @@ import hashlib
 from .live_scout import measure_book
 from .market import depth
 from .atlas_context import ContextStore,make_packet
+from .atlas_rationale import explain_for_state
 from .atlas_mode import ExecutionMode,require_mode
 
 class AgentState(TypedDict,total=False):
@@ -30,6 +31,7 @@ class AgentState(TypedDict,total=False):
     decision:str
     explanation:dict
     context_packet:dict
+    advisory_rationale:dict
 
 
 def select_symbol(lake):
@@ -107,6 +109,17 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
         if not state['observations']['book']['hypothetical_full_roundtrip_depth_available']:
             veto.append('insufficient_visible_book_depth')
         return {'veto_reasons':veto}
+    def rationale_node(state:AgentState):
+        # Stage 7: advisory ONLY; its sole output is text+evidence receipt.
+        # No downstream trading inputs depend on this node, even if the local
+        # LLM returns untrusted instructions or is offline.
+        try:
+            advisory=explain_for_state(lake.root,state)
+        except Exception as exc:
+            advisory={'status':'ADVISORY_UNAVAILABLE','reason_code':type(exc).__name__,
+                      'authority':'ADVISORY_ONLY'}
+        return {'advisory_rationale':advisory}
+
     def shadow_node(state:AgentState):
         # PAPER only. Guarded, persistent and explainable; never invokes Wallex order APIs.
         account=PaperAccount(lake)
@@ -123,18 +136,20 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
                 account.log(state['symbol'],'MULTI_AGENT_EXPLANATION',{
                     'market_observation':state['observations'],'technical':state['technical'],
                     'news':state['news'],'model_prediction':state['prediction'],
-                    'veto_reasons':state['veto_reasons'],'paper_action':action})
+                    'veto_reasons':state['veto_reasons'],'paper_action':action,
+                    'llm_advisory':state.get('advisory_rationale',{'status':'NO_RATIONALE'})})
         finally:account.close()
         return {'decision':action,'explanation':{'model_file':str(model),'veto':state['veto_reasons'],
                  'audit_db':str(lake.root/'shadow.sqlite'),
-                 'trade_execution':'DISABLED'}}
+                 'trade_execution':'DISABLED',
+                 'llm_advisory':state.get('advisory_rationale',{'status':'NO_RATIONALE'})}}
     graph=StateGraph(AgentState)
     for name,fn in [('context_planner_agent',context_node),('market_data_agent',market_node),('technical_agent',indicators_node),
                     ('point_in_time_news_agent',news_node),('deep_forecast_agent',predictive_node),
-                    ('risk_agent',risk_node),('shadow_execution_agent',shadow_node)]:graph.add_node(name,fn)
+                    ('risk_agent',risk_node),('llm_rationale_agent',rationale_node),('shadow_execution_agent',shadow_node)]:graph.add_node(name,fn)
     graph.add_edge(START,'context_planner_agent')
     path=['context_planner_agent','market_data_agent','technical_agent','point_in_time_news_agent',
-          'deep_forecast_agent','risk_agent','shadow_execution_agent']
+          'deep_forecast_agent','risk_agent','llm_rationale_agent','shadow_execution_agent']
     for a,b in zip(path,path[1:]):graph.add_edge(a,b)
     graph.add_edge(path[-1],END)
     dbpath=Path(checkpoint or lake.root/'agent_checkpoints.sqlite');dbpath.parent.mkdir(parents=True,exist_ok=True)
