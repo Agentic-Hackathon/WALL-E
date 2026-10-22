@@ -110,6 +110,23 @@ def test_formal_contract_no_live_or_promotion():
     import wallex_bot.atlas_portfolio as module
     assert 'ShadowBroker(' not in inspect.getsource(module) and 'requests.' not in inspect.getsource(module)
 
+def test_network_failure_keeps_actual_receipts(actual,tmp_path,monkeypatch):
+    import threading
+    import wallex_bot.market as market
+    from wallex_bot.atlas_study import quote_worker
+    source=sqlite3.connect((OLD/'forward_observations.sqlite').as_uri()+'?mode=ro',uri=True)
+    dest=sqlite3.connect(tmp_path/'forward_observations.sqlite');source.backup(dest);source.close();dest.close()
+    ledger=DeadlineLedger(tmp_path);stop=threading.Event()
+    try:
+        before=ledger.db.execute('SELECT * FROM quotes ORDER BY id').fetchall();assert ledger.claim()
+        def unavailable(symbol):stop.set();raise ConnectionError('non-financial transport outage control')
+        monkeypatch.setattr(market,'depth',unavailable)
+        contract={'settings':settings(),'source_manifest_LF_sha256':source_manifest(),'model_file_hashes':{}}
+        quote_worker(ROOT/'atlas_store',tmp_path,contract,ledger.owner,stop)
+        assert ledger.db.execute('SELECT * FROM quotes ORDER BY id').fetchall()==before
+        assert ledger.db.execute("SELECT count(*) FROM study_events_v7 WHERE kind='QUOTE_NETWORK_OR_VALIDATION_ERROR'").fetchone()[0]==1
+    finally:ledger.release();ledger.close()
+
 def test_deadline_lease_restart_and_no_clock_advancement(tmp_path):
     a=DeadlineLedger(tmp_path);b=DeadlineLedger(tmp_path)
     try:

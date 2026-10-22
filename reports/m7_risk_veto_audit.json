@@ -1,0 +1,34 @@
+{
+  "actual_agent_risk_reasons": {
+    "FINITE_Q10_FORECAST_REQUIRED": 2
+  },
+  "decision_replay": [
+    {
+      "decision_id": "5e36e92105e4183d5db581164ee2388cab95a3da59e849c9ad8ebe5de04b3b50",
+      "receipt_valid": true,
+      "review_identical": true,
+      "risk_gate_identical": true,
+      "action": "NO_TRUSTED_FORECAST",
+      "replay_authority": "NONE_NO_BROKER_NO_NETWORK_NO_MEMORY_WRITES"
+    },
+    {
+      "decision_id": "ec579c1aa7b8ae29ab4b1d9855cfc52a84baad8e13560b065815917bf2665cab",
+      "receipt_valid": true,
+      "review_identical": true,
+      "risk_gate_identical": true,
+      "action": "NO_TRUSTED_FORECAST",
+      "replay_authority": "NONE_NO_BROKER_NO_NETWORK_NO_MEMORY_WRITES"
+    }
+  ],
+  "proposal_count": 35,
+  "proposal_statuses": {
+    "CASH_ONLY": 35
+  },
+  "research_rejections": {
+    "Q10_DOES_NOT_COVER_OBSERVED_COSTS": 70,
+    "Q10_BELOW_FULL_SWEEP_COST_AND_SAFETY": 70
+  },
+  "opportunity_rejection_rate": 1.0,
+  "rejection_denominator": "all model/method proposals including cash and validation-ineligible methods; NOT independent opportunities",
+  "liquidity_rejections": {}
+}

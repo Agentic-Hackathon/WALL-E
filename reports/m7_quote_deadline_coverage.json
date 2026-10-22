@@ -1,0 +1,151 @@
+{
+  "rows": [
+    {
+      "prediction_id": "0f9e22e2013a54fdea1f74b6cacfcb9cf9fc2c34232a998f37f1722356dcd2f6",
+      "symbol": "BTCTMN",
+      "due": 1792700854.4016151,
+      "expires": 1792701154.4016151,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "123fbfc989c4b53e6c8e7b5f03f783cafbb69475ecf0e5a7af0302001cdc845e",
+      "symbol": "BTCTMN",
+      "due": 1792700854.4016151,
+      "expires": 1792701154.4016151,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "7402f224c015a7b7ea67b5f26939096edd168d023dbd30437ccfa5d6c0253dd9",
+      "symbol": "BTCTMN",
+      "due": 1792700854.4016151,
+      "expires": 1792701154.4016151,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "c5f305dee3693d7c80e8fc43ec38b4b3cf5e30435f76c6f23f7da9e331b36096",
+      "symbol": "BTCTMN",
+      "due": 1792700854.4016151,
+      "expires": 1792701154.4016151,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "cc24e7448d4c2465cd0d32caad564437448048e81a134898324bfbbfac3ae94c",
+      "symbol": "BTCTMN",
+      "due": 1792700854.4016151,
+      "expires": 1792701154.4016151,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "3782bb00a903f226508a563128876241c68fb80e6457d5244d73afe476c53a68",
+      "symbol": "PEPETMN",
+      "due": 1792700856.5852242,
+      "expires": 1792701156.5852242,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "572b1ed29a5f82efb03b04142a319517df888f2d9e457bbf0fb4d600b3d54415",
+      "symbol": "PEPETMN",
+      "due": 1792700856.5852242,
+      "expires": 1792701156.5852242,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "d251cc6c4c4f02342960cf81a6b3ce7ddf8fcd2763e5e1cab3a6b304d84bc82b",
+      "symbol": "PEPETMN",
+      "due": 1792700856.5852242,
+      "expires": 1792701156.5852242,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "f6eafdcdcf31bca3dd047d0cf0e3dea6dc81d17e6a72adec04d6b58b4200acc3",
+      "symbol": "PEPETMN",
+      "due": 1792700856.5852242,
+      "expires": 1792701156.5852242,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    },
+    {
+      "prediction_id": "fb149f7d0ea9ccfd74a5cc5ea449366a9ad26bf6f71e9ae065cabd9f7ee3ca1b",
+      "symbol": "PEPETMN",
+      "due": 1792700856.5852242,
+      "expires": 1792701156.5852242,
+      "stored_status": "PENDING",
+      "effective_status": "PENDING",
+      "future_quote_latency_seconds": null,
+      "scored_at": null,
+      "reason": "WAITING_REAL_FUTURE_QUOTE"
+    }
+  ],
+  "matured": 0,
+  "scored": 0,
+  "pending": 10,
+  "missing_future_quote": 0,
+  "timely_coverage": null,
+  "sampling_interval_seconds": 60,
+  "tolerance_seconds": 300,
+  "timestamp_contract": "request_started / response_received / observed / stored / outcome.available_at separately recorded",
+  "imputation": false,
+  "quote_io": [
+    {
+      "request_started": 1792698151.5163813,
+      "response_received": 1792698152.1468675,
+      "observed": 1792698152.1468675,
+      "stored": 1792698152.151106
+    },
+    {
+      "request_started": 1792698152.22175,
+      "response_received": 1792698153.0970986,
+      "observed": 1792698153.0970986,
+      "stored": 1792698153.1108096
+    },
+    {
+      "request_started": 1792698212.216543,
+      "response_received": 1792698213.0199213,
+      "observed": 1792698213.0199213,
+      "stored": 1792698213.0199213
+    },
+    {
+      "request_started": 1792698213.1755638,
+      "response_received": 1792698213.7265859,
+      "observed": 1792698213.7265859,
+      "stored": 1792698213.7265859
+    }
+  ],
+  "network_errors": 0,
+  "old_M6_not_repaired_with_late_quotes": true
+}

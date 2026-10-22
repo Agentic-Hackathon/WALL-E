@@ -1,0 +1,265 @@
+{
+  "formal": {
+    "forecast_statuses": {
+      "PENDING": 10
+    },
+    "by_model": {
+      "champion": 2,
+      "historical_quantiles": 2,
+      "m5_lightgbm": 2,
+      "m5_patchtst": 2,
+      "zero": 2
+    },
+    "quote_count": 4,
+    "first_quote": 1792698152.1468675,
+    "last_quote": 1792698213.7265859,
+    "observed_span_hours": 0.01710547731982337,
+    "matured_scored": 0,
+    "status": "PENDING_48_72H_REAL_OBSERVATION",
+    "orders": "NO_INTERFACE"
+  },
+  "legacy_development_separate": {
+    "track": "M6_DEVELOPMENT_NOT_FORMAL_NOT_MERGED",
+    "quote_count": 8,
+    "forecast_count": 30,
+    "states": {
+      "UNSCORED_NO_REAL_FUTURE_QUOTE": 30
+    },
+    "rows": [
+      {
+        "prediction_id": "29f958ff0df996872ebf7d43a1c1e5625b808d0f117dd509792a53b1a606b7e7",
+        "due": 1792696169.1419373,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "01df5730787d226d3eadecf0363e90190388c274dff6cda18bfa0967115ada98",
+        "due": 1792696169.1419373,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "475581e19807e51edd666468bf8da5f009d6e2e971764f45576c3240152a1365",
+        "due": 1792696169.1419373,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "0abfe574880963e195ff1ffef830f6ee488991f8831d46b0b25ad09908253f12",
+        "due": 1792696169.1419373,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "5544f71f987a85ab0500f7c704c3ca1dc5a0f9d6d83c9000121282230d0e33a0",
+        "due": 1792696169.1419373,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "956757e5fb2da878fea901c0b29eb874c7c676369b8e6984069f6e9841ebad4c",
+        "due": 1792696174.562158,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "54e5cd753a725dd1caa7d37279be0959a659beb6716dfe1152e433cac45e74c4",
+        "due": 1792696174.562158,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "7e574aa4009590fae81d610f19c1d7819a405f14c39a42952d5e6a8fb9605f81",
+        "due": 1792696174.562158,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "64b0a0890f6c2e825956f75938fdeb28e450980294294a7fdae5c5e04cbc2ac3",
+        "due": 1792696174.562158,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "5fda063efd368bf9cca06acfb0c1794be1a3bbd0a080b85ec7da7099d01a002b",
+        "due": 1792696174.562158,
+        "stored_status": "UNSCORED_NO_REAL_FUTURE_QUOTE",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "fdafee98acef4867913467114db278211bf26c10b7b443d6ef6dffbea1180a6b",
+        "due": 1792696582.9004033,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "5716c65967f47c4f58a47e6e96ace41b8dc446bcb28816705b9ef5e43bfae169",
+        "due": 1792696582.9004033,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "0fba04b59b10eb255478e5c9b16334ed3745df0ca40cc426017d6ccb00aa9e49",
+        "due": 1792696582.9004033,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "b54d8191b389815e9f804b468e4c1d270611bb2a136ee81d48d3b418c7ce8e9b",
+        "due": 1792696582.9004033,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "a851aa483dde7c2ad3c297223f283036206f25a8054897740ff582ca79fc732c",
+        "due": 1792696582.9004033,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "f01c76696706571ea45f18d3458f3da84a4fe8bd8329721ced2d55b8d577e777",
+        "due": 1792696587.7654166,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "381f3798477951b7224715fa77df1a83d5b572fda14f97f1efef73d9c76a6c05",
+        "due": 1792696587.7654166,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "dfea301327a8fa0c7e9d03104905522b163a231cefa6b1fd5f6b00505a0c9a60",
+        "due": 1792696587.7654166,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "d0f8d37444ad60ca656a2230c3791663e6bc65d778b0256029478c8dbf2b3b01",
+        "due": 1792696587.7654166,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "b70943564b62ef2ff53b8cc713f1a3f1c3f4243a4ae419c5980adf33f5d06e96",
+        "due": 1792696587.7654166,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "e4f8c5dba3611a2046ac8663591cc114af32918bf0020a7485348aec70e4bb1a",
+        "due": 1792697530.5627966,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "4bdca1efe437c8d9eea20c911b8f06a57b91600634352cd1e84e6db08b87fd0c",
+        "due": 1792697530.5627966,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "0818b4ba226460745e2b985455297d5ad75db9e18530a584e4b0520084c3f1ac",
+        "due": 1792697530.5627966,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "92711165eef65120187c71b8fda7e441a0d9b45c58ba78c0d48fd0f4d2ff8418",
+        "due": 1792697530.5627966,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "8792b7c0c7c35c3b057ce2e195bb4c6c1f55eeac4c52d2e75d2615fe818a0800",
+        "due": 1792697530.5627966,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "ad3396559159723419c4ef31e427076f7f84ea7bfa428b7b7fda54763b15862a",
+        "due": 1792697536.5107088,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "e32f2d265347c17da7402d1fa69ee0999ca3965a00bf894ae566bec1d4d468b9",
+        "due": 1792697536.5107088,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "2554d7ee27d15e9cfff3e815ad1769016fcad5612d73228ea9b9fe4e8a724aac",
+        "due": 1792697536.5107088,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "55e67eaa05943822750d1124a40e8a92bd9c154a5229094580fbd4a497814d1f",
+        "due": 1792697536.5107088,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "a6ca0b086693a3a7aa0d395105fcc0ecceda7249338073ec07c4bf8464dee609",
+        "due": 1792697536.5107088,
+        "stored_status": "PENDING",
+        "effective_status": "UNSCORED_NO_REAL_FUTURE_QUOTE"
+      }
+    ],
+    "modified_old_ledger": false
+  },
+  "statistics": {
+    "evaluation": {
+      "track": "PROSPECTIVE_REAL_MID_QUOTE_PROXY_NOT_CANDLE_TARGET_OR_PNL",
+      "matched_all_five_cohorts": 0,
+      "matured_partial_cohorts": 0,
+      "status": "PENDING_NO_SHARED_MATURED_QUOTES",
+      "per_model": {},
+      "per_symbol": {},
+      "block_aware": {},
+      "model_selection_or_promotion": false,
+      "multiple_testing": "All five predeclared models retained; no significance or superiority claim on a short window"
+    },
+    "paired_multiple_testing_ledger": [
+      {
+        "contrast": "m5_lightgbm minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      },
+      {
+        "contrast": "m5_patchtst minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      },
+      {
+        "contrast": "zero minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      },
+      {
+        "contrast": "historical_quantiles minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      }
+    ],
+    "threshold_hours": 48,
+    "threshold_time_blocks": 30
+  }
+}

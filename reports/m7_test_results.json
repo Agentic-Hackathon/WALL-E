@@ -1,0 +1,10 @@
+{
+  "tests": 237,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 5,
+  "seconds": 20.538,
+  "junit_sha256": "ad6e84483b8b4ec78246616797fdc1e168ee8002300ec0f9182168f18bfa6453",
+  "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 conda run --no-capture-output -n shbk python -m pytest -q --junitxml=reports/m7_pytest.xml",
+  "passed": 232
+}

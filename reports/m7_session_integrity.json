@@ -1,0 +1,29 @@
+{
+  "source_matches": true,
+  "contract_sha256": "19d2936bdeda6414cda3dc2ed08582d249c087102963e2e4f16649c11fd9d457",
+  "source_commit": "06e4b699c44aeaa682f630a59614ffb659249c94",
+  "report_commit": "06e4b699c44aeaa682f630a59614ffb659249c94",
+  "models_match": true,
+  "protected_runtime_unchanged_from_M6": true,
+  "runtime": {
+    "cycles": 1,
+    "deadline_epoch": 1792870951.412666,
+    "next_inference": 1792699058.2139146,
+    "started_epoch": 1792698151.412666
+  },
+  "wall_clock_elapsed_hours": 0.046632870965533785,
+  "continuous_uptime_claimed": false,
+  "session_complete_claimed": false,
+  "status": "PENDING_48_72H_REAL_OBSERVATION",
+  "source_manifest_file_count": 91,
+  "memory": {
+    "chain_valid": true,
+    "layers": {
+      "DECISION_RISK_VETO": 2,
+      "PAST_FORECAST": 10,
+      "STRATEGY_PERFORMANCE_EVIDENCE": 36
+    },
+    "authority": "EVIDENCE_ONLY_NO_RISK_OR_MODEL_MUTATION",
+    "time_policy": "observation AND availability AND actual creation <= cutoff"
+  }
+}

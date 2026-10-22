@@ -1,0 +1,293 @@
+{
+  "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+  "economic_edge": "NO_VERIFIED_ECONOMIC_EDGE",
+  "paper": {
+    "cash_tmn": 5000000.0,
+    "positions": [],
+    "cash_only_nav_tmn": 5000000.0,
+    "events": {
+      "FRESH_REAL_BID_MARK_TO_MARKET": 2,
+      "MULTI_AGENT_EXPLANATION": 2,
+      "NO_TRUSTED_FORECAST": 2
+    },
+    "paper_trades": 0,
+    "chain_valid": true,
+    "realized_exchange_pnl": null,
+    "paper_cash_pnl_tmn": 0.0,
+    "zero_cash_return_is_not_edge": true,
+    "model_allocation_pnl": null,
+    "reason": "Research allocations are proposals, never broker instructions"
+  },
+  "common_cohorts": 2,
+  "benchmarks": {
+    "cash": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {},
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792698153.0970986,
+          "cash_tmn": 5000000,
+          "liquidation_nav_tmn": 5000000.0,
+          "cash_weight": 1.0,
+          "gross_counterfactual_pnl_tmn": 0.0,
+          "net_counterfactual_pnl_tmn": 0.0,
+          "assumed_entry_exit_fees_tmn": 0.0,
+          "exposure_tmn": 0.0,
+          "quote_sha256": []
+        },
+        {
+          "observed_epoch": 1792698213.7265859,
+          "cash_tmn": 5000000,
+          "liquidation_nav_tmn": 5000000.0,
+          "cash_weight": 1.0,
+          "gross_counterfactual_pnl_tmn": 0.0,
+          "net_counterfactual_pnl_tmn": 0.0,
+          "assumed_entry_exit_fees_tmn": 0.0,
+          "exposure_tmn": 0.0,
+          "quote_sha256": []
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [],
+      "entry_turnover_fraction": 0,
+      "entry_gross_tmn": 0.0,
+      "entry_fees_tmn": 0.0,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792698213.7265859,
+        "cash_tmn": 5000000,
+        "liquidation_nav_tmn": 5000000.0,
+        "cash_weight": 1.0,
+        "gross_counterfactual_pnl_tmn": 0.0,
+        "net_counterfactual_pnl_tmn": 0.0,
+        "assumed_entry_exit_fees_tmn": 0.0,
+        "exposure_tmn": 0.0,
+        "quote_sha256": []
+      }
+    },
+    "equal_weight_10pct_each_cash_residual": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {
+        "BTCTMN": 0.1,
+        "PEPETMN": 0.1
+      },
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792698153.0970986,
+          "cash_tmn": 4000000.0,
+          "liquidation_nav_tmn": 4997115.7020596545,
+          "cash_weight": 0.8004617540376993,
+          "gross_counterfactual_pnl_tmn": -887.1831254686695,
+          "net_counterfactual_pnl_tmn": -2884.297940345199,
+          "assumed_entry_exit_fees_tmn": 1997.1148148765296,
+          "exposure_tmn": 998113.8158755305,
+          "quote_sha256": [
+            "8cfe812197b5f7118889e22d4d7c6f83225614757ea361d952a63b0b5b9b4525",
+            "a8e8c8624c5ba36fc02b37c5c2fae60aad7da62c62d52e854be7f7ebd732b9d1"
+          ]
+        },
+        {
+          "observed_epoch": 1792698213.7265859,
+          "cash_tmn": 4000000.0,
+          "liquidation_nav_tmn": 4997834.548002333,
+          "cash_weight": 0.800346622438477,
+          "gross_counterfactual_pnl_tmn": -167.61761728208512,
+          "net_counterfactual_pnl_tmn": -2165.4519976668016,
+          "assumed_entry_exit_fees_tmn": 1997.8343803847163,
+          "exposure_tmn": 998833.3813837171,
+          "quote_sha256": [
+            "04a212df0c89f1ccf9efa6968b256bc9be62376e88bd511947cf4de613295a03",
+            "25ab3041882593d591f3dcf3dd8d827f478dc668f033de4e0f2326ba7b1ebb8b"
+          ]
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [
+        "8cfe812197b5f7118889e22d4d7c6f83225614757ea361d952a63b0b5b9b4525",
+        "a8e8c8624c5ba36fc02b37c5c2fae60aad7da62c62d52e854be7f7ebd732b9d1"
+      ],
+      "entry_turnover_fraction": 0.2,
+      "entry_gross_tmn": 999000.9990009991,
+      "entry_fees_tmn": 999.0009990009992,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792698213.7265859,
+        "cash_tmn": 4000000.0,
+        "liquidation_nav_tmn": 4997834.548002333,
+        "cash_weight": 0.800346622438477,
+        "gross_counterfactual_pnl_tmn": -167.61761728208512,
+        "net_counterfactual_pnl_tmn": -2165.4519976668016,
+        "assumed_entry_exit_fees_tmn": 1997.8343803847163,
+        "exposure_tmn": 998833.3813837171,
+        "quote_sha256": [
+          "04a212df0c89f1ccf9efa6968b256bc9be62376e88bd511947cf4de613295a03",
+          "25ab3041882593d591f3dcf3dd8d827f478dc668f033de4e0f2326ba7b1ebb8b"
+        ]
+      }
+    },
+    "buy_hold_BTCTMN_10pct": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {
+        "BTCTMN": 0.1
+      },
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792698153.0970986,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998826.365557231,
+          "cash_weight": 0.9002113037983815,
+          "gross_counterfactual_pnl_tmn": -174.80825201998232,
+          "net_counterfactual_pnl_tmn": -1173.6344427689614,
+          "assumed_entry_exit_fees_tmn": 998.8261907489791,
+          "exposure_tmn": 499325.6912484796,
+          "quote_sha256": [
+            "8cfe812197b5f7118889e22d4d7c6f83225614757ea361d952a63b0b5b9b4525"
+          ]
+        },
+        {
+          "observed_epoch": 1792698213.7265859,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4999000.999000998,
+          "cash_weight": 0.9001798561151081,
+          "gross_counterfactual_pnl_tmn": -5.820766091346741e-11,
+          "net_counterfactual_pnl_tmn": -999.0009990010574,
+          "assumed_entry_exit_fees_tmn": 999.0009990009992,
+          "exposure_tmn": 499500.4995004995,
+          "quote_sha256": [
+            "04a212df0c89f1ccf9efa6968b256bc9be62376e88bd511947cf4de613295a03"
+          ]
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [
+        "8cfe812197b5f7118889e22d4d7c6f83225614757ea361d952a63b0b5b9b4525"
+      ],
+      "entry_turnover_fraction": 0.1,
+      "entry_gross_tmn": 499500.4995004996,
+      "entry_fees_tmn": 499.5004995004996,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792698213.7265859,
+        "cash_tmn": 4500000.0,
+        "liquidation_nav_tmn": 4999000.999000998,
+        "cash_weight": 0.9001798561151081,
+        "gross_counterfactual_pnl_tmn": -5.820766091346741e-11,
+        "net_counterfactual_pnl_tmn": -999.0009990010574,
+        "assumed_entry_exit_fees_tmn": 999.0009990009992,
+        "exposure_tmn": 499500.4995004995,
+        "quote_sha256": [
+          "04a212df0c89f1ccf9efa6968b256bc9be62376e88bd511947cf4de613295a03"
+        ]
+      }
+    },
+    "buy_hold_PEPETMN_10pct": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {
+        "PEPETMN": 0.1
+      },
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792698153.0970986,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998289.3365024235,
+          "cash_weight": 0.9003080248149252,
+          "gross_counterfactual_pnl_tmn": -712.3748734486871,
+          "net_counterfactual_pnl_tmn": -1710.6634975762377,
+          "assumed_entry_exit_fees_tmn": 998.2886241275505,
+          "exposure_tmn": 498788.1246270509,
+          "quote_sha256": [
+            "a8e8c8624c5ba36fc02b37c5c2fae60aad7da62c62d52e854be7f7ebd732b9d1"
+          ]
+        },
+        {
+          "observed_epoch": 1792698213.7265859,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998833.549001335,
+          "cash_weight": 0.9002100101730749,
+          "gross_counterfactual_pnl_tmn": -167.6176172820269,
+          "net_counterfactual_pnl_tmn": -1166.450998665744,
+          "assumed_entry_exit_fees_tmn": 998.8333813837171,
+          "exposure_tmn": 499332.88188321755,
+          "quote_sha256": [
+            "25ab3041882593d591f3dcf3dd8d827f478dc668f033de4e0f2326ba7b1ebb8b"
+          ]
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [
+        "a8e8c8624c5ba36fc02b37c5c2fae60aad7da62c62d52e854be7f7ebd732b9d1"
+      ],
+      "entry_turnover_fraction": 0.1,
+      "entry_gross_tmn": 499500.4995004996,
+      "entry_fees_tmn": 499.5004995004996,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792698213.7265859,
+        "cash_tmn": 4500000.0,
+        "liquidation_nav_tmn": 4998833.549001335,
+        "cash_weight": 0.9002100101730749,
+        "gross_counterfactual_pnl_tmn": -167.6176172820269,
+        "net_counterfactual_pnl_tmn": -1166.450998665744,
+        "assumed_entry_exit_fees_tmn": 998.8333813837171,
+        "exposure_tmn": 499332.88188321755,
+        "quote_sha256": [
+          "25ab3041882593d591f3dcf3dd8d827f478dc668f033de4e0f2326ba7b1ebb8b"
+        ]
+      }
+    }
+  },
+  "M5_model_policy_returns": null,
+  "M5_status": "only forecasts/proposals, not executed policies; no invented PnL attribution",
+  "win_loss": null,
+  "profit_factor": null,
+  "risk_adjusted_return": null,
+  "model_selection": false
+}

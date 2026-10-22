@@ -1,0 +1,13 @@
+{
+  "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+  "open": [
+    "Run actual foreground collector for 48/72h; bounded smoke is not completed study",
+    "Verify timely future quotes, restart downtime and network gaps over full period",
+    "Verified account fees and exchange tick/lot/spot minimum absent",
+    "No independent validation of covariance allocators; complex methods disabled",
+    "Forecasts trained on candle returns evaluated on quote proxy: not executable calibration",
+    "No executed research allocation PnL; no verified economic edge",
+    "Partial fills/queue position/hidden liquidity not modeled; no guaranteed execution",
+    "No multi-process private order authority; LIVE remains HARD_DISABLED"
+  ]
+}

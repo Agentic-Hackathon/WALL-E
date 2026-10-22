@@ -1,0 +1,259 @@
+{
+  "observations": [
+    {
+      "best_bid_tmn": 22125867913.0,
+      "best_ask_tmn": 22133613928.0,
+      "mid_tmn": 22129740920.5,
+      "spread_bps": 3.5002736940424093,
+      "ask_levels": 50,
+      "bid_levels": 50,
+      "top5_ask_notional_tmn": 7921313578.604835,
+      "top5_bid_notional_tmn": 270820171.23914355,
+      "top5_quote_imbalance": -0.9338828736178041,
+      "hypothetical_budget_tmn": 500000.0,
+      "hypothetical_full_buy_depth_available": true,
+      "hypothetical_full_roundtrip_depth_available": true,
+      "hypothetical_buy_avg_price": 22133613928.0,
+      "hypothetical_sell_avg_price": 22125867913.0,
+      "hypothetical_instant_roundtrip_net_pct": -0.23472688855377122,
+      "fee_per_side_assumption": 0.001,
+      "symbol": "BTCTMN",
+      "quote_sha256": "8cfe812197b5f7118889e22d4d7c6f83225614757ea361d952a63b0b5b9b4525",
+      "observed_at": 1792698152.1468675,
+      "fee_verified": false,
+      "fee_status": "EXPLICIT_RESEARCH_ASSUMPTION_NOT_ACCOUNT_FEE",
+      "price_precision_observed": null,
+      "amount_precision_observed": null,
+      "exchange_tick_size": null,
+      "exchange_quantity_step": null,
+      "exchange_min_notional": null,
+      "precision_status": "PUBLIC_DECIMAL_PRECISION_IS_NOT_VERIFIED_TICK_OR_LOT_RULE",
+      "paper_min_notional_tmn": 100000.0,
+      "exchange_fill": null,
+      "partial_fill_policy": "NO_PARTIAL_FILL_GENERATION; insufficient displayed sweep rejects estimate",
+      "buy_impact_fraction": 0.0,
+      "estimated_roundtrip_log_cost": 0.0023500280396448925,
+      "research_only": true
+    },
+    {
+      "best_bid_tmn": 1.1903,
+      "best_ask_tmn": 1.192,
+      "mid_tmn": 1.19115,
+      "spread_bps": 14.271922092096167,
+      "ask_levels": 50,
+      "bid_levels": 50,
+      "top5_ask_notional_tmn": 7702808838.7303,
+      "top5_bid_notional_tmn": 119255219.36199999,
+      "top5_quote_imbalance": -0.9695079921421443,
+      "hypothetical_budget_tmn": 500000.0,
+      "hypothetical_full_buy_depth_available": true,
+      "hypothetical_full_roundtrip_depth_available": true,
+      "hypothetical_buy_avg_price": 1.192,
+      "hypothetical_sell_avg_price": 1.1903,
+      "hypothetical_instant_roundtrip_net_pct": -0.3421326995152518,
+      "fee_per_side_assumption": 0.001,
+      "symbol": "PEPETMN",
+      "quote_sha256": "a8e8c8624c5ba36fc02b37c5c2fae60aad7da62c62d52e854be7f7ebd732b9d1",
+      "observed_at": 1792698153.0970986,
+      "fee_verified": false,
+      "fee_status": "EXPLICIT_RESEARCH_ASSUMPTION_NOT_ACCOUNT_FEE",
+      "price_precision_observed": null,
+      "amount_precision_observed": null,
+      "exchange_tick_size": null,
+      "exchange_quantity_step": null,
+      "exchange_min_notional": null,
+      "precision_status": "PUBLIC_DECIMAL_PRECISION_IS_NOT_VERIFIED_TICK_OR_LOT_RULE",
+      "paper_min_notional_tmn": 100000.0,
+      "exchange_fill": null,
+      "partial_fill_policy": "NO_PARTIAL_FILL_GENERATION; insufficient displayed sweep rejects estimate",
+      "buy_impact_fraction": 0.0,
+      "estimated_roundtrip_log_cost": 0.0034271931181280683,
+      "research_only": true
+    },
+    {
+      "best_bid_tmn": 22133613928.0,
+      "best_ask_tmn": 22133613929.0,
+      "mid_tmn": 22133613928.5,
+      "spread_bps": 4.5180150120553323e-07,
+      "ask_levels": 50,
+      "bid_levels": 50,
+      "top5_ask_notional_tmn": 8043671724.504434,
+      "top5_bid_notional_tmn": 197585021.7894228,
+      "top5_quote_imbalance": -0.9520497836987597,
+      "hypothetical_budget_tmn": 500000.0,
+      "hypothetical_full_buy_depth_available": true,
+      "hypothetical_full_roundtrip_depth_available": true,
+      "hypothetical_buy_avg_price": 22133613929.0,
+      "hypothetical_sell_avg_price": 22133613928.0,
+      "hypothetical_instant_roundtrip_net_pct": -0.1998002043091751,
+      "fee_per_side_assumption": 0.001,
+      "symbol": "BTCTMN",
+      "quote_sha256": "04a212df0c89f1ccf9efa6968b256bc9be62376e88bd511947cf4de613295a03",
+      "observed_at": 1792698213.0199213,
+      "fee_verified": false,
+      "fee_status": "EXPLICIT_RESEARCH_ASSUMPTION_NOT_ACCOUNT_FEE",
+      "price_precision_observed": null,
+      "amount_precision_observed": null,
+      "exchange_tick_size": null,
+      "exchange_quantity_step": null,
+      "exchange_min_notional": null,
+      "precision_status": "PUBLIC_DECIMAL_PRECISION_IS_NOT_VERIFIED_TICK_OR_LOT_RULE",
+      "paper_min_notional_tmn": 100000.0,
+      "exchange_fill": null,
+      "partial_fill_policy": "NO_PARTIAL_FILL_GENERATION; insufficient displayed sweep rejects estimate",
+      "buy_impact_fraction": 0.0,
+      "estimated_roundtrip_log_cost": 0.0020000007118470896,
+      "research_only": true
+    },
+    {
+      "best_bid_tmn": 1.1916,
+      "best_ask_tmn": 1.192,
+      "mid_tmn": 1.1918,
+      "spread_bps": 3.356267830172478,
+      "ask_levels": 50,
+      "bid_levels": 50,
+      "top5_ask_notional_tmn": 7700875784.2678995,
+      "top5_bid_notional_tmn": 68539481.7045,
+      "top5_quote_imbalance": -0.9823565920064328,
+      "hypothetical_budget_tmn": 500000.0,
+      "hypothetical_full_buy_depth_available": true,
+      "hypothetical_full_roundtrip_depth_available": true,
+      "hypothetical_buy_avg_price": 1.192,
+      "hypothetical_sell_avg_price": 1.1916,
+      "hypothetical_instant_roundtrip_net_pct": -0.23329019973313825,
+      "fee_per_side_assumption": 0.001,
+      "symbol": "PEPETMN",
+      "quote_sha256": "25ab3041882593d591f3dcf3dd8d827f478dc668f033de4e0f2326ba7b1ebb8b",
+      "observed_at": 1792698213.7265859,
+      "fee_verified": false,
+      "fee_status": "EXPLICIT_RESEARCH_ASSUMPTION_NOT_ACCOUNT_FEE",
+      "price_precision_observed": null,
+      "amount_precision_observed": null,
+      "exchange_tick_size": null,
+      "exchange_quantity_step": null,
+      "exchange_min_notional": null,
+      "precision_status": "PUBLIC_DECIMAL_PRECISION_IS_NOT_VERIFIED_TICK_OR_LOT_RULE",
+      "paper_min_notional_tmn": 100000.0,
+      "exchange_fill": null,
+      "partial_fill_policy": "NO_PARTIAL_FILL_GENERATION; insufficient displayed sweep rejects estimate",
+      "buy_impact_fraction": 0.0,
+      "estimated_roundtrip_log_cost": 0.002335627452834772,
+      "research_only": true
+    }
+  ],
+  "verified_account_fee": null,
+  "credentials_used": false,
+  "maker_taker_status": "UNVERIFIED; 0.1% per side assumption only",
+  "tick_lot_minimum_status": "UNVERIFIED; precision not tick/step",
+  "successful_public_quote_requests": 4,
+  "failed_public_quote_attempts": 0,
+  "sync_runs": [
+    {
+      "cached": 0,
+      "complete": 2,
+      "derived_requested": [
+        "15"
+      ],
+      "failed": 0,
+      "harvest": {
+        "cached": 0,
+        "complete": 2,
+        "conflicts": 0,
+        "count_units": "source_window_chunks",
+        "errors": [],
+        "explicit_window_mode": true,
+        "failed": 0,
+        "finished": "2026-10-22T19:42:33.126437+00:00",
+        "min_request_start_spacing_seconds": 0.35,
+        "resolutions": [
+          "1"
+        ],
+        "retried_requests": 0,
+        "scope": "all-spot",
+        "started": "2026-10-22T19:42:31.766334+00:00",
+        "symbols_count": 2,
+        "workers": 1
+      },
+      "plan": {
+        "dry_run": false,
+        "generated_at_utc": "2026-10-22T19:42:31.750924+00:00",
+        "model_demand": {
+          "context": 96,
+          "horizon": 3,
+          "origin": "ACTIVE_CHAMPION_METADATA",
+          "target_resolution": "15"
+        },
+        "network_requests_planned": 2,
+        "network_requests_skipped_known_unavailable": 0,
+        "planned_windows": [
+          {
+            "begin": 1792694760,
+            "begin_utc": "2026-10-22T18:46:00+00:00",
+            "end": 1792698060,
+            "end_utc": "2026-10-22T19:41:00+00:00",
+            "source_resolution": "1",
+            "symbol": "BTCTMN",
+            "target_resolution": "15",
+            "target_resolutions": [
+              "15"
+            ]
+          },
+          {
+            "begin": 1792694760,
+            "begin_utc": "2026-10-22T18:46:00+00:00",
+            "end": 1792698060,
+            "end_utc": "2026-10-22T19:41:00+00:00",
+            "source_resolution": "1",
+            "symbol": "PEPETMN",
+            "target_resolution": "15",
+            "target_resolutions": [
+              "15"
+            ]
+          }
+        ],
+        "purpose": "STARTUP_OR_WATCH_PUBLIC_DATA_SYNC",
+        "scope": "priority",
+        "selected_windows": [
+          {
+            "begin": 1792694760,
+            "begin_utc": "2026-10-22T18:46:00+00:00",
+            "end": 1792698060,
+            "end_utc": "2026-10-22T19:41:00+00:00",
+            "source_resolution": "1",
+            "symbol": "BTCTMN",
+            "target_resolution": "15",
+            "target_resolutions": [
+              "15"
+            ]
+          },
+          {
+            "begin": 1792694760,
+            "begin_utc": "2026-10-22T18:46:00+00:00",
+            "end": 1792698060,
+            "end_utc": "2026-10-22T19:41:00+00:00",
+            "source_resolution": "1",
+            "symbol": "PEPETMN",
+            "target_resolution": "15",
+            "target_resolutions": [
+              "15"
+            ]
+          }
+        ],
+        "source_unavailable_windows": [],
+        "symbols": [
+          "BTCTMN",
+          "PEPETMN"
+        ],
+        "target_resolutions": [
+          "15"
+        ],
+        "target_warmup_hours": {
+          "15": 37.75
+        },
+        "warmup_hours": 48.0
+      },
+      "remaining_planned_windows": 0,
+      "status": "COMPLETED"
+    }
+  ]
+}
