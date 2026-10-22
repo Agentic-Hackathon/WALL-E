@@ -31,4 +31,8 @@ def test_paper_account_delegates_entries_exits_and_circuit_breaker_to_gate():
 
 def test_watch_final_liquidation_cannot_bypass_the_risk_gate():
     source = Path(inspect.getfile(atlas_shadow)).with_name('atlas_watch.py').read_text(encoding='utf8')
-    assert 'paper.risk.final_tmn_liquidation(' in source
+    assert 'liquidate_paper_positions(' in source
+    shadow_source = Path(inspect.getfile(atlas_shadow)).read_text(encoding='utf8')
+    assert 'self.risk.final_tmn_liquidation(' in shadow_source
+    from wallex_bot.atlas_liquidation import liquidate_paper_positions
+    assert 'broker.submit(' in inspect.getsource(liquidate_paper_positions)

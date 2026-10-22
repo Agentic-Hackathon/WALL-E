@@ -54,7 +54,7 @@ class PaperAccount:
             prev=h
         return True
 
-    def trade(self,symbol,decision,book,fee=.001,*,client_order_id=None,expected_side='AUTO'):
+    def trade(self,symbol,decision,book,fee=.001,*,client_order_id=None,expected_side='AUTO',purpose='STRATEGY'):
         """Atomic shadow mutation and idempotency, gated by existing RiskGate.
 
         Repeated client_order_id with IDENTICAL evidence returns the same result
@@ -67,8 +67,14 @@ class PaperAccount:
             raise ValueError('Invalid client_order_id')
         if expected_side not in ('AUTO','BUY','SELL'):
             raise ValueError('Invalid expected side')
+        if purpose not in ('STRATEGY','FINAL_TMN'):
+            raise ValueError('Invalid trade purpose')
+        if purpose=='FINAL_TMN' and expected_side!='SELL':
+            raise ValueError('Final TMN purpose can only request a sell')
         evidence={'symbol':symbol,'decision':decision,'book':book,'fee':fee,
                   'expected_side':expected_side}
+        if purpose!='STRATEGY':
+            evidence['purpose']=purpose
         fingerprint=hashlib.sha256(json.dumps(evidence,sort_keys=True,ensure_ascii=False,
                 allow_nan=False,separators=(',',':')).encode('utf8')).hexdigest()
         if self.db.in_transaction:
@@ -85,7 +91,11 @@ class PaperAccount:
                     return previous[2]
             cash=float(self.get('cash_tmn'))
             positions=self.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
-            gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
+            # The same deterministic gate authorizes ordinary and terminal orders.
+            if purpose=='FINAL_TMN':
+                gate=self.risk.final_tmn_liquidation(symbol,book,cash,positions,fee)
+            else:
+                gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
             action=gate.action
             if (expected_side=='BUY' and action=='PAPER_SELL') or (expected_side=='SELL' and action=='PAPER_BUY'):
                 action='BROKER_SIDE_MISMATCH_NO_ORDER'
@@ -110,7 +120,7 @@ class PaperAccount:
                   'quote':quote,'fee_assumption':fee,
                   'fill_assumption':'HYPOTHETICAL at observed best bid/ask; not an exchange execution',
                   'risk_gate':gate.audit_payload(),
-                  'client_order_id':client_order_id,
+                  'client_order_id':client_order_id,'purpose':purpose,
                   'paper_cash_tmn':self.get('cash_tmn')})
             if client_order_id is not None:
                 self.db.execute('INSERT INTO broker_intents VALUES(?,?,?,?)',

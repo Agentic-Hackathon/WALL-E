@@ -158,8 +158,33 @@ class RiskGate:
                                 bool(already_stopped) or drawdown >= self.limits.max_drawdown_fraction)
 
     def final_tmn_liquidation(self, symbol: str, book: dict, cash_tmn, positions: Iterable, fee) -> RiskDecision:
-        """Authorize a final Shadow-only conversion to TMN through this same gate."""
-        decision = self.evaluate(symbol, {}, book, cash_tmn, positions, True, fee)
-        if decision.action == 'PAPER_SELL':
-            return RiskDecision('PAPER_SELL', 'FINAL_TMN_LIQUIDATION')
-        return decision
+        """Authorize FULL-POSITION paper exit only at an observed, sufficiently deep best bid.
+
+        A final liquidation is a spot SELL, not a way to bypass market-data
+        verification or claim an actual exchange fill. Its actual top bid quantity
+        must cover the entire held quantity used by PaperAccount's bid-price math.
+        For a future live broker, quantities/lot precision and exchange fills
+        must be handled separately; this is *not* live authorization.
+        """
+        try:
+            rows = list(positions)
+        except (TypeError, ValueError):
+            return RiskDecision('REJECTED', 'INVALID_POSITION_LEDGER')
+        if not isinstance(book, dict):
+            return RiskDecision('REJECTED', 'MISSING_OR_INVALID_OBSERVED_BOOK')
+        decision = self.evaluate(symbol, {}, book, cash_tmn, rows, True, fee)
+        if decision.action != 'PAPER_SELL':
+            return decision
+        try:
+            matching = [row for row in rows if row[0] == symbol]
+            if len(matching) != 1:
+                return RiskDecision('REJECTED', 'INVALID_POSITION_LEDGER')
+            held_qty = _finite(matching[0][1], 'held position quantity', positive=True)
+            observed_at_best = _finite(book.get('best_bid_quantity'),
+                                       'observed best bid quantity', positive=True)
+        except (ValueError, TypeError, IndexError, KeyError):
+            return RiskDecision('REJECTED', 'MISSING_OBSERVED_EXIT_DEPTH')
+        if observed_at_best < held_qty:
+            return RiskDecision('INSUFFICIENT_VISIBLE_EXIT_LIQUIDITY',
+                                'BEST_BID_QUANTITY_BELOW_HELD_QUANTITY')
+        return RiskDecision('PAPER_SELL', 'FINAL_TMN_LIQUIDATION')

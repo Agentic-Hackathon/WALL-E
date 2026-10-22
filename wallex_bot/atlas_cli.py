@@ -13,7 +13,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper'])
     p.add_argument('--days',type=int,default=7)
     p.add_argument('--minutes',type=int,default=10)
     p.add_argument('--hours',type=int,default=48)
@@ -41,6 +41,13 @@ def main(argv=None):
                        else {'candidates':store.review_candidates(),
                              'note':'CANDIDATE lessons never alter risk gates, models, orders or policy'})
             finally:store.close()
+            return
+        if args.command in ('liquidation-status','liquidate-paper'):
+            from .atlas_liquidation import liquidation_status, liquidate_paper_positions
+            if args.command=='liquidation-status':
+                pretty(liquidation_status(lake.root))
+            else:
+                pretty(liquidate_paper_positions(lake, fee=args.fee, require_watch_deadline=True))
             return
         if args.command=='broker-status':
             from .atlas_broker import broker_status

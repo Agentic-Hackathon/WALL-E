@@ -1,0 +1,681 @@
+diff --git a/CHANGELOG_STAGE3_TMN_LIQUIDATION_FA.md b/CHANGELOG_STAGE3_TMN_LIQUIDATION_FA.md
+new file mode 100644
+index 0000000..73142e9
+--- /dev/null
++++ b/CHANGELOG_STAGE3_TMN_LIQUIDATION_FA.md
+@@ -0,0 +1,11 @@
++# Stage 3 — Spot/TMN paper closeout through RiskGate & Broker
++
++- **منبع:** مقررات مسابقه برای صفرکردن موقعیت کوینی در پایان مسابقه؛ الهام از اصول risk-first در `trading-bot` (بدون LICENSE در نسخه بررسی‌شده، فقط ایده) و ثبت پایدار در `grid_trading_bot` (MIT). هیچ کدی از مخازن خارجی کپی نشده است.
++- **فایل جدید:** `wallex_bot/atlas_liquidation.py`: روال بسته‌شدن نهایی موقعیت‌های **فرضی**، با مشاهده تازه و واقعی Order Book والکس، دریافت حجم واقعی بهترین Bid و هش شاهد خام، ثبت دلیل موفقیت/شکست و گزارش موقعیت‌های باقی‌مانده.
++- **RiskGate:** `final_tmn_liquidation` اکنون علاوه بر مجوز فروش، وجود Bid معتبر و کافی بودن **حجم بهترین Bid** برای کل مقدار نگهداری‌شده را بررسی می‌کند. در نبود داده فروش رد می‌شود. هزینه معامله همچنان فرض پژوهشی است.
++- **Broker و Paper:** نوع دستور `purpose='FINAL_TMN'` فقط برای فروش کامل، بدون تعیین قیمت/مقدار دلخواه مجاز است. Idempotency، جهش موجودی و لاگ در تراکنش واحد SQLite اجرا می‌شوند. رفتار دستورات عادی مرحله دوم دست‌نخورده است.
++- **Watch:** پایان چرخه دیگر مستقیم موجودی SQLite را تغییر نمی‌دهد؛ تنها از `liquidate_paper_positions` و سپس `ShadowBroker → PaperAccount → RiskGate` استفاده می‌کند. شکست باعث باقی‌ماندن موقعیت و گزارش `PAPER_INCOMPLETE` می‌شود.
++- **CLI:** فرمان‌های `liquidation-status` (فقط‌خواندنی و با بررسی زنجیره هش) و `liquidate-paper` (تنها بعد از رسیدن زمان پایان Watch؛ **فقط Shadow**).
++- **کد خارجی:** هیچ کپی از GPL، مخزن بدون مجوز یا پروژه‌های بیرونی نداریم.
++- **محدودیت:** اجرای Live، `createorder`، cancel واقعی، partial fills، حداقل اندازه سفارش، داده مجوز پکیج و تسویه واقعی تومان در این نسخه پیاده نشده است. این مرحله **هیچ سود یا معامله واقعی را اثبات نمی‌کند**.
++- **تست:** ۹ تست افزوده، بدون تولید قیمت/کندل/خبر مصنوعی. سناریوی فروش مثبت فقط با دفتر سفارش واقعی دریافت‌شده قابل اعتبارسنجی است.
+diff --git a/QUICKSTART_STAGE3_TMN_LIQUIDATION_FA.md b/QUICKSTART_STAGE3_TMN_LIQUIDATION_FA.md
+new file mode 100644
+index 0000000..4e4f998
+--- /dev/null
++++ b/QUICKSTART_STAGE3_TMN_LIQUIDATION_FA.md
+@@ -0,0 +1,44 @@
++# نصب مرحله سوم روی شاخه Stage 2
++
++مرحله دوم در Git شما: `integration/atlas-broker`، commit آغازین `58d3236`.
++
++1. هنگام اجرای حلقه `watch` منبع برنامه را تغییر ندهید؛ تا پایان یک چرخه با Ctrl+C متوقف کنید. Snapshotها، `watch_session.json` و `atlas_store` پاک نمی‌شوند.
++2. فایل ZIP پچ Stage3 را در **ریشه** `D:/Hackaton/Wallex/wallex_agent_v3` Extract کنید. ZIP فقط اسکریپت نصب و patch متنی را دارد؛ به کد موجود دست نمی‌زند.
++3. در Git Bash:
++
++```bash
++cd /d/Hackaton/Wallex/wallex_agent_v3
++conda activate shbk
++bash scripts/apply_stage3_liquidation.sh
++```
++
++اسکریپت commit آغازین را کنترل می‌کند، شاخه `integration/atlas-tmn-liquidation` را می‌سازد، پچ را اعمال می‌کند، همه تست‌ها را اجرا می‌کند و سپس commit می‌سازد. در صورت شکست تست، commit ساخته نمی‌شود.
++
++## مشاهده فقط‌خواندنی
++
++```bash
++python -m wallex_bot.atlas_cli liquidation-status
++python -m wallex_bot.atlas_cli broker-status
++```
++
++`liquidation-status` هیچ سفارش و حتی فایل ledger جدیدی تولید نمی‌کند. داده‌های گزارش، Shadow هستند؛ موجودی واقعی حساب مسابقه را این دستور نمی‌خواند.
++
++## بستن خودکار پایان Watch
++
++پایان `watch --hours 48` با استفاده از دفتر سفارش واقعی تازه و ثبت سند SHA-256، یک درخواست `FINAL_TMN` برای هر موقعیت فرضی می‌سازد. اگر بهترین Bid مقدار کافی نداشته باشد، هیچ فروش فرضی ثبت نمی‌شود؛ وضعیت `CLOSED_WITH_UNRESOLVED_PAPER_POSITIONS` ذخیره می‌شود.
++
++برای تلاش دوباره **پس از پایان زمان ثبت‌شده Watch**، در صورت باقی ماندن موقعیت‌ها:
++
++```bash
++python -m wallex_bot.atlas_cli liquidate-paper
++```
++
++این فرمان فقط موجودی فرضی را مدیریت می‌کند و هیچ API خصوصی یا ثبت سفارش زنده‌ای ندارد. `--fee` پیش‌فرض 0.001 یک **فرض پژوهشی** است؛ کارمزد واقعی تأییدنشده است. هیچ قیمتی با داده قبلی، آخرین کندل یا حدس جایگزین نمی‌شود.
++
++## فایل‌های نتیجه
++
++- `atlas_store/last_paper_liquidation_report.json`: هر تلاش، Quote SHA، دلیل رد، وضعیت موقعیت‌های باقی‌مانده.
++- `atlas_store/liquidation_observations/*.json`: پاسخ خام و واقعی دفتر سفارش و زمان دریافت آن.
++- `atlas_store/shadow.sqlite`: زنجیره هش تصمیم‌ها و Broker idempotency.
++
++**تا زمان تأیید مجوزهای مسابقه و پیاده‌سازی و آزمایش مسیر واقعی سفارش، تسویه حساب مسابقه عمداً غیرممکن است.** از این خروجی نمی‌توان تحقق سود/زیان واقعی را استنتاج کرد.
+diff --git a/tests/test_atlas_liquidation_stage3_real_only.py b/tests/test_atlas_liquidation_stage3_real_only.py
+new file mode 100644
+index 0000000..b7c57e4
+--- /dev/null
++++ b/tests/test_atlas_liquidation_stage3_real_only.py
+@@ -0,0 +1,121 @@
++"""Stage 3 safety contract tests: no invented market quotes/prices/fills."""
++from pathlib import Path
++import inspect
++import sqlite3
++import pytest
++
++from wallex_bot.atlas_archive import Lake
++from wallex_bot.atlas_broker import (BrokerSafetyError, OrderIntent, ShadowBroker,
++                                     WallexLiveBroker, OrderState)
++from wallex_bot.atlas_liquidation import liquidation_status, liquidate_paper_positions
++from wallex_bot.atlas_shadow import PaperAccount
++from wallex_bot.atlas_risk import RiskGate
++from wallex_bot import atlas_watch
++
++
++def test_liquidation_status_does_not_create_a_ledger_or_call_api(tmp_path):
++    result = liquidation_status(tmp_path)
++    assert result['status'] == 'NO_EXISTING_PAPER_LEDGER'
++    assert result['live_order_submission'] == 'ABSENT'
++    assert not (tmp_path / 'shadow.sqlite').exists()
++
++
++def test_no_watch_deadline_fails_closed_without_accessing_market(tmp_path, monkeypatch):
++    lake = Lake(tmp_path)
++    def forbidden_market_call(*args, **kwargs):
++        raise AssertionError('Market lookup must not happen before deadline checks')
++    monkeypatch.setattr('wallex_bot.atlas_liquidation.market.depth', forbidden_market_call)
++    with pytest.raises(BrokerSafetyError, match='No persisted watch session'):
++        liquidate_paper_positions(lake, require_watch_deadline=True)
++    assert not (tmp_path / 'shadow.sqlite').exists()
++    lake.close()
++
++
++def test_empty_paper_ledger_finishes_without_market_fixtures(tmp_path, monkeypatch):
++    lake = Lake(tmp_path)
++    monkeypatch.setattr('wallex_bot.atlas_liquidation.market.depth',
++                        lambda *_: (_ for _ in ()).throw(AssertionError('No fake data or market read')))
++    result = liquidate_paper_positions(lake, require_watch_deadline=False)
++    assert result['status'] == 'PAPER_FLAT'
++    assert result['remaining_paper_positions'] == 0
++    assert result['observations'] == []
++    assert result['exchange_fills_claimed'] == 0
++    assert result['paper_cash_tmn'] == 5_000_000  # official contest starting amount, not market data
++    assert liquidation_status(tmp_path)['status'] == 'PAPER_FLAT'
++    lake.close()
++
++
++def test_terminal_purpose_has_no_short_or_buy_path():
++    with pytest.raises(ValueError, match='Final liquidation only permits'):
++        OrderIntent('terminal-purpose-01', 'BTCTMN', 'BUY', purpose='FINAL_TMN')
++    with pytest.raises(ValueError, match='Final liquidation only permits'):
++        OrderIntent('terminal-purpose-02', 'BTCTMN', 'AUTO', purpose='FINAL_TMN')
++    with pytest.raises(ValueError, match='Final liquidation only permits'):
++        OrderIntent('terminal-purpose-03', 'BTCTMN', 'SELL', quantity=1, purpose='FINAL_TMN')
++    with pytest.raises(ValueError):
++        OrderIntent('terminal-purpose-04', 'BTCUSDT', 'SELL', purpose='FINAL_TMN')
++
++
++def test_final_gate_refuses_nonobserved_depth_and_does_not_order():
++    gate = RiskGate()
++    response = gate.final_tmn_liquidation('BTCTMN', {}, 5_000_000, [], .001)
++    assert response.action != 'PAPER_SELL'
++    assert 'POSITION' not in response.action or response.action != 'PAPER_BUY'
++
++
++def test_paper_terminal_order_is_idempotent_even_without_valid_quote(tmp_path):
++    lake = Lake(tmp_path)
++    paper = PaperAccount(lake)
++    broker = ShadowBroker(paper)
++    intent = OrderIntent('paper-terminal-0001', 'BTCTMN', 'SELL', purpose='FINAL_TMN')
++    try:
++        first = broker.submit(intent, forecast={}, book={}, fee=.001)
++        second = broker.submit(intent, forecast={}, book={}, fee=.001)
++        assert first == second
++        assert first.state == OrderState.PAPER_NOT_EXECUTED
++        assert paper.db.execute('SELECT COUNT(*) FROM events').fetchone()[0] == 1
++        assert paper.db.execute('SELECT COUNT(*) FROM positions').fetchone()[0] == 0
++        assert paper.verify()
++    finally:
++        paper.close(); lake.close()
++
++
++def test_live_broker_cannot_close_real_coins_even_with_terminal_intent(tmp_path):
++    live = WallexLiveBroker(tmp_path)
++    try:
++        receipt = live.submit(OrderIntent('no-live-close-00001', 'BTCTMN', 'SELL', purpose='FINAL_TMN'))
++        assert receipt.state == OrderState.BLOCKED_DRY_RUN
++        assert not receipt.hypothetical
++        assert live.reconcile()['submitted_exchange_orders'] == 0
++    finally:
++        live.close()
++
++
++def test_final_watch_uses_broker_and_not_direct_cash_position_mutation():
++    source = inspect.getsource(atlas_watch.run)
++    assert 'liquidate_paper_positions(' in source
++    assert "DELETE FROM positions" not in source
++    assert "paper._set('cash_tmn'" not in source
++    finalizer = inspect.getsource(liquidate_paper_positions)
++    assert 'broker.submit(' in finalizer
++    assert 'market.depth(symbol)' in finalizer
++    assert 'raw_depth' in finalizer
++    assert 'requests.post' not in finalizer
++
++
++def test_liquidation_status_detects_tampered_real_paper_audit_without_price_fixture(tmp_path):
++    lake = Lake(tmp_path)
++    paper = PaperAccount(lake)
++    try:
++        with paper.db:
++            paper.log('SYSTEM', 'CONTRACT_TEST_EVENT', {'contains_market_data': False})
++        assert liquidation_status(tmp_path)['paper_hash_chain_valid']
++        paper.db.execute("UPDATE events SET action='TAMPERED' WHERE id=1")
++        paper.db.commit()
++        result = liquidation_status(tmp_path)
++        assert result['status'] == 'PAPER_AUDIT_INVALID'
++        assert not result['paper_hash_chain_valid']
++        with pytest.raises(BrokerSafetyError):
++            liquidate_paper_positions(lake, require_watch_deadline=False)
++    finally:
++        paper.close(); lake.close()
+diff --git a/tests/test_atlas_risk_contract.py b/tests/test_atlas_risk_contract.py
+index 12fbe29..b2eea12 100644
+--- a/tests/test_atlas_risk_contract.py
++++ b/tests/test_atlas_risk_contract.py
+@@ -31,4 +31,8 @@ def test_paper_account_delegates_entries_exits_and_circuit_breaker_to_gate():
+ 
+ def test_watch_final_liquidation_cannot_bypass_the_risk_gate():
+     source = Path(inspect.getfile(atlas_shadow)).with_name('atlas_watch.py').read_text(encoding='utf8')
+-    assert 'paper.risk.final_tmn_liquidation(' in source
++    assert 'liquidate_paper_positions(' in source
++    shadow_source = Path(inspect.getfile(atlas_shadow)).read_text(encoding='utf8')
++    assert 'self.risk.final_tmn_liquidation(' in shadow_source
++    from wallex_bot.atlas_liquidation import liquidate_paper_positions
++    assert 'broker.submit(' in inspect.getsource(liquidate_paper_positions)
+diff --git a/wallex_bot/atlas_broker.py b/wallex_bot/atlas_broker.py
+index ffa7f96..8b92e55 100644
+--- a/wallex_bot/atlas_broker.py
++++ b/wallex_bot/atlas_broker.py
+@@ -97,6 +97,7 @@ class OrderIntent:
+     notional_tmn: float | None = None
+     quantity: float | None = None
+     limit_price_tmn: float | None = None
++    purpose: str = 'STRATEGY'
+ 
+     def __post_init__(self):
+         if not isinstance(self.client_order_id, str) or not re.fullmatch(r'[A-Za-z0-9:_-]{8,120}', self.client_order_id):
+@@ -105,6 +106,11 @@ class OrderIntent:
+             raise ValueError('Only spot TMN-quote symbols are accepted at this boundary')
+         if self.side not in ('AUTO', 'BUY', 'SELL'):
+             raise ValueError('Unsupported spot order side')
++        if self.purpose not in ('STRATEGY', 'FINAL_TMN'):
++            raise ValueError('Unsupported order purpose')
++        if self.purpose == 'FINAL_TMN' and (self.side != 'SELL' or
++                any(getattr(self, x) is not None for x in ('notional_tmn', 'quantity', 'limit_price_tmn'))):
++            raise ValueError('Final liquidation only permits full-position SELL under existing RiskGate')
+         for field_name in ('notional_tmn', 'quantity', 'limit_price_tmn'):
+             number = getattr(self, field_name)
+             if number is not None and (not isinstance(number, (int, float)) or
+@@ -115,10 +121,13 @@ class OrderIntent:
+             raise ValueError('Automatic shadow-side intent cannot override RiskGate sizing')
+ 
+     def fingerprint(self):
+-        return _digest({'client_order_id': self.client_order_id,
+-                        'symbol': self.symbol, 'side': self.side,
+-                        'notional_tmn': self.notional_tmn,
+-                        'quantity': self.quantity, 'limit_price_tmn': self.limit_price_tmn})
++        payload = {'client_order_id': self.client_order_id,
++                   'symbol': self.symbol, 'side': self.side,
++                   'notional_tmn': self.notional_tmn,
++                   'quantity': self.quantity, 'limit_price_tmn': self.limit_price_tmn}
++        if self.purpose != 'STRATEGY':
++            payload['purpose'] = self.purpose
++        return _digest(payload)
+ 
+ 
+ @dataclass(frozen=True)
+@@ -159,7 +168,7 @@ class ShadowBroker:
+             raise BrokerSafetyError('Observed book, model forecast and explicit fee assumption required')
+         action = self.paper.trade(intent.symbol, forecast, book, fee,
+                                   client_order_id=intent.client_order_id,
+-                                  expected_side=intent.side)
++                                  expected_side=intent.side, purpose=intent.purpose)
+         executed = action in ('PAPER_BUY', 'PAPER_SELL')
+         return BrokerReceipt(intent.client_order_id, intent.symbol,
+                              OrderState.PAPER_EXECUTED if executed else OrderState.PAPER_NOT_EXECUTED,
+diff --git a/wallex_bot/atlas_cli.py b/wallex_bot/atlas_cli.py
+index bdee764..c518c47 100644
+--- a/wallex_bot/atlas_cli.py
++++ b/wallex_bot/atlas_cli.py
+@@ -13,7 +13,7 @@ def main(argv=None):
+     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
+         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
+     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
+-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status'])
++        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper'])
+     p.add_argument('--days',type=int,default=7)
+     p.add_argument('--minutes',type=int,default=10)
+     p.add_argument('--hours',type=int,default=48)
+@@ -42,6 +42,13 @@ def main(argv=None):
+                              'note':'CANDIDATE lessons never alter risk gates, models, orders or policy'})
+             finally:store.close()
+             return
++        if args.command in ('liquidation-status','liquidate-paper'):
++            from .atlas_liquidation import liquidation_status, liquidate_paper_positions
++            if args.command=='liquidation-status':
++                pretty(liquidation_status(lake.root))
++            else:
++                pretty(liquidate_paper_positions(lake, fee=args.fee, require_watch_deadline=True))
++            return
+         if args.command=='broker-status':
+             from .atlas_broker import broker_status
+             pretty(broker_status(lake.root));return
+diff --git a/wallex_bot/atlas_liquidation.py b/wallex_bot/atlas_liquidation.py
+new file mode 100644
+index 0000000..af3268b
+--- /dev/null
++++ b/wallex_bot/atlas_liquidation.py
+@@ -0,0 +1,238 @@
++"""End-of-watch spot/TMN PAPER liquidation through existing Broker and RiskGate.
++
++Source: Wallex hackathon rule: finish with realized TMN, not held coins.
++Conceptual inspiration only: risk-first gate (trading-bot @
++688087e64f79f545c7e40ee6e889c9ce92e03693, no license) and durable
++execution safeguards (grid_trading_bot @ fbda3dd5558a168f11e1a9733e12e1d9d8b3e1fc, MIT).
++NO copied third-party code, no synthetic prices, no model overrides, no private
++API access, no actual Wallex trade, cancel or withdrawal endpoints.
++
++A sell at an actually observed top-of-book bid is a *hypothetical* paper
++mutation, NOT a guaranteed fill. The future live closeout requires real
++exchange order status, lot-size and fees verification, and reconciliation.
++"""
++from __future__ import annotations
++
++from datetime import datetime, timezone
++from pathlib import Path
++import hashlib
++import json
++import math
++import os
++import tempfile
++import sqlite3
++import time
++
++from .atlas_broker import BrokerSafetyError, OrderIntent, ShadowBroker
++from .atlas_shadow import PaperAccount
++from . import market
++from .live_scout import _levels  # parse genuine Wallex order-book levels, not mocked quotes
++
++
++def _utcnow():
++    return datetime.now(timezone.utc).isoformat()
++
++
++def _canonical(obj):
++    return json.dumps(obj, sort_keys=True, ensure_ascii=False,
++                      separators=(',', ':'), allow_nan=False)
++
++
++def _save_atomic(path, obj):
++    path = Path(path)
++    path.parent.mkdir(parents=True, exist_ok=True)
++    fd, intermediate = tempfile.mkstemp(prefix='.' + path.name + '-', suffix='.partial',
++                                        dir=path.parent)
++    try:
++        with os.fdopen(fd, 'w', encoding='utf8') as handle:
++            handle.write(json.dumps(obj, indent=2, ensure_ascii=False, allow_nan=False))
++            handle.flush()
++            os.fsync(handle.fileno())
++        os.replace(intermediate, path)
++    finally:
++        if os.path.exists(intermediate):
++            os.unlink(intermediate)
++
++
++def _session(root, *, deadline_required):
++    f = Path(root) / 'watch_session.json'
++    if not f.is_file():
++        if deadline_required:
++            raise BrokerSafetyError('No persisted watch session; final paper liquidation refused')
++        return None
++    data = json.loads(f.read_text(encoding='utf8'))
++    if not isinstance(data, dict):
++        raise BrokerSafetyError('Watch session is not a valid object')
++    if deadline_required:
++        try:
++            start = float(data['started_epoch'])
++            deadline = float(data['deadline_epoch'])
++            hours = float(data['hours'])
++        except (KeyError, TypeError, ValueError, OverflowError):
++            raise BrokerSafetyError('Incomplete watch deadline; fail closed') from None
++        if (not all(math.isfinite(x) for x in (start, deadline, hours)) or
++                not 1 <= hours <= 72 or abs(deadline-start-hours*3600) > 1 or
++                time.time() < deadline):
++            raise BrokerSafetyError('Watch deadline not reached or invalid; paper liquidation refused')
++    return data
++
++
++def liquidation_status(root) -> dict:
++    """Strictly READ-ONLY status; never creates the shadow ledger or calls Wallex."""
++    root = Path(root)
++    state = _session(root, deadline_required=False)
++    report = {'mode': 'PAPER_STATUS_READ_ONLY',
++              'live_order_submission': 'ABSENT',
++              'watch_status': state.get('status') if state else 'NO_SESSION',
++              'deadline_epoch': state.get('deadline_epoch') if state else None,
++              'paper_positions': [], 'paper_cash_tmn': None,
++              'real_contest_balance': 'NOT_QUERIED_BY_THIS_COMMAND'}
++    path = root / 'shadow.sqlite'
++    if not path.is_file():
++        report['status'] = 'NO_EXISTING_PAPER_LEDGER'
++        return report
++    con = sqlite3.connect(path.resolve().as_uri() + '?mode=ro', uri=True)
++    try:
++        cash = con.execute("SELECT value FROM kv WHERE key='cash_tmn'").fetchone()
++        report['paper_cash_tmn'] = float(cash[0]) if cash else None
++        report['paper_positions'] = [
++            {'symbol': sym, 'quantity': qty, 'entry_cost_tmn': cost}
++            for sym, qty, cost in con.execute('SELECT symbol,quantity,entry_cost FROM positions ORDER BY symbol')]
++        prev = 'GENESIS'
++        integrity = True
++        for at, sym, action, payload, previous, digest in con.execute(
++                'SELECT observed_at,symbol,action,payload,prev_hash,hash FROM events ORDER BY id'):
++            computed = hashlib.sha256((previous+'|'+at+'|'+sym+'|'+action+'|'+payload).encode()).hexdigest()
++            if previous != prev or computed != digest:
++                integrity = False
++                break
++            prev = digest
++        report['paper_hash_chain_valid'] = integrity
++    finally:
++        con.close()
++    report['status'] = ('PAPER_AUDIT_INVALID' if not report['paper_hash_chain_valid'] else
++                        ('PAPER_FLAT' if not report['paper_positions'] else 'PAPER_POSITIONS_REMAIN'))
++    return report
++
++
++def _observed_exit_book(raw, quantity):
++    """Verify actual best bid has enough displayed quantity for a FULL paper exit.
++
++    The existing PaperAccount uses the top bid for the entire sell; never
++    assign that price to more quantity than was actually displayed there.
++    """
++    bids = _levels(raw, 'bid')
++    asks = _levels(raw, 'ask')
++    bid, at_bid = bids[0]
++    ask = asks[0][0]
++    if ask <= bid:
++        raise ValueError('Invalid crossed or locked observed order book')
++    mid = (ask + bid) / 2
++    if not math.isfinite(mid) or mid <= 0:
++        raise ValueError('Invalid observed best bid/ask')
++    return {'best_bid_tmn': bid,
++            'best_ask_tmn': ask,
++            'best_bid_quantity': at_bid,
++            'spread_bps': (ask-bid)/mid*10000,
++            'top5_ask_notional_tmn': sum(price*q for price,q in asks[:5]),
++            'top5_bid_notional_tmn': sum(price*q for price,q in bids[:5]),
++            'held_quantity_temporary_for_gate': quantity}
++
++
++def liquidate_paper_positions(lake, *, fee=.001, require_watch_deadline=True,
++                              max_fetch_seconds=15.0):
++    """Close paper holdings once, using actual newly queried Wallex bid depth.
++
++    On missing/invalid quotes, record a failure and RETAIN the position.
++    Retrying after a fresh observation uses an evidence-derived client ID;
++    duplicate submissions with identical evidence remain atomic and safe.
++    There is *no real-order transport* or fabricated market fixture.
++    """
++    if not isinstance(fee, (float, int)) or isinstance(fee, bool) or not math.isfinite(fee) or not 0 <= fee < .05:
++        raise ValueError('Explicit finite research fee required; NOT an exchange-verified fee')
++    if not isinstance(max_fetch_seconds, (int, float)) or not 0 < max_fetch_seconds <= 30:
++        raise ValueError('Invalid maximum observation fetch age')
++    session = _session(lake.root, deadline_required=require_watch_deadline)
++    session_id = str(session.get('started_epoch')) if session else 'NO_WATCH_SESSION'
++    paper = PaperAccount(lake)
++    observations = []
++    try:
++        if not paper.verify():
++            raise BrokerSafetyError('Paper audit chain invalid; no liquidation allowed')
++        broker = ShadowBroker(paper)
++        existing = paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions ORDER BY symbol').fetchall()
++        for symbol, quantity, entry_cost in existing:
++            event = {'symbol': symbol, 'type': 'PAPER_TMN_CLOSEOUT',
++                     'not_a_real_fill': True, 'fee_assumption': fee}
++            try:
++                if not isinstance(symbol, str) or not symbol.endswith('TMN') or not symbol.isalnum():
++                    raise BrokerSafetyError('Non-TMN or invalid position; fail closed')
++                if (not isinstance(quantity, (float,int)) or not math.isfinite(quantity) or quantity <= 0 or
++                        not isinstance(entry_cost, (float,int)) or not math.isfinite(entry_cost) or entry_cost <= 0):
++                    raise BrokerSafetyError('Corrupt paper position; fail closed')
++                begun = time.monotonic()
++                # ONLY actual API returns; no injected prices or fallback to last close.
++                raw = market.depth(symbol)
++                took = time.monotonic() - begun
++                if took > max_fetch_seconds:
++                    raise BrokerSafetyError('Book request exceeded bounded freshness; fail closed')
++                book = _observed_exit_book(raw, quantity)
++                observed_utc = _utcnow()
++                # Snapshot the ORIGINAL genuine public depth before paper mutation.
++                record = {'symbol': symbol, 'observed_utc': observed_utc,
++                          'origin': 'WALLEX_PUBLIC_DEPTH', 'raw_depth': raw,
++                          'derived_book': book, 'fetch_duration_seconds': took,
++                          'hypothetical_only': True}
++                evidence_sha = hashlib.sha256(_canonical(record['raw_depth']).encode('utf8')).hexdigest()
++                receipt_sha = hashlib.sha256(_canonical(record).encode('utf8')).hexdigest()
++                store_file = Path(lake.root) / 'liquidation_observations' / (receipt_sha + '.json')
++                if not store_file.is_file():
++                    _save_atomic(store_file, record)
++                else:
++                    prior = json.loads(store_file.read_text(encoding='utf8'))
++                    if hashlib.sha256(_canonical(prior).encode('utf8')).hexdigest() != receipt_sha:
++                        raise BrokerSafetyError('Stored quote evidence SHA-256 mismatch')
++                if time.monotonic() - begun > max_fetch_seconds:
++                    raise BrokerSafetyError('Quote freshness expired before broker risk approval')
++                event['observed_utc'] = observed_utc
++                event['raw_depth_sha256'] = evidence_sha
++                event['observation_record_sha256'] = receipt_sha
++                event['raw_evidence_path'] = str(store_file)
++                client_id = 'liq_' + hashlib.sha256(
++                    _canonical([session_id, symbol, quantity, evidence_sha]).encode('utf8')).hexdigest()[:32]
++                # Intentionally no explicit limit/quantity override: existing ledger and gate
++                # determine the full sell. The actual quote best-level quantity must cover it.
++                intent = OrderIntent(client_id, symbol, side='SELL', purpose='FINAL_TMN')
++                receipt = broker.submit(intent, forecast={}, book=book, fee=fee)
++                event.update({'broker_state': receipt.state.value,
++                              'broker_action': receipt.reason,
++                              'client_order_id': client_id})
++            except Exception as exc:
++                event.update({'broker_state': 'NOT_EXECUTED', 'error_type': type(exc).__name__,
++                              'reason': str(exc)[:160]})
++                # Preserve evidence that this final exit failed, without changing holdings.
++                if not paper.verify():
++                    raise BrokerSafetyError('Paper audit chain corrupt during liquidation') from exc
++                with paper.db:
++                    paper.log(symbol, 'PAPER_FINAL_CLOSE_FAILED',
++                              {'type': type(exc).__name__, 'no_position_mutation': True,
++                               'no_real_exchange_request': True})
++            observations.append(event)
++        if not paper.verify():
++            raise BrokerSafetyError('Paper audit corrupted after liquidation')
++        outstanding = paper.db.execute('SELECT symbol FROM positions ORDER BY symbol').fetchall()
++        report = {'status': 'PAPER_FLAT' if not outstanding else 'PAPER_INCOMPLETE',
++                  'mode': 'SHADOW_LIQUIDATION_ONLY', 'generated_at_utc': _utcnow(),
++                  'paper_cash_tmn': float(paper.get('cash_tmn')),
++                  'remaining_paper_positions': len(outstanding),
++                  'unresolved_symbols': [row[0] for row in outstanding],
++                  'observations': observations,
++                  'source': 'genuine_Wallex_public_depth_only',
++                  'no_real_orders': True,
++                  'exchange_fills_claimed': 0,
++                  'fee_status': 'RESEARCH_ASSUMPTION_NOT_VERIFIED_WITH_EXCHANGE',
++                  'warning': 'PAPER fills at observed best bid are hypothetical, not exchange executions'}
++        _save_atomic(Path(lake.root) / 'last_paper_liquidation_report.json', report)
++        return report
++    finally:
++        paper.close()
+diff --git a/wallex_bot/atlas_risk.py b/wallex_bot/atlas_risk.py
+index b8a1bd3..6d400fa 100644
+--- a/wallex_bot/atlas_risk.py
++++ b/wallex_bot/atlas_risk.py
+@@ -158,8 +158,33 @@ class RiskGate:
+                                 bool(already_stopped) or drawdown >= self.limits.max_drawdown_fraction)
+ 
+     def final_tmn_liquidation(self, symbol: str, book: dict, cash_tmn, positions: Iterable, fee) -> RiskDecision:
+-        """Authorize a final Shadow-only conversion to TMN through this same gate."""
+-        decision = self.evaluate(symbol, {}, book, cash_tmn, positions, True, fee)
+-        if decision.action == 'PAPER_SELL':
+-            return RiskDecision('PAPER_SELL', 'FINAL_TMN_LIQUIDATION')
+-        return decision
++        """Authorize FULL-POSITION paper exit only at an observed, sufficiently deep best bid.
++
++        A final liquidation is a spot SELL, not a way to bypass market-data
++        verification or claim an actual exchange fill. Its actual top bid quantity
++        must cover the entire held quantity used by PaperAccount's bid-price math.
++        For a future live broker, quantities/lot precision and exchange fills
++        must be handled separately; this is *not* live authorization.
++        """
++        try:
++            rows = list(positions)
++        except (TypeError, ValueError):
++            return RiskDecision('REJECTED', 'INVALID_POSITION_LEDGER')
++        if not isinstance(book, dict):
++            return RiskDecision('REJECTED', 'MISSING_OR_INVALID_OBSERVED_BOOK')
++        decision = self.evaluate(symbol, {}, book, cash_tmn, rows, True, fee)
++        if decision.action != 'PAPER_SELL':
++            return decision
++        try:
++            matching = [row for row in rows if row[0] == symbol]
++            if len(matching) != 1:
++                return RiskDecision('REJECTED', 'INVALID_POSITION_LEDGER')
++            held_qty = _finite(matching[0][1], 'held position quantity', positive=True)
++            observed_at_best = _finite(book.get('best_bid_quantity'),
++                                       'observed best bid quantity', positive=True)
++        except (ValueError, TypeError, IndexError, KeyError):
++            return RiskDecision('REJECTED', 'MISSING_OBSERVED_EXIT_DEPTH')
++        if observed_at_best < held_qty:
++            return RiskDecision('INSUFFICIENT_VISIBLE_EXIT_LIQUIDITY',
++                                'BEST_BID_QUANTITY_BELOW_HELD_QUANTITY')
++        return RiskDecision('PAPER_SELL', 'FINAL_TMN_LIQUIDATION')
+diff --git a/wallex_bot/atlas_shadow.py b/wallex_bot/atlas_shadow.py
+index f64d783..af14353 100644
+--- a/wallex_bot/atlas_shadow.py
++++ b/wallex_bot/atlas_shadow.py
+@@ -54,7 +54,7 @@ class PaperAccount:
+             prev=h
+         return True
+ 
+-    def trade(self,symbol,decision,book,fee=.001,*,client_order_id=None,expected_side='AUTO'):
++    def trade(self,symbol,decision,book,fee=.001,*,client_order_id=None,expected_side='AUTO',purpose='STRATEGY'):
+         """Atomic shadow mutation and idempotency, gated by existing RiskGate.
+ 
+         Repeated client_order_id with IDENTICAL evidence returns the same result
+@@ -67,8 +67,14 @@ class PaperAccount:
+             raise ValueError('Invalid client_order_id')
+         if expected_side not in ('AUTO','BUY','SELL'):
+             raise ValueError('Invalid expected side')
++        if purpose not in ('STRATEGY','FINAL_TMN'):
++            raise ValueError('Invalid trade purpose')
++        if purpose=='FINAL_TMN' and expected_side!='SELL':
++            raise ValueError('Final TMN purpose can only request a sell')
+         evidence={'symbol':symbol,'decision':decision,'book':book,'fee':fee,
+                   'expected_side':expected_side}
++        if purpose!='STRATEGY':
++            evidence['purpose']=purpose
+         fingerprint=hashlib.sha256(json.dumps(evidence,sort_keys=True,ensure_ascii=False,
+                 allow_nan=False,separators=(',',':')).encode('utf8')).hexdigest()
+         if self.db.in_transaction:
+@@ -85,7 +91,11 @@ class PaperAccount:
+                     return previous[2]
+             cash=float(self.get('cash_tmn'))
+             positions=self.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
+-            gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
++            # The same deterministic gate authorizes ordinary and terminal orders.
++            if purpose=='FINAL_TMN':
++                gate=self.risk.final_tmn_liquidation(symbol,book,cash,positions,fee)
++            else:
++                gate=self.risk.evaluate(symbol,decision,book,cash,positions,self.get('stopped')=='1',fee)
+             action=gate.action
+             if (expected_side=='BUY' and action=='PAPER_SELL') or (expected_side=='SELL' and action=='PAPER_BUY'):
+                 action='BROKER_SIDE_MISMATCH_NO_ORDER'
+@@ -110,7 +120,7 @@ class PaperAccount:
+                   'quote':quote,'fee_assumption':fee,
+                   'fill_assumption':'HYPOTHETICAL at observed best bid/ask; not an exchange execution',
+                   'risk_gate':gate.audit_payload(),
+-                  'client_order_id':client_order_id,
++                  'client_order_id':client_order_id,'purpose':purpose,
+                   'paper_cash_tmn':self.get('cash_tmn')})
+             if client_order_id is not None:
+                 self.db.execute('INSERT INTO broker_intents VALUES(?,?,?,?)',
+diff --git a/wallex_bot/atlas_watch.py b/wallex_bot/atlas_watch.py
+index 1510464..af6b529 100644
+--- a/wallex_bot/atlas_watch.py
++++ b/wallex_bot/atlas_watch.py
+@@ -84,37 +84,19 @@ def run(lake, hours=48, interval_seconds=900, top=8):
+         delay=interval_seconds-(time.monotonic()-started)
+         if delay>0:time.sleep(min(delay,max(0,deadline-time.time())))
+ 
+-    # The final PAPER liquidation uses real public bids, never invented values.
+-    paper=PaperAccount(lake)
+-    try:
+-        with paper.db:
+-            for symbol,qty,cost in paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall():
+-                try:
+-                    from .live_scout import measure_book
+-                    book=measure_book(market.depth(symbol),notional_tmn=250000,fee_rate=.001)
+-                    positions=paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
+-                    cash=float(paper.get('cash_tmn'))
+-                    gate=paper.risk.final_tmn_liquidation(symbol,book,cash,positions,.001)
+-                    if gate.action!='PAPER_SELL':
+-                        paper.log(symbol,'PAPER_END_CLOSE_REJECTED',{'risk_gate':gate.audit_payload(),
+-                            'status':'position retained; no invented quote or bypass'})
+-                        continue
+-                    proceeds=qty*book['best_bid_tmn']*(1-.001)
+-                    paper._set('cash_tmn',cash+proceeds)
+-                    paper.db.execute('DELETE FROM positions WHERE symbol=?',(symbol,))
+-                    paper.log(symbol,'PAPER_END_OF_WATCH_SELL',{'observed_bid':book['best_bid_tmn'],
+-                        'proceeds_tmn':proceeds,'risk_gate':gate.audit_payload(),'NOT_A_REAL_FILL':True})
+-                except Exception as exc:
+-                    paper.log(symbol,'PAPER_END_CLOSE_FAILED',{'error':type(exc).__name__,
+-                        'status':'unvalued position; no invented quote'})
+-        remaining=paper.db.execute('SELECT count(*) FROM positions').fetchone()[0]
+-        state['status']='COMPLETE' if remaining==0 else 'CLOSED_WITH_UNRESOLVED_PAPER_POSITIONS'
+-        state['finished_at_utc']=datetime.now(timezone.utc).isoformat()
+-        state['remaining_paper_positions']=remaining
+-        _save_state(session_path,state)
+-        return {'cycles':state['cycles_completed'],
+-                'last_paper_cash_tmn':paper.get('cash_tmn'),
+-                'remaining_paper_positions':remaining,
+-                'watch_session_state':str(session_path),
+-                'mode':'PAPER ONLY, NOT EXCHANGE EXECUTION'}
+-    finally:paper.close()
++    # Stage 3: settlement has one atomic Broker/RiskGate path. No direct
++    # position deletion or cash mutation is permitted in this watch loop.
++    from .atlas_liquidation import liquidate_paper_positions
++    report = liquidate_paper_positions(lake, fee=.001, require_watch_deadline=True)
++    state['status'] = ('COMPLETE' if report['remaining_paper_positions'] == 0
++                       else 'CLOSED_WITH_UNRESOLVED_PAPER_POSITIONS')
++    state['finished_at_utc'] = datetime.now(timezone.utc).isoformat()
++    state['remaining_paper_positions'] = report['remaining_paper_positions']
++    state['paper_liquidation_status'] = report['status']
++    _save_state(session_path, state)
++    return {'cycles': state['cycles_completed'],
++            'last_paper_cash_tmn': report['paper_cash_tmn'],
++            'remaining_paper_positions': report['remaining_paper_positions'],
++            'watch_session_state': str(session_path),
++            'mode': 'PAPER ONLY, NOT EXCHANGE EXECUTION',
++            'liquidation': report}

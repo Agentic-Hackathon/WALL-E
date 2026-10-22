@@ -97,6 +97,7 @@ class OrderIntent:
     notional_tmn: float | None = None
     quantity: float | None = None
     limit_price_tmn: float | None = None
+    purpose: str = 'STRATEGY'
 
     def __post_init__(self):
         if not isinstance(self.client_order_id, str) or not re.fullmatch(r'[A-Za-z0-9:_-]{8,120}', self.client_order_id):
@@ -105,6 +106,11 @@ class OrderIntent:
             raise ValueError('Only spot TMN-quote symbols are accepted at this boundary')
         if self.side not in ('AUTO', 'BUY', 'SELL'):
             raise ValueError('Unsupported spot order side')
+        if self.purpose not in ('STRATEGY', 'FINAL_TMN'):
+            raise ValueError('Unsupported order purpose')
+        if self.purpose == 'FINAL_TMN' and (self.side != 'SELL' or
+                any(getattr(self, x) is not None for x in ('notional_tmn', 'quantity', 'limit_price_tmn'))):
+            raise ValueError('Final liquidation only permits full-position SELL under existing RiskGate')
         for field_name in ('notional_tmn', 'quantity', 'limit_price_tmn'):
             number = getattr(self, field_name)
             if number is not None and (not isinstance(number, (int, float)) or
@@ -115,10 +121,13 @@ class OrderIntent:
             raise ValueError('Automatic shadow-side intent cannot override RiskGate sizing')
 
     def fingerprint(self):
-        return _digest({'client_order_id': self.client_order_id,
-                        'symbol': self.symbol, 'side': self.side,
-                        'notional_tmn': self.notional_tmn,
-                        'quantity': self.quantity, 'limit_price_tmn': self.limit_price_tmn})
+        payload = {'client_order_id': self.client_order_id,
+                   'symbol': self.symbol, 'side': self.side,
+                   'notional_tmn': self.notional_tmn,
+                   'quantity': self.quantity, 'limit_price_tmn': self.limit_price_tmn}
+        if self.purpose != 'STRATEGY':
+            payload['purpose'] = self.purpose
+        return _digest(payload)
 
 
 @dataclass(frozen=True)
@@ -159,7 +168,7 @@ class ShadowBroker:
             raise BrokerSafetyError('Observed book, model forecast and explicit fee assumption required')
         action = self.paper.trade(intent.symbol, forecast, book, fee,
                                   client_order_id=intent.client_order_id,
-                                  expected_side=intent.side)
+                                  expected_side=intent.side, purpose=intent.purpose)
         executed = action in ('PAPER_BUY', 'PAPER_SELL')
         return BrokerReceipt(intent.client_order_id, intent.symbol,
                              OrderState.PAPER_EXECUTED if executed else OrderState.PAPER_NOT_EXECUTED,

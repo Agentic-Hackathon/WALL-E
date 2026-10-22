@@ -84,37 +84,19 @@ def run(lake, hours=48, interval_seconds=900, top=8):
         delay=interval_seconds-(time.monotonic()-started)
         if delay>0:time.sleep(min(delay,max(0,deadline-time.time())))
 
-    # The final PAPER liquidation uses real public bids, never invented values.
-    paper=PaperAccount(lake)
-    try:
-        with paper.db:
-            for symbol,qty,cost in paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall():
-                try:
-                    from .live_scout import measure_book
-                    book=measure_book(market.depth(symbol),notional_tmn=250000,fee_rate=.001)
-                    positions=paper.db.execute('SELECT symbol,quantity,entry_cost FROM positions').fetchall()
-                    cash=float(paper.get('cash_tmn'))
-                    gate=paper.risk.final_tmn_liquidation(symbol,book,cash,positions,.001)
-                    if gate.action!='PAPER_SELL':
-                        paper.log(symbol,'PAPER_END_CLOSE_REJECTED',{'risk_gate':gate.audit_payload(),
-                            'status':'position retained; no invented quote or bypass'})
-                        continue
-                    proceeds=qty*book['best_bid_tmn']*(1-.001)
-                    paper._set('cash_tmn',cash+proceeds)
-                    paper.db.execute('DELETE FROM positions WHERE symbol=?',(symbol,))
-                    paper.log(symbol,'PAPER_END_OF_WATCH_SELL',{'observed_bid':book['best_bid_tmn'],
-                        'proceeds_tmn':proceeds,'risk_gate':gate.audit_payload(),'NOT_A_REAL_FILL':True})
-                except Exception as exc:
-                    paper.log(symbol,'PAPER_END_CLOSE_FAILED',{'error':type(exc).__name__,
-                        'status':'unvalued position; no invented quote'})
-        remaining=paper.db.execute('SELECT count(*) FROM positions').fetchone()[0]
-        state['status']='COMPLETE' if remaining==0 else 'CLOSED_WITH_UNRESOLVED_PAPER_POSITIONS'
-        state['finished_at_utc']=datetime.now(timezone.utc).isoformat()
-        state['remaining_paper_positions']=remaining
-        _save_state(session_path,state)
-        return {'cycles':state['cycles_completed'],
-                'last_paper_cash_tmn':paper.get('cash_tmn'),
-                'remaining_paper_positions':remaining,
-                'watch_session_state':str(session_path),
-                'mode':'PAPER ONLY, NOT EXCHANGE EXECUTION'}
-    finally:paper.close()
+    # Stage 3: settlement has one atomic Broker/RiskGate path. No direct
+    # position deletion or cash mutation is permitted in this watch loop.
+    from .atlas_liquidation import liquidate_paper_positions
+    report = liquidate_paper_positions(lake, fee=.001, require_watch_deadline=True)
+    state['status'] = ('COMPLETE' if report['remaining_paper_positions'] == 0
+                       else 'CLOSED_WITH_UNRESOLVED_PAPER_POSITIONS')
+    state['finished_at_utc'] = datetime.now(timezone.utc).isoformat()
+    state['remaining_paper_positions'] = report['remaining_paper_positions']
+    state['paper_liquidation_status'] = report['status']
+    _save_state(session_path, state)
+    return {'cycles': state['cycles_completed'],
+            'last_paper_cash_tmn': report['paper_cash_tmn'],
+            'remaining_paper_positions': report['remaining_paper_positions'],
+            'watch_session_state': str(session_path),
+            'mode': 'PAPER ONLY, NOT EXCHANGE EXECUTION',
+            'liquidation': report}
