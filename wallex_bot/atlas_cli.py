@@ -14,7 +14,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit'])
     p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
     p.add_argument('--days',type=int,default=7)
     p.add_argument('--minutes',type=int,default=10)
@@ -35,6 +35,10 @@ def main(argv=None):
                    help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
     args=p.parse_args(argv)
     effective_mode=cli_mode(args.command,args.mode)
+    if args.command=='feature-recipe-audit':
+        from .atlas_feature_recipe import feature_recipe_report
+        from .atlas_archive import root_path
+        pretty(feature_recipe_report(root_path(),resolution=args.resolution,top=args.top,symbol=args.symbol));return
     if args.command=='feature-health':
         from .atlas_feature_health import feature_health_report
         from .atlas_archive import root_path

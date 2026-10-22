@@ -1,0 +1,324 @@
+diff --git a/CHANGELOG_STAGE12_FEATURE_RECIPE_FA.md b/CHANGELOG_STAGE12_FEATURE_RECIPE_FA.md
+new file mode 100644
+index 0000000..e90afd1
+--- /dev/null
++++ b/CHANGELOG_STAGE12_FEATURE_RECIPE_FA.md
+@@ -0,0 +1,21 @@
++# Stage 12 — ممیزی مستقل دستورالعمل ویژگی‌ها (فقط پژوهشی)
++
++**پایه:** `ecab9d0` روی `integration/atlas-feature-health`.
++
++
++Stage 11 نشان داد هفت نماد از هشت نماد پنجره کامل معتبر دارند؛ برای USDTTMN شش ستون در پنجره ۹۶تایی بعضاً نامعتبرند، هرچند آخرین ردیف معتبر است. گزارش لحظه‌ای سند بازسازی ۲۰ خطای قدیمی نیست. هیچ رکورد OHLCV یا Fill مصنوعی وارد این مرحله نشده است.
++
++
++## روش
++
++- `atlas_feature_recipe.py` تنها روی کندل‌های واقعی که SHA-256 فایلشان برابر هش ثبت‌شده در کاتالوگ است اجرا می‌شود.
++- تعریف ویژگی‌های V1، وزن Champion و `predict_latest` تغییر نکرده‌اند.
++- در یک کپی مستقل از خروجی V1، تنها در حالت‌های مخرج صفر با تاریخچه کافی، مقادیر متعارف صریح V2 محاسبه می‌شوند: `RSI=100` برای رشد بدون افت، `RSI=50` برای بدون تغییر؛ `MFI=100` برای جریان مثبت بدون جریان منفی و `50` برای هیچ جریان؛ `Stoch=50` برای محدوده قیمت تخت؛ `BB_z=0` برای انحراف معیار صفر و قیمت ثابت؛ `volume_ratio=0` وقتی حجم و میانگین حجم مشاهده‌شده صفرند؛ `OBV_slope=0` وقتی حجم و تغییر OBV هر دو صفرند.
++- شرایط فوق قرارداد پژوهشی‌اند، نه حقیقت یگانه فنی. مقدار اولیه به‌دلیل Warmup ناقص، قیمت نامعتبر یا گپ داده، جایگزین نمی‌شود.
++- تعداد پنجره‌های معتبر V1 و V2 در همان قطعه پیوسته محاسبه می‌شود. این کار آموزش Challenger، بک‌تست اقتصادی یا آزمون زمانی آینده نیست.
++
++## ایمنی و اثر بر داوری
++
++هیچ استفاده‌ای از دستورالعمل V2 در `RiskGate`, `ShadowBroker`, `Watch`, `atlas_deep`, یا LangGraph وجود ندارد. کلید API، شبکه، ثبت سفارش، حافظه عملیاتی و مدل‌های Checkpoint تغییر نمی‌کنند. این مرحله کمک به تشخیص خطا و قابلیت دفاع‌پذیری پژوهشی می‌کند؛ امتیاز مشخص یا سود تضمین‌شده ندارد. برای تست واقعی روی داده محلی دستور `python -m wallex_bot.atlas_cli feature-recipe-audit --resolution 15 --top 8` را اجرا کنید.
++
++منابع: قرارداد رسمی داخلی ویژگی‌های V1 و Stage11؛ کد خارجی کپی نشده است.
+diff --git a/QUICKSTART_STAGE12_FEATURE_RECIPE_FA.md b/QUICKSTART_STAGE12_FEATURE_RECIPE_FA.md
+new file mode 100644
+index 0000000..8b661a0
+--- /dev/null
++++ b/QUICKSTART_STAGE12_FEATURE_RECIPE_FA.md
+@@ -0,0 +1,13 @@
++# اجرای Stage 12
++
++پچ فقط برای شاخه `integration/atlas-feature-health` با HEAD `ecab9d0` است. ابتدا Watch را در مرز چرخه متوقف کنید. ZIP پچ را در ریشه پروژه باز کنید؛ فقط فایل README، اسکریپت و پچ داخل آن خواهد بود؛ سورس و CHANGELOG با Git Patch ساخته می‌شوند.
++
++```bash
++cd /d/Hackaton/Wallex/wallex_agent_v3
++conda activate shbk
++bash scripts/apply_stage12_feature_recipe.sh
++python -m wallex_bot.atlas_cli feature-recipe-audit --resolution 15 --top 8
++python -m wallex_bot.atlas_cli feature-recipe-audit --resolution 15 --symbol USDTTMN
++```
++
++`v2_research_only_latest_window_eligible` تنها تعداد ویژگی‌های عددی دارای تعریف جدید را نشان می‌دهد و **اجازه** اجرای آن‌ها در Champion نیست. دیتابیس، RiskGate، مدل و معاملات واقعی/فرضی تغییر نمی‌کنند. در صورت وجود فایل پچ/اسکریپت قدیمی یا HEAD نادرست اسکریپت نصب متوقف می‌شود. اگر `watch` را دوباره اجرا کنید تنها نسخه قبلی مدل و سیاست را اجرا خواهد کرد.
+diff --git a/tests/test_stage12_feature_recipe_no_market_fixtures.py b/tests/test_stage12_feature_recipe_no_market_fixtures.py
+new file mode 100644
+index 0000000..cd39346
+--- /dev/null
++++ b/tests/test_stage12_feature_recipe_no_market_fixtures.py
+@@ -0,0 +1,63 @@
++"""Stage 12 safety/structure tests — NO fake OHLCV or market fixtures."""
++import ast
++import sqlite3
++from pathlib import Path
++import pytest
++from wallex_bot.atlas_feature_recipe import feature_recipe_report, POLICY, CONTEXT, MIN_BARS
++
++
++def test_absent_archive_is_read_only_and_creates_nothing(tmp_path):
++    root=tmp_path/'not_created'
++    result=feature_recipe_report(root)
++    assert result['status']=='NO_EXISTING_ARCHIVE'
++    assert result['symbols']==[]
++    assert result['no_network_no_orders_no_db_writes'] is True
++    assert result['champion_riskgate_watch_unchanged'] is True
++    assert not root.exists()
++
++
++def test_metadata_only_archive_has_no_invented_market_data(tmp_path):
++    db=sqlite3.connect(tmp_path/'catalog.sqlite')
++    db.execute('CREATE TABLE assets(metadata TEXT)')
++    db.execute('INSERT INTO assets VALUES(?)',('{"symbol":"USDTTMN","is_spot":true,"quote_asset":"TMN","quote_volume_24h":300}',))
++    db.execute('CREATE TABLE chunks(symbol TEXT,resolution TEXT,status TEXT,begin INTEGER,filename TEXT,sha256 TEXT)')
++    db.commit();db.close()
++    result=feature_recipe_report(tmp_path)
++    assert result['symbols'][0]['status']=='NO_VERIFIED_GENUINE_CANDLES'
++    assert result['no_network_no_orders_no_db_writes'] is True
++    assert not (tmp_path/'forward_observations.sqlite').exists()
++
++
++def test_input_restrictions_fail_closed(tmp_path):
++    for kwargs in ({'resolution':'60'}, {'top':0}, {'top':25}, {'symbol':'../../danger'}):
++        with pytest.raises(ValueError):feature_recipe_report(tmp_path,**kwargs)
++    assert list(tmp_path.iterdir())==[]
++
++
++def test_new_command_precedes_lake_construction():
++    source=(Path(__file__).parents[1]/'wallex_bot'/'atlas_cli.py').read_text('utf8')
++    assert source.index("args.command=='feature-recipe-audit'")<source.index('lake=Lake()')
++
++
++def test_recipe_is_not_imported_into_execution_or_training():
++    root=Path(__file__).parents[1]/'wallex_bot'
++    for file in ('atlas_deep.py','atlas_signals.py','atlas_shadow.py','atlas_watch.py',
++                 'atlas_risk.py','atlas_broker.py','atlas_agent.py'):
++        assert 'atlas_feature_recipe' not in (root/file).read_text('utf8')
++    src=(root/'atlas_feature_recipe.py').read_text('utf8')
++    nodes=ast.walk(ast.parse(src))
++    imports=[]
++    for node in nodes:
++        if isinstance(node,ast.Import):imports.extend(a.name for a in node.names)
++        if isinstance(node,ast.ImportFrom):imports.append(node.module or '')
++    assert not any('requests' in i or 'wallex_api' in i or 'torch' in i for i in imports)
++    assert not any(x in src for x in ('INSERT INTO','DELETE FROM','UPDATE forecasts','WALLEX_API_KEY'))
++    assert CONTEXT==96 and MIN_BARS==151
++    assert 'EXPERIMENTAL' in POLICY
++
++
++def test_repeated_execution_without_archive_does_not_create_evidence(tmp_path):
++    path=tmp_path/'archive'
++    a=feature_recipe_report(path);b=feature_recipe_report(path)
++    assert a==b
++    assert not path.exists()
+diff --git a/wallex_bot/atlas_cli.py b/wallex_bot/atlas_cli.py
+index 8954224..a21ee43 100644
+--- a/wallex_bot/atlas_cli.py
++++ b/wallex_bot/atlas_cli.py
+@@ -14,7 +14,7 @@ def main(argv=None):
+     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
+         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
+     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
+-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health'])
++        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank','rationale-status','replay-decision','operations-report','edge-triage','feature-health','feature-recipe-audit'])
+     p.add_argument('--event-id',type=int,default=None,help='Recorded paper ledger event ID for read-only replay')
+     p.add_argument('--days',type=int,default=7)
+     p.add_argument('--minutes',type=int,default=10)
+@@ -35,6 +35,10 @@ def main(argv=None):
+                    help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
+     args=p.parse_args(argv)
+     effective_mode=cli_mode(args.command,args.mode)
++    if args.command=='feature-recipe-audit':
++        from .atlas_feature_recipe import feature_recipe_report
++        from .atlas_archive import root_path
++        pretty(feature_recipe_report(root_path(),resolution=args.resolution,top=args.top,symbol=args.symbol));return
+     if args.command=='feature-health':
+         from .atlas_feature_health import feature_health_report
+         from .atlas_archive import root_path
+diff --git a/wallex_bot/atlas_feature_recipe.py b/wallex_bot/atlas_feature_recipe.py
+new file mode 100644
+index 0000000..8a5a068
+--- /dev/null
++++ b/wallex_bot/atlas_feature_recipe.py
+@@ -0,0 +1,179 @@
++"""Stage 12 — independent research-only feature recipe comparison on genuine candles.
++
++Never modifies atlas_signals.features, a checkpoint, the RiskGate, or an archive.
++This is NOT inference, model calibration, evidence of profitability or authorization.
++"""
++from __future__ import annotations
++
++import hashlib
++import math
++from pathlib import Path
++
++import numpy as np
++import pandas as pd
++
++from .atlas_signals import features
++from .atlas_deep import COLS
++from .atlas_feature_health import (
++    _read_catalog_symbols, _verified_segments, _last_quote_epoch,
++)
++from .atlas_operational import _read_connection
++
++POLICY = 'EXPERIMENTAL_CHALLENGER_FEATURE_RECIPE_V2_ZERO_DENOMINATOR_CONVENTIONS'
++CONTEXT = 96
++MIN_BARS = CONTEXT + 55
++
++
++def _isfinite(values):
++    return np.isfinite(values.to_numpy(dtype=float))
++
++
++def _replace_if_defined(original, candidate, mask, *, name, observations):
++    """Replace only undefined V1 indicator rows with a declared arithmetic limit.
++
++    Raw OHLCV measurements are never altered. Warm-up missingness is preserved.
++    """
++    before = original[name]
++    replace = (~_isfinite(before)) & mask.fillna(False).to_numpy(dtype=bool) & _isfinite(candidate)
++    if replace.any():
++        original.loc[replace,name] = candidate.loc[replace].to_numpy(dtype=float)
++    observations[name] = int(replace.sum())
++
++
++def challenger_features(frame):
++    """Return independent V2 research features and per-column repair evidence.
++
++    Definitions are explicitly experimental and must be retrained/evaluated before
++    use. Index and rows are not added; missing candles are never reconstructed.
++    """
++    v1 = features(frame)
++    v2 = v1[COLS].copy(deep=True)
++    counts = {name:0 for name in ('rsi14','mfi14','obv_slope','stoch_k','bb_z','volume_ratio')}
++    if frame.empty:
++        return v1[COLS].copy(),v2,counts
++    c=frame.close.astype(float);h=frame.high.astype(float)
++    l=frame.low.astype(float);v=frame.volume.astype(float)
++    d=c.diff();up=d.clip(lower=0);down=(-d).clip(lower=0)
++    up14=up.rolling(14,min_periods=14).mean()
++    down14=down.rolling(14,min_periods=14).mean()
++    rsi_zero_den=down14.eq(0)&up14.notna()
++    rsi_candidate=pd.Series(np.where(up14.gt(0),100.0,50.0),index=frame.index)
++    _replace_if_defined(v2,rsi_candidate,rsi_zero_den,name='rsi14',observations=counts)
++
++    tp=(h+l+c)/3
++    mf=tp*v
++    pos=mf.where(tp>tp.shift(),0).rolling(14,min_periods=14).sum()
++    neg=mf.where(tp<tp.shift(),0).rolling(14,min_periods=14).sum()
++    mf_undefined=neg.eq(0)&pos.notna()
++    mfi_candidate=pd.Series(np.where(pos.gt(0),100.0,50.0),index=frame.index)
++    _replace_if_defined(v2,mfi_candidate,mf_undefined,name='mfi14',observations=counts)
++
++    hh=h.rolling(14,min_periods=14).max();ll=l.rolling(14,min_periods=14).min()
++    flat_range=hh.eq(ll)&c.eq(hh)&c.eq(ll)&hh.notna()
++    neutral_stoch=pd.Series(50.0,index=frame.index)
++    _replace_if_defined(v2,neutral_stoch,flat_range,name='stoch_k',observations=counts)
++
++    mid=c.rolling(20,min_periods=20).mean()
++    std=c.rolling(20,min_periods=20).std()
++    flat_bollinger=std.eq(0)&mid.eq(c)&mid.notna()
++    zero=pd.Series(0.0,index=frame.index)
++    _replace_if_defined(v2,zero,flat_bollinger,name='bb_z',observations=counts)
++
++    rolling_v=v.rolling(20,min_periods=20).mean()
++    vol_zero=rolling_v.eq(0)&v.eq(0)&rolling_v.notna()
++    _replace_if_defined(v2,zero,vol_zero,name='volume_ratio',observations=counts)
++
++    obv=(np.sign(d).fillna(0)*v).cumsum()
++    total_v=v.rolling(12,min_periods=12).sum()
++    obv_zero=total_v.eq(0)&obv.diff(12).eq(0)&total_v.notna()
++    _replace_if_defined(v2,zero,obv_zero,name='obv_slope',observations=counts)
++    return v1[COLS].copy(),v2,counts
++
++
++def _whole_window_valid(matrix,context=CONTEXT,min_bars=MIN_BARS):
++    """Count inference-eligible historical endings without future information.
++
++    A window at index t reads only rows t-context+1 through t.
++    """
++    if len(matrix)<min_bars:return 0
++    ok=np.isfinite(matrix.to_numpy(dtype=np.float64)).all(axis=1).astype(np.int64)
++    rolling=np.convolve(ok,np.ones(context,dtype=np.int64),'valid')
++    # rolling end index is (context-1)+k; min_bars-1 also required
++    return int((rolling[min_bars-context:] == context).sum())
++
++
++def diagnose_segment(segment, quote_epoch=None, period=900):
++    """Pure research comparison; supplied segment must be genuine contiguous OHLCV."""
++    if segment is None or segment.empty:
++        return {'status':'NO_GENUINE_CANDLES'}
++    stamps=segment.timestamp.to_numpy(dtype=np.int64)
++    if np.any(np.diff(stamps)!=period) or np.any(stamps%period):
++        raise ValueError('NONCONTIGUOUS_OR_OFFGRID_REAL_CANDLES')
++    if quote_epoch is not None:
++        if not math.isfinite(float(quote_epoch)):
++            raise ValueError('INVALID_OBSERVED_QUOTE_TIME')
++        segment=segment.loc[segment.timestamp+period<=float(quote_epoch)].copy().reset_index(drop=True)
++        if segment.empty:return {'status':'NO_CLOSED_GENUINE_CANDLES'}
++    v1,v2,replacements=challenger_features(segment)
++    before={name:int((~_isfinite(v1[name].tail(CONTEXT))).sum()) for name in COLS}
++    after={name:int((~_isfinite(v2[name].tail(CONTEXT))).sum()) for name in COLS}
++    v1_count=_whole_window_valid(v1)
++    v2_count=_whole_window_valid(v2)
++    if v2_count<v1_count:raise RuntimeError('EXPERIMENTAL_RECIPE_UNEXPECTEDLY_DESTROYED_VALID_WINDOWS')
++    eligible_now=len(segment)>=MIN_BARS
++    return {
++        'status':'RESEARCH_COUNTERFACTUAL_ONLY',
++        'genuine_closed_bars':int(len(segment)),
++        'latest_candle_close_epoch':int(segment.timestamp.iloc[-1])+period,
++        'last_recorded_quote_epoch':float(quote_epoch) if quote_epoch is not None else None,
++        'v1_existing_champion_latest_window_eligible':bool(eligible_now and all(not n for n in before.values())),
++        'v2_research_only_latest_window_eligible':bool(eligible_now and all(not n for n in after.values())),
++        'v1_latest_window_invalid_counts':{key:n for key,n in before.items() if n},
++        'v2_latest_window_invalid_counts':{key:n for key,n in after.items() if n},
++        'v2_explicitly_resolved_rows_entire_contiguous_segment':{key:n for key,n in replacements.items() if n},
++        'v1_eligible_historical_window_endings':v1_count,
++        'v2_research_eligible_historical_window_endings':v2_count,
++        'additional_research_only_window_endings':v2_count-v1_count,
++        'raw_ohlcv_unchanged':True,
++        'existing_champion_policy_unchanged':True,
++    }
++
++
++def feature_recipe_report(root,resolution='15',top=8,symbol=None):
++    if resolution!='15':raise ValueError('Only native 15m champion resolution can be audited')
++    if not isinstance(top,int) or not 1<=top<=24:raise ValueError('top must be 1..24')
++    if symbol is not None and (not isinstance(symbol,str) or not symbol.isalnum() or not symbol.isupper()):
++        raise ValueError('invalid symbol')
++    root=Path(root).resolve()
++    db=_read_connection(root/'catalog.sqlite')
++    base={'mode':'READ_ONLY_EXPERIMENTAL_FEATURE_RECIPE_COMPARISON',
++          'recipe_id':POLICY,
++          'recipe_source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
++          'no_network_no_orders_no_db_writes':True,
++          'champion_riskgate_watch_unchanged':True,
++          'recipe_requires_separate_training_and_future_validation':True,
++          'neutral_zero_denominator_conventions_are_research_choices_not_unique_truth':True,
++          'note':'Only arithmetic zero-denominator ambiguities are addressed; gap/warmup/nonfinite prices stay invalid.'}
++    if db is None:return {**base,'status':'NO_EXISTING_ARCHIVE','symbols':[]}
++    try:
++        names=_read_catalog_symbols(db,top,symbol)
++        items=[]
++        for name in names:
++            try:
++                segments,chunks=_verified_segments(root,db,name,resolution)
++                if not segments:
++                    detail={'status':'NO_VERIFIED_GENUINE_CANDLES'}
++                else:
++                    quote_epoch=_last_quote_epoch(root,name)
++                    if quote_epoch is not None:
++                        candidates=[s for s in segments if (s.timestamp+900<=quote_epoch).any()]
++                        segment=candidates[-1] if candidates else None
++                    else:segment=segments[-1]
++                    detail=diagnose_segment(segment,quote_epoch)
++                items.append({'symbol':name,'sha256_verified_source_chunks':chunks,
++                              'verified_source':True,**detail})
++            except (ValueError,KeyError,TypeError,RuntimeError,OSError,OverflowError) as exc:
++                items.append({'symbol':name,'status':'FAIL_CLOSED_INPUT','error_type':type(exc).__name__,
++                              'verified_source':False})
++        return {**base,'status':'READ_ONLY','symbols':items}
++    finally:db.close()
