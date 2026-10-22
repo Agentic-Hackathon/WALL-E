@@ -56,7 +56,7 @@ def cycle(lake=None,symbol=None,checkpoint=None,thread_id='research-main',fee=.0
     import torch
     def context_node(state:AgentState):
         # Trusted local code selects tool/skill scope. No article can widen it.
-        packet=make_packet(lake,phase='agent-cycle',token_budget=1800,mode=mode)
+        packet=make_packet(lake,phase='agent-cycle',token_budget=1800,mode=mode,symbol=state.get('symbol'))
         return {'context_packet':packet}
     model=verified_champion(lake.root/'models')
     def market_node(state:AgentState):

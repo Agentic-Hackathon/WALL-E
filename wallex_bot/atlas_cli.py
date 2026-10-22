@@ -14,7 +14,7 @@ def main(argv=None):
     p=argparse.ArgumentParser(prog='python -m wallex_bot.atlas_cli',
         description='Wallex Atlas: real-data-only all-market research + ML/DL + news + read-only MCP')
     p.add_argument('command',nargs='?',default='run',choices=['run','discover','archive-all',
-        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status'])
+        'benchmark','news','finbert','train-deep','shadow-cycle','status','mcp-smoke','inspect','account-audit','agent-cycle','capture-live','watch','audit-v3','forward-report','contest-readiness','context-status','context-preview','context-review','broker-status','liquidation-status','liquidate-paper','validate','mode-status','memory-rank'])
     p.add_argument('--days',type=int,default=7)
     p.add_argument('--minutes',type=int,default=10)
     p.add_argument('--hours',type=int,default=48)
@@ -29,6 +29,7 @@ def main(argv=None):
     p.add_argument('--fee',type=float,default=.001)
     p.add_argument('--slippage',type=float,default=.0005)
     p.add_argument('--top',type=int,default=8)
+    p.add_argument('--as-of-utc',default=None,help='PIT memory cutoff, ISO-8601 UTC; never future')
     p.add_argument('--mode',choices=('BACKTEST','SHADOW','LIVE'),default=None,
                    help='Explicit contract for validate/benchmark (BACKTEST) or paper agent/watch (SHADOW); LIVE disabled')
     args=p.parse_args(argv)
@@ -37,6 +38,17 @@ def main(argv=None):
         pretty(mode_status());return
     lake=Lake()
     try:
+        if args.command=='memory-rank':
+            from .atlas_context import ContextStore
+            # Truly read-only, including when no context database has been created.
+            store=ContextStore(lake.root,mode=ExecutionMode.SHADOW,read_only=True)
+            try:
+                pretty({'mode':'SHADOW_READ_ONLY_MEMORY_VIEW','memory_policy':'EVIDENCE_ONLY_NO_ORDER_AUTHORITY',
+                        'items':store.ranked(as_of_utc=args.as_of_utc,symbol=args.symbol,
+                                             purpose='watch',limit=min(max(args.top,1),40)),
+                        'integrity':store.verify()})
+            finally:store.close()
+            return
         if args.command in ('context-status','context-preview','context-review'):
             from .atlas_context import ContextStore,make_packet
             if args.command=='context-preview':

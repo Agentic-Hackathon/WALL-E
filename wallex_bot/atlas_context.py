@@ -44,12 +44,13 @@ def _clean(value,depth=0):
 
 class ContextStore:
     """Long-term evidence lives on disk; short-term packets are bounded views."""
-    def __init__(self,root,mode=ExecutionMode.SHADOW):
+    def __init__(self,root,mode=ExecutionMode.SHADOW,read_only=False):
         self.mode=require_mode(mode,permitted=(ExecutionMode.BACKTEST,ExecutionMode.SHADOW),operation='ContextStore')
         self.path=Path(root)/'context_memory.sqlite'
+        self.read_only=bool(read_only)
         # A BACKTEST may inspect existing past evidence, but MUST NOT create a
         # context database, WAL, lesson or operational decision record.
-        if self.mode is ExecutionMode.BACKTEST:
+        if self.mode is ExecutionMode.BACKTEST or self.read_only:
             self.db=(sqlite3.connect(self.path.as_uri()+'?mode=ro',uri=True,timeout=30)
                      if self.path.is_file() else None)
             if self.db is not None:self.db.execute('PRAGMA query_only=ON')
@@ -73,6 +74,7 @@ class ContextStore:
 
     def _require_writable(self,operation):
         require_mode(self.mode,permitted=(ExecutionMode.SHADOW,),operation=operation)
+        if self.read_only:raise ModeSafetyError(f'{operation}: READ_ONLY_MEMORY_VIEW')
 
     def record(self,kind,source_ref,payload,source_digest=None):
         self._require_writable('ContextStore.record')
@@ -119,6 +121,29 @@ class ContextStore:
             FROM context_events ORDER BY id DESC LIMIT ?''',(limit,)).fetchall()
         return [{'observed_at_utc':t,'kind':k,'source_ref':s,'source_sha256':h,'payload':json.loads(p),'event_hash':e}
                 for t,k,s,h,p,e in rows]
+
+    def ranked(self,*,as_of_utc=None,symbol=None,purpose='watch',limit=12):
+        """PIT verified operational memory; NEVER available to BACKTEST.
+
+        This is a ranked view, not a DB mutation, and does not access lessons.
+        Historical BACKTEST mode deliberately continues to reveal no operational
+        memory (including past-dated entries) until a separate isolated replay DB
+        with proven PIT provenance exists.
+        """
+        from .atlas_memory import utc_time,rank_rows,CANDIDATE_CAP
+        cutoff=utc_time(as_of_utc)
+        if self.mode is ExecutionMode.BACKTEST or self.db is None:return []
+        if not self.verify()['hash_chain_valid']:
+            raise RuntimeError('Context hash chain corrupted; fail closed')
+        # Bound work without borrowing event content from beyond cutoff.
+        rows=self.db.execute("SELECT observed_at_utc,kind,source_ref,source_sha256,payload_json,event_hash "
+             "FROM context_events WHERE observed_at_utc<=? ORDER BY id DESC LIMIT ?",
+             (cutoff.isoformat(),CANDIDATE_CAP)).fetchall()
+        events=[]
+        for t,k,s,h,p,e in rows:
+            events.append({'observed_at_utc':t,'kind':k,'source_ref':s,
+                           'source_sha256':h,'payload':json.loads(p),'event_hash':e})
+        return rank_rows(events,as_of_utc=cutoff,symbol=symbol,purpose=purpose,limit=limit)
 
     def review_candidates(self):
         # A backtest cannot consult hindsight-validated operational lessons.
@@ -180,7 +205,7 @@ def _event_card(event):
             'metrics':{key:payload[key] for key in permitted if key in payload}}
 
 
-def make_packet(lake,phase='watch',token_budget=1800,mode=ExecutionMode.SHADOW):
+def make_packet(lake,phase='watch',token_budget=1800,mode=ExecutionMode.SHADOW,as_of_utc=None,symbol=None):
     """Small deterministic context, not a raw transcript or an LLM instruction from web.
 
     Pinned guardrails live at both ends, while references to live facts remain
@@ -191,7 +216,7 @@ def make_packet(lake,phase='watch',token_budget=1800,mode=ExecutionMode.SHADOW):
     store=ContextStore(lake.root,mode=mode)
     try:
         if not store.verify()['hash_chain_valid']:raise RuntimeError('Context hash chain corrupted; fail closed')
-        recent=[_event_card(x) for x in store.recent(limit=12)] if store.status()['events_verified'] else []
+        recent=store.ranked(as_of_utc=as_of_utc,symbol=symbol,purpose=phase,limit=12)
         header={'phase':phase,'trust_level':'FIXED_TRUSTED_POLICY','guardrails':POLICY,
                 'tool_menu':tools_for(phase),'skill_index':skill_index(phase)}
         # No external input controls skill selection; fully load only task-relevant skills.
@@ -217,6 +242,8 @@ def make_packet(lake,phase='watch',token_budget=1800,mode=ExecutionMode.SHADOW):
         packet['summary']={'execution_mode':mode.value,'memory_read_only':mode is ExecutionMode.BACKTEST,
                            'token_budget_upper_estimate':token_budget,'actual_characters':len(_json(packet)),
                           'recent_events_included':len(packet['working_memory']),
+                          'memory_ranking_protocol':'ATLAS_PIT_MEMORY_RETRIEVAL_V1',
+                          'memory_is_evidence_only':True,
                           'skills_loaded':len(packet['task_skills']),
                           'evidence_source':'local hash-chained SQLite and packaged SKILL.md only',
                           'important':'This is an orchestration context; no LLM trading reasoning or order sending is implied.'}
