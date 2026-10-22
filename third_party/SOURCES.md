@@ -47,3 +47,19 @@ All seven repositories were inspected, with LICENSE read before implementation. 
 | https://github.com/hummingbot/hummingbot | `9af100d6822da7d2d0291a906c730ef172284ee2` | Apache-2.0 | `hummingbot/connector/client_order_tracker.py`: stable identities and reconciliation. Atlas already has an order tracker; only observation identity/lease/reconcile extended. No connectors copied or enabled. |
 
 The last three references are shallow, filtered sparse checkouts under third_party. Paths were discovered using Git tree listings, not guessed. License bytes/commit/path evidence are exported in reports/m6_reference_repositories.json. No futures, leverage, short or withdrawal code was imported.
+
+## Milestone 7: allocation, costs and formal prospective protocol
+
+Same pinned commits/licenses as M6 above; no external source copied or executed.
+Discovered and inspected FinRL-X `src/strategies/adaptive_rotation/portfolio_builder.py`
+(4409abe925c904e570be78ebfb5e77ac3491dff8, Apache-2.0): target weights/cash residual
+separate from execution. Independently authored `atlas_portfolio.py` retains the Atlas gate.
+Discovered and inspected Hummingbot `hummingbot/core/data_type/trade_fee.py`
+(9af100d6822da7d2d0291a906c730ef172284ee2, Apache-2.0): explicit fee impact vs returns;
+no connectors, private requests or external trading code imported. Existing Atlas
+`live_scout.measure_book`, `_buy_with_notional`, `_sell_qty` reused for real depth estimates.
+NautilusTrader LGPL-3.0 state-only replay and Freqtrade GPL-3.0 lookahead concepts
+remain idea-only; no license-restricted code copied. FinMem MIT research evidence
+layers reused through existing Atlas ResearchMemory with actual creation/PIT cutoffs.
+No new framework, portfolio optimizer or external performance claim adopted.
+Per-file license hashes verified again in `reports/m7_reference_integration.json`.
