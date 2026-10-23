@@ -314,7 +314,7 @@ def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop
                     snapshot=input_snapshot(lake,symbol);outputs,errors=predict_models(contract['models'],snapshot)
                     quote=ledger.db.execute('SELECT id FROM quotes WHERE symbol=? ORDER BY observed_epoch DESC LIMIT 1',(symbol,)).fetchone()
                     if not quote:raise ValueError('WAITING_REAL_SAMPLER_QUOTE')
-                    inserted=ledger.register(symbol,contract['models'],snapshot,outputs,quote[0]);finished=time.time();ledger.sync_queue()
+                    inserted=ledger.register(symbol,contract['models'],snapshot,outputs,quote[0],fee=contract['settings']['fee_per_side_assumed']);finished=time.time();ledger.sync_queue()
                     with ledger.db:
                         for key, in ledger.db.execute('SELECT prediction_id FROM m6_predictions WHERE symbol=? AND cutoff=?',(symbol,snapshot['cutoff'])).fetchall():
                             ledger.db.execute('INSERT OR IGNORE INTO inference_audit_v7 VALUES(?,?,?,?)',(key,contract['contract_sha256'],started,finished))

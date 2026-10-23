@@ -112,7 +112,7 @@ class SpotLedger:
         self._require_integrity()
         # Crash after durable SUBMITTED but before response is UNKNOWN, not retryable.
         with self.db:
-            for row in self.db.execute("SELECT client_id FROM spot_orders WHERE state IN ('SUBMITTED','CANCEL_PENDING')").fetchall():
+            for row in self.db.execute("SELECT client_id FROM spot_orders WHERE state IN ('SUBMITTED','ACKNOWLEDGED','CANCEL_PENDING')").fetchall():
                 self._state(row[0], 'UNKNOWN', 'RESTART_REQUIRES_EXCHANGE_READ')
 
     def _state(self, client_id, state, evidence):
@@ -134,13 +134,21 @@ class SpotLedger:
             if previous!=prev or actual!=digest:
                 raise BrokerSafetyError('SPOT_AUDIT_CHAIN_INVALID')
             previous=digest;latest[client_id]=state
-        for row in self.db.execute('SELECT client_id,fingerprint,state,payload,exchange_snapshot FROM spot_orders'):
+        for row in self.db.execute('SELECT client_id,fingerprint,state,payload,exchange_snapshot,symbol,side,executed_qty,executed_sum FROM spot_orders'):
             if latest.get(row[0])!=row[2] or hashlib.sha256(row[3].encode()).hexdigest()!=row[1]:
                 raise BrokerSafetyError('SPOT_ORDER_INTEGRITY_INVALID')
+            requested=json.loads(row[3])
+            if any(requested.get(k)!=row[i] for k,i in (('client_id',0),('symbol',5),('side',6))):
+                raise BrokerSafetyError('SPOT_ORDER_IDENTITY_COLUMNS_INVALID')
             if row[4]:
                 sha=hashlib.sha256(row[4].encode()).hexdigest()
                 if not self.db.execute('SELECT 1 FROM spot_audit WHERE client_id=? AND sha256=?',(row[0],sha)).fetchone():
                     raise BrokerSafetyError('SPOT_EXCHANGE_SNAPSHOT_NOT_BOUND_TO_AUDIT')
+                observed=json.loads(row[4])['result']
+                if row[7]!=str(decimal(observed['executedQty'],zero=True)) or row[8]!=str(decimal(observed['executedSum'],zero=True)):
+                    raise BrokerSafetyError('SPOT_EXECUTION_CACHE_NOT_BOUND_TO_SNAPSHOT')
+            elif row[7] is not None or row[8] is not None:
+                raise BrokerSafetyError('SPOT_EXECUTION_WITHOUT_SNAPSHOT')
 
     def register(self, payload):
         raw = json.dumps(payload, sort_keys=True, separators=(',', ':')); sha = hashlib.sha256(raw.encode()).hexdigest()
@@ -189,8 +197,10 @@ class SpotLedger:
         for fill in fills:
             if fill.get('symbol') != row['symbol'] or not isinstance(fill.get('feeAsset'), str):
                 raise BrokerSafetyError('INVALID_FILL_IDENTITY')
-            fill_qty += decimal(fill.get('quantity')); fill_sum += decimal(fill.get('sum'))
+            quantity=decimal(fill.get('quantity'));amount=decimal(fill.get('sum'))
+            fill_qty+=quantity;fill_sum+=amount
             fill_price=decimal(fill.get('price'));limit=decimal(requested['price'])
+            if quantity*fill_price!=amount:raise BrokerSafetyError('FILL_AMOUNT_ARITHMETIC_UNVERIFIED_NO_ROUNDING_RULE')
             if (row['side']=='BUY' and fill_price>limit) or (row['side']=='SELL' and fill_price<limit):
                 raise BrokerSafetyError('FILL_PRICE_VIOLATES_LIMIT')
             fee = decimal(fill.get('fee'), zero=True)
@@ -201,7 +211,7 @@ class SpotLedger:
         # Official docs use both FINISHED and FILLED. Completion is inferred only
         # from exact cumulative quantities, never from a vague terminal label.
         if executed == original:
-            state = 'FILLED'
+            state = 'FILLED' if p.get('active') is False else 'UNKNOWN'
         elif status in ('CANCELED', 'CANCELLED') and p.get('active') is False:
             state = 'CANCELLED'
         elif p.get('active') is True:
@@ -239,6 +249,16 @@ class RealSpotBroker:
         self.root = Path(root); self.ledger = SpotLedger(root)
         self.transport = SpotReadTransport(); self.gate = RiskGate()
         self.mode = 'BLOCKED'
+
+    @classmethod
+    def with_operator_evidence(cls,root,authorization_file,forecast_session):
+        """Explicit account-isolated implementation; construction NEVER arms it.
+
+        The default constructor and legacy broker remain HARD_DISABLED. This
+        factory only unifies the public entry point, not authorization policy.
+        """
+        from .atlas_spot_runtime import ControlledSpotBroker
+        return ControlledSpotBroker(root,authorization_file,forecast_session)
 
     def preview(self, intent, *, market_limits, price, quantity, forecast, book,
                 cash_tmn, positions, stopped, fee):

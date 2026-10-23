@@ -23,6 +23,7 @@ from .atlas_spot_exchange import SpotLedger, decimal, wire_order, TERMINAL
 from .atlas_risk import RiskGate
 from .atlas_deadline import permission, ENTRY_STOP, DEADLINE
 from .atlas_forward import _sha
+from .atlas_liquidation import _save_atomic
 
 _PERMIT_SECRET=object()
 
@@ -32,7 +33,10 @@ class _NetworkPermit:
     def __init__(self,owner,action,method,client_id,payload,secret):
         if secret is not _PERMIT_SECRET:raise BrokerSafetyError('INVALID_EXECUTION_CAPABILITY')
         self.owner=owner;self.action=action;self.identity=_sha([method,client_id,payload]);self.used=False
-    def validate(self,method,client_id,payload):
+        self.expires=time.monotonic()+2
+    def validate(self,method,client_id,payload,account_client_id):
+        if account_client_id!=self.owner.api.client_id:raise BrokerSafetyError('EXECUTION_CAPABILITY_ACCOUNT_MISMATCH')
+        if time.monotonic()>self.expires:raise BrokerSafetyError('EXECUTION_CAPABILITY_EXPIRED')
         if self.used or self.identity!=_sha([method,client_id,payload]):raise BrokerSafetyError('EXECUTION_CAPABILITY_USED_OR_REQUEST_CHANGED')
         self.owner._permit(self.action);self.used=True
 
@@ -52,7 +56,7 @@ class AccountSpotTransport:
         if (method,resource) not in allowed:raise BrokerSafetyError('ENDPOINT_NOT_ALLOWED')
         if method!='GET':
             if type(permit) is not _NetworkPermit:raise BrokerSafetyError('NO_PROCESS_LOCAL_EXECUTION_PERMIT')
-            permit.validate(method,client_id,payload)
+            permit.validate(method,client_id,payload,self.client_id)
         key=os.environ.get('WALLEX_API_KEY')
         if not key:raise BrokerSafetyError('WALLEX_API_KEY_UNSET')
         path=allowed[method,resource]
@@ -108,12 +112,35 @@ class ControlledSpotBroker:
         self.api=AccountSpotTransport(self.approval.get('account_client_id'))
         identity=hashlib.sha256(self.api.client_id.encode()).hexdigest()
         self.directory=self.root/'operations/spot_accounts'/identity
-        self.ledger=SpotLedger(self.directory);self.gate=RiskGate();self.arm_state=None
+        self.directory.mkdir(parents=True,exist_ok=True)
+        self.gate=RiskGate();self.arm_state=None
         self.lock_db=sqlite3.connect(self.directory/'mutation_lock.sqlite',timeout=30)
         self.lock_db.execute('CREATE TABLE IF NOT EXISTS locks(id INTEGER PRIMARY KEY)');self.lock_db.commit()
-        self.ledger.db.execute('CREATE TABLE IF NOT EXISTS spot_baseline(id INTEGER PRIMARY KEY CHECK(id=1),payload TEXT,sha TEXT)')
-        self.ledger.db.execute('CREATE TABLE IF NOT EXISTS spot_equity_guard(id INTEGER PRIMARY KEY CHECK(id=1),high_water REAL,stopped INTEGER)')
-        self.ledger.db.commit()
+        try:
+            # A second process must not reinterpret another process's in-flight
+            # SUBMITTED as a crash while its request is still holding this lock.
+            with self.exclusive():
+                self.ledger=SpotLedger(self.directory)
+                self.ledger.db.execute('CREATE TABLE IF NOT EXISTS spot_baseline(id INTEGER PRIMARY KEY CHECK(id=1),payload TEXT,sha TEXT)')
+                self.ledger.db.execute('CREATE TABLE IF NOT EXISTS spot_equity_guard(id INTEGER PRIMARY KEY CHECK(id=1),high_water REAL,stopped INTEGER)')
+                self.ledger.db.execute('CREATE TABLE IF NOT EXISTS spot_mutation_receipts(id INTEGER PRIMARY KEY,client_id TEXT,kind TEXT,payload TEXT,sha256 TEXT)')
+                self.ledger.db.commit()
+                self._latch_halt()
+        except Exception:
+            if hasattr(self,'ledger'):self.ledger.close()
+            self.lock_db.close();raise
+
+    def _latch_halt(self):
+        path=self.directory/'operations/spot_halt.json'
+        if path.exists():
+            p=json.loads(path.read_text())
+            if p.get('halted') is not True or p.get('deadline_epoch')!=DEADLINE.timestamp():
+                raise BrokerSafetyError('INVALID_PERSISTENT_SPOT_HALT_MANUAL_REVIEW')
+            return True
+        if time.time()>=DEADLINE.timestamp():
+            _save_atomic(path,{'halted':True,'observed_epoch':time.time(),'deadline_epoch':DEADLINE.timestamp(),'automatic_rearm':False})
+            return True
+        return False
 
     @contextmanager
     def exclusive(self):
@@ -217,6 +244,7 @@ class ControlledSpotBroker:
 
     def arm_interactive(self,*,input_fn=input):
         with self.exclusive():
+            if self._latch_halt():raise BrokerSafetyError('SPOT_HALTED_LATCHED_NO_REARM')
             cap=self._proofs();permission(self.root,'BUY')
             totals,available,_=self._account()
             if self.api.open_orders():raise BrokerSafetyError('ACCOUNT_OPEN_ORDERS_RECONCILE_BEFORE_ARM')
@@ -237,12 +265,17 @@ class ControlledSpotBroker:
     def disarm(self):self.arm_state=None
 
     def _permit(self,action):
+        if self._latch_halt():
+            self.disarm();raise BrokerSafetyError('SPOT_HALTED_LATCHED_NO_REARM')
         a=self.arm_state
         if not a or a['pid']!=os.getpid() or time.monotonic()>=a['monotonic_deadline']:
             self.disarm();raise BrokerSafetyError('DISARMED_OR_EXPIRED_RESTART_REQUIRES_CONFIRMATION')
-        if _sha(json.loads(self.authorization_file.read_text()))!=self.approval_sha:raise BrokerSafetyError('AUTHORIZATION_CHANGED_DISARM_REQUIRED')
-        if hashlib.sha256(os.environ.get('WALLEX_API_KEY','').encode()).hexdigest()!=a['key_sha']:raise BrokerSafetyError('ACCOUNT_KEY_CHANGED')
-        self._proofs();permission(self.root,action)
+        try:
+            if _sha(json.loads(self.authorization_file.read_text(encoding='utf-8')))!=self.approval_sha:raise BrokerSafetyError('AUTHORIZATION_CHANGED_DISARM_REQUIRED')
+            if hashlib.sha256(os.environ.get('WALLEX_API_KEY','').encode()).hexdigest()!=a['key_sha']:raise BrokerSafetyError('ACCOUNT_KEY_CHANGED')
+            self._proofs();permission(self.root,action)
+        except Exception:
+            self.disarm();raise
 
     def _forecast_and_quote(self,symbol,prediction_id):
         from .atlas_study import fast_validate
@@ -250,17 +283,26 @@ class ControlledSpotBroker:
         db=sqlite3.connect((self.forecast_session/'forward_observations.sqlite').as_uri()+'?mode=ro',uri=True)
         try:
             row=db.execute('SELECT payload,payload_sha FROM m6_predictions WHERE prediction_id=? AND model=? AND symbol=?',(prediction_id,'champion',symbol)).fetchone()
-            qrow=db.execute('SELECT symbol,observed_epoch,best_bid,best_ask,mid,raw_book,receipt_sha256 FROM quotes WHERE symbol=? ORDER BY observed_epoch DESC LIMIT 1',(symbol,)).fetchone()
         finally:db.close()
-        if not row or not qrow:raise BrokerSafetyError('REGISTERED_CHAMPION_AND_REAL_QUOTE_REQUIRED')
+        if not row:raise BrokerSafetyError('REGISTERED_CHAMPION_AND_REAL_QUOTE_REQUIRED')
         forecast=json.loads(row[0]);now=time.time()
         if _sha(forecast)!=row[1] or not 0<=now-forecast['prediction_available_at']<=forecast['forecast_horizon']:
             raise BrokerSafetyError('INVALID_OR_STALE_FORECAST')
         if forecast['model_sha256']!=contract['models']['champion']['model_sha256']:raise BrokerSafetyError('CHAMPION_IDENTITY_MISMATCH')
+        return {'quantile_log_returns':{k:forecast[k] for k in ('q10','q50','q90')}},self._latest_quote(symbol)
+
+    def _latest_quote(self,symbol):
+        """Deterministic exits need a fresh real bid, not a surviving AI forecast."""
+        db=sqlite3.connect((self.forecast_session/'forward_observations.sqlite').as_uri()+'?mode=ro',uri=True)
+        try:
+            qrow=db.execute('SELECT symbol,observed_epoch,best_bid,best_ask,mid,raw_book,receipt_sha256 FROM quotes WHERE symbol=? ORDER BY observed_epoch DESC LIMIT 1',(symbol,)).fetchone()
+        finally:db.close()
+        if not qrow:raise BrokerSafetyError('REAL_QUOTE_REQUIRED')
         q=dict(zip(('symbol','observed_epoch','best_bid','best_ask','mid','raw_book','receipt_sha256'),qrow));q['raw_book']=json.loads(q['raw_book'])
+        now=time.time()
         if _sha({k:v for k,v in q.items() if k!='receipt_sha256'})!=q['receipt_sha256'] or not 0<=now-q['observed_epoch']<=30:
             raise BrokerSafetyError('INVALID_OR_STALE_QUOTE')
-        return {'quantile_log_returns':{k:forecast[k] for k in ('q10','q50','q90')}},q
+        return q
 
     def _equity_assessment(self,totals,positions,fees):
         from .live_scout import _levels,_sell_qty
@@ -286,7 +328,7 @@ class ControlledSpotBroker:
         with self.ledger.db:self.ledger.db.execute('INSERT OR REPLACE INTO spot_equity_guard VALUES(1,?,?)',(assessment.high_water_tmn,int(assessment.stopped)))
         return assessment,nav
 
-    def submit(self,intent,*,price,quantity,prediction_id):
+    def submit(self,intent,*,price,quantity,prediction_id=None):
         from .atlas_portfolio import cost_audit
         with self.exclusive():
             self._permit(intent.side)
@@ -299,7 +341,13 @@ class ControlledSpotBroker:
                 return self.ledger.status(intent.client_order_id)
             totals,available,fees=self._account();positions,spent=self._conservation(totals)
             if self.api.open_orders():raise BrokerSafetyError('OPEN_OR_OPPOSING_ACCOUNT_ORDER_SELF_TRADE_GUARD')
-            forecast,quote=self._forecast_and_quote(intent.symbol,prediction_id)
+            if intent.purpose=='FINAL_TMN':
+                if intent.side!='SELL':raise BrokerSafetyError('FINAL_TMN_MUST_BE_SPOT_SELL')
+                # No missing/expired model may block the deterministic exit
+                # path; account, live ARM, deadline, real quote and RiskGate do.
+                if permission(self.root,'SELL')['phase']!='EXIT_ONLY':raise BrokerSafetyError('FINAL_TMN_ONLY_IN_EXIT_WINDOW')
+                forecast=None;quote=self._latest_quote(intent.symbol)
+            else:forecast,quote=self._forecast_and_quote(intent.symbol,prediction_id)
             fee=float(decimal(fees[intent.symbol]['takerFeeRate'],zero=True))
             if not fee<.05:raise BrokerSafetyError('INVALID_CURRENT_FEE')
             book=cost_audit(quote,500000,fee)
@@ -331,7 +379,10 @@ class ControlledSpotBroker:
             try:
                 capability=_NetworkPermit(self,intent.side,'POST',None,payload,_PERMIT_SECRET)
                 response=self.api.request('POST','order',payload=payload,permit=capability)
-                return self.ledger.observe(intent.client_order_id,response)
+                self._mutation_receipt(intent.client_order_id,'SUBMIT_ACK','ACKNOWLEDGED',response)
+                # An ACK is not a fill. Read authoritative cumulative state once;
+                # a failed read becomes UNKNOWN and never triggers another POST.
+                return self.ledger.observe(intent.client_order_id,self.api.request('GET','order',client_id=intent.client_order_id))
             except Exception:
                 with self.ledger.db:self.ledger._state(intent.client_order_id,'UNKNOWN','SUBMISSION_RESULT_UNKNOWN_NO_RETRY')
                 raise BrokerSafetyError('ORDER_UNKNOWN_READ_STATUS_BEFORE_ANY_OTHER_ACTION') from None
@@ -348,10 +399,19 @@ class ControlledSpotBroker:
             with self.ledger.db:self.ledger._state(client_order_id,'CANCEL_PENDING','OPERATOR_AUTHORIZED_CANCEL')
             try:
                 capability=_NetworkPermit(self,'CANCEL','DELETE',client_order_id,None,_PERMIT_SECRET)
-                return self.ledger.observe(client_order_id,self.api.request('DELETE','order',client_id=client_order_id,permit=capability))
+                response=self.api.request('DELETE','order',client_id=client_order_id,permit=capability)
+                self._mutation_receipt(client_order_id,'CANCEL_ACK','CANCEL_PENDING',response)
+                return self.ledger.observe(client_order_id,self.api.request('GET','order',client_id=client_order_id))
             except Exception:
                 with self.ledger.db:self.ledger._state(client_order_id,'UNKNOWN','CANCEL_RESULT_UNKNOWN_NO_RETRY')
                 raise BrokerSafetyError('CANCEL_UNKNOWN_RECONCILE_READ_ONLY') from None
+
+    def _mutation_receipt(self,client_id,kind,state,response):
+        raw=json.dumps(response,sort_keys=True,separators=(',',':'),allow_nan=False)
+        with self.ledger.db:
+            self.ledger.db.execute('INSERT INTO spot_mutation_receipts(client_id,kind,payload,sha256) VALUES(?,?,?,?)',
+                (client_id,kind,raw,hashlib.sha256(raw.encode()).hexdigest()))
+            self.ledger._state(client_id,state,raw)
 
     def reconcile(self):
         with self.exclusive():
@@ -370,7 +430,8 @@ def main():
     p.add_argument('command',choices=('reconcile','interactive'))
     p.add_argument('--root',default='atlas_store');p.add_argument('--authorization',required=True)
     p.add_argument('--forecast-session',required=True)
-    a=p.parse_args();broker=ControlledSpotBroker(a.root,a.authorization,a.forecast_session)
+    from .atlas_spot_exchange import RealSpotBroker
+    a=p.parse_args();broker=RealSpotBroker.with_operator_evidence(a.root,a.authorization,a.forecast_session)
     try:
         if a.command=='reconcile':print(json.dumps(broker.reconcile(),default=str));return
         print(json.dumps(broker.arm_interactive()))
@@ -383,7 +444,7 @@ def main():
                 elif cmd.get('operation')=='cancel':result=broker.cancel(cmd['client_order_id'])
                 elif cmd.get('operation')=='submit':
                     intent=OrderIntent(cmd['client_order_id'],cmd['symbol'],cmd['side'],purpose=cmd.get('purpose','STRATEGY'))
-                    result=broker.submit(intent,price=cmd['price'],quantity=cmd['quantity'],prediction_id=cmd['prediction_id'])
+                    result=broker.submit(intent,price=cmd['price'],quantity=cmd['quantity'],prediction_id=cmd.get('prediction_id'))
                 else:raise BrokerSafetyError('OPERATION_NOT_ALLOWED')
                 print(json.dumps(result,default=str))
             except (BrokerSafetyError,ValueError,KeyError):
