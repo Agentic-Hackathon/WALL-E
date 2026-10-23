@@ -3,7 +3,7 @@
 Actual archive/SQLite/public research reports only. No network, secret discovery,
 process launch, arbitrary export path, order transport or frozen-session resume.
 """
-import argparse,hashlib,json,sqlite3,time
+import argparse,hashlib,json,sqlite3,time,secrets
 from datetime import datetime,timezone
 from functools import partial
 from http.server import ThreadingHTTPServer
@@ -139,6 +139,64 @@ def pattern_lines(root):
         return {'status':'ACTUAL_IMMUTABLE_PATTERN_FEATURES','series':series,'research_only':True}
     finally:index.close()
 
+
+def pattern_search(root,symbol='BTCTMN',resolution='15',length=10,method='euclidean',scope='same',k=8):
+    """On-demand research over the existing immutable SciPy/DTW index.
+
+    Reuses atlas_patterns (source/licensing in that module), archive SHA/grid
+    verification and receipt-aware cutoff. No rebuilding, network or trade path.
+    """
+    from types import SimpleNamespace
+    from .atlas_patterns import PatternIndex,make_query,HORIZONS,RESOLUTIONS as PATTERN_RESOLUTIONS
+    from .atlas_feature_health import _verified_segments
+    from .atlas_archive import period_seconds
+    if (not SYMBOL_RE.fullmatch(symbol) or resolution not in PATTERN_RESOLUTIONS or
+        length not in (7,10,16,24) or method not in ('euclidean','dtw','return_structure') or
+        scope not in ('same','all') or not 2<=k<=12):raise ValueError('INVALID_PATTERN_SEARCH')
+    root=Path(root).resolve();folder=root/'research_challengers/milestone8/pattern_index_v1'
+    empty={'status':'DATA_NOT_AVAILABLE','matches':[],'query':None,'research_only':True,'decision_path_eligible':False}
+    if not (root/'catalog.sqlite').is_file() or not (folder/'patterns.sqlite').is_file():return empty
+    db=sqlite3.connect((root/'catalog.sqlite').as_uri()+'?mode=ro',uri=True,timeout=20)
+    index=PatternIndex(folder,readonly=True)
+    try:
+        index.verify_sources();manifest=index.manifest()
+        if length not in manifest['lengths'] or resolution not in manifest['resolutions']:
+            return {**empty,'status':'WINDOW_NOT_INDEXED','indexed_lengths':manifest['lengths'],'indexed_resolutions':manifest['resolutions']}
+        lake=SimpleNamespace(root=root,db=db)
+        try:query=make_query(lake,symbol,resolution,length)
+        except ValueError as exc:
+            return {**empty,'status':'QUERY_UNAVAILABLE','reason':str(exc)}
+        result=index.search(query,method=method,scope=scope,k=k,min_matches=2)
+        cache={};step=period_seconds(resolution)
+        def bars_for(asset,start,end):
+            if asset not in cache:cache[asset]=_verified_segments(root,db,asset,resolution)[0]
+            # A whole contiguous segment must cover both pattern and outcome.
+            for part in cache[asset]:
+                frame=part[(part.timestamp>=start)&(part.timestamp<end)]
+                if len(frame)==round((end-start)/step) and len(frame) and int(frame.timestamp.iloc[0])==start:
+                    return [{key:float(row[key]) for key in ('timestamp','open','high','low','close','volume')} for row in frame.to_dict('records')]
+            raise ValueError('PATTERN_DISPLAY_CANDLES_NOT_CONTIGUOUS')
+        current=bars_for(symbol,query['start'],query['end'])
+        matches=[]
+        for match in result['matches']:
+            row=index.db.execute('SELECT payload,sha256 FROM patterns WHERE id=?',(match['pattern_id'],)).fetchone()
+            if not row or digest(json.loads(row[0]))!=row[1]:raise ValueError('PATTERN_DISPLAY_HASH_INVALID')
+            p=json.loads(row[0]);bars=bars_for(match['symbol'],match['start'],match['outcome_end'])
+            matches.append({**match,'bars':bars[:length],'future_bars':bars[length:],
+                'normalized_close':[100*b['close']/bars[0]['close'] for b in bars],
+                'normalization':'FIRST_PATTERN_CLOSE_100_DISPLAY_ONLY',
+                'availability_policy':p['availability_policy']})
+        age=max(0,query['decision_time']-query['end'])
+        return {**result,'matches':matches,'query':{**query,'bars':current,
+                'normalized_close':[100*b['close']/current[0]['close'] for b in current]},
+                'query_age_seconds':age,'freshness':'RECENT_CLOSED_ARCHIVE' if age<=2*step else 'STALE_ARCHIVE_NOT_CURRENT_MARKET',
+                'indexed_lengths':manifest['lengths'],'indexed_resolutions':manifest['resolutions'],
+                'observed_at':time.time(),'horizons':list(HORIZONS),'research_only':True,
+                'distance_policy':'LOWER_IS_MORE_SIMILAR_NOT_PROBABILITY',
+                'future_policy':'MATCH_OUTCOMES_END_BEFORE_QUERY_START_WITH_EMBARGO',
+                'archive_only_no_network':True}
+    finally:index.close();db.close()
+
 def overview(root):
     data=observations(root);clock=_read_json(Path(root)/'operations/clock_receipt.json',{}) or {}
     fresh=0<=time.time()-clock.get('observed_epoch',0)<=120
@@ -165,26 +223,51 @@ class ConsoleHandler(DashboardHandler):
                 self.send_header('Cache-Control','public, max-age=86400' if path.suffix=='.woff2' else 'no-store');self.send_header('X-Content-Type-Options','nosniff')
                 self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
             if parsed.path=='/api/overview':result=overview(self.root)
+            elif parsed.path=='/api/finance':
+                from .atlas_finance import status
+                result=status(self.root)
+                result['control']=self.server.finance_control.state() if hasattr(self.server,'finance_control') else {'status':'DISABLED'}
+            elif parsed.path=='/api/research-token':result={'token':getattr(self.server,'research_token',None)}
             elif parsed.path=='/api/tools':result=inventory()
             elif parsed.path=='/api/news':result=real_news(self.root)
             elif parsed.path=='/api/observations':result=observations(self.root)
             elif parsed.path=='/api/candles':result=real_candles(self.root,args.get('symbol',['BTCTMN'])[0],args.get('resolution',['15'])[0])
             elif parsed.path=='/api/pattern-lines':result=pattern_lines(self.root)
+            elif parsed.path=='/api/pattern-search':result=pattern_search(self.root,
+                args.get('symbol',['BTCTMN'])[0],args.get('resolution',['15'])[0],
+                int(args.get('length',['10'])[0]),args.get('method',['euclidean'])[0],
+                args.get('scope',['same'])[0],int(args.get('k',['8'])[0]))
             elif parsed.path=='/api/report':result=public_report(args.get('name',[''])[0])
             else:return self._json({'error':'NOT_FOUND'},404)
             return self._json(result)
         except ValueError as exc:return self._json({'status':'INVALID_OR_UNVERIFIED_SOURCE','type':type(exc).__name__},400)
         except (OSError,sqlite3.Error,KeyError,RuntimeError) as exc:return self._json({'status':'DATA_NOT_AVAILABLE','type':type(exc).__name__},503)
-    def do_POST(self):self._json({'error':'READ_ONLY_NO_ORDER_OR_PROCESS_CONTROL'},405)
-    do_DELETE=do_POST
+    def do_POST(self):
+        if self.path!='/api/research-control':return self._json({'error':'READ_ONLY_NO_ORDER_OR_PROCESS_CONTROL'},405)
+        host=self.headers.get('Host','');origin=self.headers.get('Origin','')
+        if host not in ('127.0.0.1:'+str(self.server.server_port),'localhost:'+str(self.server.server_port)) or origin!='http://'+host:
+            return self._json({'error':'SAME_ORIGIN_REQUIRED'},403)
+        token=getattr(self.server,'research_token',None)
+        if not token or not secrets.compare_digest(self.headers.get('X-Research-Token',''),token):return self._json({'error':'TOKEN_REQUIRED'},403)
+        try:
+            size=int(self.headers.get('Content-Length','0'))
+            if not 0<size<=128:raise ValueError('BOUNDED_BODY_REQUIRED')
+            value=json.loads(self.rfile.read(size))
+            if set(value)!={'action'}:raise ValueError('ONLY_FIXED_RESEARCH_ACTION')
+            return self._json(self.server.finance_control.command(value['action']))
+        except (ValueError,RuntimeError,OSError,KeyError) as exc:
+            return self._json({'status':'RESEARCH_BLOCKED','type':type(exc).__name__},409)
+    def do_DELETE(self):self._json({'error':'NO_FINANCIAL_CONTROL'},405)
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',default='atlas_store');p.add_argument('--port',type=int,default=8766);a=p.parse_args()
     if not 1024<=a.port<=65535:raise ValueError('INVALID_PORT')
     server=ThreadingHTTPServer(('127.0.0.1',a.port),partial(ConsoleHandler,root=a.root))
+    from .atlas_finance_control import FinanceControl
+    server.finance_control=FinanceControl(a.root);server.research_token=secrets.token_urlsafe(32)
     print('WALL-E READ_ONLY / LIVE HARD_DISABLED http://127.0.0.1:'+str(a.port),flush=True)
     try:server.serve_forever()
     except KeyboardInterrupt:pass
-    finally:server.server_close()
+    finally:server.finance_control.close();server.server_close()
 
 if __name__=='__main__':main()

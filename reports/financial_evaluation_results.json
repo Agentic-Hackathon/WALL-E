@@ -1,0 +1,539 @@
+{
+  "schema": "ATLAS_FINANCIAL_EVIDENCE_V1",
+  "generated_epoch": 1792751834.1431015,
+  "backtest": {
+    "initial_hypothetical_tmn": 5000000,
+    "net_pnl_tmn": 0.0,
+    "max_drawdown": 0,
+    "equity_curve": [
+      {
+        "timestamp": 1792720971.9136205,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792720973.15406,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721017.281377,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721018.638571,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721077.9792247,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721079.305626,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721189.8617105,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721191.1385472,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721249.0302615,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792721250.2783713,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      }
+    ],
+    "valuation": "HYPOTHETICAL_LAST_ACTUAL_RECEIPT_NOT_CURRENT_EXCHANGE_NAV",
+    "decisions": [
+      {
+        "timestamp": 1792720971.9136205,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "5d8a0e56ac8273ad8ab4adb306b6c0c6c1b82ce7edd6714102b21c535050f938",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792720973.15406,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "96fb3e1d751a87d1c51ad4d86bc8f27fd9973035541296606bb7e0e96a45a9bf",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721017.281377,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "ce8a5e1208883c68124743a7c91bef1a648d9a543e2555548a93010bd10c1a62",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721018.638571,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "fa0a1cd5929359ac0cc69b3ccad376742ad5bdf028ac53e7c64385441dc1a54e",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721077.9792247,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "f6368e6be0427001e958b13b868c7c90b78166586df1b57ee330e23dc9e6f7d4",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721079.305626,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "dfb95d293852970921b375c18bdd62d3837ebfed3b96ab7d5ecb766cf8a4211f",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721189.8617105,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "cf0fb051041b759a16ae30f8435fc5a331a9eb8c539abccd6976332f9d262efb",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721191.1385472,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "7d87d55c2a941c4485fbf81fa2bc2095480f0474cdb4b840857b854504e88d55",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721249.0302615,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "bc7a3ca8a9e27518e7c2cf620d4507857b2fe56fb42f0ec4ba464bea73b49bbd",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792721250.2783713,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "3a504fd900a95e758c8518c098f033a98264e8480228a94295144ab2c5392467",
+        "fee": 0.001,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      }
+    ],
+    "trades": [],
+    "trade_count": 0,
+    "decision_count": 10,
+    "reason_counts": {
+      "Q10_DOES_NOT_COVER_OBSERVED_COSTS": 5,
+      "technical_not_confirmed": 5
+    },
+    "realized_exchange_pnl": null,
+    "orders_sent_to_exchange": 0,
+    "positions_at_last_receipt": [],
+    "mode": "BACKTEST",
+    "source_session": "research_challengers/milestone8/formal_48h_v1",
+    "scope": "CHRONOLOGICAL_REPLAY_OF_CAPTURED_CURRENT_STRATEGY_DECISIONS_ONLY",
+    "full_historical_financial_backtest_valid": false,
+    "limitation": "MISSING_LONG_HISTORICAL_PIT_BOOKS_NEWS_AND_REGISTERED_FORECASTS; NO_CLOSE_PRICE_FILLS",
+    "replay_checks": [
+      {
+        "intent_id": "5d8a0e56ac8273ad8ab4adb306b6c0c6c1b82ce7edd6714102b21c535050f938",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "96fb3e1d751a87d1c51ad4d86bc8f27fd9973035541296606bb7e0e96a45a9bf",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "ce8a5e1208883c68124743a7c91bef1a648d9a543e2555548a93010bd10c1a62",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "fa0a1cd5929359ac0cc69b3ccad376742ad5bdf028ac53e7c64385441dc1a54e",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "f6368e6be0427001e958b13b868c7c90b78166586df1b57ee330e23dc9e6f7d4",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "dfb95d293852970921b375c18bdd62d3837ebfed3b96ab7d5ecb766cf8a4211f",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "cf0fb051041b759a16ae30f8435fc5a331a9eb8c539abccd6976332f9d262efb",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "7d87d55c2a941c4485fbf81fa2bc2095480f0474cdb4b840857b854504e88d55",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "bc7a3ca8a9e27518e7c2cf620d4507857b2fe56fb42f0ec4ba464bea73b49bbd",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      },
+      {
+        "intent_id": "3a504fd900a95e758c8518c098f033a98264e8480228a94295144ab2c5392467",
+        "review_identical": true,
+        "gate_identical": null,
+        "cash_conserved": true,
+        "exchange_fill_is_none": true,
+        "authority": "PURE_REPLAY_NO_WRITES"
+      }
+    ],
+    "cost_attribution": "ORIGINAL_RECEIPT_FEE; CURRENT_ACCOUNT_FEE_NOT_BACKDATED",
+    "net_pnl_is_real_exchange_profit": false,
+    "financial_edge_proven": false
+  },
+  "shadow": {
+    "session": "financial_1792751480804788500",
+    "source_commit": "1af75abf19bcb6e003b984e934dbf40009d08c9f",
+    "contract_sha256": "9b23ae54db078da835fe885e8c5157436555d234f394a39a20c1310cab76453f",
+    "fee_per_side_pinned_from_actual_read_receipt": 0.003,
+    "contest_fee_identity_verified": false,
+    "counts": {
+      "quotes": 8,
+      "m6_predictions": 10,
+      "m6_outcomes": 0,
+      "quote_io_v7": 8
+    },
+    "quote_observation_interval": [
+      1792751502.040238,
+      1792751809.5956206
+    ],
+    "prediction_ids_sha256": "3f383bac6d83105f5b0b3fc815a1b398656b96fdc2dc969b0a17a114ee434176",
+    "events": {
+      "M8_AGENTIC_CYCLE": 4,
+      "INFERENCE_CYCLE": 1,
+      "FOREGROUND_PROCESS_STOPPED": 2
+    },
+    "clock_requests_last_process": 5,
+    "clock_revoked_on_stop": true,
+    "data_sync": [
+      {
+        "status": "COMPLETED",
+        "complete": 2,
+        "failed": 0,
+        "cached": 0,
+        "remaining_planned_windows": 0
+      }
+    ],
+    "data_requests_from_completed_and_failed_windows": 2,
+    "news_request_attempts": 6,
+    "news_new_articles": 0,
+    "news_source_failures": [
+      {
+        "source": "GDELT_DOC_2",
+        "type": "ReadTimeout"
+      },
+      {
+        "source": "COINDESK_RSS",
+        "type": "HTTPError"
+      }
+    ],
+    "quote_failed_attempts": 0,
+    "actual_account_orders_sent_by_this_test": 0,
+    "financial_edge_proven": false,
+    "all_components_completed_formal_48h": false,
+    "initial_hypothetical_tmn": 5000000,
+    "net_pnl_tmn": 0.0,
+    "max_drawdown": 0,
+    "equity_curve": [
+      {
+        "timestamp": 1792751520.7585766,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792751522.1669989,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792751568.1484592,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792751569.5328693,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792751753.431368,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792751754.815266,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792751814.1899302,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      },
+      {
+        "timestamp": 1792751815.5152938,
+        "nav_tmn": 5000000.0,
+        "cash_tmn": 5000000.0
+      }
+    ],
+    "valuation": "HYPOTHETICAL_LAST_ACTUAL_RECEIPT_NOT_CURRENT_EXCHANGE_NAV",
+    "decisions": [
+      {
+        "timestamp": 1792751520.7585766,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "6571e1e1706e6c75f9aa541d1b96894799d556f0ff429419c7868b9ae33a2f1f",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792751522.1669989,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "4548b4123ba7a13667bdd7cdc2099b0cbd9c4d70282c78dafdcd707a2f0d29ea",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792751568.1484592,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "94daa41ca33f44f87ba12e0a1300e29e9fb1e51fd50066c8c647d9202a53a7e2",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792751569.5328693,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "1248698ce793a0f82d7c920844f41f6460fee4164c60578363c16f9c44fd3211",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792751753.431368,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "ef49a87b9edee4a21d1b10545371c6f37340d4a9613438d344e5172d3cea03b4",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792751754.815266,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "78ff26130e7ed20246095c0f71ec0ec86ef73dd14342116c0bc1b449974448d1",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792751814.1899302,
+        "symbol": "BTCTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "772559ed5768cacbcce736ce854c9eac6e68a7332114fc329418ed19a20b683d",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      },
+      {
+        "timestamp": 1792751815.5152938,
+        "symbol": "ETHTMN",
+        "action": "STAY_IN_CASH",
+        "reason": "technical_not_confirmed",
+        "status": "NO_PAPER_MUTATION",
+        "risk_gate": null,
+        "intent_id": "43cca7f524a7f9ce91df0775750881a4ac8321969a115f604c2472c3ba0fa64b",
+        "fee": 0.003,
+        "hypothetical": true,
+        "actual_exchange_fill": false
+      }
+    ],
+    "trades": [],
+    "trade_count": 0,
+    "decision_count": 8,
+    "reason_counts": {
+      "Q10_DOES_NOT_COVER_OBSERVED_COSTS": 4,
+      "technical_not_confirmed": 4
+    },
+    "realized_exchange_pnl": null,
+    "orders_sent_to_exchange": 0,
+    "positions_at_last_receipt": [],
+    "risk_stopped_at_last_receipt": false
+  },
+  "restart": {
+    "before": {
+      "quotes": 4,
+      "m6_predictions": 10,
+      "m6_outcomes": 0,
+      "quote_io_v7": 4
+    },
+    "after": {
+      "quotes": 8,
+      "m6_predictions": 10,
+      "m6_outcomes": 0,
+      "quote_io_v7": 8
+    },
+    "prediction_ids_preserved": true,
+    "additional_quotes": 4,
+    "stop_request_archived": true,
+    "clock_requests_across_two_processes": 13,
+    "competing_runner_observed_status": "FINANCIAL_RUNNER_HELD_NO_REQUESTS"
+  },
+  "live": {
+    "status": "BLOCKED_NOT_ARMED",
+    "orders_sent": 0,
+    "actual_positive_fill_e2e": "UNVERIFIED_NO_AUTHORIZED_RECORDINGS",
+    "remaining": [
+      "contest account client ID / package ID",
+      "organizer allowlist and actual tick/lot/minimum",
+      "account-scoped fee and trade permission",
+      "independent economic evidence",
+      "real fill/fee recordings",
+      "independent installed deadline supervisor",
+      "explicit operator session and capital ceiling"
+    ]
+  },
+  "tests": {
+    "passed": 357,
+    "skipped": 6,
+    "failures": 0,
+    "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q"
+  },
+  "private_account_response_exported": false,
+  "key_or_pass_file_exported": false,
+  "deadline": {
+    "date": "2026-10-23",
+    "entry_stop_tehran": "22:50",
+    "unwind_tehran": "23:00",
+    "halt_tehran": "23:50",
+    "auto_rearm": false,
+    "settlement_guaranteed": false
+  }
+}

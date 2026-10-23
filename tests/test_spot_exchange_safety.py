@@ -60,7 +60,8 @@ def test_no_response_no_fill_or_fee(tmp_path):
 
 def test_halted_survives_restart_clock_rollback_and_browser_absence(tmp_path, monkeypatch):
     import wallex_bot.atlas_deadline_supervisor as module
-    after = datetime(2026, 10, 24, tzinfo=timezone.utc).timestamp()
+    from wallex_bot.atlas_deadline import DEADLINE
+    after = DEADLINE.timestamp()+3600
     monkeypatch.setattr(module.time, 'time', lambda: after)
     s = DeadlineSupervisor(tmp_path)
     assert s.tick({})['halted_latched']
@@ -90,7 +91,8 @@ def test_network_failure_never_invents_settlement(tmp_path, monkeypatch):
 def test_existing_order_boundary_honors_supervisor_halt_latch(tmp_path, monkeypatch):
     import wallex_bot.atlas_deadline_supervisor as module
     from wallex_bot.atlas_deadline import permission
-    after=datetime(2026,10,24,tzinfo=timezone.utc).timestamp()
+    from wallex_bot.atlas_deadline import DEADLINE
+    after=DEADLINE.timestamp()+3600
     monkeypatch.setattr(module.time,'time',lambda:after)
     s=DeadlineSupervisor(tmp_path);s.tick({});s.close()
     monkeypatch.setattr(module.time,'time',lambda:after-86400)

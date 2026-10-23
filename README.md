@@ -2,6 +2,16 @@
 
 *Agentic Cryptocurrency Research & Trading System*
 
+## Current console release
+
+```text
+python -m ui_backtest.app --port 8769
+```
+
+[Local console](http://127.0.0.1:8769/) · [Current release guide (Persian)](docs/CURRENT_RELEASE_FA.md)
+
+Includes the **Backtest** page: costed historical fixed-rule simulations on verified Wallex candles, baselines, and actual recorded role timelines. These are not trained FinRL results or a complete Champion backtest. The presentation server is read-only; collectors/Shadow run separately. LIVE remains unarmed. Private archives, weights, sessions and credentials are excluded. Older milestone statements below must be read with the current release guide, particularly regarding the implemented but unverified controlled Spot adapter.
+
 WALL-E turns real Wallex market observations into reproducible forecasts,
 structured agent reviews and risk-controlled **Shadow research**. Its console
 makes the evidence behind a decision inspectable rather than claiming that an
@@ -123,7 +133,7 @@ The console never receives keys or sends orders. Do not paste keys into chat.
 Read-only account checks cannot prove trade permission or contest identity.
 [Official API contracts and release blockers](docs/SPOT_RELEASE_CONTRACT.md).
 
-Deadline: **2026-10-23 23:50 Asia/Tehran = 20:20 UTC**. New entries stop at
+Operator-revised deadline: **2026-10-25 23:50 Asia/Tehran = 20:20 UTC**. New entries stop at
 22:50 Tehran; exit management starts at 23:00. The independent supervisor has
 a persistent high-water clock/HALTED latch but is not an installed service and
 does not automatically sell holdings. No guaranteed liquidation is claimed.

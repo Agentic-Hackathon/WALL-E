@@ -10,7 +10,9 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 TEHRAN=ZoneInfo('Asia/Tehran')
-DEADLINE=datetime(2026,10,23,23,50,tzinfo=TEHRAN)
+# Operator revision: 3 Aban 1405, Sunday 25 October. Existing frozen study
+# contracts and HALTED latches are not rewritten or automatically rearmed.
+DEADLINE=datetime(2026,10,25,23,50,tzinfo=TEHRAN)
 ENTRY_STOP=DEADLINE-timedelta(hours=1)
 UNWIND_START=DEADLINE-timedelta(minutes=50)
 

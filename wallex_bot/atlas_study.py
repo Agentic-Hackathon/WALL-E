@@ -217,7 +217,7 @@ def propose_portfolio(lake,directory,ledger,contract):
                 p=json.loads(p[0]);meta=json.loads(lake.db.execute('SELECT metadata FROM assets WHERE symbol=?',(symbol,)).fetchone()[0])
                 candidates[symbol]={'quote':ledger.quote(q[0]),'forecast':{'quantile_log_returns':{k:p[k] for k in ('q10','q50','q90')}},
                     'prediction_id':p['prediction_id'],'prediction_available_at':p['prediction_available_at'],
-                    'spot_tmn':meta.get('is_spot') is True and meta.get('quote_asset')=='TMN','fee':.001,'metadata':meta,**volatility.get(symbol,{})}
+                    'spot_tmn':meta.get('is_spot') is True and meta.get('quote_asset')=='TMN','fee':contract['settings']['fee_per_side_assumed'],'metadata':meta,**volatility.get(symbol,{})}
             for method in METHODS:
                 account.db.execute('BEGIN IMMEDIATE')
                 try:
@@ -276,11 +276,14 @@ def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop
     try:
         row=ledger.db.execute("SELECT payload FROM study_runtime_v7 WHERE key='session'").fetchone()
         runtime=json.loads(row[0]) if row else {'started_epoch':time.time(),'cycles':0,'next_inference':time.time()}
-        runtime['deadline_epoch']=runtime['started_epoch']+contract['settings']['hours']*3600
+        runtime['deadline_epoch']=min(runtime['started_epoch']+contract['settings']['hours']*3600,
+            contract['settings'].get('competition_deadline_epoch',float('inf')))
         with ledger.db:ledger.db.execute("INSERT OR REPLACE INTO study_runtime_v7 VALUES('session',?)",(_canon(runtime),))
         _save_atomic(directory/'watch_session.json',{'started_epoch':runtime['started_epoch'],'deadline_epoch':runtime['deadline_epoch'],'hours':contract['settings']['hours'],'status':'RUNNING'})
         worker=threading.Thread(target=quote_worker,args=(root,directory,contract,ledger.owner,stop),name='wallex-real-quote-deadlines',daemon=False);worker.start()
         while not stop.is_set() and time.time()<runtime['deadline_epoch']:
+            if contract['settings'].get('operator_stop_enabled') and (directory/'operator_stop.json').is_file():
+                stop.set();break
             if max_runtime_seconds is not None and time.monotonic()-process_started>=max_runtime_seconds:break
             fast_validate(contract)
             if research_hook and time.time()>=runtime.get('next_review',0):
@@ -311,7 +314,7 @@ def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop
                     snapshot=input_snapshot(lake,symbol);outputs,errors=predict_models(contract['models'],snapshot)
                     quote=ledger.db.execute('SELECT id FROM quotes WHERE symbol=? ORDER BY observed_epoch DESC LIMIT 1',(symbol,)).fetchone()
                     if not quote:raise ValueError('WAITING_REAL_SAMPLER_QUOTE')
-                    inserted=ledger.register(symbol,contract['models'],snapshot,outputs,quote[0]);finished=time.time();ledger.sync_queue()
+                    inserted=ledger.register(symbol,contract['models'],snapshot,outputs,quote[0],fee=contract['settings']['fee_per_side_assumed']);finished=time.time();ledger.sync_queue()
                     with ledger.db:
                         for key, in ledger.db.execute('SELECT prediction_id FROM m6_predictions WHERE symbol=? AND cutoff=?',(symbol,snapshot['cutoff'])).fetchall():
                             ledger.db.execute('INSERT OR IGNORE INTO inference_audit_v7 VALUES(?,?,?,?)',(key,contract['contract_sha256'],started,finished))
@@ -330,7 +333,7 @@ def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop
             print(json.dumps({'cycle':runtime['cycles'],'model_status':report['models'],'proposals_only':True}),flush=True)
             if max_inference_cycles is not None and cycles>=max_inference_cycles:break
         if time.time()>=runtime['deadline_epoch'] and contract['settings']['shadow']:
-            ledger.event('FINAL_TMN',liquidate_paper_positions(SimpleNamespace(root=directory),fee=.001,require_watch_deadline=True))
+            ledger.event('FINAL_TMN',liquidate_paper_positions(SimpleNamespace(root=directory),fee=contract['settings']['fee_per_side_assumed'],require_watch_deadline=True))
         broken=any(json.loads(p).get('contract_broken') for p, in ledger.db.execute("SELECT payload FROM study_events_v7 WHERE kind='QUOTE_WORKER_STOPPED_SAFE'"))
         return {'status':'SESSION_CONTRACT_BROKEN' if broken else ('PENDING_FORMAL_WINDOW_NOT_COMPLETE' if time.time()<runtime['deadline_epoch'] else 'WINDOW_ELAPSED_REVIEW_COVERAGE_REQUIRED'),
             'cycles_this_process':cycles,'contract_sha256':contract['contract_sha256']}
