@@ -14,11 +14,11 @@ from wallex_bot.atlas_dashboard import _existing_api_key
 from wallex_bot.atlas_live_readiness import readiness
 
 @pytest.mark.parametrize('stamp,phase,entry,exit_',[
- ('2026-10-23T19:19:59+00:00','COLLECTING',True,True),
- ('2026-10-23T19:20:00+00:00','ENTRY_DISABLED',False,True),
- ('2026-10-23T19:30:00+00:00','EXIT_ONLY',False,True),
- ('2026-10-23T20:20:00+00:00','HALTED',False,False),
- ('2026-10-24T00:00:00+00:00','HALTED',False,False)])
+ ('2026-10-25T19:19:59+00:00','COLLECTING',True,True),
+ ('2026-10-25T19:20:00+00:00','ENTRY_DISABLED',False,True),
+ ('2026-10-25T19:30:00+00:00','EXIT_ONLY',False,True),
+ ('2026-10-25T20:20:00+00:00','HALTED',False,False),
+ ('2026-10-26T00:00:00+00:00','HALTED',False,False)])
 def test_deadline_timezone_boundaries(stamp,phase,entry,exit_):
     p=schedule(datetime.fromisoformat(stamp),clock_verified=True,clock_skew_seconds=0)
     assert p['phase']==phase and p['allow_new_entry']==entry and p['allow_exit']==exit_
@@ -26,8 +26,9 @@ def test_deadline_timezone_boundaries(stamp,phase,entry,exit_):
 
 def test_tehran_and_berlin_dst_conversion():
     from zoneinfo import ZoneInfo
-    assert DEADLINE.astimezone(timezone.utc).isoformat()=='2026-10-23T20:20:00+00:00'
-    assert DEADLINE.astimezone(ZoneInfo('Europe/Berlin')).hour==22
+    assert DEADLINE.astimezone(timezone.utc).isoformat()=='2026-10-25T20:20:00+00:00'
+    # Europe changes DST on this date; Tehran does not. UTC deadline is stable.
+    assert DEADLINE.astimezone(ZoneInfo('Europe/Berlin')).hour==21
     assert datetime(2026,10,26,23,50,tzinfo=TEHRAN).astimezone(timezone.utc).hour==20
 
 @pytest.mark.parametrize('skew',[None,6,-6,float('nan'),float('inf')])
@@ -39,7 +40,7 @@ def test_naive_clock_is_rejected():
     with pytest.raises(ValueError,match='TIMEZONE'):schedule(datetime(2026,10,23))
 
 def test_residual_after_halt_is_warning_not_automatic_order():
-    p=schedule(datetime(2026,10,24,tzinfo=timezone.utc),residual_assets=['non-financial-asset-id'],open_orders=['status-id'])
+    p=schedule(datetime(2026,10,26,tzinfo=timezone.utc),residual_assets=['non-financial-asset-id'],open_orders=['status-id'])
     assert p['residual_status']=='UNLIQUIDATED_RESIDUAL_MANUAL_REVIEW'
     assert not p['after_deadline_automatic_liquidation']
 

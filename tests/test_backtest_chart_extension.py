@@ -21,7 +21,14 @@ def test_extension_does_not_break_running_source_contract():
     if not pointer.exists():pytest.skip('No genuine frozen study')
     session=root/json.loads(pointer.read_text())['session']
     contract=json.loads((session/'study_contract.json').read_text())
-    assert source_manifest()==contract['source_manifest_LF_sha256']
+    current=source_manifest();frozen=contract['source_manifest_LF_sha256']
+    changed={k for k in set(current)|set(frozen) if current.get(k)!=frozen.get(k)}
+    # The later explicit operator deadline revision changes trading code, not
+    # this isolated UI. Old contracts must reject resume, never be rewritten.
+    assert {key.replace('\\','/') for key in changed}<={'wallex_bot/atlas_deadline.py'}
+    if changed:
+        from wallex_bot.atlas_study import validate
+        with pytest.raises(ValueError,match='SESSION_SOURCE_CHANGED'):validate(root,contract)
     assert not any(key.startswith('ui_backtest/') for key in source_manifest())
 
 
