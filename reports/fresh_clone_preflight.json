@@ -41,7 +41,7 @@
   "python": "3.12.3",
   "tracked_source_manifest": {
     ".gitignore": "c7d3b02059196abebb0ef94f0da6ebebba725d59c9c942ba3f4522234670d7fc",
-    ".gitleaksignore": "6c2a21c24889e332d853994b50f3011dfd0538003810581da11afdb3bb08480b",
+    ".gitleaksignore": "9e78b23d5a94927172c7b4d5715adf4b32d7b5bfc397f8e8263bcfc4eb0d9134",
     "requirements-agent.txt": "d858cdf6ff5ad5a2d4054ef94e1a1ab64311668547f547ac1b4c50b481132bc2",
     "requirements-judge-lock.txt": "e7358deeee203a9193232e133a0d76edb927f01825b4fac1ee590c93561501c6",
     "requirements-m8.txt": "b404da778ba7b4c34f5cf60ea8aed8e8edf5d7098b8bffa9018cdab69e2a967f",

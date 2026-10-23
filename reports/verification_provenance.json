@@ -1,0 +1,12 @@
+{
+  "full_suite_tested_code_commit":"7aafed67102e5bfbbd4c6de6bcdf8f3679ad3d9a",
+  "original_host":{"passed":319,"skipped":5,"failed":0,"errors":0},
+  "isolated_remote_clone":{"passed":217,"skipped":107,"failed":0,"errors":0},
+  "later_commits_scope":"report artifacts, docs, exact Gitleaks hash-fingerprint allowlist; no executable runtime or test changes",
+  "original_frozen_execution_tag":"atlas-m8-execution-a112709",
+  "submission_tag":"wall-e-submission-20261023",
+  "runtime_tests_represent_original_m8_financial_reproduction":false,
+  "security_review":"All commits reachable from delivery HEAD must pass official Gitleaks scan before push; source digest false positives verified individually",
+  "history_scope":"Every local ref is an ancestor of scanned HEAD; integration branch names and baseline tag also pushed; no force/rewrite",
+  "UI_process":"read-only local server left running by request; no trading process or permanent watchdog installed"
+}
