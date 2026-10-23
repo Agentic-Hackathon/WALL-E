@@ -1,5 +1,6 @@
 # Exact historical fingerprints only: independently verified SHA-256 of source
 # wallex_api.py and pinned public FinBERT tokenizer artifacts; NOT credentials.
+55b9ef32ef8b377434ce05e7a8975b8254d7ab9b:reports/judge_reproducibility.json:generic-api-key:140
 2fdaa10dc16fd5950036fdac422f106d10a3eeca:reports/m8_submission_manifest.json:generic-api-key:110
 8b3ae3b81517ecd67c7cf75c540051a6373c1547:reports/m7_portfolio_contract.json:generic-api-key:140
 4e707a6b36557dda0b8639e2f690033accf51958:reports/m8_initial_audit.json:generic-api-key:929

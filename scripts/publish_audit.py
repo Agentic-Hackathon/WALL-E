@@ -62,7 +62,7 @@ def verified_false_positives():
     for f in findings:
         lines=subprocess.check_output(['git','show',f['Commit']+':'+f['File']],text=True).splitlines()
         entry=json.loads('{'+lines[f['StartLine']-1].strip().rstrip(',')+'}');key,value=next(iter(entry.items()))
-        if key=='wallex_bot\\wallex_api.py':
+        if key in ('wallex_bot\\wallex_api.py','wallex_bot/wallex_api.py'):
             data=subprocess.check_output(['git','show',f['Commit']+':wallex_bot/wallex_api.py']).replace(b'\r\n',b'\n')
         elif key in ('special_tokens_map.json','tokenizer_config.json'):data=(snapshot/key).read_bytes()
         else:raise ValueError('UNREVIEWED_FINDING_NO_ALLOWLIST')
