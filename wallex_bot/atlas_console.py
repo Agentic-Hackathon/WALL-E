@@ -139,6 +139,64 @@ def pattern_lines(root):
         return {'status':'ACTUAL_IMMUTABLE_PATTERN_FEATURES','series':series,'research_only':True}
     finally:index.close()
 
+
+def pattern_search(root,symbol='BTCTMN',resolution='15',length=10,method='euclidean',scope='same',k=8):
+    """On-demand research over the existing immutable SciPy/DTW index.
+
+    Reuses atlas_patterns (source/licensing in that module), archive SHA/grid
+    verification and receipt-aware cutoff. No rebuilding, network or trade path.
+    """
+    from types import SimpleNamespace
+    from .atlas_patterns import PatternIndex,make_query,HORIZONS,RESOLUTIONS as PATTERN_RESOLUTIONS
+    from .atlas_feature_health import _verified_segments
+    from .atlas_archive import period_seconds
+    if (not SYMBOL_RE.fullmatch(symbol) or resolution not in PATTERN_RESOLUTIONS or
+        length not in (7,10,16,24) or method not in ('euclidean','dtw','return_structure') or
+        scope not in ('same','all') or not 2<=k<=12):raise ValueError('INVALID_PATTERN_SEARCH')
+    root=Path(root).resolve();folder=root/'research_challengers/milestone8/pattern_index_v1'
+    empty={'status':'DATA_NOT_AVAILABLE','matches':[],'query':None,'research_only':True,'decision_path_eligible':False}
+    if not (root/'catalog.sqlite').is_file() or not (folder/'patterns.sqlite').is_file():return empty
+    db=sqlite3.connect((root/'catalog.sqlite').as_uri()+'?mode=ro',uri=True,timeout=20)
+    index=PatternIndex(folder,readonly=True)
+    try:
+        index.verify_sources();manifest=index.manifest()
+        if length not in manifest['lengths'] or resolution not in manifest['resolutions']:
+            return {**empty,'status':'WINDOW_NOT_INDEXED','indexed_lengths':manifest['lengths'],'indexed_resolutions':manifest['resolutions']}
+        lake=SimpleNamespace(root=root,db=db)
+        try:query=make_query(lake,symbol,resolution,length)
+        except ValueError as exc:
+            return {**empty,'status':'QUERY_UNAVAILABLE','reason':str(exc)}
+        result=index.search(query,method=method,scope=scope,k=k,min_matches=2)
+        cache={};step=period_seconds(resolution)
+        def bars_for(asset,start,end):
+            if asset not in cache:cache[asset]=_verified_segments(root,db,asset,resolution)[0]
+            # A whole contiguous segment must cover both pattern and outcome.
+            for part in cache[asset]:
+                frame=part[(part.timestamp>=start)&(part.timestamp<end)]
+                if len(frame)==round((end-start)/step) and len(frame) and int(frame.timestamp.iloc[0])==start:
+                    return [{key:float(row[key]) for key in ('timestamp','open','high','low','close','volume')} for row in frame.to_dict('records')]
+            raise ValueError('PATTERN_DISPLAY_CANDLES_NOT_CONTIGUOUS')
+        current=bars_for(symbol,query['start'],query['end'])
+        matches=[]
+        for match in result['matches']:
+            row=index.db.execute('SELECT payload,sha256 FROM patterns WHERE id=?',(match['pattern_id'],)).fetchone()
+            if not row or digest(json.loads(row[0]))!=row[1]:raise ValueError('PATTERN_DISPLAY_HASH_INVALID')
+            p=json.loads(row[0]);bars=bars_for(match['symbol'],match['start'],match['outcome_end'])
+            matches.append({**match,'bars':bars[:length],'future_bars':bars[length:],
+                'normalized_close':[100*b['close']/bars[0]['close'] for b in bars],
+                'normalization':'FIRST_PATTERN_CLOSE_100_DISPLAY_ONLY',
+                'availability_policy':p['availability_policy']})
+        age=max(0,query['decision_time']-query['end'])
+        return {**result,'matches':matches,'query':{**query,'bars':current,
+                'normalized_close':[100*b['close']/current[0]['close'] for b in current]},
+                'query_age_seconds':age,'freshness':'RECENT_CLOSED_ARCHIVE' if age<=2*step else 'STALE_ARCHIVE_NOT_CURRENT_MARKET',
+                'indexed_lengths':manifest['lengths'],'indexed_resolutions':manifest['resolutions'],
+                'observed_at':time.time(),'horizons':list(HORIZONS),'research_only':True,
+                'distance_policy':'LOWER_IS_MORE_SIMILAR_NOT_PROBABILITY',
+                'future_policy':'MATCH_OUTCOMES_END_BEFORE_QUERY_START_WITH_EMBARGO',
+                'archive_only_no_network':True}
+    finally:index.close();db.close()
+
 def overview(root):
     data=observations(root);clock=_read_json(Path(root)/'operations/clock_receipt.json',{}) or {}
     fresh=0<=time.time()-clock.get('observed_epoch',0)<=120
@@ -175,6 +233,10 @@ class ConsoleHandler(DashboardHandler):
             elif parsed.path=='/api/observations':result=observations(self.root)
             elif parsed.path=='/api/candles':result=real_candles(self.root,args.get('symbol',['BTCTMN'])[0],args.get('resolution',['15'])[0])
             elif parsed.path=='/api/pattern-lines':result=pattern_lines(self.root)
+            elif parsed.path=='/api/pattern-search':result=pattern_search(self.root,
+                args.get('symbol',['BTCTMN'])[0],args.get('resolution',['15'])[0],
+                int(args.get('length',['10'])[0]),args.get('method',['euclidean'])[0],
+                args.get('scope',['same'])[0],int(args.get('k',['8'])[0]))
             elif parsed.path=='/api/report':result=public_report(args.get('name',[''])[0])
             else:return self._json({'error':'NOT_FOUND'},404)
             return self._json(result)

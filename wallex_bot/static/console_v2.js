@@ -20,9 +20,67 @@ render=function(){if(!snapshot)return;const o=snapshot.observations,p=o.paper||{
  $('allocation').innerHTML=line(t('وزن هدف نقد','Target cash weight'),pct(a.cash_weight))+line(t('سقف وزن دارایی','Asset weight cap'),pct(limits.max_asset_weight))+line(t('حداقل وزن نقد','Minimum cash weight'),pct(limits.min_cash_weight))+line(t('سقف گردش','Turnover cap'),pct(limits.max_turnover_fraction))+`<p class="muted">${t('پیشنهاد پژوهشی؛ نه سفارش یا موجودی واقعی.','Research proposal, not an order or real balance.')}</p>`+detail(a);
 };
 let aiSelected='forecasts';
+let patternOptions={symbol:'BTCTMN',resolution:'15',length:'10',method:'euclidean',scope:'same',k:'8'},patternRequest=0;
+function analogueCandles(canvas,bars,boundary){
+ const w=Math.max(300,canvas.parentElement.clientWidth-44),h=200,r=devicePixelRatio||1;
+ canvas.style.height=h+'px';canvas.width=w*r;canvas.height=h*r;const c=canvas.getContext('2d');c.scale(r,r);
+ const lo=Math.min(...bars.map(b=>b.low)),hi=Math.max(...bars.map(b=>b.high)),step=(w-80)/bars.length,y=v=>15+(hi-v)/(hi-lo||1)*155;
+ c.font='11px Tahoma';c.textAlign='left';c.direction='ltr';c.fillStyle='#a0afc4';c.fillText(num(hi),2,14);c.fillText(num(lo),2,180);
+ bars.forEach((b,i)=>{const x=60+(i+.5)*step;c.strokeStyle=c.fillStyle=b.close>=b.open?'#53d8b7':'#ef8585';c.beginPath();c.moveTo(x,y(b.high));c.lineTo(x,y(b.low));c.stroke();c.fillRect(x-step*.28,Math.min(y(b.open),y(b.close)),step*.56,Math.max(1,Math.abs(y(b.open)-y(b.close))))});
+ if(boundary){c.strokeStyle='#ffc56b';c.setLineDash([5,5]);c.beginPath();c.moveTo(60+boundary*step,10);c.lineTo(60+boundary*step,180);c.stroke()}
+}
+function analoguePlot(canvas,series,boundary){
+ const w=Math.max(300,canvas.parentElement.clientWidth-44),h=280,r=devicePixelRatio||1;
+ canvas.width=w*r;canvas.height=h*r;const c=canvas.getContext('2d');c.scale(r,r);
+ const values=series.flatMap(s=>s.values),lo=Math.min(...values),hi=Math.max(...values),span=hi-lo||1;
+ const count=Math.max(...series.map(s=>s.values.length)),x=i=>45+i/(count-1)*(w-65),y=v=>22+(hi-v)/span*215;
+ c.font='12px Tahoma';c.textAlign='left';c.fillStyle='#a0afc4';
+ for(let i=0;i<4;i++){let v=lo+span*i/3;c.fillText(v.toFixed(2),1,y(v));c.strokeStyle='#29374d';c.beginPath();c.moveTo(43,y(v));c.lineTo(w-16,y(v));c.stroke()}
+ if(boundary){c.strokeStyle='#ffc56b';c.setLineDash([5,5]);c.beginPath();c.moveTo(x(boundary-1),15);c.lineTo(x(boundary-1),245);c.stroke();c.setLineDash([])}
+ series.forEach(s=>{c.strokeStyle=s.color;c.lineWidth=s.width||2;c.beginPath();s.values.forEach((v,i)=>i?c.lineTo(x(i),y(v)):c.moveTo(x(i),y(v)));c.stroke()});
+ c.fillStyle='#a0afc4';c.fillText(t('کندل‌های هم‌تراز · شروع = ۱۰۰','Aligned bars · start = 100'),45,269);
+}
+async function patternSearchView(){
+ const option=(id,label,items)=>`<label>${label}<select id="pat-${id}">${items.map(([v,n])=>`<option value="${v}" ${patternOptions[id]===String(v)?'selected':''}>${n}</option>`).join('')}</select></label>`;
+ $('aibody').innerHTML=`<article class="card" id="pattern-search-controls"><h2>${t('پیدا کردن کندل‌های مشابه در گذشته','Find similar historical candles')}</h2><p class="muted">${t('جست‌وجوی تازه روی آخرین کندل بستهٔ آرشیو؛ بدون دریافت شبکه یا تغییر مسیر معامله. فاصله کمتر یعنی شباهت بیشتر، نه احتمال سود.','Fresh search on the latest closed archived candles; no network or trading changes. Lower distance means more similarity, not profit probability.')}</p><div class="toolbar pattern-controls">`+
+ option('symbol',t('بازار','Market'),[['BTCTMN','BTC / TMN'],['ETHTMN','ETH / TMN']])+
+ option('resolution',t('تایم‌فریم','Timeframe'),[['1','1m'],['5','5m'],['15','15m'],['60','1h'],['240','4h']])+
+ option('length',t('طول الگو','Pattern length'),[['7',t('۷ کندل','7 bars')],['10',t('۱۰ کندل','10 bars')]])+
+ option('method',t('روش شباهت','Similarity'),[['euclidean',t('شکل OHLCV','OHLCV shape')],['dtw',t('تطبیق زمانی DTW','Time-warped DTW')],['return_structure',t('ساختار کندل','Candle structure')]])+
+ option('scope',t('دامنه','Scope'),[['same',t('همین بازار','Same asset')],['all',t('همه بازارهای شاخص','All indexed assets')]])+
+ `<button id="pat-run">${t('جست‌وجوی مشابه‌ها','Find matches')}</button></div><div id="pat-status" role="status" aria-live="polite"></div></article><article class="card"><h2>${t('آخرین الگو در کنار نزدیک‌ترین نمونه‌ها','Latest pattern vs nearest historical matches')}</h2><canvas id="pattern-lines" aria-label="Normalized pattern comparison"></canvas><div id="pat-legend" class="pattern-legend"></div></article><div id="pat-results"></div>`;
+ ['symbol','resolution','length','method','scope'].forEach(id=>$('pat-'+id).onchange=e=>patternOptions[id]=e.target.value);
+ $('pat-run').onclick=runPatternSearch;await runPatternSearch();
+}
+async function runPatternSearch(){
+ const request=++patternRequest,button=$('pat-run');button.disabled=true;
+ $('pat-query-candles')?.remove();
+ const previousCanvas=$('pattern-lines');previousCanvas.getContext('2d').clearRect(0,0,previousCanvas.width,previousCanvas.height);
+ $('pat-status').textContent=t('در حال تأیید آرشیو و جست‌وجو…','Verifying archive and searching…');$('pat-results').innerHTML='';$('pat-legend').innerHTML='';
+ try{const result=await get('/api/pattern-search?'+new URLSearchParams(patternOptions));if(request!==patternRequest||aiSelected!=='patterns')return;
+ if(!result.query){$('pat-status').textContent=t('دادهٔ کافی یا شاخص سازگار در دسترس نیست: ','Insufficient data or compatible index: ')+result.status;return}
+ const stale=result.freshness==='STALE_ARCHIVE_NOT_CURRENT_MARKET';
+ $('pat-status').innerHTML=`<p class="${stale?'warning':'muted'}">${t('بازهٔ مرجع: ','Reference window: ')}${fmtDate(result.query.start)} — ${fmtDate(result.query.end)} · ${t('سن آخرین کندل: ','Last candle age: ')}${num(result.query_age_seconds/60)} min · ${stale?t('آرشیو قدیمی؛ وضعیت فعلی بازار نیست','Stale archive; not current market'):t('کندل بستهٔ اخیر','Recent closed candle')}</p>`+line(t('نامزدهای واجد شرایط / نمونه‌های بدون هم‌پوشانی','Eligible candidates / de-overlapped matches'),`${result.eligible_candidates} / ${result.matches.length}`);
+ const colors=['#8aaeff','#ffc56b','#da98ee','#ef8585'],series=[{values:result.query.normalized_close,color:'#53d8b7',width:3}];
+ result.matches.slice(0,4).forEach((m,i)=>series.push({values:m.normalized_close.slice(0,result.query.length),color:colors[i]}));
+ analoguePlot($('pattern-lines'),series);$('pat-legend').innerHTML=`<span style="color:#53d8b7">● ${t('الگوی مرجع','Reference')}</span>`+result.matches.slice(0,4).map((m,i)=>`<span style="color:${colors[i]}">● ${i+1}: ${esc(m.symbol)} · ${fmtDate(m.start)}</span>`).join('');
+ $('pat-results').innerHTML=result.matches.map((m,i)=>`<article class="card pattern-match"><h2>#${i+1} · ${esc(m.symbol)} <span class="badge">${t('فاصله','Distance')}: ${Number(m.distance).toPrecision(4)}</span></h2><p class="muted">${fmtDate(m.start)} — ${fmtDate(m.end)} · ${t('خط زرد: پایان الگو؛ سمت بعد از آن، ادامهٔ واقعی تاریخی است','Yellow marker: pattern end; after it is the actual historical continuation')}</p><canvas id="pat-match-${i}" aria-label="Historical match and observed continuation"></canvas><div class="pattern-outcomes">${result.horizons.map(h=>{const o=m.outcomes[String(h)];return `<div><small>${h} ${t('کندل بعد','bars later')}</small><strong>${pct(Math.expm1(o.close_log_return))}</strong></div>`}).join('')}</div><p class="muted">${t('بازده سادهٔ تاریخی، بدون هزینه؛ نه پیش‌بینی یا سود معامله.','Historical simple return, before costs; not a forecast or trading profit.')}</p>${detail({pattern_id:m.pattern_id,source_sha256:m.source_sha256,available_at:m.available_at,availability_policy:m.availability_policy,outcomes:m.outcomes})}</article>`).join('')||`<div class="empty">${t('نمونهٔ تاریخی معتبر کافی وجود ندارد','Not enough valid historical matches')}</div>`;
+ $('pat-query-candles')?.remove();
+ $('pattern-lines').insertAdjacentHTML('beforebegin','<canvas id="pat-query-candles" aria-label="Reference actual candles"></canvas>');
+ analogueCandles($('pat-query-candles'),result.query.bars);
+ result.matches.forEach((m,i)=>{
+   analoguePlot($('pat-match-'+i),[{values:m.normalized_close,color:'#8aaeff'},{values:result.query.normalized_close,color:'#53d8b7',width:3}],result.query.length);
+   $('pat-match-'+i).insertAdjacentHTML('beforebegin',`<canvas id="pat-ohlc-${i}" aria-label="Actual historical match candles"></canvas>`);
+   analogueCandles($('pat-ohlc-'+i),m.bars.concat(m.future_bars),result.query.length);
+ });
+ $('pat-results').insertAdjacentHTML('beforeend',detail({query_id:result.query.query_id,index_sha256:result.index_sha256,query_cutoff:result.query_cutoff,embargo_bars:result.embargo_bars,track:result.track,status:result.status,normalization:result.normalization,distance_policy:result.distance_policy,future_policy:result.future_policy,decision_path_eligible:false}));
+ }catch(e){if(request===patternRequest&&$('pat-status'))$('pat-status').textContent=t('جست‌وجو ناموفق؛ داده جایگزین ساخته نشد. ','Search failed; no substitute data generated. ')+e.message}
+ finally{if(request===patternRequest&&$('pat-run'))$('pat-run').disabled=false}
+}
 const researchSearch=document.createElement('input');researchSearch.type='search';researchSearch.id='research-search';researchSearch.className='research-search';researchSearch.placeholder='جست‌وجوی پژوهش / Search research';researchSearch.setAttribute('aria-label','Search research');$('aibody').before(researchSearch);
 const researchRows=rows=>rows.filter(r=>JSON.stringify(r).toLowerCase().includes(researchSearch.value.toLowerCase()));
 ai=async function(key){aiSelected=key;tabs('aitabs',[['forecasts',t('پیش‌بینی‌ها','Forecasts')],['patterns',t('الگوها','Patterns')],['news',t('اخبار و احساسات','News & sentiment')],['memory',t('حافظه','Memory')]],ai,key);let html='';
+ if(key==='patterns'){await patternSearchView();return}
  if(key==='forecasts'){let rows=researchRows(snapshot?.observations.forecasts||[]);html=`<article class="card"><h2>${t('بازهٔ پیش‌بینی بازده · نه وعدهٔ سود','Forecast return interval · Not a profit promise')}</h2>`+cleanTable(rows.map(r=>({model:r.model,symbol:r.symbol,horizon:num((r.due-r.decision)/3600)+'h',q10:pct(r.quantiles.q10),q50:pct(r.quantiles.q50),q90:pct(r.quantiles.q90),status:human(r.effective_status),at:fmtDate(r.decision),evaluation:t('این رسید ارزیابی ندارد','No scored result in this receipt')})),[['model',t('مدل','Model')],['symbol',t('بازار','Market')],['horizon',t('افق','Horizon')],['q10','q10'],['q50','q50'],['q90','q90'],['status',t('وضعیت','Status')],['at',t('زمان','Time')],['evaluation',t('ارزیابی / کالیبراسیون','Evaluation / calibration')]])+detail(rows)+`</article>`}
  else if(key==='news'){let v=await get('/api/news');html=`<article class="card"><h2>${t('اخبار واقعی آرشیوشده','Actual archived news')}</h2><p class="muted">${t('FinBERT: مجوز غیرتجاری؛ رأی مسابقه غیرفعال','FinBERT: noncommercial license; contest vote disabled')}</p>`+cleanTable(researchRows(v.rows),[['title',t('عنوان','Title')],['source',t('منبع','Source')],['available_at',t('زمان دسترس‌پذیری','Available at')],['processing_status',t('پردازش','Processing')]])+detail(v)+`</article>`}
  else if(key==='patterns'){let v=await get('/api/report?name=patterns'),searches=researchRows(v.data?.current_receipt_aware_searches||[]);html=searches.map(s=>`<article class="card"><h2>${esc(s.window.symbol)} · ${esc(s.similarity)}</h2><p class="muted">${t('شباهت تاریخی، نه سیگنال معتبر سود','Historical similarity, not a validated profit signal')}</p>`+cleanTable(s.matches.slice(0,8).map(r=>({...r,distance:num(r.distance),start:fmtDate(r.start),end:fmtDate(r.end)})),[['symbol',t('بازار','Market')],['distance',t('فاصله','Distance')],['start',t('شروع','Start')],['end',t('پایان','End')]])+detail(s)+`</article>`).join('')||cleanTable([],[])}
