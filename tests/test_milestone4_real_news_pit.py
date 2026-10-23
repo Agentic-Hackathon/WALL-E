@@ -17,7 +17,10 @@ def actual_article():
     path=Path('atlas_store/news.sqlite').resolve()
     if not path.exists():pytest.skip('requires an actual local archived headline')
     db=sqlite3.connect(path.as_uri()+'?mode=ro',uri=True);db.row_factory=sqlite3.Row
-    try:row=db.execute("SELECT * FROM articles WHERE lower(title) LIKE '%bitcoin%' LIMIT 1").fetchone()
+    try:
+        if not db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='articles'").fetchone():
+            pytest.skip('DATA_NOT_AVAILABLE: legacy authentic headline table absent')
+        row=db.execute("SELECT * FROM articles WHERE lower(title) LIKE '%bitcoin%' LIMIT 1").fetchone()
     finally:db.close()
     if row is None:pytest.skip('no real archived bitcoin headline')
     return dict(row)

@@ -1,0 +1,11 @@
+{
+  "initial_clone_commit": "ee61ae57ff48c83a25097dabf56e705592ffbfd0",
+  "first_full_suite_actual_result": {"passed":196,"skipped":42,"failures":6,"errors":59},
+  "second_clone_commit":"6a53f2669e14792181df80c2d7f66c8812d441ca",
+  "second_full_suite_actual_result":{"passed":216,"skipped":97,"failures":0,"errors":10},
+  "root_causes":["actual integration fixtures assumed private local archive/contracts/weights were installed", "a previous test created an empty news schema; next run incorrectly assumed legacy articles existed"],
+  "resolution":"Explicit missing-resource skips only; real-data assertions remain active on original host; no market/news/fill fixtures generated",
+  "first_junit_preserved":false,
+  "first_junit_limitation":"Report was overwritten by the second run after a wrong-relative-path Move-Item failed; initial counts above are from actual captured process output, not reconstructed numeric results",
+  "second_junit":"reports/fresh_clone_second_pytest.xml"
+}
