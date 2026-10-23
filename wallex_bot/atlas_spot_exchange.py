@@ -109,6 +109,7 @@ class SpotLedger:
           CREATE TABLE IF NOT EXISTS spot_audit(id INTEGER PRIMARY KEY, client_id TEXT,
             state TEXT, at REAL, sha256 TEXT, previous TEXT, digest TEXT);
         ''')
+        self._require_integrity()
         # Crash after durable SUBMITTED but before response is UNKNOWN, not retryable.
         with self.db:
             for row in self.db.execute("SELECT client_id FROM spot_orders WHERE state IN ('SUBMITTED','CANCEL_PENDING')").fetchall():
@@ -125,10 +126,23 @@ class SpotLedger:
                         (client_id, state, at, sha, previous, digest))
         self.db.execute('UPDATE spot_orders SET state=? WHERE client_id=?', (state, client_id))
 
+    def _require_integrity(self):
+        previous='GENESIS';latest={}
+        for row in self.db.execute('SELECT client_id,state,at,sha256,previous,digest FROM spot_audit ORDER BY id'):
+            client_id,state,at,sha,prev,digest=row
+            actual=hashlib.sha256(json.dumps([previous,client_id,state,at,sha]).encode()).hexdigest()
+            if previous!=prev or actual!=digest:
+                raise BrokerSafetyError('SPOT_AUDIT_CHAIN_INVALID')
+            previous=digest;latest[client_id]=state
+        for row in self.db.execute('SELECT client_id,fingerprint,state,payload FROM spot_orders'):
+            if latest.get(row[0])!=row[2] or hashlib.sha256(row[3].encode()).hexdigest()!=row[1]:
+                raise BrokerSafetyError('SPOT_ORDER_INTEGRITY_INVALID')
+
     def register(self, payload):
         raw = json.dumps(payload, sort_keys=True, separators=(',', ':')); sha = hashlib.sha256(raw.encode()).hexdigest()
         self.db.execute('BEGIN IMMEDIATE')
         with self.db:
+            self._require_integrity()
             old = self.db.execute('SELECT fingerprint FROM spot_orders WHERE client_id=?', (payload['client_id'],)).fetchone()
             if old:
                 if old[0] != sha:
@@ -144,6 +158,12 @@ class SpotLedger:
 
     def observe(self, client_id, response):
         """Only an actual read response should be supplied, never a Shadow fill."""
+        self.db.execute('BEGIN IMMEDIATE')
+        with self.db:
+            self._require_integrity()
+            return self._observe_locked(client_id,response)
+
+    def _observe_locked(self,client_id,response):
         raw = json.dumps(response, sort_keys=True, separators=(',', ':'), allow_nan=False)
         p = response.get('result')
         row = self.db.execute('SELECT * FROM spot_orders WHERE client_id=?', (client_id,)).fetchone()
@@ -185,11 +205,9 @@ class SpotLedger:
             state = 'UNKNOWN'
         if row['state'] in TERMINAL and row['state'] != state:
             raise BrokerSafetyError('TERMINAL_STATE_CONFLICT_MANUAL_REVIEW')
-        self.db.execute('BEGIN IMMEDIATE')
-        with self.db:
-            self.db.execute('UPDATE spot_orders SET exchange_snapshot=?,observed=?,executed_qty=?,executed_sum=? WHERE client_id=?',
-                            (raw, time.time(), str(executed), str(total), client_id))
-            self._state(client_id, state, raw)
+        self.db.execute('UPDATE spot_orders SET exchange_snapshot=?,observed=?,executed_qty=?,executed_sum=? WHERE client_id=?',
+                        (raw, time.time(), str(executed), str(total), client_id))
+        self._state(client_id, state, raw)
         return {'state': state, 'fees_by_asset': {k: str(v) for k, v in fees.items()},
                 'executed_qty': str(executed), 'executed_sum': str(total),
                 'balance_conservation': 'REQUIRES_INDEPENDENT_ACCOUNT_RECONCILIATION'}

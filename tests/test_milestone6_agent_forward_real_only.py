@@ -73,6 +73,13 @@ def test_memory_pit_creation_and_idempotency_with_actual_evidence(actual,tmp_pat
         first=memory.record('actual-observation',evidence['symbol'],evidence['decision_time'],stamp,'DECISION_RISK_VETO',source,payload)
         assert memory.record('actual-observation',evidence['symbol'],evidence['decision_time'],stamp,'DECISION_RISK_VETO',source,payload)==first
         assert memory.retrieve(evidence['symbol'],before)==[]
+        # Windows datetime.now and time.time can briefly differ in resolution.
+        # Wait for an actual current cutoff after persisted creation; never
+        # advance a synthetic clock or relax PIT/source/chain assertions.
+        created=memory.db.execute('SELECT created FROM research_memory_v6 WHERE event_id=?',('actual-observation',)).fetchone()[0]
+        wait_until=time.monotonic()+1
+        while datetime.now(timezone.utc).timestamp()<created and time.monotonic()<wait_until:
+            time.sleep(.002)
         rows=memory.retrieve(evidence['symbol'],datetime.now(timezone.utc).isoformat())
         assert len(rows)==1 and rows[0]['source_hash']==source and memory.verify()
         for field in ('importance','recency','relevance','availability_time','created_at','evaluation_status'):assert field in rows[0]

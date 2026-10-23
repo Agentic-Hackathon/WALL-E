@@ -15,7 +15,11 @@ def readiness():
     return {'status':'LIVE_NOT_AUTHORIZED_OR_NOT_READY','LIVE':'HARD_DISABLED','operator_arm_available':False,
         'checks':{name:'BLOCKED_MISSING_VERIFIED_EVIDENCE' for name in REQUIRED},'deadline':schedule(),
         'key_environment_present':bool(os.environ.get('WALLEX_API_KEY')),'contest_balance_verified':False,
-        'contest_balance_tmn':None,'ordinary_wallet_is_contest_credit':False,'orders_sent':0,'private_read_performed':False}
+        'contest_balance_tmn':None,'ordinary_wallet_is_contest_credit':False,'orders_sent':0,'private_read_performed':False,
+        'software':{'spot_decimal_preflight':'IMPLEMENTED_RESEARCH_ONLY','persistent_read_only_order_recovery':'IMPLEMENTED_NOT_VERIFIED_WITH_REAL_FILL_RECORDINGS',
+                    'financial_post_delete_transport':'NOT_IMPLEMENTED','operator_arm':'NOT_IMPLEMENTED',
+                    'independent_deadline_supervisor':'IMPLEMENTED_OBSERVER_NOT_INSTALLED_SERVICE',
+                    'positive_real_fill_fee_and_conservation_e2e':'UNVERIFIED_NO_AUTHORIZED_RECORDINGS'}}
 
 def private_check(root):
     result=account_connection_status()

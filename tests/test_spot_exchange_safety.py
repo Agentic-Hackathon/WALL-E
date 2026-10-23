@@ -85,3 +85,15 @@ def test_network_failure_never_invents_settlement(tmp_path, monkeypatch):
         assert not (tmp_path/'operations/supervisor_private_snapshot.json').exists()
     finally:
         s.close()
+
+
+def test_existing_order_boundary_honors_supervisor_halt_latch(tmp_path, monkeypatch):
+    import wallex_bot.atlas_deadline_supervisor as module
+    from wallex_bot.atlas_deadline import permission
+    after=datetime(2026,10,24,tzinfo=timezone.utc).timestamp()
+    monkeypatch.setattr(module.time,'time',lambda:after)
+    s=DeadlineSupervisor(tmp_path);s.tick({});s.close()
+    monkeypatch.setattr(module.time,'time',lambda:after-86400)
+    for action in ('BUY','SELL','REDUCE','REBALANCE','CANCEL'):
+        with pytest.raises(RuntimeError,match='HALTED_LATCHED'):
+            permission(tmp_path,action)
