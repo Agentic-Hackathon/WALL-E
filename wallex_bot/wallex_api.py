@@ -5,6 +5,7 @@ an account, activates a credit package, transfers money, or places an order.
 """
 from __future__ import annotations
 import os
+import math,re
 from pathlib import Path
 from typing import Any
 import requests
@@ -20,11 +21,13 @@ class WallexReadClient:
         self._session=session if session is not None else requests.Session()
 
     def _read(self,path:str)->dict:
+        if path not in ('/sub-accounts','/v1/account/balances-detail','/v1/account/fee') and not re.fullmatch(r'/v1/prop/packages/[1-9][0-9]{0,11}',path):
+            raise WallexAPIError('Endpoint outside read-only allowlist')
         if not self._api_key:
             raise WallexAPIError('WALLEX_API_KEY is unset (set locally; never paste or commit it)')
         try:
             r=self._session.get(HOST+path,headers={'x-api-key':self._api_key,
-                    'Accept':'application/json'},timeout=(5,15))
+                    'Accept':'application/json'},timeout=(5,15),allow_redirects=False)
             r.raise_for_status()
             data=r.json()
         except (requests.RequestException,ValueError) as exc:
@@ -49,6 +52,19 @@ class WallexReadClient:
         return {coin:{'available':item.get('available'), 'total':item.get('total'),
                       'freeze':item.get('freeze')} for coin,item in result.items()
                 if isinstance(item,dict)}
+
+    def fees(self)->dict:
+        """Official /v1/account/fee; fee confirmation is NOT contest authorization."""
+        result=self._read('/v1/account/fee').get('result')
+        if not isinstance(result,dict):raise WallexAPIError('Unverified fee response schema')
+        output={}
+        for symbol,item in result.items():
+            if not isinstance(symbol,str) or not symbol.endswith('TMN') or not isinstance(item,dict):continue
+            try:rates={k:float(item[k]) for k in ('makerFeeRate','takerFeeRate')}
+            except (ValueError,TypeError,KeyError):raise WallexAPIError('Invalid fee response') from None
+            if not all(math.isfinite(v) and 0<=v<.1 for v in rates.values()):raise WallexAPIError('Invalid fee rate')
+            output[symbol]=rates
+        return output
 
     def package_details(self,package_id:int)->dict:
         if not 0<package_id<10**12:raise ValueError('Invalid package id')

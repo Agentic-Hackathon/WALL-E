@@ -105,6 +105,10 @@ class DynamicShadowBroker:
                 if q is None or q['symbol']!=symbol or not 0<=time.time()-q['observed_epoch']<=30:raise ValueError('FRESH_REAL_QUOTE_REQUIRED')
                 from .atlas_study import fast_validate
                 fast_validate(self.contract)
+                # Additional competition boundary, never weakens existing Gate.
+                # Missing external-clock receipt fails closed. Old M8 is not reused.
+                from .atlas_deadline import permission
+                permission(self.directory,intent['action'])
                 audit=cost_audit(q,500000,fee);book=dict(audit);book['best_bid_quantity']=_levels(q['raw_book'],'bid')[0][1]
                 receipt['quote_sha256']=q['receipt_sha256']
                 terminal=intent.get('purpose')=='FINAL_TMN'
