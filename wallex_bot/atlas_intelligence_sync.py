@@ -16,6 +16,21 @@ def _source(**values):
     row.update(values);return row
 
 class IntelligenceSyncManager(DataSyncManager):
+    def core_preflight(self,symbol):
+        from .atlas_feature_health import _verified_segments
+        result=self.feature_readiness(symbol,'watch_core')
+        try:
+            for res in ('1','15'):
+                parts,_=_verified_segments(self.lake.root,self.lake.db,symbol,res)
+                if not parts:raise ValueError('REQUIRED_CORE_ARCHIVE_ABSENT:'+res)
+                if res=='15':
+                    closed=[p[p.timestamp+900<=time.time()] for p in parts];closed=[p for p in closed if len(p)]
+                    result['hash_verified_last_closed_at']=int(closed[-1].timestamp.iloc[-1])+900 if closed else None
+            result.update(native_verified=True,derived_verified=True)
+        except (ValueError,RuntimeError,OSError) as exc:
+            result.update(ready=False,native_verified=False,reason='NATIVE_PARENT_INVALID:'+str(exc)[:100])
+        return result
+
     def intelligence_status(self,session_dir,*,index_dir=DEFAULT_INDEX):
         now=time.time();sources={}
         last=self.lake.db.execute("SELECT max(last_ts) FROM chunks WHERE status='COMPLETE'").fetchone()[0]
@@ -23,6 +38,14 @@ class IntelligenceSyncManager(DataSyncManager):
         sources['ohlcv']=_source(last_valid_observation=last,last_successful_fetch=self.lake.db.execute('SELECT max(available_at) FROM chunk_observations').fetchone()[0],
             missing_intervals='SEE_DEMAND_PLAN; unknown unobserved history is not zero activity',pending_work=progress.get('FAILED',0),source_unavailable=progress.get('SOURCE_UNAVAILABLE',0),
             resume_cursor='catalog.sqlite.download_progress',retry_status=progress,staleness=now-last if last is not None else None)
+        sources['ohlcv']['validation_scope']='catalog aggregate accepted metadata; active core is independently rehashed below'
+        contract_path=Path(session_dir)/'study_contract.json';active={}
+        if contract_path.exists():
+            for symbol in json.loads(contract_path.read_text())['settings']['symbols']:active[symbol]=self.core_preflight(symbol)
+        if active:
+            sources['ohlcv']['last_valid_observation']={s:r.get('hash_verified_last_closed_at') for s,r in active.items()}
+            sources['ohlcv']['staleness']={s:(now-r['hash_verified_last_closed_at'] if r.get('hash_verified_last_closed_at') is not None else None) for s,r in active.items()}
+        sources['ohlcv']['active_per_asset_preflight']=active
         db=_read_connection(self.lake.root/'news.sqlite')
         try:
             if db and _table(db,'news_source_runs'):

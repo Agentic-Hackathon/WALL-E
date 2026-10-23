@@ -17,6 +17,15 @@ from .atlas_risk import RiskGate
 
 DEFAULT_SESSION='atlas_store/research_challengers/milestone7/formal_48h_v1'
 
+def runtime_packages():
+    import importlib.metadata as metadata,platform
+    names=('numpy','pandas','scipy','scikit-learn','torch','langgraph','langgraph-checkpoint-sqlite','lightgbm','requests','langdetect')
+    result={'python':platform.python_version()}
+    for name in names:
+        try:result[name]=metadata.version(name)
+        except metadata.PackageNotFoundError:result[name]=None
+    return result
+
 def source_manifest(workspace=None):
     workspace=Path(workspace or Path(__file__).resolve().parents[1]).resolve()
     files=set((workspace/'wallex_bot').rglob('*.py'))
@@ -56,7 +65,7 @@ def prepare(root,directory,config=None,*,require_committed=True):
             if m.get('is_spot') is not True or m.get('quote_asset')!='TMN':raise ValueError('UNVERIFIED_SPOT_TMN_UNIVERSE')
     finally:db.close()
     registry=model_registry(root)
-    contract={'session_id':directory.name,'settings':config,'source_manifest_LF_sha256':source_manifest(),'models':registry,
+    contract={'session_id':directory.name,'settings':config,'source_manifest_LF_sha256':source_manifest(),'models':registry,'runtime_packages':runtime_packages(),
         'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         'prepared_at':time.time(),'status':'PREPARED_NOT_STARTED','exchange_credentials_used':False}
     artifacts={root/'models/active_champion.json'}
@@ -73,11 +82,13 @@ def validate(root,contract):
     if _sha(expected)!=contract['contract_sha256']:raise ValueError('CONTRACT_HASH_INVALID')
     if source_manifest()!=contract['source_manifest_LF_sha256']:raise ValueError('SESSION_SOURCE_CHANGED_NEW_SESSION_REQUIRED')
     if model_registry(root)!=contract['models']:raise ValueError('SESSION_MODEL_CHANGED_NEW_SESSION_REQUIRED')
+    if contract.get('runtime_packages') is not None and runtime_packages()!=contract['runtime_packages']:raise ValueError('SESSION_ENVIRONMENT_CHANGED_NEW_SESSION_REQUIRED')
     return True
 
 def fast_validate(contract):
     if source_manifest()!=contract['source_manifest_LF_sha256']:raise RuntimeError('PINNED_SOURCE_CHANGED')
     if any(hashlib.sha256(Path(p).read_bytes()).hexdigest()!=sha for p,sha in contract['model_file_hashes'].items()):raise RuntimeError('PINNED_MODEL_CHANGED')
+    if contract.get('runtime_packages') is not None and runtime_packages()!=contract['runtime_packages']:raise RuntimeError('PINNED_ENVIRONMENT_CHANGED')
 
 class DeadlineLedger(ModelObservationLedger):
     def __init__(self,root):
@@ -288,6 +299,13 @@ def run(root,directory,*,max_inference_cycles=None,max_runtime_seconds=None,stop
                 except Exception as exc:report['intelligence_sync']={'status':'FAILED_SAFE_OPTIONAL_INTELLIGENCE_SYNC','error_type':type(exc).__name__}
             for symbol in contract['settings']['symbols']:
                 if stop.is_set():break
+                if research_hook:
+                    from .atlas_intelligence_sync import IntelligenceSyncManager
+                    preflight=IntelligenceSyncManager(lake).core_preflight(symbol)
+                    if not preflight['ready']:
+                        report['models'][symbol]={'status':'INVALID_CORE_OR_NATIVE_PARENT_NO_FORECAST','readiness':preflight};continue
+                if research_hook and time.time()+3000>runtime['deadline_epoch']:
+                    report['models'][symbol]={'status':'ORIGIN_RIGHT_TAIL_NOT_REGISTERED_NO_FUTURE_WINDOW_WITHIN_STUDY'};continue
                 started=time.time()
                 try:
                     snapshot=input_snapshot(lake,symbol);outputs,errors=predict_models(contract['models'],snapshot)

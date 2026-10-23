@@ -22,14 +22,18 @@ VERSION='ATLAS_DYNAMIC_SHADOW_V1'
 def account_snapshot(account,quotes,*,stamp=None,fee=.001):
     stamp=time.time() if stamp is None else stamp;positions=account.db.execute('SELECT symbol,quantity,entry_cost FROM positions ORDER BY symbol').fetchall()
     cash=float(account.get('cash_tmn'));nav=cash;values={}
+    high_water=float(account.get('high_water_tmn'));stopped=account.get('stopped')
+    if not math.isfinite(cash) or cash<0 or not math.isfinite(high_water) or high_water<=0 or stopped not in ('0','1'):raise ValueError('INVALID_PERSISTED_ACCOUNT_STATE')
     for symbol,quantity,cost in positions:
+        if not all(math.isfinite(v) and v>0 for v in (quantity,cost)):raise ValueError('INVALID_PERSISTED_POSITION')
         q=quotes.get(symbol)
         if q is None or not 0<=stamp-q['observed_epoch']<=30:raise ValueError('MISSING_FRESH_HELD_ASSET_BID')
         cost_audit(q,max(cost,1),fee);sweep=_sell_qty(_levels(q['raw_book'],'bid'),quantity)
         if sweep is None:raise ValueError('INSUFFICIENT_REAL_HELD_EXIT_DEPTH')
         values[symbol]=sweep[0]*(1-fee);nav+=values[symbol]
+    if not math.isfinite(nav) or nav<=0:raise ValueError('NONPOSITIVE_OR_NONFINITE_NAV')
     return {'cash_tmn':cash,'positions':positions,'nav_tmn':nav,'marked_asset_values_tmn':values,
-        'high_water_tmn':float(account.get('high_water_tmn')),'stopped':account.get('stopped')=='1',
+        'high_water_tmn':high_water,'stopped':stopped=='1',
         'all_held_assets_valued':True,'valuation':'actual full displayed bid sweep less assumed exit fee'}
 
 
@@ -66,10 +70,12 @@ class DynamicShadowBroker:
         return p
     def submit(self,intent,*,forecast,quotes,review,cycle_id,fee=.001):
         action=intent['action'];symbol=intent['symbol'];key=intent['intent_id']
+        if symbol not in self.contract['settings']['symbols']:raise ValueError('MARKET_OUTSIDE_FROZEN_RESEARCH_UNIVERSE')
         if action not in ACTIONS:raise ValueError('UNKNOWN_DYNAMIC_ACTION')
         if not isinstance(key,str) or len(key)!=64 or any(c not in '0123456789abcdef' for c in key):raise ValueError('HASHED_INTENT_ID_REQUIRED')
         if not isinstance(cycle_id,str) or len(cycle_id)>128:raise ValueError('BOUNDED_CYCLE_ID_REQUIRED')
         if not 0<=fee<.05:raise ValueError('INVALID_EXPLICIT_FEE')
+        if fee!=self.contract['settings']['fee_per_side_assumed']:raise ValueError('PINNED_ASSUMED_FEE_MUST_NOT_BE_OVERRIDDEN')
         for field in ('quantity','notional_tmn'):
             value=intent.get(field)
             if value is not None and (type(value) not in (int,float) or not math.isfinite(value) or value<=0):raise ValueError('INVALID_REQUESTED_AMOUNT')
@@ -85,14 +91,20 @@ class DynamicShadowBroker:
                 if _sha(payload)!=old[2]:raise ValueError('DYNAMIC_RECEIPT_HASH_INVALID')
                 self.db.commit();return payload
             if not self.account.verify():raise ValueError('PAPER_HASH_CHAIN_INVALID')
-            before=account_snapshot(self.account,quotes,fee=fee);receipt={'version':VERSION,'intent':intent,'before':before,
+            before=account_snapshot(self.account,quotes,fee=fee)
+            observation=quotes.get(symbol)
+            if observation:cost_audit(observation,500000,fee)
+            receipt={'version':VERSION,'intent':intent,'before':before,
                 'review_sha256':review['review_sha256'],'contract_sha256':self.contract['contract_sha256'],
-                'forecast':forecast,'forecast_receipt':None,'quote_sha256':None,'gate':None,'action':action,
-                'status':'NO_PAPER_MUTATION','reason':'NO_ACTION_REQUESTED','hypothetical':True,'exchange_fill':None,
+                'forecast':forecast,'forecast_receipt':None,'quote_sha256':observation.get('receipt_sha256') if observation else None,'gate':None,'action':action,
+                'status':'NO_PAPER_MUTATION','reason':(intent.get('reason_codes') or ['NO_ACTION_REQUESTED'])[0],
+                'reason_codes':intent.get('reason_codes',[]),'hypothetical':True,'exchange_fill':None,
                 'fee_per_side_assumed':fee,'fee_verified':False,'trade_estimate':None,'actual_created_at':time.time()}
             if action in ('BUY','ADD','REDUCE','SELL','REBALANCE'):
                 q=quotes.get(symbol)
                 if q is None or q['symbol']!=symbol or not 0<=time.time()-q['observed_epoch']<=30:raise ValueError('FRESH_REAL_QUOTE_REQUIRED')
+                from .atlas_study import fast_validate
+                fast_validate(self.contract)
                 audit=cost_audit(q,500000,fee);book=dict(audit);book['best_bid_quantity']=_levels(q['raw_book'],'bid')[0][1]
                 receipt['quote_sha256']=q['receipt_sha256']
                 terminal=intent.get('purpose')=='FINAL_TMN'
@@ -111,7 +123,8 @@ class DynamicShadowBroker:
                     'cash_tmn':before['cash_tmn'],'positions':before['positions'],'stopped':assessment.stopped,'fee':fee,'limits':asdict(RiskGate().limits),
                     'purpose':'FINAL_TMN' if terminal else 'STRATEGY'}
                 receipt['reason']=gate.reason
-                budget=self.db.execute('SELECT nav,turnover,cost FROM dynamic_cycle_budget_v8 WHERE cycle_id=?',(cycle_id,)).fetchone()
+                budget_id=str(int(time.time()//900)*900);receipt['budget_period_start']=int(budget_id)
+                budget=self.db.execute('SELECT nav,turnover,cost FROM dynamic_cycle_budget_v8 WHERE cycle_id=?',(budget_id,)).fetchone()
                 nav,used_turnover,used_cost=budget if budget else (before['nav_tmn'],0.,0.)
                 trade=None
                 if action in ('BUY','ADD') and gate.action=='PAPER_BUY':
@@ -147,7 +160,7 @@ class DynamicShadowBroker:
                         held=next(p for p in before['positions'] if p[0]==symbol);remaining=held[1]-trade['quantity']
                         if remaining==0:self.db.execute('DELETE FROM positions WHERE symbol=?',(symbol,))
                         else:self.db.execute('UPDATE positions SET quantity=?,entry_cost=? WHERE symbol=?',(remaining,held[2]*remaining/held[1],symbol))
-                    self.db.execute('INSERT OR REPLACE INTO dynamic_cycle_budget_v8 VALUES(?,?,?,?)',(cycle_id,nav,used_turnover+trade['turnover'],used_cost+trade['cost_tmn']))
+                    self.db.execute('INSERT OR REPLACE INTO dynamic_cycle_budget_v8 VALUES(?,?,?,?)',(budget_id,nav,used_turnover+trade['turnover'],used_cost+trade['cost_tmn']))
                     receipt.update(status='PAPER_ESTIMATE_RECORDED',reason=gate.reason,trade_estimate=trade)
             receipt['after']=account_snapshot(self.account,quotes,fee=fee)
             receipt['source_evidence_hash']=review['source_evidence_hash']

@@ -19,7 +19,8 @@ def profile(symbols=('BTCTMN','ETHTMN'),hours=48,*,news=True,index_dir=DEFAULT_I
         intelligence={'news_enabled':bool(news),'finbert_competition_decision_use':False,
             'pattern_index_dir':str(Path(index_dir).resolve()),'pattern_decision_use':False,
             'terminal_exit_window_seconds':3600,'review_schedule':'new real sampler receipt + 2s settling; fresh quote <=30s',
-            'ablation_selection_or_automatic_promotion':False,'turnover_budget':'per original 15m forecast data cutoff, shared across quote-driven reviews'})
+            'ablation_selection_or_automatic_promotion':False,'turnover_budget':'per 15m wall-clock bucket, shared across all quote-driven reviews',
+            'last_forecast_origin':'due + 300s must be <= study deadline; no fabricated tail labels'})
     return config
 
 def startup_hook(lake,directory,contract):

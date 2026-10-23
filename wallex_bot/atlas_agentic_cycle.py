@@ -51,7 +51,7 @@ def research_cycle(lake,directory,observer,contract):
     from langgraph.graph import StateGraph,START,END
     from langgraph.checkpoint.sqlite import SqliteSaver
     from .atlas_news_features import advisory_packet
-    from .atlas_data_sync import DataSyncManager
+    from .atlas_intelligence_sync import IntelligenceSyncManager
     directory=Path(directory);symbols=contract['settings']['symbols'];quotes={};predictions={};candidates={};errors=[]
     for symbol in symbols:
         row=observer.db.execute('SELECT id FROM quotes WHERE symbol=? ORDER BY observed_epoch DESC LIMIT 1',(symbol,)).fetchone()
@@ -75,7 +75,7 @@ def research_cycle(lake,directory,observer,contract):
                 'prediction_available_at':p['prediction_available_at'],'prediction_id':p['prediction_id'],
                 'spot_tmn':meta.get('is_spot') is True and meta.get('quote_asset')=='TMN','metadata':meta,'fee':.001,**vol.get(symbol,{})}
         runtime=json.loads(observer.db.execute("SELECT payload FROM study_runtime_v7 WHERE key='session'").fetchone()[0])
-        cycle_id=str(max((p['data_cutoff'] for p in predictions.values()),default=int(time.time()//900)*900))
+        cycle_id=str(int(time.time()//900)*900)
         quote_cohort=_sha({s:q['receipt_sha256'] for s,q in quotes.items()})
         # Exits are considered before entries, but every leg rechecks actual
         # holdings and the common atomic turnover/cost budget. No switch assumes
@@ -103,7 +103,7 @@ def research_cycle(lake,directory,observer,contract):
                 recent=memory.retrieve(symbol,asof,limit=12)
                 prediction={'quantile_log_returns':{k:p[k] for k in ('q10','q50','q90')},'model_sha256':p['model_sha256'],
                     'prediction_id':p['prediction_id'],'forecast_horizon':2700,'feature_recipe':p['feature_recipe']} if p else {'quantile_log_returns':{'q10':None,'q50':None,'q90':None}}
-                audit=cost_audit(q,500000);ready=DataSyncManager(lake).feature_readiness(symbol,'watch_core')
+                audit=cost_audit(q,500000);ready=IntelligenceSyncManager(lake).core_preflight(symbol)
                 st=technical.get('supertrend_trailing_band_v1',{}).get('direction');kijun=technical.get('ichimoku',{}).get('kijun26')
                 # Research-only technical filter; Champion feature inputs and
                 # weights are not changed. Missing/stale technical is explicit.
@@ -135,10 +135,12 @@ def research_cycle(lake,directory,observer,contract):
                             penalty=min(1.,max(0,margin/max(width,1e-8)))
                             amount=weight*current['nav_tmn']*penalty
                             if amount>=100000:action='BUY'
+                    reasons=list(state['review']['veto_reasons'])+proposal.get('rejections',{}).get(symbol,[])+proposal.get('rejections',{}).get('PORTFOLIO',[])
+                    if not reasons:reasons=[proposal['status'] if action in ('STAY_IN_CASH','REJECT') else 'CURRENT_POSITION_OR_GATE_AUTHORIZED_ACTION']
                     intent={'intent_id':_sha({'contract':contract['contract_sha256'],'cycle':cycle_id,'quote_cohort':quote_cohort,'symbol':symbol,'prediction':p['prediction_id'] if p else None,'action':action}),
                         'symbol':symbol,'action':action,'notional_tmn':amount if action=='BUY' else None,'quantity':quantity,
                         'prediction_id':p['prediction_id'] if p else None,'purpose':purpose,'sizing_version':'CONSERVATIVE_M7_CAPS_EDGE_OVER_INTERVAL_V1',
-                        'limits':'existing RiskGate + min 80% cash, 10% cycle turnover, 0.1% cost'}
+                        'limits':'existing RiskGate + min 80% cash, 10% cycle turnover, 0.1% cost','reason_codes':reasons}
                     return {'intent':intent,'allocation':proposal,'allocation_inputs':inputs}
                 def broker_node(state):
                     return {'receipt':broker.submit(state['intent'],forecast=state['review']['forecast_for_gate'],quotes=quotes,review=state['review'],cycle_id=cycle_id)}
