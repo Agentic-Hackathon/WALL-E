@@ -9,7 +9,11 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def manifest(workspace=ROOT):
     files=subprocess.check_output(['git','ls-files','-z'],cwd=workspace).decode().split('\0')
-    return {name:hashlib.sha256((workspace/name).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+    text_suffixes={'.py','.sh','.html','.css','.js','.txt','.md','.json','.toml','.ini'}
+    def content(name):
+        raw=(workspace/name).read_bytes()
+        return raw.replace(b'\r\n',b'\n') if Path(name).suffix in text_suffixes or name in ('.gitignore','.gitleaksignore') else raw
+    return {name:hashlib.sha256(content(name)).hexdigest()
         for name in sorted(files) if name and (workspace/name).is_file() and
         (name.startswith(('wallex_bot/','scripts/')) or name.startswith('requirements') or name in ('.gitignore','.gitleaksignore'))}
 

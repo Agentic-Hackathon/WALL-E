@@ -97,6 +97,7 @@ def account_connection_status(package_id: int | None=None)->dict:
     try:
         balances=client.balances_detail();tmn=balances.get('TMN',{})
         result['tmn_available']=tmn.get('available');result['tmn_total']=tmn.get('total')
+        result['tmn_frozen']=tmn.get('freeze')
     except WallexAPIError as exc:
         result['balances_status']='UNAVAILABLE';result['balances_error']=str(exc)
     if package_id is not None:

@@ -1,5 +1,17 @@
 # منابع بیرونی
 
+## Final UI release — Vazirmatn
+
+- Official repository: https://github.com/rastikerdar/vazirmatn
+- Tag v33.003, commit `83629f877e8f084cc07b47030b5d3a0ff06c76ec`.
+- `OFL.txt` was read completely before bundling: SIL Open Font License 1.1.
+- Unmodified `fonts/webfonts/Vazirmatn[wght].woff2` is bundled locally as
+  `wallex_bot/static/fonts/Vazirmatn.woff2`; license accompanies it.
+- Font SHA-256: `4e3fa217d38fdafc1fea4414ceb58ca5e662cf0ab5fa735a8c8c20e8b42cad92`.
+- Downloaded OFL SHA-256: `17e355067c8284f47743a1ee3b1ef7ff684ff0601eda357f9353b10b3016ab31`.
+- Wallex Spot API documentation was studied for independent serialization and
+  read-only reconciliation. No external broker/connector code was copied.
+
 کلون‌ها فقط برای مطالعه هستند و در پکیج `wallex_bot` وارد نمی‌شوند. وضعیت مجوز
 قبل از هر استفاده از کد باید بررسی شود. در این مرحله، هیچ کد خارجی کپی نشده است.
 

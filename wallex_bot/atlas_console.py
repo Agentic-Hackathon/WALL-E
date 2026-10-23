@@ -99,7 +99,26 @@ def real_candles(root,symbol,resolution):
     for part in parts:
         for r in part.tail(240).to_dict('records'):
             if int(r['timestamp'])+RESOLUTIONS[resolution]<=time.time():rows.append({k:float(r[k]) for k in ('timestamp','open','high','low','close','volume')})
-    return {'status':'VERIFIED_CLOSED_REAL_CANDLES' if rows else 'DATA_NOT_AVAILABLE','bars':sorted(rows,key=lambda r:r['timestamp'])[-240:],'resolution':resolution}
+    bars=sorted(rows,key=lambda r:r['timestamp'])[-240:]
+    # Chart diagnostics reuse the versioned feature recipe, NEVER the trading
+    # recipe. A gap resets warmup; do not join a rolling indicator across it.
+    indicators=[];technical=None;definitions=[]
+    if bars:
+        import pandas as pd
+        from .atlas_feature_registry import compute_ohlcv_features,registry_payload
+        from .atlas_technical_evidence import compute
+        frame=pd.DataFrame(bars);period=RESOLUTIONS[resolution]
+        breaks=frame.timestamp.diff().ne(period)
+        frame=frame.loc[breaks[breaks].index[-1]:].copy().reset_index(drop=True)
+        features=compute_ohlcv_features(frame)
+        mid=frame.close.rolling(20).mean();std=frame.close.rolling(20).std()
+        features['bb_upper']=mid+2*std;features['bb_lower']=mid-2*std
+        indicators=json.loads(features.to_json(orient='records'))
+        technical=compute(frame,period)
+        definitions=registry_payload()['definitions']
+    return {'status':'VERIFIED_CLOSED_REAL_CANDLES' if bars else 'DATA_NOT_AVAILABLE','bars':bars,'resolution':resolution,
+        'indicators':indicators,'technical':technical,'feature_definitions':definitions,
+        'indicator_policy':'CONTIGUOUS_SUFFIX_ONLY_WARMUP_NULL_NO_IMPUTATION_RESEARCH_ONLY'}
 
 def pattern_lines(root):
     from .atlas_patterns import PatternIndex
@@ -133,13 +152,18 @@ class ConsoleHandler(DashboardHandler):
     def _page(self):
         data=Path(__file__).with_name('atlas_console.html').read_bytes();self.send_response(200)
         for key,value in [('Content-Type','text/html; charset=utf-8'),('Cache-Control','no-store'),('X-Content-Type-Options','nosniff'),
-            ('Content-Security-Policy',"default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'")]:self.send_header(key,value)
+            ('Content-Security-Policy',"default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'")]:self.send_header(key,value)
         self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data)
     def do_GET(self):
         if self.headers.get('Host','').split(':')[0] not in ('localhost','127.0.0.1'):return self._json({'error':'HOST_NOT_ALLOWED'},403)
         parsed=urlparse(self.path);args=parse_qs(parsed.query)
         try:
             if parsed.path=='/':return self._page()
+            if parsed.path in ('/static/fonts/Vazirmatn.woff2','/static/fonts/OFL.txt','/static/console_v2.js','/static/console_v2.css'):
+                path=Path(__file__).parent/parsed.path.lstrip('/');data=path.read_bytes()
+                self.send_response(200);self.send_header('Content-Type',{'.woff2':'font/woff2','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8'}.get(path.suffix,'text/plain; charset=utf-8'))
+                self.send_header('Cache-Control','public, max-age=86400' if path.suffix=='.woff2' else 'no-store');self.send_header('X-Content-Type-Options','nosniff')
+                self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
             if parsed.path=='/api/overview':result=overview(self.root)
             elif parsed.path=='/api/tools':result=inventory()
             elif parsed.path=='/api/news':result=real_news(self.root)

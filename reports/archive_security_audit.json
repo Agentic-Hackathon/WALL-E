@@ -1,0 +1,24 @@
+{
+  "archives": [
+    {
+      "path": "legacy/archives/Wallex_Atlas_V3_5_Live_Dashboard_PATCH_for_V3_4.zip",
+      "sha256": "ecc9a775667dcea69e6c36a0a1f02d19978f45897f3d3758275d7d6dcf03b885",
+      "entries": 8,
+      "unsafe_path_count": 0,
+      "scanner_exit": 0,
+      "finding_count": 0,
+      "status": "PASS"
+    },
+    {
+      "path": "legacy/archives/wallex_agent_v3.zip",
+      "sha256": "1d739e7990137fdf5a0669249187662c9a134df72cc9a3aa5bfea52e6f37aa5c",
+      "entries": 124,
+      "unsafe_path_count": 0,
+      "scanner_exit": 0,
+      "finding_count": 0,
+      "status": "PASS"
+    }
+  ],
+  "secret_values_exported": false,
+  "status": "PASS"
+}

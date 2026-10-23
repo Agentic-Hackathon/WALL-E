@@ -52,6 +52,18 @@ def permission(root,action):
     # Use the later clock plus Date/round-trip uncertainty. A local clock a few
     # seconds behind the server must never permit trading after server deadline.
     effective=max(wall,clock['server_epoch']+age+max(0,clock.get('rtt_seconds',0))/2+1) if fresh else wall
+    # A previously observed deadline must not be undone by restart/clock rollback.
+    latch=Path(root)/'operations/deadline_supervisor.sqlite'
+    if latch.is_file():
+        db=sqlite3.connect(latch.resolve().as_uri()+'?mode=ro',uri=True)
+        try:
+            saved=db.execute('SELECT high_water,halted FROM supervisor WHERE id=1').fetchone()
+            if saved:
+                if saved[1]:raise RuntimeError('COMPETITION_DEADLINE_OR_CLOCK_BLOCK:HALTED_LATCHED')
+                effective=max(effective,saved[0])
+        except sqlite3.Error:
+            raise RuntimeError('COMPETITION_DEADLINE_OR_CLOCK_BLOCK:INVALID_SUPERVISOR_LATCH') from None
+        finally:db.close()
     state=schedule(datetime.fromtimestamp(effective,timezone.utc),clock_verified=fresh and clock.get('verified') is True,clock_skew_seconds=clock.get('skew_seconds'))
     kind='allow_new_entry' if action in ('BUY','ADD','REBALANCE') else 'allow_exit' if action in ('SELL','REDUCE') else 'allow_cancel'
     if not state[kind]:raise RuntimeError('COMPETITION_DEADLINE_OR_CLOCK_BLOCK:'+state['phase'])

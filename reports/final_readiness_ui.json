@@ -1,0 +1,29 @@
+{
+  "observed_epoch": 1792748389.380495,
+  "url": "http://127.0.0.1:8766/",
+  "source_commit": "77ad19a30d39577f7f754e57a596ccecd5199289",
+  "mode": "READ_ONLY",
+  "live": "HARD_DISABLED",
+  "tool_count": 37,
+  "actual_candle_count": 240,
+  "indicator_policy": "CONTIGUOUS_SUFFIX_ONLY_WARMUP_NULL_NO_IMPUTATION_RESEARCH_ONLY",
+  "font_sha256": "4e3fa217d38fdafc1fea4414ceb58ca5e662cf0ab5fa735a8c8c20e8b42cad92",
+  "manual_browser_pages": [
+    "overview",
+    "markets",
+    "forecasts",
+    "portfolio",
+    "agents",
+    "tool catalog"
+  ],
+  "search_deadline_results": 3,
+  "indicator_selected": "Bollinger Bands",
+  "mobile_visual_test": "NOT_PERFORMED_VIEWPORT_CAPABILITY_UNAVAILABLE",
+  "responsive_css_contract": "TESTED",
+  "screenshots": [
+    "assets/screenshots/overview-fa.png",
+    "assets/screenshots/forecasts-fa.png",
+    "assets/screenshots/tool-search-fa.png"
+  ],
+  "orders_sent": 0
+}
