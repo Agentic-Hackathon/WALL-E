@@ -4,6 +4,8 @@ Install Git and Conda from their official distributions. Obtain read-only access
 
 For an isolated environment, use `conda create -n wall-e-judge python=3.12` then `conda run -n wall-e-judge python -m pip install -r requirements-m8.txt`. A compatible PyTorch GPU build must be selected using official PyTorch installation instructions for the host driver; CUDA is optional for UI/preflight. Do not upgrade the existing shared shbk environment. Recorded versions are not a universal GPU lockfile. See fresh_clone_test.json for the actual installation attempt, not a promised success.
 
+The actual Windows x64/Python3.12 isolated install succeeded; all89 installed package versions are now recorded in requirements-judge-lock.txt. On that platform use `python -m pip install -r requirements-judge-lock.txt` for the same CPU research stack. `pip check` passed. This is not a claim of GPU bit identity or second-machine financial reproduction. Original archive/weights are still absent in a clean clone.
+
 ```powershell
 python scripts/judge_preflight.py
 $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD='1'

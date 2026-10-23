@@ -49,6 +49,7 @@ def main():
         'actual_remote_clone':True,'venv_isolated_no_system_site_packages':True,'install_command':'python -m pip install -r .judge-clone/requirements-m8.txt',
         'dependency_install':'SUCCEEDED_ACTUAL','pip_check_exit_code':checker.returncode,'pip_check':checker.stdout.strip(),
         'initial_test':junit(initial) if initial.exists() else None,'final_test':junit(final) if final.exists() else None,
+        'initial_failures_report':'reports/fresh_clone_initial_failures.json','second_attempt':junit(out/'fresh_clone_second_pytest.xml') if (out/'fresh_clone_second_pytest.xml').exists() else None,
         'data_or_weights_copied_into_clone':False,'preflight':'BLOCKED_DATA_NOT_AVAILABLE','full_numeric_reproduction':'BLOCKED_MISSING_REAL_ARCHIVE_CHECKPOINTS',
         'fixture_fixes':'missing real fixture => explicit skip; assertions retained when present; no synthetic data'})
     rubric=json.loads((out/'m8_hackathon_rubric.json').read_text());rubric.update(UI_is_not_economic_edge=True,deadline_requires_manual_residual_review=True,actual_awarded_score=None)

@@ -2,6 +2,8 @@
 
 دسترسی read-only ریپوی خصوصی را از مالک سازمان بگیرید؛ Token را در چت یا URL نگذارید. Git و Conda رسمی، Python 3.12 و محیط جدا لازم‌اند. مراحل دقیق نصب در نسخهٔ انگلیسی همین راهنماست. محیط `shbk` موجود را تغییر ندهید.
 
+نصب واقعی venv جدا روی Windows x64/Python3.12 موفق و pip check سالم بود. ۸۹ نسخهٔ نصب‌شده در requirements-judge-lock.txt ثبت شد؛ برای همین پلتفرم `python -m pip install -r requirements-judge-lock.txt` به کار رود. این نصب CPU است، نه بازتولید GPU یا داده/وزن خصوصی.
+
 ```powershell
 conda run --no-capture-output -n shbk python scripts/judge_preflight.py
 $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD='1'
