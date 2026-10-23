@@ -1,0 +1,484 @@
+{
+  "origin": "AST of actual tracked/current module CLIs",
+  "tools": [
+    {
+      "module": "wallex_bot.atlas_cli",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "BACKTEST",
+        "LIVE",
+        "SHADOW",
+        "account-audit",
+        "account-read-status",
+        "agent-cycle",
+        "all-listed",
+        "all-spot",
+        "archive-all",
+        "audit-v3",
+        "benchmark",
+        "both",
+        "broker-status",
+        "capture-live",
+        "catalog",
+        "challenger-evaluate",
+        "challenger-preflight",
+        "contest-readiness",
+        "context-preview",
+        "context-review",
+        "context-status",
+        "cpu",
+        "cuda",
+        "data-quality-audit",
+        "data-sync-plan",
+        "data-sync-run",
+        "data-sync-status",
+        "discover",
+        "edge-triage",
+        "feature-audit-v3",
+        "feature-health",
+        "feature-recipe-audit",
+        "finbert",
+        "forward-report",
+        "inspect",
+        "itransformer",
+        "liquidate-paper",
+        "liquidation-status",
+        "mcp-smoke",
+        "memory-rank",
+        "mode-status",
+        "news",
+        "news-audit",
+        "news-evidence",
+        "operations-report",
+        "patchtst",
+        "priority",
+        "rationale-status",
+        "replay-decision",
+        "run",
+        "shadow-cycle",
+        "spot",
+        "status",
+        "tmn",
+        "tmn-spot",
+        "train-challenger-v2",
+        "train-deep",
+        "validate",
+        "watch"
+      ],
+      "description": "One-command autonomous RESEARCH pipeline. It never submits exchange orders.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_console",
+      "command": "python -m wallex_bot.atlas_console --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "WALL-E localhost read-only console on existing stdlib dashboard stack.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_dashboard",
+      "command": "python -m wallex_bot.atlas_dashboard --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "Read-only localhost dashboard over genuine Wallex Atlas V3.4 evidence.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_dashboard_eval",
+      "command": "python -m wallex_bot.atlas_dashboard_eval --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "Point-in-time, non-invented Wallex Atlas retrospective research diagnostics.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_deadline",
+      "command": "python -m wallex_bot.atlas_deadline --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "clock-check",
+        "status",
+        "watchdog"
+      ],
+      "description": "Competition deadline permission gate, independent of GUI/LLM/RiskGate.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_forward_watch",
+      "command": "python -m wallex_bot.atlas_forward_watch --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "collect",
+        "reconcile",
+        "status"
+      ],
+      "description": "M6 stoppable/resumable foreground observer and isolated Shadow study.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_intelligence",
+      "command": "python -m wallex_bot.atlas_intelligence --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "prepare",
+        "replay",
+        "run",
+        "status",
+        "sync-status"
+      ],
+      "description": "M8 opt-in frozen foreground research profile, not model promotion.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_live_readiness",
+      "command": "python -m wallex_bot.atlas_live_readiness --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "Read-only readiness, never ARM or send order/cancel/withdrawal requests.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_m5_inference",
+      "command": "python -m wallex_bot.atlas_m5_inference --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "forward-reconcile",
+        "forward-status",
+        "replay",
+        "smoke"
+      ],
+      "description": "Read-only M5 historical replay and isolated Agent/News/Memory smoke graph.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_m5_research",
+      "command": "python -m wallex_bot.atlas_m5_research --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "15_0.75",
+        "15_48",
+        "15_72",
+        "1D_48",
+        "1D_72",
+        "60_48",
+        "60_72",
+        "preflight",
+        "run"
+      ],
+      "description": "Reproducible research CLI using Atlas verified archives, never execution.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_m8_audit",
+      "command": "python -m wallex_bot.atlas_m8_audit --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "Read-only M8 inventory; original Atlas integration audit, no repo execution.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_m8_evaluation",
+      "command": "python -m wallex_bot.atlas_m8_evaluation --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "M8 chronological saved-evidence backtest/replay and component ablations.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_m8_report",
+      "command": "python -m wallex_bot.atlas_m8_report --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "M8 reproducible reporting over actual archived/forward evidence only.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_pattern_research",
+      "command": "python -m wallex_bot.atlas_pattern_research --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "M8 chronological analogue research, reuse Atlas M5 quantile metrics.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_patterns",
+      "command": "python -m wallex_bot.atlas_patterns --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "build",
+        "search",
+        "status"
+      ],
+      "description": "M8 real-candle analogue retrieval, no broker or model promotion authority.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_portfolio_report",
+      "command": "python -m wallex_bot.atlas_portfolio_report --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "M7 auditable reports; reuse Atlas receipts, depth sweeps and M6 metrics.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::market_catalog",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "market_catalog",
+        "market"
+      ],
+      "description": "Read Wallex public spot catalog",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::historical_candles",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "historical_candles",
+        "market"
+      ],
+      "description": "Read verified persisted OHLCV segments",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::real_order_book",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "real_order_book",
+        "market"
+      ],
+      "description": "Read real Wallex public bids/asks",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::technical_indicators",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "technical_indicators",
+        "technical"
+      ],
+      "description": "Compute indicators on genuine continuous candles",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::model_inference",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "model_inference",
+        "forecast"
+      ],
+      "description": "Run SHA256-pinned validated forecasting checkpoint",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::news_receipts",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "news_receipts",
+        "news"
+      ],
+      "description": "Read articles with first-observed timestamps",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::paper_ledger",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "PAPER_ONLY",
+      "options_or_commands": [
+        "paper_ledger",
+        "shadow"
+      ],
+      "description": "Record hypothetical fills using real observed quote",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::forward_receipts",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "forward_receipts",
+        "shadow"
+      ],
+      "description": "Score forecasts from later real quotes",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::risk_veto",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "risk_veto",
+        "risk"
+      ],
+      "description": "Enforce trade and exposure vetoes",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_skills::audit_replay",
+      "command": "python -m wallex_bot.atlas_cli --help",
+      "help_supported": true,
+      "tool_type": "ATLAS_REGISTERED_TOOL",
+      "permission": "READ_ONLY",
+      "options_or_commands": [
+        "audit_replay",
+        "audit"
+      ],
+      "description": "Read append-only decisions and model provenance",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution"
+    },
+    {
+      "module": "wallex_bot.atlas_study",
+      "command": "python -m wallex_bot.atlas_study --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "prepare",
+        "reconcile",
+        "run",
+        "status"
+      ],
+      "description": "M7 fixed-protocol foreground study with independent deadline quote worker.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.atlas_technical_evidence",
+      "command": "python -m wallex_bot.atlas_technical_evidence --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [],
+      "description": "M8 causal technical evidence; reuse V3 computations without changing V1/V3.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.cli",
+      "command": "python -m wallex_bot.cli --help",
+      "help_supported": true,
+      "tool_type": "CLI",
+      "options_or_commands": [
+        "balances",
+        "package",
+        "subaccounts"
+      ],
+      "description": "CLI read-only data, ML backtest, shadow observation, audit verification.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    },
+    {
+      "module": "wallex_bot.mcp_server::wallex_spot_markets",
+      "command": "python -m wallex_bot.mcp_server",
+      "help_supported": false,
+      "tool_type": "MCP_SERVICE_NO_HELP; connect through trusted local MCP client",
+      "options_or_commands": [
+        "wallex_spot_markets"
+      ],
+      "description": "Read exchange public markets; expose only spot metadata and symbols.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no automatic MCP/private API invocation"
+    },
+    {
+      "module": "wallex_bot.mcp_server::wallex_ohlcv",
+      "command": "python -m wallex_bot.mcp_server",
+      "help_supported": false,
+      "tool_type": "MCP_SERVICE_NO_HELP; connect through trusted local MCP client",
+      "options_or_commands": [
+        "wallex_ohlcv"
+      ],
+      "description": "Read only CLOSED OHLCV with enforced timeframe checks. Max 300 rows.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no automatic MCP/private API invocation"
+    },
+    {
+      "module": "wallex_bot.mcp_server::wallex_order_book",
+      "command": "python -m wallex_bot.mcp_server",
+      "help_supported": false,
+      "tool_type": "MCP_SERVICE_NO_HELP; connect through trusted local MCP client",
+      "options_or_commands": [
+        "wallex_order_book"
+      ],
+      "description": "Read public market depth. Never create an order.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no automatic MCP/private API invocation"
+    },
+    {
+      "module": "wallex_bot.mcp_server::wallex_credit_sub_accounts",
+      "command": "python -m wallex_bot.mcp_server",
+      "help_supported": false,
+      "tool_type": "MCP_SERVICE_NO_HELP; connect through trusted local MCP client",
+      "options_or_commands": [
+        "wallex_credit_sub_accounts"
+      ],
+      "description": "Read credit sub-account metadata through the locally configured API key.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no automatic MCP/private API invocation"
+    },
+    {
+      "module": "wallex_bot.mcp_server::wallex_account_balances",
+      "command": "python -m wallex_bot.mcp_server",
+      "help_supported": false,
+      "tool_type": "MCP_SERVICE_NO_HELP; connect through trusted local MCP client",
+      "options_or_commands": [
+        "wallex_account_balances"
+      ],
+      "description": "Read balances from account associated with locally configured key.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no automatic MCP/private API invocation"
+    },
+    {
+      "module": "wallex_bot.mcp_server::wallex_package_restrictions",
+      "command": "python -m wallex_bot.mcp_server",
+      "help_supported": false,
+      "tool_type": "MCP_SERVICE_NO_HELP; connect through trusted local MCP client",
+      "options_or_commands": [
+        "wallex_package_restrictions"
+      ],
+      "description": "Read trading-credit package details and its unavailable markets.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no automatic MCP/private API invocation"
+    },
+    {
+      "module": "wallex_bot.mcp_server",
+      "command": "python -m wallex_bot.mcp_server",
+      "help_supported": false,
+      "tool_type": "SERVICE_NO_HELP; starts only by explicit terminal action",
+      "options_or_commands": [],
+      "description": "Locally hosted MCP *adapter* backed by the official Wallex API.",
+      "ui_authority": "DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution"
+    }
+  ],
+  "shell_execution_from_ui": false
+}

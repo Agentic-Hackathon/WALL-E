@@ -1,0 +1,78 @@
+{
+  "rules_file_sha256": "327c40e4409b233c4b68c80d838bf1cad70fa544754d831672f337665bfb994f",
+  "criteria": [
+    {
+      "criterion": "final_net_return",
+      "maximum_from_rules": 90,
+      "evidence_status": "EVIDENCE_INSUFFICIENT",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "drawdown_control",
+      "maximum_from_rules": 30,
+      "evidence_status": "EVIDENCE_INSUFFICIENT",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "reasonable_algorithm_activity",
+      "maximum_from_rules": 15,
+      "evidence_status": "EVIDENCE_INSUFFICIENT",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "operational_stability",
+      "maximum_from_rules": 15,
+      "evidence_status": "TESTED",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "strategy_logic",
+      "maximum_from_rules": 40,
+      "evidence_status": "TESTED",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "actual_AI_contribution",
+      "maximum_from_rules": 35,
+      "evidence_status": "TESTED",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "risk_and_capital",
+      "maximum_from_rules": 30,
+      "evidence_status": "TESTED",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "reproducibility",
+      "maximum_from_rules": 25,
+      "evidence_status": "TESTED",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    },
+    {
+      "criterion": "backtest_and_shadow",
+      "maximum_from_rules": 20,
+      "evidence_status": "TESTED",
+      "awarded_or_estimated_score": null,
+      "scope": "engineering evidence readiness only; economic ablation/48h/live outcomes insufficient"
+    }
+  ],
+  "sum_maximum": 300,
+  "judge_assigns_actual_score": true,
+  "estimated_score": null,
+  "rule_ambiguities": [
+    "final NAV including remaining assets vs realized TMN requirement",
+    "example 6.25M minus 5M equals 1.25M, not the example stated 1.5M"
+  ],
+  "UI_is_not_economic_edge": true,
+  "deadline_requires_manual_residual_review": true,
+  "actual_awarded_score": null
+}

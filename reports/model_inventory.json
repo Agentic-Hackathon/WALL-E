@@ -1,0 +1,85 @@
+{
+  "champion_metadata": {
+    "policy": "LATEST_RUN_GLOBAL_PURGED_VALIDATION_V1",
+    "selected_checkpoint": "patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+    "checkpoint_sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+    "selected_architecture": "patchtst",
+    "validation_pinball": 0.0018563736619704827,
+    "training_samples": 1189,
+    "validation_samples": 511,
+    "training_source_manifest_sha256": "5d0c33c8bedaeb3454a3446f130eee33b189339a197f511cd3ba2fddf7a8ba9c",
+    "selected_at_utc": "2026-10-22T06:07:22Z",
+    "candidates": [
+      {
+        "file": "itransformer_15_h3_20261022T060713Z_7a37c685.pt",
+        "architecture": "itransformer",
+        "validation_pinball": 0.002072179497268831
+      },
+      {
+        "file": "patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+        "architecture": "patchtst",
+        "validation_pinball": 0.0018563736619704827
+      }
+    ]
+  },
+  "checkpoints": [
+    {
+      "file": "itransformer_15_h3.pt",
+      "sha256": "b6550ecc4dcd2f7d8873ff205fde6b00c2b5bd92a6b3ef8bd6968f2251dd0e1b",
+      "bytes": 21721157,
+      "weights_published": false
+    },
+    {
+      "file": "itransformer_15_h3_20261022T054924Z.pt",
+      "sha256": "3ec284f40d40e264817fe5cfb4f0251c83bfbcf4693b4848a7c5d9d47fc6ab18",
+      "bytes": 21722863,
+      "weights_published": false
+    },
+    {
+      "file": "itransformer_15_h3_20261022T055130Z.pt",
+      "sha256": "d232ed949a4378f250d018447f925bba4fcd6f02fb2520767bcda28bb8762d8c",
+      "bytes": 21722863,
+      "weights_published": false
+    },
+    {
+      "file": "itransformer_15_h3_20261022T060713Z_7a37c685.pt",
+      "sha256": "0b77a384d8c53d7eae755aa1c1cfe62c92cc6652d4cee39f8708cdb344968d82",
+      "bytes": 21723657,
+      "weights_published": false
+    },
+    {
+      "file": "patchtst_15_h3.pt",
+      "sha256": "26ba919a50bd5c06ea53d6b7372f596a5ba3bbf2a8d0cf762e5bbedf12bbdd4a",
+      "bytes": 21650593,
+      "weights_published": false
+    },
+    {
+      "file": "patchtst_15_h3_20261022T054931Z.pt",
+      "sha256": "5c5873c50bc6b6d6e46c4c013a3be86b516c6cfcb4c76fbb11fca2acae1270e6",
+      "bytes": 21652188,
+      "weights_published": false
+    },
+    {
+      "file": "patchtst_15_h3_20261022T055137Z.pt",
+      "sha256": "bdc99603d915021a2d0379baa51866916a33f762c516f8d14f938ae885065296",
+      "bytes": 21652188,
+      "weights_published": false
+    },
+    {
+      "file": "patchtst_15_h3_20261022T060722Z_ca057cc3.pt",
+      "sha256": "ab48fca8904613cc7af9ebba282f9ff3d0152871e2c4c546e96c39b09e6668bb",
+      "bytes": 21652927,
+      "weights_published": false
+    }
+  ],
+  "forecast_models": [
+    "champion",
+    "m5_patchtst",
+    "m5_lightgbm",
+    "zero",
+    "historical_quantiles"
+  ],
+  "iTransformer": "research only",
+  "FinBERT": "NC research only; contest use disabled; weights not published",
+  "trained_or_promoted_during_handoff": false
+}

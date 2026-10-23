@@ -1,0 +1,30 @@
+{
+  "repository": {
+    "status": "VERIFIED",
+    "url": "https://github.com/Agentic-Hackathon/WALL-E",
+    "private": true,
+    "permissions": {
+      "admin": true,
+      "maintain": true,
+      "push": true,
+      "triage": true,
+      "pull": true
+    },
+    "default_branch": "main",
+    "size": 0,
+    "visibility": "private",
+    "credential_source": "local Git Credential Manager; never printed or stored"
+  },
+  "local_head": "7aafed67102e5bfbbd4c6de6bcdf8f3679ad3d9a",
+  "branch": "codex/publish-judge-live-ui",
+  "remote_refs": [
+    "7aafed67102e5bfbbd4c6de6bcdf8f3679ad3d9a\trefs/heads/main",
+    "a1127091d31702474c005af7f08aaf966321ced9\trefs/tags/atlas-m8-execution-a112709"
+  ],
+  "main_matches_local_head": true,
+  "history_rewritten": false,
+  "force_push_used": false,
+  "keys_or_model_weights_published": false,
+  "audit_at": 1792727307.0495818,
+  "commit_url": "https://github.com/Agentic-Hackathon/WALL-E/commit/7aafed67102e5bfbbd4c6de6bcdf8f3679ad3d9a"
+}

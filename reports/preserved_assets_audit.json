@@ -1,0 +1,12 @@
+{
+  "atlas_store\\models\\active_champion.json": true,
+  "atlas_store\\research_challengers\\milestone7\\formal_48h_v1\\study_contract.json": true,
+  "atlas_store\\models\\itransformer_15_h3.pt": true,
+  "atlas_store\\models\\itransformer_15_h3_20261022T054924Z.pt": true,
+  "atlas_store\\models\\itransformer_15_h3_20261022T055130Z.pt": true,
+  "atlas_store\\models\\itransformer_15_h3_20261022T060713Z_7a37c685.pt": true,
+  "atlas_store\\models\\patchtst_15_h3.pt": true,
+  "atlas_store\\models\\patchtst_15_h3_20261022T054931Z.pt": true,
+  "atlas_store\\models\\patchtst_15_h3_20261022T055137Z.pt": true,
+  "atlas_store\\models\\patchtst_15_h3_20261022T060722Z_ca057cc3.pt": true
+}

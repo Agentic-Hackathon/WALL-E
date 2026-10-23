@@ -1,0 +1,16 @@
+{
+  "tests": 324,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 5,
+  "passed": 319,
+  "seconds": 46.65,
+  "sha256": "404a4f46c6578b7a3b3d8b3327cc0c18b520b3a3a958e0ad1210b05b313080e7",
+  "skip_reasons": [
+    "Live Wallex integration requires user-provided real dataset",
+    "Real API integration requires explicit opt-in and organizer market allowlist",
+    "Set WALLEX_REAL_RUN to an authentic, archived Wallex segment-eval run to exercise numeric diagnostics",
+    "Supply WALLEX_REAL_CSV pointing to real downloaded Wallex CSV+provenance",
+    "Supply actual Wallex archived run as WALLEX_REAL_RUN; never fabricate OHLCV in tests"
+  ]
+}

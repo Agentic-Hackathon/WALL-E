@@ -1,0 +1,53 @@
+{
+  "url": "http://127.0.0.1:8766",
+  "actual_http": [
+    {
+      "path": "/",
+      "status": 200,
+      "bytes": 20676
+    },
+    {
+      "path": "/api/overview",
+      "status": 200,
+      "bytes": 792020
+    },
+    {
+      "path": "/api/tools",
+      "status": 200,
+      "bytes": 14063
+    },
+    {
+      "path": "/api/news",
+      "status": 200,
+      "bytes": 11535
+    },
+    {
+      "path": "/api/observations",
+      "status": 200,
+      "bytes": 786372
+    },
+    {
+      "path": "/api/candles?symbol=BTCTMN&resolution=15",
+      "status": 200,
+      "bytes": 31979
+    },
+    {
+      "path": "/api/pattern-lines",
+      "status": 200,
+      "bytes": 1677
+    }
+  ],
+  "browser_checks": [
+    "Persian RTL overview",
+    "tool search pattern: 2 matches",
+    "actual 5-model quantiles and effective missed deadline status",
+    "5 real normalized analogue lines",
+    "English LTR switch",
+    "real archived news with NC warning"
+  ],
+  "automated_security_tests": "test_publish_deadline_ui_contracts.py",
+  "mobile_layout": "CSS breakpoint implemented; separate mobile-device run not claimed",
+  "private_endpoint_called_from_ui": false,
+  "start_stop_controls": "not offered; read-only, CLI foreground documented",
+  "order_or_live_button": false
+}
