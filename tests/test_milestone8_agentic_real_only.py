@@ -10,6 +10,8 @@ ROOT=Path(__file__).resolve().parents[1]
 
 @pytest.fixture(scope='module')
 def actual():
+    if not (ROOT/'atlas_store/research_challengers/milestone7/formal_48h_v1/agent_evidence.sqlite').is_file():
+        pytest.skip('DATA_NOT_AVAILABLE: actual M7 decision receipts required')
     db=sqlite3.connect((ROOT/'atlas_store/research_challengers/milestone7/formal_48h_v1/agent_evidence.sqlite').as_uri()+'?mode=ro',uri=True)
     try:e=json.loads(db.execute('SELECT evidence FROM decisions_v6 ORDER BY created LIMIT 1').fetchone()[0])
     finally:db.close()

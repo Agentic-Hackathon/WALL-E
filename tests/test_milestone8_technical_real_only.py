@@ -10,7 +10,9 @@ from wallex_bot.atlas_technical_evidence import compute,confirmed_swings,technic
 def actual():
     lake=Lake(Path(__file__).resolve().parents[1]/'atlas_store')
     try:
-        parts,_=_verified_segments(lake.root,lake.db,'BTCTMN','15');yield lake,max(parts,key=len)
+        parts,_=_verified_segments(lake.root,lake.db,'BTCTMN','15')
+        if not parts:pytest.skip('DATA_NOT_AVAILABLE: authentic BTC 15m chunks required')
+        yield lake,max(parts,key=len)
     finally:lake.close()
 
 def test_ichimoku_display_shift_is_not_backdated(actual):

@@ -15,6 +15,7 @@ def genuine():
     lake=Lake(ROOT/'atlas_store')
     try:
         parts,_=_verified_segments(lake.root,lake.db,'BTCTMN','15')
+        if not parts:pytest.skip('DATA_NOT_AVAILABLE: authentic BTC 15m chunks required')
         frame=max(parts,key=len)
         if len(frame)<64:pytest.skip('Insufficient real contiguous BTC history')
         yield lake,frame

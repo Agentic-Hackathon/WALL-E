@@ -16,7 +16,10 @@ def actual():
     if not (OLD/'forward_observations.sqlite').exists():pytest.skip('Real M6 archive not installed')
     quotes=real_quotes(OLD)
     db=sqlite3.connect((OLD/'forward_observations.sqlite').as_uri()+'?mode=ro',uri=True)
-    try:p=json.loads(db.execute('SELECT payload FROM m6_predictions ORDER BY decision LIMIT 1').fetchone()[0])
+    try:
+        row=db.execute('SELECT payload FROM m6_predictions ORDER BY decision LIMIT 1').fetchone()
+        if row is None:pytest.skip('DATA_NOT_AVAILABLE: original M6 predictions required')
+        p=json.loads(row[0])
     finally:db.close()
     q=min((q for q in quotes if q['symbol']==p['symbol']),key=lambda q:abs(q['observed_epoch']-p['observed_quote_time']))
     return quotes,p,q
@@ -157,6 +160,7 @@ def test_required_runtime_is_unchanged_from_m6():
     assert not subprocess.check_output(['git','diff','4fa99cc','--name-only','--',*[str(ROOT/'wallex_bot'/p) for p in files]],text=True).strip()
 
 def test_timely_actual_legacy_outcome_deadline_memory_and_idempotency(tmp_path):
+    if not (ROOT/'atlas_store/forward_observations.sqlite').is_file():pytest.skip('DATA_NOT_AVAILABLE: original quote ledger required')
     from wallex_bot.atlas_forward import _canon,_sha
     from wallex_bot.atlas_memory import ResearchMemory
     db=sqlite3.connect((ROOT/'atlas_store/forward_observations.sqlite').as_uri()+'?mode=ro',uri=True)

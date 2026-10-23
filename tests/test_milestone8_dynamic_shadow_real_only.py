@@ -12,6 +12,7 @@ OLD=ROOT/'atlas_store/research_challengers/milestone7/formal_48h_v1'
 
 @pytest.fixture
 def actual(tmp_path):
+    if not (OLD/'study_contract.json').is_file():pytest.skip('DATA_NOT_AVAILABLE: original M7 contract required')
     contract=json.loads((OLD/'study_contract.json').read_text());contract['settings']['research_profile']='ATLAS_M8_AGENTIC_V1'
     directory=tmp_path/'research_challengers/milestone8/unit-control';directory.mkdir(parents=True)
     db=sqlite3.connect((OLD/'agent_evidence.sqlite').as_uri()+'?mode=ro',uri=True)
@@ -46,6 +47,7 @@ def test_all_required_actions_have_explicit_contract():
     assert set(ACTIONS)=={'BUY','ADD','HOLD','REDUCE','SELL','REBALANCE','STAY_IN_CASH','REJECT'}
 
 def test_old_session_cannot_be_reused_for_new_policy(tmp_path):
+    if not (OLD/'study_contract.json').is_file():pytest.skip('DATA_NOT_AVAILABLE: original M7 contract required')
     c=json.loads((OLD/'study_contract.json').read_text())
     with pytest.raises(ValueError,match='SEPARATE_OPT_IN'):DynamicShadowBroker(OLD,c)
 

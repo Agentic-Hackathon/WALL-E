@@ -268,20 +268,8 @@ def strategies(root, symbol=None, limit=25):
 
 _account_cache = {'at': 0., 'payload': None}
 def _existing_api_key(root):
-    # Use only a key the user already placed in their local process or project .env.
-    # Never write the key to a report, log, cookie, JavaScript or HTML.
-    key=os.environ.get('WALLEX_API_KEY','').strip()
-    if key:return key
-    for path in (Path(root).resolve().parent/'.env', Path.cwd()/'.env'):
-        if not path.is_file():continue
-        try:
-            for line in path.read_text(encoding='utf8').splitlines():
-                m=re.fullmatch(r'\s*(?:export\s+)?WALLEX_API_KEY\s*=\s*(.*?)\s*',line)
-                if m:
-                    result=m.group(1).strip().strip('\"').strip("'")
-                    if result:return result
-        except (OSError,UnicodeError):continue
-    return ''
+    # Environment ONLY. Never discover credentials from files, including .env/pass.
+    return os.environ.get('WALLEX_API_KEY','').strip()
 
 def real_account(root):
     # Read-only private endpoint is optional; never request or display the key.

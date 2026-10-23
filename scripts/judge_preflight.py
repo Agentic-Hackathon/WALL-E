@@ -16,9 +16,10 @@ def manifest(workspace=ROOT):
 def tools(workspace=ROOT):
     items=[]
     for path in sorted((workspace/'wallex_bot').glob('*.py')):
-        tree=ast.parse(path.read_text(encoding='utf-8-sig'));main=False;commands=[]
+        tree=ast.parse(path.read_text(encoding='utf-8-sig'));main=False;commands=[];has_parser=False
         for node in ast.walk(tree):
             if isinstance(node,ast.FunctionDef) and node.name=='main':main=True
+            if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and node.func.attr=='ArgumentParser':has_parser=True
             if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and node.func.attr=='add_argument':
                 for kw in node.keywords:
                     if kw.arg=='choices':
@@ -26,7 +27,8 @@ def tools(workspace=ROOT):
                         except (ValueError,TypeError):continue
                         if isinstance(value,(tuple,list)) and all(isinstance(v,str) for v in value):commands.extend(value)
         if main:
-            items.append({'module':'wallex_bot.'+path.stem,'command':'python -m wallex_bot.'+path.stem+' --help',
+            items.append({'module':'wallex_bot.'+path.stem,'command':'python -m wallex_bot.'+path.stem+(' --help' if has_parser else ''),
+                'help_supported':has_parser,'tool_type':'CLI' if has_parser else 'SERVICE_NO_HELP; starts only by explicit terminal action',
                 'options_or_commands':sorted(set(commands)),'description':(ast.get_docstring(tree) or path.stem).splitlines()[0],
                 'ui_authority':'DISCOVER_AND_COPY_CLI_ONLY; no arbitrary command execution'})
     return items
@@ -35,6 +37,12 @@ def preflight(root='atlas_store',workspace=ROOT):
     root=Path(root);checks=[]
     for name,present in [('source', (workspace/'wallex_bot/atlas_risk.py').is_file()),('catalog',(root/'catalog.sqlite').is_file()),('champion_metadata',(root/'models/active_champion.json').is_file())]:
         checks.append({'check':name,'status':'PASS' if present else 'BLOCKED','reason':None if present else 'DATA_NOT_AVAILABLE'})
+    checkpoint_ok=False
+    try:
+        meta=json.loads((root/'models/active_champion.json').read_text());models=(root/'models').resolve();checkpoint=(models/meta['selected_checkpoint']).resolve()
+        checkpoint_ok=checkpoint.is_relative_to(models) and checkpoint.is_file() and hashlib.sha256(checkpoint.read_bytes()).hexdigest()==meta['checkpoint_sha256']
+    except (OSError,ValueError,KeyError,TypeError):pass
+    checks.append({'check':'champion_checkpoint_sha256','status':'PASS' if checkpoint_ok else 'BLOCKED','reason':None if checkpoint_ok else 'DATA_NOT_AVAILABLE_OR_HASH_INVALID'})
     deps={}
     for name in ('numpy','pandas','scipy','scikit-learn','torch','langgraph','langgraph-checkpoint-sqlite','lightgbm','pytest'):
         try:deps[name]=importlib.metadata.version(name)

@@ -56,6 +56,8 @@ def test_real_native_and_derived_core_are_both_verified():
     if not (root/'catalog.sqlite').exists():pytest.skip('Authentic Wallex archive required')
     lake=Lake(root)
     try:
+        if not lake.db.execute("SELECT 1 FROM chunks WHERE symbol='BTCTMN' AND resolution='1' AND status='COMPLETE' LIMIT 1").fetchone():
+            pytest.skip('DATA_NOT_AVAILABLE: authentic native BTC chunks required')
         result=IntelligenceSyncManager(lake).core_preflight('BTCTMN')
         assert result.get('native_verified') is True and result.get('derived_verified') is True
         assert result['hash_verified_last_closed_at']<=time.time()

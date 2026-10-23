@@ -1,6 +1,7 @@
 """Use only actual archived article/candle inputs, no constructed headlines."""
 from pathlib import Path
 import json
+import pytest
 from wallex_bot.atlas_archive import Lake
 from wallex_bot.atlas_news_pipeline import NewsStore,MODEL_REVISION
 from wallex_bot.atlas_news_challenger import evaluate,ARMS
@@ -18,6 +19,7 @@ def test_four_news_arms_do_not_impute_missing_pit_data():
 
 def test_pinned_finbert_card_not_assumed_permissive_for_contest():
     card=ROOT/'atlas_store/news_models/models--ProsusAI--finbert/snapshots'/MODEL_REVISION/'README.md'
+    if not card.is_file():pytest.skip('DATA_NOT_AVAILABLE: pinned local model card required; weights not distributed')
     assert 'license: cc-by-nc-sa-4.0' in card.read_text(encoding='utf-8').lower()
 
 def test_new_technical_definitions_are_versioned_without_champion_change():
