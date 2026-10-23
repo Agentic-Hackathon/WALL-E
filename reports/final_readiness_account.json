@@ -1,0 +1,51 @@
+{
+  "status": "LIVE_NOT_AUTHORIZED_OR_NOT_READY",
+  "LIVE": "HARD_DISABLED",
+  "operator_arm_available": false,
+  "checks": {
+    "contest_identity": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "contest_credit": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "organizer_allowlist": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "verified_fee": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "spot_tick_step_minimum": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "package_order_permissions": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "positive_financial_shadow_e2e": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "independent_net_oos_evidence": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "verified_live_transport": "BLOCKED_MISSING_VERIFIED_EVIDENCE",
+    "session_specific_operator_arm": "BLOCKED_MISSING_VERIFIED_EVIDENCE"
+  },
+  "deadline": {
+    "phase": "COLLECTING",
+    "now_tehran": "2026-10-23T13:09:48.750913+03:30",
+    "deadline_tehran": "2026-10-23T23:50:00+03:30",
+    "deadline_utc": "2026-10-23T20:20:00+00:00",
+    "entry_stop": "2026-10-23T22:50:00+03:30",
+    "unwind_start": "2026-10-23T23:00:00+03:30",
+    "seconds_remaining": 38411.249087,
+    "clock_verified": false,
+    "clock_skew_seconds": null,
+    "clock_status": "UNVERIFIED_OR_DANGEROUS_CLOCK_FAIL_CLOSED",
+    "allow_new_entry": false,
+    "allow_exit": false,
+    "allow_cancel": false,
+    "LIVE": "HARD_DISABLED",
+    "live_armed": false,
+    "residual_status": "NOT_VERIFIED_NO_ACCOUNT_SNAPSHOT",
+    "settlement_guaranteed": false,
+    "after_deadline_automatic_liquidation": false
+  },
+  "key_environment_present": false,
+  "contest_balance_verified": false,
+  "contest_balance_tmn": null,
+  "ordinary_wallet_is_contest_credit": false,
+  "orders_sent": 0,
+  "private_read_performed": false,
+  "software": {
+    "spot_decimal_preflight": "IMPLEMENTED_RESEARCH_ONLY",
+    "persistent_read_only_order_recovery": "IMPLEMENTED_NOT_VERIFIED_WITH_REAL_FILL_RECORDINGS",
+    "financial_post_delete_transport": "NOT_IMPLEMENTED",
+    "operator_arm": "NOT_IMPLEMENTED",
+    "independent_deadline_supervisor": "IMPLEMENTED_OBSERVER_NOT_INSTALLED_SERVICE",
+    "positive_real_fill_fee_and_conservation_e2e": "UNVERIFIED_NO_AUTHORIZED_RECORDINGS"
+  }
+}
