@@ -53,6 +53,7 @@ def research_cycle(lake,directory,observer,contract):
     from .atlas_news_features import advisory_packet
     from .atlas_intelligence_sync import IntelligenceSyncManager
     directory=Path(directory);symbols=contract['settings']['symbols'];quotes={};predictions={};candidates={};errors=[]
+    fee=contract['settings']['fee_per_side_assumed']
     for symbol in symbols:
         row=observer.db.execute('SELECT id FROM quotes WHERE symbol=? ORDER BY observed_epoch DESC LIMIT 1',(symbol,)).fetchone()
         if row:quotes[symbol]=observer.quote(row[0])
@@ -73,7 +74,7 @@ def research_cycle(lake,directory,observer,contract):
             meta=json.loads(lake.db.execute('SELECT metadata FROM assets WHERE symbol=?',(symbol,)).fetchone()[0])
             candidates[symbol]={'quote':q,'forecast':{'quantile_log_returns':{k:p[k] for k in ('q10','q50','q90')}},
                 'prediction_available_at':p['prediction_available_at'],'prediction_id':p['prediction_id'],
-                'spot_tmn':meta.get('is_spot') is True and meta.get('quote_asset')=='TMN','metadata':meta,'fee':.001,**vol.get(symbol,{})}
+                'spot_tmn':meta.get('is_spot') is True and meta.get('quote_asset')=='TMN','metadata':meta,'fee':fee,**vol.get(symbol,{})}
         runtime=json.loads(observer.db.execute("SELECT payload FROM study_runtime_v7 WHERE key='session'").fetchone()[0])
         cycle_id=str(int(time.time()//900)*900)
         quote_cohort=_sha({s:q['receipt_sha256'] for s,q in quotes.items()})
@@ -86,7 +87,7 @@ def research_cycle(lake,directory,observer,contract):
                 p=predictions.get(symbol);q=quotes.get(symbol)
                 if q is None or not 0<=time.time()-q['observed_epoch']<=30:
                     errors.append({'symbol':symbol,'reason':'WAITING_FRESH_INDEPENDENT_SAMPLER_QUOTE'});continue
-                before=account_snapshot(broker.account,quotes)
+                before=account_snapshot(broker.account,quotes,fee=fee)
                 technical=technical_evidence(lake,symbol)
                 pattern={'status':'PATTERN_INDEX_UNAVAILABLE','decision_path_eligible':False}
                 if pattern_index:
@@ -103,7 +104,7 @@ def research_cycle(lake,directory,observer,contract):
                 recent=memory.retrieve(symbol,asof,limit=12)
                 prediction={'quantile_log_returns':{k:p[k] for k in ('q10','q50','q90')},'model_sha256':p['model_sha256'],
                     'prediction_id':p['prediction_id'],'forecast_horizon':2700,'feature_recipe':p['feature_recipe']} if p else {'quantile_log_returns':{'q10':None,'q50':None,'q90':None}}
-                audit=cost_audit(q,500000);ready=IntelligenceSyncManager(lake).core_preflight(symbol)
+                audit=cost_audit(q,500000,fee);ready=IntelligenceSyncManager(lake).core_preflight(symbol)
                 st=technical.get('supertrend_trailing_band_v1',{}).get('direction');kijun=technical.get('ichimoku',{}).get('kijun26')
                 # Research-only technical filter; Champion feature inputs and
                 # weights are not changed. Missing/stale technical is explicit.
@@ -117,7 +118,7 @@ def research_cycle(lake,directory,observer,contract):
                 def sizing_node(state):
                     # Re-read inside the later broker transaction too; this
                     # advisory snapshot never reserves future sale proceeds.
-                    current=account_snapshot(broker.account,quotes)
+                    current=account_snapshot(broker.account,quotes,fee=fee)
                     inputs={'account':current,'candidates':candidates,'correlations':[[a,b,v] for (a,b),v in sorted(corr.items())]}
                     proposal=allocate('confidence_aware',current,candidates,now=state['evidence']['decision_time'],correlations=corr)
                     own=next((x for x in current['positions'] if x[0]==symbol),None);action='HOLD' if own else 'STAY_IN_CASH';amount=None;quantity=None;purpose='STRATEGY'
@@ -125,7 +126,7 @@ def research_cycle(lake,directory,observer,contract):
                     if own and terminal:action='SELL';quantity=own[1];purpose='FINAL_TMN'
                     elif own:
                         assessment=broker.account.risk.assess_equity(current['nav_tmn'],current['high_water_tmn'],current['stopped'])
-                        gate=broker.account.risk.evaluate(symbol,state['review']['forecast_for_gate'],audit,current['cash_tmn'],current['positions'],assessment.stopped,.001)
+                        gate=broker.account.risk.evaluate(symbol,state['review']['forecast_for_gate'],audit,current['cash_tmn'],current['positions'],assessment.stopped,fee)
                         if gate.action=='PAPER_SELL':
                             quantity=min(own[1],current['nav_tmn']*.1/q['mid']);action='REDUCE' if quantity<own[1] else 'SELL'
                     elif not terminal and time.time()+3000<=runtime['deadline_epoch']:
@@ -143,7 +144,7 @@ def research_cycle(lake,directory,observer,contract):
                         'limits':'existing RiskGate + min 80% cash, 10% cycle turnover, 0.1% cost','reason_codes':reasons}
                     return {'intent':intent,'allocation':proposal,'allocation_inputs':inputs}
                 def broker_node(state):
-                    return {'receipt':broker.submit(state['intent'],forecast=state['review']['forecast_for_gate'],quotes=quotes,review=state['review'],cycle_id=cycle_id)}
+                    return {'receipt':broker.submit(state['intent'],forecast=state['review']['forecast_for_gate'],quotes=quotes,review=state['review'],cycle_id=cycle_id,fee=fee)}
                 def memory_node(state):
                     key=decisions.record(state);receipt=state['receipt'];created=receipt['actual_created_at']
                     memory.record('m8-decision-'+key,symbol,created,created,'DECISION_RISK_VETO',_sha(state),

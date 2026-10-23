@@ -3,7 +3,7 @@
 Actual archive/SQLite/public research reports only. No network, secret discovery,
 process launch, arbitrary export path, order transport or frozen-session resume.
 """
-import argparse,hashlib,json,sqlite3,time
+import argparse,hashlib,json,sqlite3,time,secrets
 from datetime import datetime,timezone
 from functools import partial
 from http.server import ThreadingHTTPServer
@@ -165,6 +165,11 @@ class ConsoleHandler(DashboardHandler):
                 self.send_header('Cache-Control','public, max-age=86400' if path.suffix=='.woff2' else 'no-store');self.send_header('X-Content-Type-Options','nosniff')
                 self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data);return
             if parsed.path=='/api/overview':result=overview(self.root)
+            elif parsed.path=='/api/finance':
+                from .atlas_finance import status
+                result=status(self.root)
+                result['control']=self.server.finance_control.state() if hasattr(self.server,'finance_control') else {'status':'DISABLED'}
+            elif parsed.path=='/api/research-token':result={'token':getattr(self.server,'research_token',None)}
             elif parsed.path=='/api/tools':result=inventory()
             elif parsed.path=='/api/news':result=real_news(self.root)
             elif parsed.path=='/api/observations':result=observations(self.root)
@@ -175,16 +180,32 @@ class ConsoleHandler(DashboardHandler):
             return self._json(result)
         except ValueError as exc:return self._json({'status':'INVALID_OR_UNVERIFIED_SOURCE','type':type(exc).__name__},400)
         except (OSError,sqlite3.Error,KeyError,RuntimeError) as exc:return self._json({'status':'DATA_NOT_AVAILABLE','type':type(exc).__name__},503)
-    def do_POST(self):self._json({'error':'READ_ONLY_NO_ORDER_OR_PROCESS_CONTROL'},405)
-    do_DELETE=do_POST
+    def do_POST(self):
+        if self.path!='/api/research-control':return self._json({'error':'READ_ONLY_NO_ORDER_OR_PROCESS_CONTROL'},405)
+        host=self.headers.get('Host','');origin=self.headers.get('Origin','')
+        if host not in ('127.0.0.1:'+str(self.server.server_port),'localhost:'+str(self.server.server_port)) or origin!='http://'+host:
+            return self._json({'error':'SAME_ORIGIN_REQUIRED'},403)
+        token=getattr(self.server,'research_token',None)
+        if not token or not secrets.compare_digest(self.headers.get('X-Research-Token',''),token):return self._json({'error':'TOKEN_REQUIRED'},403)
+        try:
+            size=int(self.headers.get('Content-Length','0'))
+            if not 0<size<=128:raise ValueError('BOUNDED_BODY_REQUIRED')
+            value=json.loads(self.rfile.read(size))
+            if set(value)!={'action'}:raise ValueError('ONLY_FIXED_RESEARCH_ACTION')
+            return self._json(self.server.finance_control.command(value['action']))
+        except (ValueError,RuntimeError,OSError,KeyError) as exc:
+            return self._json({'status':'RESEARCH_BLOCKED','type':type(exc).__name__},409)
+    def do_DELETE(self):self._json({'error':'NO_FINANCIAL_CONTROL'},405)
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',default='atlas_store');p.add_argument('--port',type=int,default=8766);a=p.parse_args()
     if not 1024<=a.port<=65535:raise ValueError('INVALID_PORT')
     server=ThreadingHTTPServer(('127.0.0.1',a.port),partial(ConsoleHandler,root=a.root))
+    from .atlas_finance_control import FinanceControl
+    server.finance_control=FinanceControl(a.root);server.research_token=secrets.token_urlsafe(32)
     print('WALL-E READ_ONLY / LIVE HARD_DISABLED http://127.0.0.1:'+str(a.port),flush=True)
     try:server.serve_forever()
     except KeyboardInterrupt:pass
-    finally:server.server_close()
+    finally:server.finance_control.close();server.server_close()
 
 if __name__=='__main__':main()

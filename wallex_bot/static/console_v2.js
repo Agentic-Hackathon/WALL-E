@@ -1,4 +1,4 @@
-/* Original Atlas presentation adapters; all values come from existing read-only APIs.
+/* Original Atlas presentation adapters; all values come from evidence APIs.
    No trading controls, credential fields, fabricated examples or auto-execution. */
 const fmtDate=n=>n?new Date(typeof n==='number'?n*1000:n).toLocaleString(lang==='fa'?'fa-IR':'en-GB',{timeZone:'Asia/Tehran',dateStyle:'short',timeStyle:'short'}):'—';
 const pct=n=>n==null?'—':num(n*100)+'%',detail=(x,label)=>`<details><summary>${label||t('جزئیات فنی و منشأ','Technical details & provenance')}</summary>${pretty(x)}</details>`;
@@ -73,3 +73,35 @@ $('symbol').onchange=()=>market();
 $('resolution').onchange=()=>market();
 new MutationObserver(()=>{const pane=$('bookpane');if(!pane)return;const q=snapshot?.observations.quotes?.find(x=>x.symbol===$('symbol').value);pane.innerHTML=`<h2>${t('عمق بازار · آخرین رسید ذخیره‌شده','Order book · Last archived receipt')}</h2>`+(q?`<p class="muted">${fmtDate(q.observed_epoch)} · ${t('قدیمی؛ برای اجرا معتبر نیست','Archived; not valid for execution')}</p>`+cleanTable((q.bid_top5||[]).map((b,i)=>({bid:num(b[0]),bqty:Number(b[1]).toLocaleString('en-US',{maximumFractionDigits:8}),ask:num(q.ask_top5[i]?.[0]),aqty:Number(q.ask_top5[i]?.[1]).toLocaleString('en-US',{maximumFractionDigits:8})})),[['bid',t('قیمت خرید','Bid')],['bqty',t('حجم خرید','Bid qty')],['ask',t('قیمت فروش','Ask')],['aqty',t('حجم فروش','Ask qty')]])+detail(q):cleanTable([],[]))}).observe($('technical'),{childList:true});
 locale();if(snapshot)render();
+
+// Financial modes never mix paper NAV with a private exchange receipt.
+pages.finance=['ارزیابی مالی','Financial evaluation'];
+const financeSection=document.createElement('section');financeSection.id='finance';financeSection.hidden=true;
+financeSection.innerHTML='<div class="tabrow" id="financetabs"></div><div id="financebody"></div>';
+document.querySelector('main footer').before(financeSection);
+let financeMode='shadow';
+const evidenceOpen=open;
+open=async function(page){await evidenceOpen(page);if(page==='finance')await financial(financeMode)};
+async function researchAction(action){
+ if(!confirm(t('این کنترل فقط پژوهش Shadow است؛ هیچ سفارش واقعی ارسال نمی‌شود. ادامه؟','Research/Shadow only; no real orders. Continue?')))return;
+ try{const token=await get('/api/research-token');const r=await fetch('/api/research-control',{method:'POST',headers:{'Content-Type':'application/json','X-Research-Token':token.token},body:JSON.stringify({action})});const v=await r.json();if(!r.ok)throw Error(v.status||v.error);await financial(financeMode)}catch(e){$('notice').textContent='RESEARCH_BLOCKED · '+e.message}
+}
+function equityChart(rows){
+ const c=$('financecurve');if(!c)return;const w=Math.max(260,c.parentElement.clientWidth-40),h=240,r=devicePixelRatio||1;c.width=w*r;c.height=h*r;const x=c.getContext('2d');x.scale(r,r);x.font='12px sans-serif';
+ if(!rows.length){x.fillStyle='#a0afc4';x.fillText('DATA_NOT_AVAILABLE',20,100);return}
+ const values=rows.map(p=>Number(p.nav_tmn)),lo=Math.min(...values),hi=Math.max(...values),start=rows[0].timestamp,end=rows.at(-1).timestamp;
+ x.strokeStyle='#53d8b7';x.beginPath();rows.forEach((p,i)=>{const X=20+(end===start?0:(p.timestamp-start)/(end-start))*(w-150),Y=hi===lo?100:20+(hi-p.nav_tmn)/(hi-lo)*160;i?x.lineTo(X,Y):x.moveTo(X,Y)});x.stroke();x.fillStyle='#a0afc4';x.fillText(num(hi)+' TMN',w-125,25);x.fillText(num(lo)+' TMN',w-125,185);x.fillText(fmtDate(start),20,220);
+}
+async function financial(mode){
+ financeMode=mode;tabs('financetabs',[['backtest','Backtest'],['shadow','Shadow'],['real','Real / Read receipt']],financial,mode);
+ try{const all=await get('/api/finance'),d=all[mode]||{};let controls='',body='';
+ if(mode==='shadow')controls=`<button data-action="start">${t('شروع / ادامه Shadow · ۱۲۰ ثانیه','Start / Resume Shadow · 120 seconds')}</button><button data-action="stop">${t('توقف Shadow','Stop Shadow')}</button>`;
+ if(mode==='backtest')controls=`<button data-action="backtest">${t('بازپخش رسیدهای واقعی ذخیره‌شده','Replay saved actual receipts')}</button>`;
+ if(mode==='real')body=`<div class="grid">${card(t('TMN در دسترس در رسید','TMN available at receipt'),num(d.balance_tmn),t('نه موجودی لحظه‌ای تأییدشده','Not verified current balance'))+card(t('سود واقعی صرافی','Exchange realized PnL'),'—',t('Fill واقعی تأیید نشده','No verified real fills'))+card('LIVE','BLOCKED',t('بدون مجوز و فعال‌سازی اپراتور','No verified authorization / operator arm'))}</div><article class="card">${line(t('وضعیت API','API status'),d.status)+line(t('اعتبار مسابقه','Contest credit'),d.contest_credit)+line(t('زمان رسید','Receipt time'),fmtDate(d.receipt_observed_epoch))}${detail(d)}</article>`;
+ else body=`<div class="warning">${mode==='backtest'?t('فقط بازپخش پنجرهٔ ذخیره‌شده؛ Backtest مالی بلندمدت معتبر موجود نیست.','Captured-window replay only; no valid long historical financial backtest.'):t('حساب و Fill کاغذی‌اند؛ نتیجهٔ آینده و سود واقعی نیستند.','Hypothetical account and fills; not future or exchange profit.')}</div><div class="grid">${card(t('سود خالص مشاهده‌شده','Observed net PnL'),num(d.net_pnl_tmn),'TMN / hypothetical')+card(t('افت مشاهده‌شده','Observed drawdown'),pct(d.max_drawdown),'captured window only')+card(t('انتقال کاغذی','Paper transitions'),num(d.trade_count),'not exchange fills')+card(t('تصمیم ثبت‌شده','Saved decisions'),num(d.decision_count),'actual decision receipts')}</div><article class="card"><h2>Equity · TMN · Hypothetical</h2><canvas id="financecurve"></canvas></article><article class="card"><h2>${t('تصمیم‌ها و دلایل','Decisions & reasons')}</h2>${table((d.decisions||[]).slice(-100).reverse(),['symbol','action','reason','status','timestamp'])}</article><article class="card"><h2>${t('معاملات کاغذی','Paper trades')}</h2>${table(d.trades||[],['symbol','action','estimate','reason'])}${detail(d)}</article>`;
+ $('financebody').innerHTML=`<div class="toolbar">${controls}<span class="badge">${esc(all.control?.status)} · ${esc(all.deadline.phase)} · RiskGate unchanged</span></div>`+body;
+ $('financebody').querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>researchAction(b.dataset.action));equityChart(d.equity_curve||[]);
+ }catch(e){$('financebody').innerHTML=`<div class="empty">DATA_NOT_AVAILABLE · ${esc(e.message)}</div>`}
+}
+setInterval(()=>{if(current==='finance'&&!document.hidden)financial(financeMode)},10000);
+locale();

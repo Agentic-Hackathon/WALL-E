@@ -134,9 +134,13 @@ class SpotLedger:
             if previous!=prev or actual!=digest:
                 raise BrokerSafetyError('SPOT_AUDIT_CHAIN_INVALID')
             previous=digest;latest[client_id]=state
-        for row in self.db.execute('SELECT client_id,fingerprint,state,payload FROM spot_orders'):
+        for row in self.db.execute('SELECT client_id,fingerprint,state,payload,exchange_snapshot FROM spot_orders'):
             if latest.get(row[0])!=row[2] or hashlib.sha256(row[3].encode()).hexdigest()!=row[1]:
                 raise BrokerSafetyError('SPOT_ORDER_INTEGRITY_INVALID')
+            if row[4]:
+                sha=hashlib.sha256(row[4].encode()).hexdigest()
+                if not self.db.execute('SELECT 1 FROM spot_audit WHERE client_id=? AND sha256=?',(row[0],sha)).fetchone():
+                    raise BrokerSafetyError('SPOT_EXCHANGE_SNAPSHOT_NOT_BOUND_TO_AUDIT')
 
     def register(self, payload):
         raw = json.dumps(payload, sort_keys=True, separators=(',', ':')); sha = hashlib.sha256(raw.encode()).hexdigest()
@@ -186,6 +190,9 @@ class SpotLedger:
             if fill.get('symbol') != row['symbol'] or not isinstance(fill.get('feeAsset'), str):
                 raise BrokerSafetyError('INVALID_FILL_IDENTITY')
             fill_qty += decimal(fill.get('quantity')); fill_sum += decimal(fill.get('sum'))
+            fill_price=decimal(fill.get('price'));limit=decimal(requested['price'])
+            if (row['side']=='BUY' and fill_price>limit) or (row['side']=='SELL' and fill_price<limit):
+                raise BrokerSafetyError('FILL_PRICE_VIOLATES_LIMIT')
             fee = decimal(fill.get('fee'), zero=True)
             fees[fill['feeAsset']] = fees.get(fill['feeAsset'], Decimal(0)) + fee
         if fill_qty != executed or fill_sum != total:

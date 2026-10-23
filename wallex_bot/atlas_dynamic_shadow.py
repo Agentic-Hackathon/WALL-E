@@ -99,7 +99,7 @@ class DynamicShadowBroker:
                 'forecast':forecast,'forecast_receipt':None,'quote_sha256':observation.get('receipt_sha256') if observation else None,'gate':None,'action':action,
                 'status':'NO_PAPER_MUTATION','reason':(intent.get('reason_codes') or ['NO_ACTION_REQUESTED'])[0],
                 'reason_codes':intent.get('reason_codes',[]),'hypothetical':True,'exchange_fill':None,
-                'fee_per_side_assumed':fee,'fee_verified':False,'trade_estimate':None,'actual_created_at':time.time()}
+                'fee_per_side_assumed':fee,'fee_verified':bool(self.contract['settings'].get('fee_verified',False)),'trade_estimate':None,'actual_created_at':time.time()}
             if action in ('BUY','ADD','REDUCE','SELL','REBALANCE'):
                 q=quotes.get(symbol)
                 if q is None or q['symbol']!=symbol or not 0<=time.time()-q['observed_epoch']<=30:raise ValueError('FRESH_REAL_QUOTE_REQUIRED')
