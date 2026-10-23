@@ -3,7 +3,7 @@
 Original Atlas implementation. Stops permission, NEVER promises settlement.
 No live transport or fabricated fills. Historical M8 contracts are untouched.
 """
-import argparse,json,math,time,urllib.request
+import argparse,json,math,time,urllib.request,sqlite3
 from datetime import datetime,timedelta,timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
@@ -63,7 +63,14 @@ def watchdog(root,*,duration=None,interval=15):
     try:
         while True:
             clock=clock_probe();(folder/'clock_receipt.json').write_text(json.dumps(clock),encoding='utf-8')
-            state=schedule(clock_verified=clock.get('verified',False),clock_skew_seconds=clock.get('skew_seconds'))
+            positions=[];orders=[];account=Path(root)/'shadow.sqlite'
+            if account.is_file():
+                db=sqlite3.connect(account.resolve().as_uri()+'?mode=ro',uri=True)
+                try:positions=[r[0] for r in db.execute('SELECT symbol FROM positions')]
+                finally:db.close()
+            state=schedule(clock_verified=clock.get('verified',False),clock_skew_seconds=clock.get('skew_seconds'),residual_assets=positions,open_orders=orders)
+            state.update(paper_residual_symbols=positions,real_residual_status='UNKNOWN_ACCOUNT_NOT_VERIFIED',
+                operator_alert=('UNLIQUIDATED_RESIDUAL_MANUAL_REVIEW' if positions else 'ACCOUNT_OR_RESIDUAL_NOT_VERIFIED_MANUAL_REVIEW') if state['phase']=='HALTED' else None)
             # Independent process state; no order transport and no automatic service install.
             state.update(watchdog_observed_epoch=time.time(),process_heartbeat=True,actual_orders_sent=0)
             (folder/'deadline_status.json').write_text(json.dumps(state,indent=2),encoding='utf-8')

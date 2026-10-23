@@ -2,7 +2,7 @@
 
 M8 historical source manifests are never modified or validated as today's code.
 """
-import argparse,ast,hashlib,importlib.metadata,json,subprocess,sys
+import argparse,ast,hashlib,importlib.metadata,json,subprocess,sys,sqlite3
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -35,7 +35,14 @@ def tools(workspace=ROOT):
 
 def preflight(root='atlas_store',workspace=ROOT):
     root=Path(root);checks=[]
-    for name,present in [('source', (workspace/'wallex_bot/atlas_risk.py').is_file()),('catalog',(root/'catalog.sqlite').is_file()),('champion_metadata',(root/'models/active_champion.json').is_file())]:
+    catalog_has_data=False
+    if (root/'catalog.sqlite').is_file():
+        try:
+            db=sqlite3.connect((root/'catalog.sqlite').resolve().as_uri()+'?mode=ro',uri=True)
+            try:catalog_has_data=bool(db.execute("SELECT 1 FROM chunks WHERE status='COMPLETE' AND rows>0 LIMIT 1").fetchone())
+            finally:db.close()
+        except sqlite3.Error:pass
+    for name,present in [('source', (workspace/'wallex_bot/atlas_risk.py').is_file()),('catalog_has_actual_complete_chunks',catalog_has_data),('champion_metadata',(root/'models/active_champion.json').is_file())]:
         checks.append({'check':name,'status':'PASS' if present else 'BLOCKED','reason':None if present else 'DATA_NOT_AVAILABLE'})
     checkpoint_ok=False
     try:

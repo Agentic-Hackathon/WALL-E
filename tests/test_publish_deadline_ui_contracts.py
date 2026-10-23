@@ -54,6 +54,17 @@ def test_later_server_clock_blocks_exit_even_if_local_clock_is_before_deadline(t
     monkeypatch.setattr(module.time,'time',lambda:stamp)
     with pytest.raises(RuntimeError,match='HALTED'):permission(tmp_path,'SELL')
 
+def test_stopped_watchdog_revokes_permission_receipt(tmp_path,monkeypatch):
+    import time
+    import wallex_bot.atlas_deadline as module
+    # Clock/status control only, no prices, exchange orders or financial fills.
+    monkeypatch.setattr(module,'clock_probe',lambda:{'observed_epoch':time.time(),'server_epoch':time.time(),'skew_seconds':0,'rtt_seconds':.1,'verified':True})
+    module.watchdog(tmp_path,duration=0)
+    clock=json.loads((tmp_path/'operations/clock_receipt.json').read_text())
+    state=json.loads((tmp_path/'operations/deadline_status.json').read_text())
+    assert clock['probe_verified'] is True and clock['verified'] is False
+    assert state['process_heartbeat'] is False
+
 def test_order_metadata_unknown_cannot_be_retried_or_offset(tmp_path):
     tracker=OrderProtocol(tmp_path/'metadata.sqlite');evidence=hashlib.sha256(b'non-financial-transport-status-control').hexdigest()
     try:

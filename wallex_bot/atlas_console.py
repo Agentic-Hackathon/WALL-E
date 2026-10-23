@@ -48,7 +48,14 @@ def observations(root):
             item.update(quantiles={k:payload.get(k) for k in ('q10','q50','q90')},model_sha256=payload.get('model_sha256'),
                 effective_status='UNSCORED_WINDOW_ELAPSED_NOT_REWRITTEN' if item['status']=='PENDING' and time.time()>item['due']+300 else item['status'])
             predictions.append(item)
-        quotes=_rows(db,'SELECT symbol,observed_epoch,mid FROM quotes ORDER BY observed_epoch DESC LIMIT 10')
+        quotes=[]
+        for q in _rows(db,'SELECT symbol,observed_epoch,best_bid,best_ask,mid,raw_book,receipt_sha256 FROM quotes ORDER BY observed_epoch DESC LIMIT 10'):
+            payload={k:q[k] for k in ('symbol','observed_epoch','best_bid','best_ask','mid')};payload['raw_book']=json.loads(q['raw_book'])
+            if digest(payload)!=q['receipt_sha256']:raise ValueError('QUOTE_RECEIPT_HASH_INVALID')
+            from .live_scout import _levels
+            q.pop('raw_book');q.update(bid_top5=_levels(payload['raw_book'],'bid')[:5],ask_top5=_levels(payload['raw_book'],'ask')[:5],
+                age_seconds=time.time()-q['observed_epoch'],status='ARCHIVED_BOOK_NOT_CURRENT_EXECUTION_QUOTE')
+            quotes.append(q)
         runtime=_rows(db,'SELECT payload FROM study_runtime_v7 WHERE key=?',('session',))
         lease=_rows(db,'SELECT expires FROM m6_lease WHERE expires>?',(time.time(),))
     finally:
