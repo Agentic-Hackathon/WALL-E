@@ -64,10 +64,12 @@ def current_session(root):
     return folder
 
 
-def prepare_shadow(root,symbols=('BTCTMN','ETHTMN')):
+def prepare_shadow(root,symbols=('BTCTMN','ETHTMN'),*,new_session=False):
     from .atlas_intelligence import profile
     from .atlas_study import prepare
     root=Path(root).resolve();folder=current_session(root)
+    if new_session:
+        folder=root/'research_challengers/milestone8'/('financial_'+str(time.time_ns()))
     if time.time()>=DEADLINE.timestamp():raise ValueError('COMPETITION_HALTED_NO_NEW_SESSION')
     config=profile(tuple(symbols),48,news=True)
     config.update(fee_contract(root,symbols))
@@ -112,7 +114,9 @@ def recorded_summary(directory):
         'trade_count':len(trades),'decision_count':len(decisions),
         'reason_counts':dict(Counter(d['reason'] for d in decisions)),'realized_exchange_pnl':None,
         'orders_sent_to_exchange':0}
-    if rows:result['positions_at_last_receipt']=rows[-1]['receipt']['after']['positions']
+    if rows:
+        result['positions_at_last_receipt']=rows[-1]['receipt']['after']['positions']
+        result['risk_stopped_at_last_receipt']=rows[-1]['receipt']['after']['stopped']
     return result
 
 
@@ -153,20 +157,30 @@ def run_shadow(root,*,seconds=120,resume=False,stop=None):
     request=folder/'operator_stop.json'
     if request.exists():
         if not resume:raise ValueError('EXPLICIT_RESUME_REQUIRED_AFTER_STOP')
-        request.rename(folder/('operator_stop_consumed_'+str(time.time_ns())+'.json'))
     if not (folder/'study_contract.json').is_file():raise ValueError('SHADOW_PREPARE_REQUIRED')
+    # Acquire BEFORE clock/public I/O. The existing sampler lease is retained;
+    # a second wrapper must not revoke the first wrapper's clock on exit.
+    guard=sqlite3.connect(folder/'financial_runner_lock.sqlite',timeout=.1)
+    try:guard.execute('BEGIN IMMEDIATE')
+    except sqlite3.OperationalError:
+        guard.close();return {'status':'FINANCIAL_RUNNER_HELD_NO_REQUESTS'}
     worker=threading.Thread(target=_clock_worker,args=(folder,stop),name='financial-shadow-clock',daemon=False)
-    worker.start();result={}
+    result={}
     try:
+        if request.exists():request.rename(folder/('operator_stop_consumed_'+str(time.time_ns())+'.json'))
+        worker.start()
         result=run(root,folder,max_runtime_seconds=seconds,stop=stop,startup_hook=startup_hook,research_hook=research_cycle)
         return result
     finally:
-        stop.set();worker.join(timeout=15)
-        summary=recorded_summary(folder)
-        summary.update(mode='SHADOW',session=str(folder),observed_epoch=time.time(),
-            process_result=result,stopped=True,requested_runtime_seconds=seconds,
-            financial_edge_proven=False,fee_contract=read_json(folder/'study_contract.json',{}).get('settings',{}).get('fee_evidence'))
-        _save_atomic(root/'operations/financial_shadow.json',summary)
+        try:
+            stop.set()
+            if worker.ident is not None:worker.join(timeout=15)
+            summary=recorded_summary(folder)
+            summary.update(mode='SHADOW',session=str(folder),observed_epoch=time.time(),
+                process_result=result,stopped=True,requested_runtime_seconds=seconds,
+                financial_edge_proven=False,fee_contract=read_json(folder/'study_contract.json',{}).get('settings',{}).get('fee_evidence'))
+            _save_atomic(root/'operations/financial_shadow.json',summary)
+        finally:guard.rollback();guard.close()
 
 
 def stop_shadow(root):
@@ -174,6 +188,28 @@ def stop_shadow(root):
     if not (folder/'study_contract.json').is_file():raise ValueError('NO_PREPARED_SHADOW_SESSION')
     _save_atomic(folder/'operator_stop.json',{'requested_epoch':time.time(),'reason':'OPERATOR_STOP_NO_FINANCIAL_ACTION'})
     return {'status':'STOP_REQUESTED','automatic_live_orders':False}
+
+
+def spot_execution_status(root):
+    """Read-only, audit-verified actual order records; absence is not no orders."""
+    from decimal import Decimal
+    from .atlas_spot_exchange import SpotLedger
+    orders=[];fees={};ledgers=0
+    for path in Path(root).glob('operations/spot_accounts/*/operations/spot_exchange.sqlite'):
+        db=sqlite3.connect(path.resolve().as_uri()+'?mode=ro',uri=True);db.row_factory=sqlite3.Row
+        try:
+            ledger=SpotLedger.__new__(SpotLedger);ledger.db=db;ledger._require_integrity();ledgers+=1
+            for r in db.execute('SELECT client_id,symbol,side,state,observed,executed_qty,executed_sum,exchange_snapshot FROM spot_orders ORDER BY rowid'):
+                item=dict(r);raw=item.pop('exchange_snapshot')
+                if raw:
+                    for fill in json.loads(raw)['result']['fills']:
+                        asset=fill['feeAsset'];fees[asset]=fees.get(asset,Decimal(0))+Decimal(str(fill['fee']))
+                orders.append(item)
+        finally:db.close()
+    return {'status':'AUDIT_VERIFIED_LOCAL_RECORDS_RECONCILE_EXCHANGE_FOR_CURRENT_STATE' if ledgers else 'NO_LOCAL_REAL_LEDGER_NOT_PROOF_OF_NO_EXCHANGE_ORDERS',
+        'orders':orders,'cumulative_fees_by_asset':{k:str(v) for k,v in fees.items()},
+        'real_equity_curve':[],'realized_exchange_pnl':None,'mode':'BLOCKED_NO_ARM_IN_CONSOLE',
+        'settlement_guaranteed':False}
 
 
 def status(root):
@@ -188,11 +224,15 @@ def status(root):
                 if table in tables:forward[table]=db.execute('SELECT count(*) FROM '+table).fetchone()[0]
             if 'm6_lease' in tables:
                 forward['active_lease']=bool(db.execute('SELECT 1 FROM m6_lease WHERE expires>?',(time.time(),)).fetchone())
+            if 'm6_predictions' in tables:
+                forward['forecasts']=[json.loads(r[0]) for r in db.execute('SELECT payload FROM m6_predictions ORDER BY decision DESC LIMIT 20')]
         finally:db.close()
+    saved=read_json(root/'operations/financial_shadow.json',{})
+    if saved.get('session')!=str(folder):saved={}
     return {'backtest':read_json(root/'operations/financial_backtest.json',{}),
-        'shadow':{**read_json(root/'operations/financial_shadow.json',{}),**state,'forward':forward,
+        'shadow':{**saved,**state,'forward':forward,
             'session':str(folder),'stop_requested':(folder/'operator_stop.json').is_file()},
-        'real':account_evidence(root),'deadline':schedule(),'LIVE':'HARD_DISABLED',
+        'real':{**account_evidence(root),'execution':spot_execution_status(root)},'deadline':schedule(),'LIVE':'HARD_DISABLED',
         'risk_gate':'UNCHANGED_DETERMINISTIC','observed_epoch':time.time()}
 
 
@@ -201,11 +241,12 @@ def main():
     p.add_argument('command',choices=('account-status','backtest','shadow-prepare','shadow-run','shadow-stop','status'))
     p.add_argument('--root',default='atlas_store');p.add_argument('--symbols',default='BTCTMN,ETHTMN')
     p.add_argument('--max-runtime-seconds',type=float,default=120);p.add_argument('--resume',action='store_true')
+    p.add_argument('--new-session',action='store_true',help='Explicit new source freeze; old sessions and data are preserved')
     a=p.parse_args();stop=threading.Event()
     for sig in (signal.SIGINT,signal.SIGTERM):signal.signal(sig,lambda *_:stop.set())
     if a.command=='account-status':result=account_evidence(a.root)
     elif a.command=='backtest':result=backtest(a.root)
-    elif a.command=='shadow-prepare':result=prepare_shadow(a.root,tuple(a.symbols.split(',')))
+    elif a.command=='shadow-prepare':result=prepare_shadow(a.root,tuple(a.symbols.split(',')),new_session=a.new_session)
     elif a.command=='shadow-run':result=run_shadow(a.root,seconds=a.max_runtime_seconds,resume=a.resume,stop=stop)
     elif a.command=='shadow-stop':result=stop_shadow(a.root)
     else:result=status(a.root)

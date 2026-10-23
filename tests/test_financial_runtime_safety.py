@@ -98,3 +98,35 @@ def test_real_fee_import_is_exactly_actual_receipt():
 def test_real_exchange_fill_contract_requires_authorized_recordings():
     # Absence is an explicit evidence gap, never a fabricated positive fill test.
     pytest.skip('No authorized, sanitized real exchange fill recordings supplied')
+
+
+def test_local_research_controls_require_origin_token_and_no_live_action(tmp_path):
+    import threading
+    from functools import partial
+    from http.server import ThreadingHTTPServer
+    import requests
+    from wallex_bot.atlas_console import ConsoleHandler
+    server=ThreadingHTTPServer(('127.0.0.1',0),partial(ConsoleHandler,root=str(tmp_path)))
+    server.finance_control=FinanceControl(tmp_path);server.research_token='noncredential_test_control_nonce'
+    worker=threading.Thread(target=server.serve_forever);worker.start()
+    url='http://127.0.0.1:'+str(server.server_port)
+    try:
+        assert requests.get(url+'/api/finance',timeout=5).json()['real']['balance_tmn'] is None
+        assert requests.post(url+'/api/orders',json={},timeout=5).status_code==405
+        assert requests.post(url+'/api/research-control',json={'action':'start'},timeout=5).status_code==403
+        headers={'Origin':url,'X-Research-Token':server.research_token}
+        assert requests.post(url+'/api/research-control',json={'action':'live'},headers=headers,timeout=5).status_code==409
+        assert requests.delete(url+'/api/research-control',timeout=5).status_code==405
+        assert list(tmp_path.iterdir())==[]
+    finally:server.shutdown();worker.join();server.server_close();server.finance_control.close()
+
+
+def test_second_financial_runner_has_no_public_request(tmp_path,monkeypatch):
+    import sqlite3
+    from wallex_bot import atlas_finance as module
+    folder=current_session(tmp_path);folder.mkdir(parents=True)
+    (folder/'study_contract.json').write_text('{}') # Lock/control metadata only.
+    guard=sqlite3.connect(folder/'financial_runner_lock.sqlite');guard.execute('BEGIN IMMEDIATE')
+    monkeypatch.setattr(module,'clock_probe',lambda:pytest.fail('Competing runner must not probe'))
+    try:assert module.run_shadow(tmp_path,seconds=1)['status']=='FINANCIAL_RUNNER_HELD_NO_REQUESTS'
+    finally:guard.rollback();guard.close()
