@@ -1,0 +1,5 @@
+# Decision trace / AI attribution
+
+Actual evidence: quote receipt SHA, observed time, verified closed feature cutoff, prediction_id/model SHA/q10/q50/q90, PIT memory/event IDs, news article IDs, pattern index/match IDs. atlas_agentic_review records ten role contracts and cross-review before allocation. atlas_agentic_cycle stores evidence/review/allocation/intent/receipt and pre/post account in agentic_decisions.sqlite. No chain-of-thought transcript is required: concise factual reasons and hashes are sufficient.
+
+STAY_IN_CASH/REJECT are legitimate results (e.g. Q10_DOES_NOT_COVER_OBSERVED_COSTS). BUY is only a conservatively sized subset of Gate permission. ADD remains blocked. REDUCE/SELL require existing SELL permission; REBALANCE is separately checked legs, not an atomic synthetic fill. Noop receipt gate_identical=null means financial gate was not executed, not that a purchase passed. Replay verifies saved inputs without writing operational memory or placing orders. Historical snapshot examples are in reports/m8_explainability_samples.json; actual receipt IDs, not invented demonstrations.

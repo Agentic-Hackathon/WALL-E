@@ -1,0 +1,16 @@
+{
+  "status": "VERIFIED",
+  "url": "https://github.com/Agentic-Hackathon/WALL-E",
+  "private": true,
+  "permissions": {
+    "admin": true,
+    "maintain": true,
+    "push": true,
+    "triage": true,
+    "pull": true
+  },
+  "default_branch": "main",
+  "size": 0,
+  "visibility": "private",
+  "credential_source": "local Git Credential Manager; never printed or stored"
+}
