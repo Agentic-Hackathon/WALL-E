@@ -1,0 +1,36 @@
+{
+  "status": "LIVE_NOT_AUTHORIZED_OR_NOT_READY",
+  "LIVE": "HARD_DISABLED",
+  "private_connection_status": "WALLEX_API_KEY_UNSET_NO_PRIVATE_REQUESTS",
+  "verified_contest_balance": null,
+  "hypothetical_shadow_initial_tmn": 5000000,
+  "ordinary_balance_is_contest_credit": false,
+  "gates": {
+    "verified_contest_account": false,
+    "organizer_market_allowlist": false,
+    "verified_package_restrictions": false,
+    "verified_account_fee": false,
+    "verified_tick_lot_spot_minimum": false,
+    "verified_real_broker_transport": false,
+    "validated_partial_cancel_recovery": false,
+    "sufficient_net_oos_evidence": false,
+    "independent_user_live_authorization": false
+  },
+  "tested_controls": [
+    "hard-disabled live adapter",
+    "persisted ID/fingerprint",
+    "state-transition metadata invariants",
+    "kill switch/drawdown guard",
+    "source/model/dependency pinning"
+  ],
+  "not_proven": [
+    "real partial fills/cancellation/network recovery",
+    "cross-account self-trade prevention at exchange",
+    "48h uptime",
+    "actual terminal liquidation"
+  ],
+  "settlement_contracts": {
+    "file_txt": "mentions net account value including open assets AND realized TMN requirement; clarify with organizer",
+    "research_protocol": "attempt gated exit to TMN from last hour; never assume fill or delete residual holdings"
+  }
+}

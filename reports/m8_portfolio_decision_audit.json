@@ -1,0 +1,21 @@
+{
+  "decision_count": 10,
+  "actions": {
+    "STAY_IN_CASH": 10
+  },
+  "reason_codes": {
+    "Q10_DOES_NOT_COVER_OBSERVED_COSTS": 10,
+    "Q10_BELOW_FULL_SWEEP_COST_AND_SAFETY": 10,
+    "technical_not_confirmed": 5
+  },
+  "actual_broker_gate_calls": 0,
+  "broker_gate_reasons": {},
+  "advisory_gate_preview_reasons_not_orders": {
+    "Q10_DOES_NOT_COVER_OBSERVED_COSTS": 20
+  },
+  "realized_exchange_pnl": null,
+  "paper_mutations": 0,
+  "ADD": "BLOCKED_BY_UNCHANGED_RISKGATE",
+  "REBALANCE": "separate verified exit then fresh independently gated entry; no synthetic atomic fill",
+  "financial_branches_without_actual_approved_evidence": "BUY/ADD/REDUCE/SELL not claimed financially validated by zero-trade smoke"
+}

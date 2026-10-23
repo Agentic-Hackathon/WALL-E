@@ -1,0 +1,1284 @@
+{
+  "formal": {
+    "directory": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone8\\formal_48h_v1",
+    "quote_count": 10,
+    "first_quote": 1792720951.6061409,
+    "last_quote": 1792721244.993936,
+    "quote_span_hours": 0.08149660978052352,
+    "forecast_statuses": {
+      "PENDING": 10
+    },
+    "forecast_count": 10,
+    "scored_outcomes": 0,
+    "runtime": {
+      "cycles": 1,
+      "deadline_epoch": 1792893750.9200196,
+      "last_review_quote": 1792721244.993936,
+      "next_inference": 1792721873.6902814,
+      "next_review": 1792721252.403373,
+      "started_epoch": 1792720950.9200196
+    },
+    "foreground_process_stop_events": 2,
+    "failures": [],
+    "successful_sampler_gets": 10,
+    "actual_sampler_transport_latencies": [
+      0.5787131786346436,
+      0.5798263549804688,
+      0.6377613544464111,
+      0.556408166885376,
+      0.5908589363098145,
+      0.5956876277923584,
+      0.5784482955932617,
+      0.5660412311553955,
+      0.5867574214935303,
+      0.5621078014373779
+    ],
+    "inference_cycles": [
+      {
+        "agentic": {
+          "decisions": [
+            {
+              "action": "STAY_IN_CASH",
+              "agent_count": 10,
+              "decision_id": "5d8a0e56ac8273ad8ab4adb306b6c0c6c1b82ce7edd6714102b21c535050f938",
+              "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS",
+              "status": "NO_PAPER_MUTATION",
+              "symbol": "BTCTMN"
+            },
+            {
+              "action": "STAY_IN_CASH",
+              "agent_count": 10,
+              "decision_id": "96fb3e1d751a87d1c51ad4d86bc8f27fd9973035541296606bb7e0e96a45a9bf",
+              "reason": "technical_not_confirmed",
+              "status": "NO_PAPER_MUTATION",
+              "symbol": "ETHTMN"
+            }
+          ],
+          "errors": [],
+          "model_promotion": false,
+          "policy": "M8_OPT_IN_RESEARCH_ONLY"
+        },
+        "intelligence_sync": {
+          "news": {
+            "after": {
+              "articles": 121,
+              "pit_valid": 121,
+              "protocol": "ATLAS_NEWS_PIT_V1",
+              "receipts": 200,
+              "scored": 96,
+              "understood": 121
+            },
+            "before": {
+              "articles": 116,
+              "pit_valid": 116,
+              "protocol": "ATLAS_NEWS_PIT_V1",
+              "receipts": 192,
+              "scored": 96,
+              "understood": 116
+            },
+            "content_scope": "PUBLISHER_FEED_HEADLINE_ONLY",
+            "duplicates": 69,
+            "errors": [
+              {
+                "attempts": 2,
+                "duplicates": 0,
+                "entries_seen": 0,
+                "error_type": "ReadTimeout",
+                "finished_at": "2026-10-23T02:02:43.594073+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 8.594000000040978,
+                "new_articles": 0,
+                "source": "GDELT_DOC_2",
+                "started_at": "2026-10-23T02:02:35.005956+00:00",
+                "status": "FAILED"
+              }
+            ],
+            "fetched_articles_count_attempted": 5,
+            "migration": {
+              "duplicates": 0,
+              "invalid": 0,
+              "migrated": 0
+            },
+            "processing": {
+              "processed": 5,
+              "version": "ATLAS_NEWS_RULE_LINKING_V1"
+            },
+            "protocol": "ATLAS_NEWS_INGESTION_V1",
+            "sentiment": {
+              "scored": 0,
+              "status": "SENTIMENT_LICENSE_OR_PROFILE_GUARD"
+            },
+            "source_runs": [
+              {
+                "attempts": 2,
+                "duplicates": 0,
+                "entries_seen": 0,
+                "error_type": "ReadTimeout",
+                "finished_at": "2026-10-23T02:02:43.594073+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 8.594000000040978,
+                "new_articles": 0,
+                "source": "GDELT_DOC_2",
+                "started_at": "2026-10-23T02:02:35.005956+00:00",
+                "status": "FAILED"
+              },
+              {
+                "attempts": 1,
+                "duplicates": 24,
+                "entries_seen": 25,
+                "error_type": null,
+                "finished_at": "2026-10-23T02:02:44.296353+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 0.6569999998901039,
+                "new_articles": 1,
+                "source": "COINDESK_RSS",
+                "started_at": "2026-10-23T02:02:43.610033+00:00",
+                "status": "SUCCESS"
+              },
+              {
+                "attempts": 1,
+                "duplicates": 26,
+                "entries_seen": 30,
+                "error_type": null,
+                "finished_at": "2026-10-23T02:02:44.720246+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 0.39000000013038516,
+                "new_articles": 4,
+                "source": "COINTELEGRAPH_RSS",
+                "started_at": "2026-10-23T02:02:44.298352+00:00",
+                "status": "SUCCESS"
+              },
+              {
+                "attempts": 1,
+                "duplicates": 19,
+                "entries_seen": 19,
+                "error_type": null,
+                "finished_at": "2026-10-23T02:02:45.149010+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 0.375,
+                "new_articles": 0,
+                "source": "THEBLOCK_RSS",
+                "started_at": "2026-10-23T02:02:44.722243+00:00",
+                "status": "SUCCESS"
+              }
+            ]
+          },
+          "ohlcv": "ALREADY_RECONCILED_BY_EXISTING_STUDY_DATASYNC",
+          "status": {
+            "credentials_used": false,
+            "full_catalog_backfill_blocks_startup": false,
+            "observed_at": 1792720965.3734002,
+            "sources": {
+              "cross_asset": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "only aligned verified returns; no assumed zero correlation",
+                "resume_cursor": null,
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "forecast_outcomes": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": "late/missing future receipts remain UNSCORED",
+                "pending_work": {},
+                "resume_cursor": "m6_predictions/m6_outcomes/deadline_queue_v7",
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "memory": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "HASH/PIT_VERIFICATION_BEFORE_RETRIEVAL",
+                "resume_cursor": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone8\\formal_48h_v1\\context_memory.sqlite",
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "native_derived": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "NATIVE 1/60/1D FIRST; derived complete buckets only",
+                "resume_cursor": "catalog.sqlite.chunks/chunk_observations",
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "news": {
+                "last_successful_fetch": {
+                  "COINDESK_RSS": "2026-10-23T02:02:44.296353+00:00",
+                  "COINTELEGRAPH_RSS": "2026-10-23T02:02:44.720246+00:00",
+                  "GDELT_DOC_2": null,
+                  "THEBLOCK_RSS": "2026-10-23T02:02:45.149010+00:00"
+                },
+                "last_valid_observation": "2026-10-23T02:02:44.693388+00:00",
+                "missing_intervals": "UNKNOWN_BEFORE_INSTRUMENTED_POLLING",
+                "pending_work": 19,
+                "resume_cursor": "news.sqlite news_source_runs/news_sync_cursor_v8",
+                "retry_status": [
+                  {
+                    "failures": 1,
+                    "last_finished": "2026-10-23T02:02:44.296353+00:00",
+                    "last_success": "2026-10-23T02:02:44.296353+00:00",
+                    "source": "COINDESK_RSS"
+                  },
+                  {
+                    "failures": 1,
+                    "last_finished": "2026-10-23T02:02:44.720246+00:00",
+                    "last_success": "2026-10-23T02:02:44.720246+00:00",
+                    "source": "COINTELEGRAPH_RSS"
+                  },
+                  {
+                    "failures": 4,
+                    "last_finished": "2026-10-23T02:02:43.594073+00:00",
+                    "last_success": null,
+                    "source": "GDELT_DOC_2"
+                  },
+                  {
+                    "failures": 1,
+                    "last_finished": "2026-10-23T02:02:45.149010+00:00",
+                    "last_success": "2026-10-23T02:02:45.149010+00:00",
+                    "source": "THEBLOCK_RSS"
+                  }
+                ],
+                "source_unavailable": [
+                  "GDELT_DOC_2"
+                ],
+                "staleness": "PER_SOURCE_TIMESTAMPS; past publication is not past observation"
+              },
+              "ohlcv": {
+                "active_per_asset_preflight": {
+                  "BTCTMN": {
+                    "derived_verified": true,
+                    "hash_verified_last_closed_at": 1792720800,
+                    "live_execution": "HARD_DISABLED",
+                    "native_verified": true,
+                    "news_status": null,
+                    "profile": "watch_core",
+                    "ready": true,
+                    "reason": "FEATURE_REQUIREMENTS_READY",
+                    "symbol": "BTCTMN",
+                    "timeframes": [
+                      {
+                        "ready": true,
+                        "reason": "MODEL_INPUT_WINDOW_FINITE",
+                        "required_warmup_bars": 151,
+                        "required_warmup_hours": 37.75,
+                        "resolution": "15",
+                        "verified_closed_bars": 298
+                      }
+                    ]
+                  },
+                  "ETHTMN": {
+                    "derived_verified": true,
+                    "hash_verified_last_closed_at": 1792720800,
+                    "live_execution": "HARD_DISABLED",
+                    "native_verified": true,
+                    "news_status": null,
+                    "profile": "watch_core",
+                    "ready": true,
+                    "reason": "FEATURE_REQUIREMENTS_READY",
+                    "symbol": "ETHTMN",
+                    "timeframes": [
+                      {
+                        "ready": true,
+                        "reason": "MODEL_INPUT_WINDOW_FINITE",
+                        "required_warmup_bars": 151,
+                        "required_warmup_hours": 37.75,
+                        "resolution": "15",
+                        "verified_closed_bars": 296
+                      }
+                    ]
+                  }
+                },
+                "last_successful_fetch": "2026-10-23T02:02:34.986507+00:00",
+                "last_valid_observation": {
+                  "BTCTMN": 1792720800,
+                  "ETHTMN": 1792720800
+                },
+                "missing_intervals": "SEE_DEMAND_PLAN; unknown unobserved history is not zero activity",
+                "pending_work": 0,
+                "resume_cursor": "catalog.sqlite.download_progress",
+                "retry_status": {
+                  "CACHED_VALID": 33,
+                  "SAVED": 58
+                },
+                "source_unavailable": 0,
+                "staleness": {
+                  "BTCTMN": 165.37340021133423,
+                  "ETHTMN": 165.37340021133423
+                },
+                "validation_scope": "catalog aggregate accepted metadata; active core is independently rehashed below"
+              },
+              "order_books": {
+                "last_successful_fetch": 1792720952.291121,
+                "last_valid_observation": 1792720952.291121,
+                "missing_intervals": "ONLY_ACTUAL_RECEIPTS; no reconstruction from OHLCV",
+                "pending_work": "INDEPENDENT_60S_DEADLINE_SAMPLER",
+                "resume_cursor": "quotes / deadline_queue_v7",
+                "retry_status": "BOUNDED_SAMPLER_RETRIES",
+                "source_unavailable": null,
+                "staleness": 13.082279205322266
+              },
+              "patterns": {
+                "last_successful_fetch": "LOCAL_VERIFIED_ARCHIVE_ONLY",
+                "last_valid_observation": 1792700178.8885074,
+                "missing_intervals": {
+                  "PEPETMN|1|CONFLICTING_OBSERVED_CANDLES": 1,
+                  "UNDEFINED_WINDOW_VOLATILITY_OR_MEDIAN_VOLUME": 78530,
+                  "ZERO_OBSERVED_CANDLE_RANGE": 10351
+                },
+                "pending_work": "REBUILD_IN_NEW_DIRECTORY_WHEN_DEMAND_CHANGES",
+                "resume_cursor": "1cf7ebb391318980248e0a4118c7b3ceb9a5304ccbad53689d5118b9fbf08e98",
+                "retry_status": "IMMUTABLE_INDEX_CACHE",
+                "source_unavailable": false,
+                "staleness": 20786.484892845154
+              },
+              "sentiment": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "PENDING_SCORES_RETAINED",
+                "resume_cursor": null,
+                "retry_status": "NO_AUTOMATIC_WEIGHT_DOWNLOAD",
+                "source_unavailable": "FINBERT_CONTEST_LICENSE_NOT_AUTHORIZED",
+                "staleness": null
+              },
+              "symbol_metadata": {
+                "last_successful_fetch": null,
+                "last_valid_observation": "2026-10-22T13:03:54.255359+00:00",
+                "missing_intervals": null,
+                "pending_work": "public catalog refresh is explicit; spot precision != verified contest rules",
+                "resume_cursor": "catalog.sqlite.assets",
+                "retry_status": null,
+                "source_unavailable": false,
+                "staleness": null
+              }
+            },
+            "synthetic_gap_fill": false,
+            "version": "ATLAS_INTELLIGENCE_SYNC_V1"
+          }
+        },
+        "models": {
+          "BTCTMN": {
+            "errors": {},
+            "inserted": 5,
+            "latency_seconds": 0.8408224582672119
+          },
+          "ETHTMN": {
+            "errors": {},
+            "inserted": 5,
+            "latency_seconds": 0.31119298934936523
+          }
+        },
+        "shadow": [],
+        "started": 1792720951.1982412,
+        "sync": {
+          "cached": 0,
+          "complete": 6,
+          "derived_requested": [
+            "15"
+          ],
+          "failed": 0,
+          "harvest": {
+            "cached": 0,
+            "complete": 6,
+            "conflicts": 0,
+            "count_units": "source_window_chunks",
+            "errors": [],
+            "explicit_window_mode": true,
+            "failed": 0,
+            "finished": "2026-10-23T02:02:34.755806+00:00",
+            "min_request_start_spacing_seconds": 0.35,
+            "resolutions": [
+              "1"
+            ],
+            "retried_requests": 0,
+            "scope": "all-spot",
+            "started": "2026-10-23T02:02:31.275797+00:00",
+            "symbols_count": 2,
+            "workers": 1
+          },
+          "plan": {
+            "dry_run": false,
+            "generated_at_utc": "2026-10-23T02:02:31.267678+00:00",
+            "model_demand": {
+              "context": 96,
+              "horizon": 3,
+              "origin": "ACTIVE_CHAMPION_METADATA",
+              "target_resolution": "15"
+            },
+            "network_requests_planned": 6,
+            "network_requests_skipped_known_unavailable": 0,
+            "planned_windows": [
+              {
+                "begin": 1792713600,
+                "begin_utc": "2026-10-23T00:00:00+00:00",
+                "end": 1792720860,
+                "end_utc": "2026-10-23T02:01:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792713600,
+                "begin_utc": "2026-10-23T00:00:00+00:00",
+                "end": 1792720860,
+                "end_utc": "2026-10-23T02:01:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702800,
+                "begin_utc": "2026-10-22T21:00:00+00:00",
+                "end": 1792713600,
+                "end_utc": "2026-10-23T00:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702800,
+                "begin_utc": "2026-10-22T21:00:00+00:00",
+                "end": 1792713600,
+                "end_utc": "2026-10-23T00:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702200,
+                "begin_utc": "2026-10-22T20:50:00+00:00",
+                "end": 1792702800,
+                "end_utc": "2026-10-22T21:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702200,
+                "begin_utc": "2026-10-22T20:50:00+00:00",
+                "end": 1792702800,
+                "end_utc": "2026-10-22T21:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              }
+            ],
+            "purpose": "STARTUP_OR_WATCH_PUBLIC_DATA_SYNC",
+            "scope": "priority",
+            "selected_windows": [
+              {
+                "begin": 1792713600,
+                "begin_utc": "2026-10-23T00:00:00+00:00",
+                "end": 1792720860,
+                "end_utc": "2026-10-23T02:01:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792713600,
+                "begin_utc": "2026-10-23T00:00:00+00:00",
+                "end": 1792720860,
+                "end_utc": "2026-10-23T02:01:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702800,
+                "begin_utc": "2026-10-22T21:00:00+00:00",
+                "end": 1792713600,
+                "end_utc": "2026-10-23T00:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702800,
+                "begin_utc": "2026-10-22T21:00:00+00:00",
+                "end": 1792713600,
+                "end_utc": "2026-10-23T00:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702200,
+                "begin_utc": "2026-10-22T20:50:00+00:00",
+                "end": 1792702800,
+                "end_utc": "2026-10-22T21:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792702200,
+                "begin_utc": "2026-10-22T20:50:00+00:00",
+                "end": 1792702800,
+                "end_utc": "2026-10-22T21:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              }
+            ],
+            "source_unavailable_windows": [],
+            "symbols": [
+              "BTCTMN",
+              "ETHTMN"
+            ],
+            "target_resolutions": [
+              "15"
+            ],
+            "target_warmup_hours": {
+              "15": 37.75
+            },
+            "warmup_hours": 48.0
+          },
+          "remaining_planned_windows": 0,
+          "status": "COMPLETED"
+        }
+      }
+    ],
+    "lease_currently_held": false
+  },
+  "development_separate": {
+    "directory": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone8\\development_smoke_v1",
+    "quote_count": 6,
+    "first_quote": 1792702268.781915,
+    "last_quote": 1792702391.215631,
+    "quote_span_hours": 0.034009365571869746,
+    "forecast_statuses": {
+      "PENDING": 10
+    },
+    "forecast_count": 10,
+    "scored_outcomes": 0,
+    "runtime": {
+      "cycles": 1,
+      "deadline_epoch": 1792875068.0809329,
+      "last_review_quote": 1792702391.215631,
+      "next_inference": 1792703189.9219842,
+      "next_review": 1792702398.50447,
+      "started_epoch": 1792702268.0809329
+    },
+    "foreground_process_stop_events": 1,
+    "failures": [],
+    "successful_sampler_gets": 6,
+    "actual_sampler_transport_latencies": [
+      0.5982441902160645,
+      0.5722801685333252,
+      0.836087703704834,
+      0.5361149311065674,
+      0.5980846881866455,
+      0.7981235980987549
+    ],
+    "inference_cycles": [
+      {
+        "agentic": {
+          "decisions": [
+            {
+              "action": "STAY_IN_CASH",
+              "agent_count": 10,
+              "decision_id": "ca980eb182395ff55d6fe9a011615342f9340ddb58578df8d7ec2cd4985d79f6",
+              "reason": "NO_ACTION_REQUESTED",
+              "status": "NO_PAPER_MUTATION",
+              "symbol": "BTCTMN"
+            },
+            {
+              "action": "STAY_IN_CASH",
+              "agent_count": 10,
+              "decision_id": "8aa1cf0a00a4af7bc629dc2feaa1597ffe696485158c401fe753b3c3e5ce51b6",
+              "reason": "NO_ACTION_REQUESTED",
+              "status": "NO_PAPER_MUTATION",
+              "symbol": "ETHTMN"
+            }
+          ],
+          "errors": [],
+          "model_promotion": false,
+          "policy": "M8_OPT_IN_RESEARCH_ONLY"
+        },
+        "intelligence_sync": {
+          "news": {
+            "after": {
+              "articles": 116,
+              "pit_valid": 116,
+              "protocol": "ATLAS_NEWS_PIT_V1",
+              "receipts": 192,
+              "scored": 96,
+              "understood": 116
+            },
+            "before": {
+              "articles": 102,
+              "pit_valid": 102,
+              "protocol": "ATLAS_NEWS_PIT_V1",
+              "receipts": 171,
+              "scored": 96,
+              "understood": 102
+            },
+            "content_scope": "PUBLISHER_FEED_HEADLINE_ONLY",
+            "duplicates": 60,
+            "errors": [
+              {
+                "attempts": 2,
+                "duplicates": 0,
+                "entries_seen": 0,
+                "error_type": "ReadTimeout",
+                "finished_at": "2026-10-22T20:51:19.655044+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 8.577999999979511,
+                "new_articles": 0,
+                "source": "GDELT_DOC_2",
+                "started_at": "2026-10-22T20:51:11.080798+00:00",
+                "status": "FAILED"
+              }
+            ],
+            "fetched_articles_count_attempted": 14,
+            "migration": {
+              "duplicates": 0,
+              "invalid": 0,
+              "migrated": 0
+            },
+            "processing": {
+              "processed": 14,
+              "version": "ATLAS_NEWS_RULE_LINKING_V1"
+            },
+            "protocol": "ATLAS_NEWS_INGESTION_V1",
+            "sentiment": {
+              "scored": 0,
+              "status": "SENTIMENT_LICENSE_OR_PROFILE_GUARD"
+            },
+            "source_runs": [
+              {
+                "attempts": 2,
+                "duplicates": 0,
+                "entries_seen": 0,
+                "error_type": "ReadTimeout",
+                "finished_at": "2026-10-22T20:51:19.655044+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 8.577999999979511,
+                "new_articles": 0,
+                "source": "GDELT_DOC_2",
+                "started_at": "2026-10-22T20:51:11.080798+00:00",
+                "status": "FAILED"
+              },
+              {
+                "attempts": 1,
+                "duplicates": 21,
+                "entries_seen": 25,
+                "error_type": null,
+                "finished_at": "2026-10-22T20:51:20.234103+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 0.5159999998286366,
+                "new_articles": 4,
+                "source": "COINDESK_RSS",
+                "started_at": "2026-10-22T20:51:19.671388+00:00",
+                "status": "SUCCESS"
+              },
+              {
+                "attempts": 1,
+                "duplicates": 23,
+                "entries_seen": 30,
+                "error_type": null,
+                "finished_at": "2026-10-22T20:51:20.695782+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 0.3910000000614673,
+                "new_articles": 7,
+                "source": "COINTELEGRAPH_RSS",
+                "started_at": "2026-10-22T20:51:20.235109+00:00",
+                "status": "SUCCESS"
+              },
+              {
+                "attempts": 1,
+                "duplicates": 16,
+                "entries_seen": 19,
+                "error_type": null,
+                "finished_at": "2026-10-22T20:51:21.081023+00:00",
+                "invalid_articles": 0,
+                "latency_seconds": 0.3589999999385327,
+                "new_articles": 3,
+                "source": "THEBLOCK_RSS",
+                "started_at": "2026-10-22T20:51:20.697788+00:00",
+                "status": "SUCCESS"
+              }
+            ]
+          },
+          "ohlcv": "ALREADY_RECONCILED_BY_EXISTING_STUDY_DATASYNC",
+          "status": {
+            "credentials_used": false,
+            "full_catalog_backfill_blocks_startup": false,
+            "observed_at": 1792702281.3882399,
+            "sources": {
+              "cross_asset": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "only aligned verified returns; no assumed zero correlation",
+                "resume_cursor": null,
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "forecast_outcomes": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": "late/missing future receipts remain UNSCORED",
+                "pending_work": {},
+                "resume_cursor": "m6_predictions/m6_outcomes/deadline_queue_v7",
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "memory": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "HASH/PIT_VERIFICATION_BEFORE_RETRIEVAL",
+                "resume_cursor": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone8\\development_smoke_v1\\context_memory.sqlite",
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "native_derived": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "NATIVE 1/60/1D FIRST; derived complete buckets only",
+                "resume_cursor": "catalog.sqlite.chunks/chunk_observations",
+                "retry_status": null,
+                "source_unavailable": null,
+                "staleness": null
+              },
+              "news": {
+                "last_successful_fetch": {
+                  "COINDESK_RSS": "2026-10-22T20:51:20.234103+00:00",
+                  "COINTELEGRAPH_RSS": "2026-10-22T20:51:20.695782+00:00",
+                  "GDELT_DOC_2": null,
+                  "THEBLOCK_RSS": "2026-10-22T20:51:21.081023+00:00"
+                },
+                "last_valid_observation": "2026-10-22T20:51:21.064107+00:00",
+                "missing_intervals": "UNKNOWN_BEFORE_INSTRUMENTED_POLLING",
+                "pending_work": 14,
+                "resume_cursor": "news.sqlite news_source_runs/news_sync_cursor_v8",
+                "retry_status": [
+                  {
+                    "failures": 1,
+                    "last_finished": "2026-10-22T20:51:20.234103+00:00",
+                    "last_success": "2026-10-22T20:51:20.234103+00:00",
+                    "source": "COINDESK_RSS"
+                  },
+                  {
+                    "failures": 1,
+                    "last_finished": "2026-10-22T20:51:20.695782+00:00",
+                    "last_success": "2026-10-22T20:51:20.695782+00:00",
+                    "source": "COINTELEGRAPH_RSS"
+                  },
+                  {
+                    "failures": 3,
+                    "last_finished": "2026-10-22T20:51:19.655044+00:00",
+                    "last_success": null,
+                    "source": "GDELT_DOC_2"
+                  },
+                  {
+                    "failures": 1,
+                    "last_finished": "2026-10-22T20:51:21.081023+00:00",
+                    "last_success": "2026-10-22T20:51:21.081023+00:00",
+                    "source": "THEBLOCK_RSS"
+                  }
+                ],
+                "source_unavailable": [
+                  "GDELT_DOC_2"
+                ],
+                "staleness": "PER_SOURCE_TIMESTAMPS; past publication is not past observation"
+              },
+              "ohlcv": {
+                "last_successful_fetch": "2026-10-22T20:51:11.057856+00:00",
+                "last_valid_observation": 1792702140,
+                "missing_intervals": "SEE_DEMAND_PLAN; unknown unobserved history is not zero activity",
+                "pending_work": 0,
+                "resume_cursor": "catalog.sqlite.download_progress",
+                "retry_status": {
+                  "CACHED_VALID": 33,
+                  "SAVED": 52
+                },
+                "source_unavailable": 0,
+                "staleness": 141.38823986053467
+              },
+              "order_books": {
+                "last_successful_fetch": 1792702269.41623,
+                "last_valid_observation": 1792702269.41623,
+                "missing_intervals": "ONLY_ACTUAL_RECEIPTS; no reconstruction from OHLCV",
+                "pending_work": "INDEPENDENT_60S_DEADLINE_SAMPLER",
+                "resume_cursor": "quotes / deadline_queue_v7",
+                "retry_status": "BOUNDED_SAMPLER_RETRIES",
+                "source_unavailable": null,
+                "staleness": 11.972009897232056
+              },
+              "patterns": {
+                "last_successful_fetch": "LOCAL_VERIFIED_ARCHIVE_ONLY",
+                "last_valid_observation": 1792700178.8885074,
+                "missing_intervals": {
+                  "PEPETMN|1|CONFLICTING_OBSERVED_CANDLES": 1,
+                  "UNDEFINED_WINDOW_VOLATILITY_OR_MEDIAN_VOLUME": 78530,
+                  "ZERO_OBSERVED_CANDLE_RANGE": 10351
+                },
+                "pending_work": "REBUILD_IN_NEW_DIRECTORY_WHEN_DEMAND_CHANGES",
+                "resume_cursor": "1cf7ebb391318980248e0a4118c7b3ceb9a5304ccbad53689d5118b9fbf08e98",
+                "retry_status": "IMMUTABLE_INDEX_CACHE",
+                "source_unavailable": false,
+                "staleness": 2102.4997324943542
+              },
+              "sentiment": {
+                "last_successful_fetch": null,
+                "last_valid_observation": null,
+                "missing_intervals": null,
+                "pending_work": "PENDING_SCORES_RETAINED",
+                "resume_cursor": null,
+                "retry_status": "NO_AUTOMATIC_WEIGHT_DOWNLOAD",
+                "source_unavailable": "FINBERT_CONTEST_LICENSE_NOT_AUTHORIZED",
+                "staleness": null
+              },
+              "symbol_metadata": {
+                "last_successful_fetch": null,
+                "last_valid_observation": "2026-10-22T13:03:54.255359+00:00",
+                "missing_intervals": null,
+                "pending_work": "public catalog refresh is explicit; spot precision != verified contest rules",
+                "resume_cursor": "catalog.sqlite.assets",
+                "retry_status": null,
+                "source_unavailable": false,
+                "staleness": null
+              }
+            },
+            "synthetic_gap_fill": false,
+            "version": "ATLAS_INTELLIGENCE_SYNC_V1"
+          }
+        },
+        "models": {
+          "BTCTMN": {
+            "errors": {},
+            "inserted": 5,
+            "latency_seconds": 0.9151504039764404
+          },
+          "ETHTMN": {
+            "errors": {},
+            "inserted": 5,
+            "latency_seconds": 0.29514217376708984
+          }
+        },
+        "shadow": [],
+        "started": 1792702268.3399494,
+        "sync": {
+          "cached": 0,
+          "complete": 4,
+          "derived_requested": [
+            "15"
+          ],
+          "failed": 0,
+          "harvest": {
+            "cached": 0,
+            "complete": 4,
+            "conflicts": 0,
+            "count_units": "source_window_chunks",
+            "errors": [],
+            "explicit_window_mode": true,
+            "failed": 0,
+            "finished": "2026-10-22T20:51:10.835891+00:00",
+            "min_request_start_spacing_seconds": 0.35,
+            "resolutions": [
+              "1"
+            ],
+            "retried_requests": 0,
+            "scope": "all-spot",
+            "started": "2026-10-22T20:51:08.424334+00:00",
+            "symbols_count": 2,
+            "workers": 1
+          },
+          "plan": {
+            "dry_run": false,
+            "generated_at_utc": "2026-10-22T20:51:08.406916+00:00",
+            "model_demand": {
+              "context": 96,
+              "horizon": 3,
+              "origin": "ACTIVE_CHAMPION_METADATA",
+              "target_resolution": "15"
+            },
+            "network_requests_planned": 4,
+            "network_requests_skipped_known_unavailable": 0,
+            "planned_windows": [
+              {
+                "begin": 1792698060,
+                "begin_utc": "2026-10-22T19:41:00+00:00",
+                "end": 1792702200,
+                "end_utc": "2026-10-22T20:50:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792692000,
+                "begin_utc": "2026-10-22T18:00:00+00:00",
+                "end": 1792702200,
+                "end_utc": "2026-10-22T20:50:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792681200,
+                "begin_utc": "2026-10-22T15:00:00+00:00",
+                "end": 1792692000,
+                "end_utc": "2026-10-22T18:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792676820,
+                "begin_utc": "2026-10-22T13:47:00+00:00",
+                "end": 1792681200,
+                "end_utc": "2026-10-22T15:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              }
+            ],
+            "purpose": "STARTUP_OR_WATCH_PUBLIC_DATA_SYNC",
+            "scope": "priority",
+            "selected_windows": [
+              {
+                "begin": 1792698060,
+                "begin_utc": "2026-10-22T19:41:00+00:00",
+                "end": 1792702200,
+                "end_utc": "2026-10-22T20:50:00+00:00",
+                "source_resolution": "1",
+                "symbol": "BTCTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792692000,
+                "begin_utc": "2026-10-22T18:00:00+00:00",
+                "end": 1792702200,
+                "end_utc": "2026-10-22T20:50:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792681200,
+                "begin_utc": "2026-10-22T15:00:00+00:00",
+                "end": 1792692000,
+                "end_utc": "2026-10-22T18:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              },
+              {
+                "begin": 1792676820,
+                "begin_utc": "2026-10-22T13:47:00+00:00",
+                "end": 1792681200,
+                "end_utc": "2026-10-22T15:00:00+00:00",
+                "source_resolution": "1",
+                "symbol": "ETHTMN",
+                "target_resolution": "15",
+                "target_resolutions": [
+                  "15"
+                ]
+              }
+            ],
+            "source_unavailable_windows": [],
+            "symbols": [
+              "BTCTMN",
+              "ETHTMN"
+            ],
+            "target_resolutions": [
+              "15"
+            ],
+            "target_warmup_hours": {
+              "15": 37.75
+            },
+            "warmup_hours": 48.0
+          },
+          "remaining_planned_windows": 0,
+          "status": "COMPLETED"
+        }
+      }
+    ],
+    "lease_currently_held": false,
+    "track": "DEVELOPMENT_SMOKE_NOT_FORMAL_NOT_MERGED",
+    "source_revised_after_smoke": true
+  },
+  "forward": {
+    "forecast_statuses": {
+      "PENDING": 10
+    },
+    "by_model": {
+      "champion": 2,
+      "historical_quantiles": 2,
+      "m5_lightgbm": 2,
+      "m5_patchtst": 2,
+      "zero": 2
+    },
+    "quote_count": 10,
+    "first_quote": 1792720951.6061409,
+    "last_quote": 1792721244.993936,
+    "observed_span_hours": 0.08149660978052352,
+    "matured_scored": 0,
+    "status": "PENDING_48_72H_REAL_OBSERVATION",
+    "orders": "NO_INTERFACE"
+  },
+  "deadline_coverage": {
+    "rows": [
+      {
+        "prediction_id": "377cb68333702039994f9041958d5e42c50889a5cefbea054239d38703a99d56",
+        "symbol": "BTCTMN",
+        "due": 1792723668.2084587,
+        "expires": 1792723968.2084587,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "8d24a652ff969078311b7c635f8c968533a279ba0c1de4c69e96e3e97204c2a8",
+        "symbol": "BTCTMN",
+        "due": 1792723668.2084587,
+        "expires": 1792723968.2084587,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "ce0e93dbed49bf1c613225dfb17dd12b4227c058fcdf35d7373b86ffc3ece398",
+        "symbol": "BTCTMN",
+        "due": 1792723668.2084587,
+        "expires": 1792723968.2084587,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "e6e6a3a45c26f9fffaa3b674c7a19677fb2735415a37e1506fd7cdfa58c714e3",
+        "symbol": "BTCTMN",
+        "due": 1792723668.2084587,
+        "expires": 1792723968.2084587,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "fce9d2bd8eaf37ca78260f0e588da590cc774891d7c544ae3c6d2200455589cd",
+        "symbol": "BTCTMN",
+        "due": 1792723668.2084587,
+        "expires": 1792723968.2084587,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "0dd0b3f3bc7e21ed266f5716843caae13af8cdaf7954a3926b6efd765bc06e27",
+        "symbol": "ETHTMN",
+        "due": 1792723668.9145696,
+        "expires": 1792723968.9145696,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "25575aa86abe816f7c484d5d22dfcb3b99e80931241875036d2bbef6d00373d7",
+        "symbol": "ETHTMN",
+        "due": 1792723668.9145696,
+        "expires": 1792723968.9145696,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "267378fa20ca0e3ea87dfe7e7aaab9c99cbab27b867a7bd92a41d1ec1fd30737",
+        "symbol": "ETHTMN",
+        "due": 1792723668.9145696,
+        "expires": 1792723968.9145696,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "897e8555d1a08a33ae07fbd73e699f140d0920632d9be772201055d4f4a2a995",
+        "symbol": "ETHTMN",
+        "due": 1792723668.9145696,
+        "expires": 1792723968.9145696,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      },
+      {
+        "prediction_id": "e23dad9708db7cc9705be64c014f02b9eaea037a265c1066c9ae131b50d68aad",
+        "symbol": "ETHTMN",
+        "due": 1792723668.9145696,
+        "expires": 1792723968.9145696,
+        "stored_status": "PENDING",
+        "effective_status": "PENDING",
+        "future_quote_latency_seconds": null,
+        "scored_at": null,
+        "reason": "WAITING_REAL_FUTURE_QUOTE"
+      }
+    ],
+    "matured": 0,
+    "scored": 0,
+    "pending": 10,
+    "missing_future_quote": 0,
+    "timely_coverage": null,
+    "sampling_interval_seconds": 60,
+    "tolerance_seconds": 300,
+    "timestamp_contract": "request_started / response_received / observed / stored / outcome.available_at separately recorded",
+    "imputation": false
+  },
+  "model_statistics": {
+    "evaluation": {
+      "track": "PROSPECTIVE_REAL_MID_QUOTE_PROXY_NOT_CANDLE_TARGET_OR_PNL",
+      "matched_all_five_cohorts": 0,
+      "matured_partial_cohorts": 0,
+      "status": "PENDING_NO_SHARED_MATURED_QUOTES",
+      "per_model": {},
+      "per_symbol": {},
+      "block_aware": {},
+      "model_selection_or_promotion": false,
+      "multiple_testing": "All five predeclared models retained; no significance or superiority claim on a short window"
+    },
+    "paired_multiple_testing_ledger": [
+      {
+        "contrast": "m5_lightgbm minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      },
+      {
+        "contrast": "m5_patchtst minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      },
+      {
+        "contrast": "zero minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      },
+      {
+        "contrast": "historical_quantiles minus champion",
+        "blocks": 0,
+        "ci95": null,
+        "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+        "family_size": 4,
+        "significance_claim": false,
+        "selection_or_promotion": false
+      }
+    ],
+    "threshold_hours": 48,
+    "threshold_time_blocks": 30
+  },
+  "paper_cash_and_nav": {
+    "decision_timestamp": 1792721250.2783713,
+    "symbol": "ETHTMN",
+    "cash_tmn": 5000000.0,
+    "nav_tmn": 5000000.0,
+    "cash_weight": 1.0,
+    "exposure_tmn": 0,
+    "status": "NO_PAPER_MUTATION",
+    "reason": "technical_not_confirmed"
+  },
+  "exchange_fills": null,
+  "realized_exchange_pnl": null,
+  "study_complete_claimed": false,
+  "continuous_uptime_claimed": false,
+  "economic_edge": "NO_VERIFIED_ECONOMIC_EDGE",
+  "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE"
+}

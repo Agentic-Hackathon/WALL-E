@@ -1,0 +1,32 @@
+{
+  "tests": 303,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 5,
+  "passed": 298,
+  "seconds": 33.59,
+  "junit_sha256": "4c2d613e1a88dd6c4192d29a58bea2fdd8be1e3fdf53ba786114e07d565df9a0",
+  "command": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 conda run --no-capture-output -n shbk python -m pytest -q --junitxml=reports/m8_pytest.xml",
+  "skips": [
+    {
+      "test": "test_real_integration_when_user_supplies_actual_run",
+      "reason": "Set WALLEX_REAL_RUN to an authentic, archived Wallex segment-eval run to exercise numeric diagnostics"
+    },
+    {
+      "test": "test_live_exchange_integration_only_if_user_opted_in",
+      "reason": "Real API integration requires explicit opt-in and organizer market allowlist"
+    },
+    {
+      "test": "test_real_wallex_csv_integrity_if_supplied",
+      "reason": "Supply WALLEX_REAL_CSV pointing to real downloaded Wallex CSV+provenance"
+    },
+    {
+      "test": "test_no_genuine_integration_data_not_misreported_as_success",
+      "reason": "Live Wallex integration requires user-provided real dataset"
+    },
+    {
+      "test": "test_live_archive_only_if_provided",
+      "reason": "Supply actual Wallex archived run as WALLEX_REAL_RUN; never fabricate OHLCV in tests"
+    }
+  ]
+}

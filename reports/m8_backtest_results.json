@@ -1,0 +1,812 @@
+{
+  "version": "ATLAS_M8_RECORDED_EVIDENCE_REPLAY_V1",
+  "mode": "BACKTEST_READ_ONLY_NO_MEMORY_WRITES",
+  "scope": "CHRONOLOGICAL_REPLAY_OF_ACTUAL_OBSERVED_DECISIONS; not a fabricated long historical policy simulation",
+  "start": null,
+  "end": null,
+  "symbols": [
+    "BTCTMN",
+    "ETHTMN"
+  ],
+  "decision_count": 10,
+  "quote_count": 10,
+  "nav_path": [
+    {
+      "decision_timestamp": 1792720971.9136205,
+      "symbol": "BTCTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS"
+    },
+    {
+      "decision_timestamp": 1792720973.15406,
+      "symbol": "ETHTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "technical_not_confirmed"
+    },
+    {
+      "decision_timestamp": 1792721017.281377,
+      "symbol": "BTCTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS"
+    },
+    {
+      "decision_timestamp": 1792721018.638571,
+      "symbol": "ETHTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "technical_not_confirmed"
+    },
+    {
+      "decision_timestamp": 1792721077.9792247,
+      "symbol": "BTCTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS"
+    },
+    {
+      "decision_timestamp": 1792721079.305626,
+      "symbol": "ETHTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "technical_not_confirmed"
+    },
+    {
+      "decision_timestamp": 1792721189.8617105,
+      "symbol": "BTCTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS"
+    },
+    {
+      "decision_timestamp": 1792721191.1385472,
+      "symbol": "ETHTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "technical_not_confirmed"
+    },
+    {
+      "decision_timestamp": 1792721249.0302615,
+      "symbol": "BTCTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "Q10_DOES_NOT_COVER_OBSERVED_COSTS"
+    },
+    {
+      "decision_timestamp": 1792721250.2783713,
+      "symbol": "ETHTMN",
+      "cash_tmn": 5000000.0,
+      "nav_tmn": 5000000.0,
+      "cash_weight": 1.0,
+      "exposure_tmn": 0,
+      "status": "NO_PAPER_MUTATION",
+      "reason": "technical_not_confirmed"
+    }
+  ],
+  "recorded_paper_transitions": 0,
+  "estimated_transaction_cost_tmn": 0,
+  "estimated_turnover_tmn": 0,
+  "net_paper_cash_change_tmn": 0.0,
+  "realized_exchange_pnl": null,
+  "max_drawdown": null,
+  "win_loss": null,
+  "profit_factor": null,
+  "risk_adjusted_return": null,
+  "reason_counts": {
+    "Q10_DOES_NOT_COVER_OBSERVED_COSTS": 10,
+    "Q10_BELOW_FULL_SWEEP_COST_AND_SAFETY": 10,
+    "technical_not_confirmed": 5
+  },
+  "replay_checks": [
+    {
+      "intent_id": "5d8a0e56ac8273ad8ab4adb306b6c0c6c1b82ce7edd6714102b21c535050f938",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "96fb3e1d751a87d1c51ad4d86bc8f27fd9973035541296606bb7e0e96a45a9bf",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "ce8a5e1208883c68124743a7c91bef1a648d9a543e2555548a93010bd10c1a62",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "fa0a1cd5929359ac0cc69b3ccad376742ad5bdf028ac53e7c64385441dc1a54e",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "f6368e6be0427001e958b13b868c7c90b78166586df1b57ee330e23dc9e6f7d4",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "dfb95d293852970921b375c18bdd62d3837ebfed3b96ab7d5ecb766cf8a4211f",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "cf0fb051041b759a16ae30f8435fc5a331a9eb8c539abccd6976332f9d262efb",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "7d87d55c2a941c4485fbf81fa2bc2095480f0474cdb4b840857b854504e88d55",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "bc7a3ca8a9e27518e7c2cf620d4507857b2fe56fb42f0ec4ba464bea73b49bbd",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    },
+    {
+      "intent_id": "3a504fd900a95e758c8518c098f033a98264e8480228a94295144ab2c5392467",
+      "review_identical": true,
+      "gate_identical": null,
+      "cash_conserved": true,
+      "exchange_fill_is_none": true,
+      "authority": "PURE_REPLAY_NO_WRITES"
+    }
+  ],
+  "counterfactual_actual_depth_benchmarks": {
+    "cash": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {},
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792720952.291121,
+          "cash_tmn": 5000000,
+          "liquidation_nav_tmn": 5000000.0,
+          "cash_weight": 1.0,
+          "gross_counterfactual_pnl_tmn": 0.0,
+          "net_counterfactual_pnl_tmn": 0.0,
+          "assumed_entry_exit_fees_tmn": 0.0,
+          "exposure_tmn": 0.0,
+          "quote_sha256": []
+        },
+        {
+          "observed_epoch": 1792721012.9747891,
+          "cash_tmn": 5000000,
+          "liquidation_nav_tmn": 5000000.0,
+          "cash_weight": 1.0,
+          "gross_counterfactual_pnl_tmn": 0.0,
+          "net_counterfactual_pnl_tmn": 0.0,
+          "assumed_entry_exit_fees_tmn": 0.0,
+          "exposure_tmn": 0.0,
+          "quote_sha256": []
+        },
+        {
+          "observed_epoch": 1792721073.6752384,
+          "cash_tmn": 5000000,
+          "liquidation_nav_tmn": 5000000.0,
+          "cash_weight": 1.0,
+          "gross_counterfactual_pnl_tmn": 0.0,
+          "net_counterfactual_pnl_tmn": 0.0,
+          "assumed_entry_exit_fees_tmn": 0.0,
+          "exposure_tmn": 0.0,
+          "quote_sha256": []
+        },
+        {
+          "observed_epoch": 1792721184.3538594,
+          "cash_tmn": 5000000,
+          "liquidation_nav_tmn": 5000000.0,
+          "cash_weight": 1.0,
+          "gross_counterfactual_pnl_tmn": 0.0,
+          "net_counterfactual_pnl_tmn": 0.0,
+          "assumed_entry_exit_fees_tmn": 0.0,
+          "exposure_tmn": 0.0,
+          "quote_sha256": []
+        },
+        {
+          "observed_epoch": 1792721244.993936,
+          "cash_tmn": 5000000,
+          "liquidation_nav_tmn": 5000000.0,
+          "cash_weight": 1.0,
+          "gross_counterfactual_pnl_tmn": 0.0,
+          "net_counterfactual_pnl_tmn": 0.0,
+          "assumed_entry_exit_fees_tmn": 0.0,
+          "exposure_tmn": 0.0,
+          "quote_sha256": []
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [],
+      "entry_turnover_fraction": 0,
+      "entry_gross_tmn": 0.0,
+      "entry_fees_tmn": 0.0,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792721244.993936,
+        "cash_tmn": 5000000,
+        "liquidation_nav_tmn": 5000000.0,
+        "cash_weight": 1.0,
+        "gross_counterfactual_pnl_tmn": 0.0,
+        "net_counterfactual_pnl_tmn": 0.0,
+        "assumed_entry_exit_fees_tmn": 0.0,
+        "exposure_tmn": 0.0,
+        "quote_sha256": []
+      }
+    },
+    "equal_weight_capped": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {
+        "BTCTMN": 0.1,
+        "ETHTMN": 0.1
+      },
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792720952.291121,
+          "cash_tmn": 4000000.0,
+          "liquidation_nav_tmn": 4996579.738199476,
+          "cash_weight": 0.8005476164864338,
+          "gross_counterfactual_pnl_tmn": -1423.683486008551,
+          "net_counterfactual_pnl_tmn": -3420.261800524541,
+          "assumed_entry_exit_fees_tmn": 1996.5783145159899,
+          "exposure_tmn": 997577.3155149906,
+          "quote_sha256": [
+            "c72e6e5bf4ab13398fdaa41ee33688a38b74b5743caa971004cfd69320690aa8",
+            "119a91732e19d5d6f948204c21f6e24e2d977661c912316418e89eacf45e374b"
+          ]
+        },
+        {
+          "observed_epoch": 1792721012.9747891,
+          "cash_tmn": 4000000.0,
+          "liquidation_nav_tmn": 4996579.716004495,
+          "cash_weight": 0.8005476200424942,
+          "gross_counterfactual_pnl_tmn": -1423.7057032061275,
+          "net_counterfactual_pnl_tmn": -3420.28399550492,
+          "assumed_entry_exit_fees_tmn": 1996.5782922987921,
+          "exposure_tmn": 997577.293297793,
+          "quote_sha256": [
+            "e0ca78781ba15c98f2ad64be12b2b45a47171255d145962a390e65fb12ae9ed5",
+            "dc6b492d078735a4c76a77d2302f51ca07f4148e1b11f760f9321e951e6f348a"
+          ]
+        },
+        {
+          "observed_epoch": 1792721073.6752384,
+          "cash_tmn": 4000000.0,
+          "liquidation_nav_tmn": 4996579.714470696,
+          "cash_weight": 0.8005476202882381,
+          "gross_counterfactual_pnl_tmn": -1423.7072385407519,
+          "net_counterfactual_pnl_tmn": -3420.2855293042094,
+          "assumed_entry_exit_fees_tmn": 1996.5782907634575,
+          "exposure_tmn": 997577.2917624584,
+          "quote_sha256": [
+            "b9b8e218b0254f6ae4e7252cc4084c9965a47f8c940762374378c30fcb8191dc",
+            "ab609aea0fef44aa882094844d291da964bbb840f485ebb5c3b363e76e8e446d"
+          ]
+        },
+        {
+          "observed_epoch": 1792721184.3538594,
+          "cash_tmn": 4000000.0,
+          "liquidation_nav_tmn": 4996141.327781618,
+          "cash_weight": 0.8006178643821664,
+          "gross_counterfactual_pnl_tmn": -1862.5327531333314,
+          "net_counterfactual_pnl_tmn": -3858.6722183821967,
+          "assumed_entry_exit_fees_tmn": 1996.139465248865,
+          "exposure_tmn": 997138.4662478658,
+          "quote_sha256": [
+            "b120d5ec665e81640d74225599e2ed99c44b1353f90c3397078b7d3a818be893",
+            "3dd5941ff720af45caed2f5911558050e76b82971e262090a1f19a6b1f362133"
+          ]
+        },
+        {
+          "observed_epoch": 1792721244.993936,
+          "cash_tmn": 4000000.0,
+          "liquidation_nav_tmn": 4996141.332383016,
+          "cash_weight": 0.800617863644805,
+          "gross_counterfactual_pnl_tmn": -1862.528147129342,
+          "net_counterfactual_pnl_tmn": -3858.6676169842112,
+          "assumed_entry_exit_fees_tmn": 1996.139469854869,
+          "exposure_tmn": 997138.4708538698,
+          "quote_sha256": [
+            "2e776fca58121963f2b545dcb1cc4695d7d8ea71d4ecdb17f894022cf6fa358b",
+            "039869632b4c8fa4af03ad1ce5e7df342fed2d53f14ac35073cece580374ea97"
+          ]
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [
+        "c72e6e5bf4ab13398fdaa41ee33688a38b74b5743caa971004cfd69320690aa8",
+        "119a91732e19d5d6f948204c21f6e24e2d977661c912316418e89eacf45e374b"
+      ],
+      "entry_turnover_fraction": 0.2,
+      "entry_gross_tmn": 999000.9990009991,
+      "entry_fees_tmn": 999.0009990009992,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792721244.993936,
+        "cash_tmn": 4000000.0,
+        "liquidation_nav_tmn": 4996141.332383016,
+        "cash_weight": 0.800617863644805,
+        "gross_counterfactual_pnl_tmn": -1862.528147129342,
+        "net_counterfactual_pnl_tmn": -3858.6676169842112,
+        "assumed_entry_exit_fees_tmn": 1996.139469854869,
+        "exposure_tmn": 997138.4708538698,
+        "quote_sha256": [
+          "2e776fca58121963f2b545dcb1cc4695d7d8ea71d4ecdb17f894022cf6fa358b",
+          "039869632b4c8fa4af03ad1ce5e7df342fed2d53f14ac35073cece580374ea97"
+        ]
+      }
+    },
+    "buy_hold_BTCTMN_10pct": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {
+        "BTCTMN": 0.1
+      },
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792720952.291121,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998000.863780193,
+          "cash_weight": 0.9003599884527562,
+          "gross_counterfactual_pnl_tmn": -1001.136357163894,
+          "net_counterfactual_pnl_tmn": -1999.1362198077295,
+          "assumed_entry_exit_fees_tmn": 997.9998626438353,
+          "exposure_tmn": 498499.3631433357,
+          "quote_sha256": [
+            "c72e6e5bf4ab13398fdaa41ee33688a38b74b5743caa971004cfd69320690aa8"
+          ]
+        },
+        {
+          "observed_epoch": 1792721012.9747891,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998000.863825302,
+          "cash_weight": 0.9003599884446302,
+          "gross_counterfactual_pnl_tmn": -1001.1363120088936,
+          "net_counterfactual_pnl_tmn": -1999.136174697884,
+          "assumed_entry_exit_fees_tmn": 997.9998626889903,
+          "exposure_tmn": 498499.3631884907,
+          "quote_sha256": [
+            "e0ca78781ba15c98f2ad64be12b2b45a47171255d145962a390e65fb12ae9ed5"
+          ]
+        },
+        {
+          "observed_epoch": 1792721073.6752384,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998000.863825302,
+          "cash_weight": 0.9003599884446302,
+          "gross_counterfactual_pnl_tmn": -1001.1363120088936,
+          "net_counterfactual_pnl_tmn": -1999.136174697884,
+          "assumed_entry_exit_fees_tmn": 997.9998626889903,
+          "exposure_tmn": 498499.3631884907,
+          "quote_sha256": [
+            "b9b8e218b0254f6ae4e7252cc4084c9965a47f8c940762374378c30fcb8191dc"
+          ]
+        },
+        {
+          "observed_epoch": 1792721184.3538594,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998000.863825302,
+          "cash_weight": 0.9003599884446302,
+          "gross_counterfactual_pnl_tmn": -1001.1363120088936,
+          "net_counterfactual_pnl_tmn": -1999.136174697884,
+          "assumed_entry_exit_fees_tmn": 997.9998626889903,
+          "exposure_tmn": 498499.3631884907,
+          "quote_sha256": [
+            "b120d5ec665e81640d74225599e2ed99c44b1353f90c3397078b7d3a818be893"
+          ]
+        },
+        {
+          "observed_epoch": 1792721244.993936,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998000.863825302,
+          "cash_weight": 0.9003599884446302,
+          "gross_counterfactual_pnl_tmn": -1001.1363120088936,
+          "net_counterfactual_pnl_tmn": -1999.136174697884,
+          "assumed_entry_exit_fees_tmn": 997.9998626889903,
+          "exposure_tmn": 498499.3631884907,
+          "quote_sha256": [
+            "2e776fca58121963f2b545dcb1cc4695d7d8ea71d4ecdb17f894022cf6fa358b"
+          ]
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [
+        "c72e6e5bf4ab13398fdaa41ee33688a38b74b5743caa971004cfd69320690aa8"
+      ],
+      "entry_turnover_fraction": 0.1,
+      "entry_gross_tmn": 499500.4995004996,
+      "entry_fees_tmn": 499.5004995004996,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792721244.993936,
+        "cash_tmn": 4500000.0,
+        "liquidation_nav_tmn": 4998000.863825302,
+        "cash_weight": 0.9003599884446302,
+        "gross_counterfactual_pnl_tmn": -1001.1363120088936,
+        "net_counterfactual_pnl_tmn": -1999.136174697884,
+        "assumed_entry_exit_fees_tmn": 997.9998626889903,
+        "exposure_tmn": 498499.3631884907,
+        "quote_sha256": [
+          "2e776fca58121963f2b545dcb1cc4695d7d8ea71d4ecdb17f894022cf6fa358b"
+        ]
+      }
+    },
+    "buy_hold_ETHTMN_10pct": {
+      "status": "SHORT_WINDOW_DESCRIPTIVE_ONLY",
+      "track": "COUNTERFACTUAL_DEPTH_SWEEP_NOT_REALIZED_PNL",
+      "weights": {
+        "ETHTMN": 0.1
+      },
+      "fee_per_side_assumed": 0.001,
+      "fee_verified": false,
+      "exchange_fills": null,
+      "initial_tmn": 5000000,
+      "nav_path": [
+        {
+          "observed_epoch": 1792720952.291121,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998578.874419283,
+          "cash_weight": 0.9002558753307246,
+          "gross_counterfactual_pnl_tmn": -422.5471288447152,
+          "net_counterfactual_pnl_tmn": -1421.1255807168695,
+          "assumed_entry_exit_fees_tmn": 998.5784518721545,
+          "exposure_tmn": 499077.95237165486,
+          "quote_sha256": [
+            "119a91732e19d5d6f948204c21f6e24e2d977661c912316418e89eacf45e374b"
+          ]
+        },
+        {
+          "observed_epoch": 1792721012.9747891,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998578.852179193,
+          "cash_weight": 0.9002558793362175,
+          "gross_counterfactual_pnl_tmn": -422.56939119729213,
+          "net_counterfactual_pnl_tmn": -1421.147820807094,
+          "assumed_entry_exit_fees_tmn": 998.5784296098019,
+          "exposure_tmn": 499077.9301093023,
+          "quote_sha256": [
+            "dc6b492d078735a4c76a77d2302f51ca07f4148e1b11f760f9321e951e6f348a"
+          ]
+        },
+        {
+          "observed_epoch": 1792721073.6752384,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998578.850645394,
+          "cash_weight": 0.9002558796124583,
+          "gross_counterfactual_pnl_tmn": -422.5709265319165,
+          "net_counterfactual_pnl_tmn": -1421.1493546063837,
+          "assumed_entry_exit_fees_tmn": 998.5784280744672,
+          "exposure_tmn": 499077.92857396766,
+          "quote_sha256": [
+            "ab609aea0fef44aa882094844d291da964bbb840f485ebb5c3b363e76e8e446d"
+          ]
+        },
+        {
+          "observed_epoch": 1792721184.3538594,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998140.463956315,
+          "cash_weight": 0.9003348410176515,
+          "gross_counterfactual_pnl_tmn": -861.3964411244378,
+          "net_counterfactual_pnl_tmn": -1859.5360436843127,
+          "assumed_entry_exit_fees_tmn": 998.1396025598747,
+          "exposure_tmn": 498639.10305937513,
+          "quote_sha256": [
+            "3dd5941ff720af45caed2f5911558050e76b82971e262090a1f19a6b1f362133"
+          ]
+        },
+        {
+          "observed_epoch": 1792721244.993936,
+          "cash_tmn": 4500000.0,
+          "liquidation_nav_tmn": 4998140.4685577145,
+          "cash_weight": 0.9003348401887832,
+          "gross_counterfactual_pnl_tmn": -861.3918351204484,
+          "net_counterfactual_pnl_tmn": -1859.531442286327,
+          "assumed_entry_exit_fees_tmn": 998.1396071658787,
+          "exposure_tmn": 498639.1076653791,
+          "quote_sha256": [
+            "039869632b4c8fa4af03ad1ce5e7df342fed2d53f14ac35073cece580374ea97"
+          ]
+        }
+      ],
+      "max_drawdown": null,
+      "win_loss": null,
+      "profit_factor": null,
+      "sharpe": null,
+      "entry_receipts": [
+        "119a91732e19d5d6f948204c21f6e24e2d977661c912316418e89eacf45e374b"
+      ],
+      "entry_turnover_fraction": 0.1,
+      "entry_gross_tmn": 499500.4995004996,
+      "entry_fees_tmn": 499.5004995004996,
+      "depth_gaps": [],
+      "partial_fill_generation": false,
+      "close_price_fill_used": false,
+      "execution_eligible": false,
+      "market_impact": "explicit sweep; spread embedded, no extra spread double count",
+      "terminal_estimate": {
+        "observed_epoch": 1792721244.993936,
+        "cash_tmn": 4500000.0,
+        "liquidation_nav_tmn": 4998140.4685577145,
+        "cash_weight": 0.9003348401887832,
+        "gross_counterfactual_pnl_tmn": -861.3918351204484,
+        "net_counterfactual_pnl_tmn": -1859.531442286327,
+        "assumed_entry_exit_fees_tmn": 998.1396071658787,
+        "exposure_tmn": 498639.1076653791,
+        "quote_sha256": [
+          "039869632b4c8fa4af03ad1ce5e7df342fed2d53f14ac35073cece580374ea97"
+        ]
+      }
+    }
+  },
+  "component_ablation": [
+    {
+      "arm": "rule_only",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"NO_TRUSTED_FORECAST\": 10}",
+      "gate_reason_counts": "{\"FINITE_Q10_FORECAST_REQUIRED\": 10}",
+      "changed_action_vs_full": 5,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "forecast_only",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 10}",
+      "gate_reason_counts": "{\"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 10}",
+      "changed_action_vs_full": 5,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "forecast_technical",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 5, \"NO_TRUSTED_FORECAST\": 5}",
+      "gate_reason_counts": "{\"FINITE_Q10_FORECAST_REQUIRED\": 5, \"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 5}",
+      "changed_action_vs_full": 0,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "forecast_news",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 10}",
+      "gate_reason_counts": "{\"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 10}",
+      "changed_action_vs_full": 5,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "forecast_patterns",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 10}",
+      "gate_reason_counts": "{\"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 10}",
+      "changed_action_vs_full": 5,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "forecast_memory",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 10}",
+      "gate_reason_counts": "{\"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 10}",
+      "changed_action_vs_full": 5,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "full",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 5, \"NO_TRUSTED_FORECAST\": 5}",
+      "gate_reason_counts": "{\"FINITE_Q10_FORECAST_REQUIRED\": 5, \"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 5}",
+      "changed_action_vs_full": 0,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "without_agent_review",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 10}",
+      "gate_reason_counts": "{\"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 10}",
+      "changed_action_vs_full": 5,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "without_news",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 5, \"NO_TRUSTED_FORECAST\": 5}",
+      "gate_reason_counts": "{\"FINITE_Q10_FORECAST_REQUIRED\": 5, \"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 5}",
+      "changed_action_vs_full": 0,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "without_patterns",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 5, \"NO_TRUSTED_FORECAST\": 5}",
+      "gate_reason_counts": "{\"FINITE_Q10_FORECAST_REQUIRED\": 5, \"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 5}",
+      "changed_action_vs_full": 0,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    },
+    {
+      "arm": "without_memory",
+      "actual_common_snapshots": 10,
+      "status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+      "gate_action_counts": "{\"INSUFFICIENT_RISK_ADJUSTED_EDGE\": 5, \"NO_TRUSTED_FORECAST\": 5}",
+      "gate_reason_counts": "{\"FINITE_Q10_FORECAST_REQUIRED\": 5, \"Q10_DOES_NOT_COVER_OBSERVED_COSTS\": 5}",
+      "changed_action_vs_full": 0,
+      "gross_trading_pnl": null,
+      "net_trading_pnl": null,
+      "drawdown": null,
+      "cost": null,
+      "trades": null,
+      "forecast_error": null,
+      "valid_decision_rate": null,
+      "note": "snapshot counterfactual, NOT independently executed policy path"
+    }
+  ],
+  "economic_edge": "NO_VERIFIED_ECONOMIC_EDGE",
+  "status": "INSUFFICIENT_PROSPECTIVE_EVIDENCE",
+  "M5_strategy_attribution": "FORECAST OBSERVATION ONLY; no fabricated M5 allocation returns",
+  "saved_receipt_replay_supported": true,
+  "independent_long_historical_multi_agent_economic_backtest": "BLOCKED_MISSING_PIT_NEWS_BOOK_AND_APPROVED_ENTRY_EVIDENCE"
+}

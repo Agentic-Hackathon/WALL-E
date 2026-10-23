@@ -1,0 +1,22 @@
+{
+  "scope": "ACTUAL_TWO_BOUNDED_FOREGROUND_PROCESSES_SAME_FROZEN_SESSION",
+  "session": "atlas_store/research_challengers/milestone8/formal_48h_v1",
+  "source_commit": "a1127091d31702474c005af7f08aaf966321ced9",
+  "contract_sha256": "5e2de143ee4e5eae31a843b3d20f237e6160b6aaf5cb1cea49de94e8869ea1f6",
+  "started_epoch_preserved": 1792720950.9200196,
+  "deadline_epoch_preserved": 1792893750.9200196,
+  "first_process": {"requested_max_runtime_seconds": 130, "inference_cycles": 1, "quotes_at_stop": 6, "stop_observed_epoch": 1792721081.907024},
+  "second_process": {"requested_max_runtime_seconds": 75, "inference_cycles": 0, "quotes_at_stop": 10, "stop_observed_epoch": 1792721258.2227197},
+  "forecasts_after_restart": 10,
+  "duplicate_inference_created": false,
+  "actual_multi_agent_review_cycles": 5,
+  "actual_decisions": 10,
+  "paper_mutations": 0,
+  "scored_outcomes": 0,
+  "foreground_stop_events": 2,
+  "lease_held_after_stop": false,
+  "background_execution_remaining": false,
+  "continuous_48h_uptime_proven": false,
+  "future_or_offline_quote_reconstruction": false,
+  "evidence": "forward_observations.sqlite: study_events_v7, study_runtime_v7, quotes, m6_predictions; agentic_decisions.sqlite"
+}

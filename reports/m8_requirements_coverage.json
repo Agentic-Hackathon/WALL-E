@@ -1,80 +1,187 @@
 {
-  "stage": "8.1_AUDIT_NOT_FINAL_COVERAGE",
   "requirements": [
     {
-      "requirement": "core_data_sync",
-      "status": "IMPLEMENTED",
-      "evidence": "atlas_data_sync.py"
+      "requirement": "archive_and_demand_sync",
+      "status": "TESTED",
+      "evidence": "atlas_data_sync.py",
+      "limitation": "not full catalog backfill"
     },
     {
-      "requirement": "feature_registry",
-      "status": "IMPLEMENTED",
-      "evidence": "atlas_feature_registry.py"
+      "requirement": "pattern_retrieval_7_10",
+      "status": "TESTED",
+      "evidence": "m8_pattern_retrieval_results.json",
+      "limitation": "not proven predictive edge"
     },
     {
-      "requirement": "news_pit_archive",
+      "requirement": "pattern_16_24",
       "status": "IMPLEMENTED",
-      "evidence": "atlas_news_pipeline.py"
+      "evidence": "atlas_patterns.PatternIndex.build",
+      "limitation": "not selected/evaluated as beneficial"
     },
     {
-      "requirement": "shared_watch_agent",
-      "status": "IMPLEMENTED",
-      "evidence": "atlas_orchestration.py"
+      "requirement": "multi_timeframe_1_5_15_60_240",
+      "status": "TESTED",
+      "evidence": "m8_pattern_index_build.json",
+      "limitation": "actual 4h analogues/validation insufficient; check counts"
     },
     {
-      "requirement": "research_memory",
-      "status": "IMPLEMENTED",
-      "evidence": "atlas_memory.py"
+      "requirement": "euclidean_dtw_structure",
+      "status": "TESTED",
+      "evidence": "test_milestone8_patterns_real_only.py",
+      "limitation": "DTW prefilter is approximate"
     },
     {
-      "requirement": "forecast_models",
-      "status": "IMPLEMENTED",
-      "evidence": "atlas_prospective.py"
+      "requirement": "pattern_hash_embargo_prefix",
+      "status": "TESTED",
+      "evidence": "test_milestone8_patterns_real_only.py",
+      "limitation": "de-overlap not proof of independent samples"
     },
     {
-      "requirement": "allocation_proposals",
-      "status": "IMPLEMENTED",
-      "evidence": "atlas_portfolio.py"
+      "requirement": "pattern_value_added",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "m8_pattern_retrieval_ablation.csv",
+      "limitation": "not activated in primary decision path"
     },
     {
-      "requirement": "deadline_sampler",
-      "status": "IMPLEMENTED",
-      "evidence": "atlas_study.py"
-    },
-    {
-      "requirement": "historical_pattern_retrieval",
+      "requirement": "learned_encoder_faiss",
       "status": "NOT_IMPLEMENTED",
-      "evidence": null
+      "evidence": "atlas_patterns.py",
+      "limitation": "optional; no independent evidence or performance need established"
     },
     {
-      "requirement": "dynamic_partial_position_shadow",
-      "status": "NOT_IMPLEMENTED",
-      "evidence": null
+      "requirement": "agent_contract_cross_review",
+      "status": "TESTED",
+      "evidence": "m8_agent_architecture.json",
+      "limitation": "structured deterministic specialists, not ten LLMs"
     },
     {
-      "requirement": "news_value_added",
-      "status": "EVIDENCE_INSUFFICIENT",
-      "evidence": "reports/m5_model_ablation.csv"
+      "requirement": "news_startup_lease_resume",
+      "status": "TESTED",
+      "evidence": "m8_startup_sync_audit.json",
+      "limitation": "poll history cannot be reconstructed retrospectively"
     },
     {
-      "requirement": "verified_economic_edge",
-      "status": "EVIDENCE_INSUFFICIENT",
-      "evidence": "reports/m7_portfolio_evaluation.json"
-    },
-    {
-      "requirement": "formal_48h_coverage",
-      "status": "EVIDENCE_INSUFFICIENT",
-      "evidence": "reports/m7_session_integrity.json"
-    },
-    {
-      "requirement": "official_rules_file",
+      "requirement": "news_forecast_four_arm_pipeline",
       "status": "IMPLEMENTED",
-      "evidence": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\file.txt"
+      "evidence": "atlas_news_challenger.py",
+      "limitation": "zero shared historical PIT samples; no news model trained"
     },
     {
-      "requirement": "live_authorization",
+      "requirement": "news_incremental_predictive_value",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "m8_news_model_integration.json",
+      "limitation": "no imputed neutral values"
+    },
+    {
+      "requirement": "finbert_competition_license",
       "status": "BLOCKED",
-      "evidence": null
+      "evidence": "m8_news_model_integration.json",
+      "limitation": "NC weights not operationalized for contest"
+    },
+    {
+      "requirement": "fibonacci_confirmed_swings",
+      "status": "TESTED",
+      "evidence": "test_milestone8_technical_real_only.py",
+      "limitation": "descriptive levels, not return forecast"
+    },
+    {
+      "requirement": "ichimoku_and_supertrend",
+      "status": "TESTED",
+      "evidence": "m8_technical_indicator_audit.json",
+      "limitation": "legacy approximations preserved and identified"
+    },
+    {
+      "requirement": "buy_and_exit_shadow_adapter",
+      "status": "IMPLEMENTED",
+      "evidence": "atlas_dynamic_shadow.py",
+      "limitation": "no approved actual entry/held-position financial branch observed"
+    },
+    {
+      "requirement": "add_to_existing_position",
+      "status": "BLOCKED",
+      "evidence": "atlas_risk.py",
+      "limitation": "unchanged RiskGate does not authorize ADD; no position omitted to bypass gate"
+    },
+    {
+      "requirement": "reduce_sell_rebalance_economics",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "m8_portfolio_decision_audit.json",
+      "limitation": "requires real authorized positions/exit evidence; no fabricated scenario"
+    },
+    {
+      "requirement": "cash_exposure_turnover_cost",
+      "status": "TESTED",
+      "evidence": "test_milestone8_dynamic_shadow_real_only.py",
+      "limitation": "positive-entry financial execution not validated"
+    },
+    {
+      "requirement": "quote_freshness_and_receipts",
+      "status": "TESTED",
+      "evidence": "test_milestone8_dynamic_shadow_real_only.py",
+      "limitation": "no guaranteed exchange fills"
+    },
+    {
+      "requirement": "explainability_and_memory_pit",
+      "status": "TESTED",
+      "evidence": "m8_explainability_samples.json",
+      "limitation": "unvalidated memory cannot grant permission"
+    },
+    {
+      "requirement": "backtest_saved_evidence_isolation",
+      "status": "TESTED",
+      "evidence": "m8_backtest_results.json",
+      "limitation": "saved-evidence replay, not complete independent historical policy PnL"
+    },
+    {
+      "requirement": "full_independent_historical_economic_backtest",
+      "status": "BLOCKED",
+      "evidence": "m8_backtest_results.json",
+      "limitation": "missing historical PIT news/books/authorized entries"
+    },
+    {
+      "requirement": "source_model_environment_pin",
+      "status": "TESTED",
+      "evidence": "m8_submission_manifest.json",
+      "limitation": "new source requires new session"
+    },
+    {
+      "requirement": "formal_48_72h_study",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "m8_shadow_results.json",
+      "limitation": "bounded foreground runs only; offline gaps retained"
+    },
+    {
+      "requirement": "net_economic_edge",
+      "status": "EVIDENCE_INSUFFICIENT",
+      "evidence": "m8_shadow_results.json",
+      "limitation": "NO_VERIFIED_ECONOMIC_EDGE"
+    },
+    {
+      "requirement": "contest_account_allowlist_fees",
+      "status": "BLOCKED",
+      "evidence": "m8_live_readiness.json",
+      "limitation": "not inferred from public spot catalog or 5M text"
+    },
+    {
+      "requirement": "live_transport_and_authorization",
+      "status": "BLOCKED",
+      "evidence": "m8_live_readiness.json",
+      "limitation": "no actual order/cancel/withdrawal, no LIVE activation"
+    },
+    {
+      "requirement": "terminal_tmn_protocol",
+      "status": "IMPLEMENTED",
+      "evidence": "docs/PORTFOLIO_DECISION_POLICY_FA.md",
+      "limitation": "no future clock advancement; no actual held exit demonstrated"
+    },
+    {
+      "requirement": "submission_readmes_demo_script",
+      "status": "IMPLEMENTED",
+      "evidence": "docs/HACKATHON_SUBMISSION_README_FA.md",
+      "limitation": "video NOT recorded or publicly submitted here"
     }
-  ]
+  ],
+  "rules_file": "file.txt",
+  "rules_sha256": "327c40e4409b233c4b68c80d838bf1cad70fa544754d831672f337665bfb994f",
+  "overall": "ENGINEERING_IMPLEMENTED_WITH_EXPLICIT_BLOCKED_OR_INSUFFICIENT_REQUIREMENTS; NOT_FULL_ECONOMIC_OR_LIVE_READINESS"
 }

@@ -1,0 +1,768 @@
+{
+  "current": {
+    "version": "ATLAS_INTELLIGENCE_SYNC_V1",
+    "observed_at": 1792721306.0283508,
+    "sources": {
+      "ohlcv": {
+        "last_valid_observation": {
+          "BTCTMN": 1792720800,
+          "ETHTMN": 1792720800
+        },
+        "last_successful_fetch": "2026-10-23T02:02:34.986507+00:00",
+        "missing_intervals": "SEE_DEMAND_PLAN; unknown unobserved history is not zero activity",
+        "pending_work": 0,
+        "source_unavailable": 0,
+        "staleness": {
+          "BTCTMN": 506.0283508300781,
+          "ETHTMN": 506.0283508300781
+        },
+        "resume_cursor": "catalog.sqlite.download_progress",
+        "retry_status": {
+          "CACHED_VALID": 33,
+          "SAVED": 58
+        },
+        "validation_scope": "catalog aggregate accepted metadata; active core is independently rehashed below",
+        "active_per_asset_preflight": {
+          "BTCTMN": {
+            "symbol": "BTCTMN",
+            "profile": "watch_core",
+            "ready": true,
+            "news_status": null,
+            "reason": "FEATURE_REQUIREMENTS_READY",
+            "timeframes": [
+              {
+                "resolution": "15",
+                "required_warmup_bars": 151,
+                "required_warmup_hours": 37.75,
+                "verified_closed_bars": 298,
+                "ready": true,
+                "reason": "MODEL_INPUT_WINDOW_FINITE"
+              }
+            ],
+            "live_execution": "HARD_DISABLED",
+            "hash_verified_last_closed_at": 1792720800,
+            "native_verified": true,
+            "derived_verified": true
+          },
+          "ETHTMN": {
+            "symbol": "ETHTMN",
+            "profile": "watch_core",
+            "ready": true,
+            "news_status": null,
+            "reason": "FEATURE_REQUIREMENTS_READY",
+            "timeframes": [
+              {
+                "resolution": "15",
+                "required_warmup_bars": 151,
+                "required_warmup_hours": 37.75,
+                "verified_closed_bars": 296,
+                "ready": true,
+                "reason": "MODEL_INPUT_WINDOW_FINITE"
+              }
+            ],
+            "live_execution": "HARD_DISABLED",
+            "hash_verified_last_closed_at": 1792720800,
+            "native_verified": true,
+            "derived_verified": true
+          }
+        }
+      },
+      "news": {
+        "last_valid_observation": "2026-10-23T02:02:44.693388+00:00",
+        "last_successful_fetch": {
+          "COINDESK_RSS": "2026-10-23T02:02:44.296353+00:00",
+          "COINTELEGRAPH_RSS": "2026-10-23T02:02:44.720246+00:00",
+          "GDELT_DOC_2": null,
+          "THEBLOCK_RSS": "2026-10-23T02:02:45.149010+00:00"
+        },
+        "missing_intervals": "UNKNOWN_BEFORE_INSTRUMENTED_POLLING",
+        "pending_work": 19,
+        "source_unavailable": [
+          "GDELT_DOC_2"
+        ],
+        "staleness": "PER_SOURCE_TIMESTAMPS; past publication is not past observation",
+        "resume_cursor": "news.sqlite news_source_runs/news_sync_cursor_v8",
+        "retry_status": [
+          {
+            "source": "COINDESK_RSS",
+            "last_finished": "2026-10-23T02:02:44.296353+00:00",
+            "last_success": "2026-10-23T02:02:44.296353+00:00",
+            "failures": 1
+          },
+          {
+            "source": "COINTELEGRAPH_RSS",
+            "last_finished": "2026-10-23T02:02:44.720246+00:00",
+            "last_success": "2026-10-23T02:02:44.720246+00:00",
+            "failures": 1
+          },
+          {
+            "source": "GDELT_DOC_2",
+            "last_finished": "2026-10-23T02:02:43.594073+00:00",
+            "last_success": null,
+            "failures": 4
+          },
+          {
+            "source": "THEBLOCK_RSS",
+            "last_finished": "2026-10-23T02:02:45.149010+00:00",
+            "last_success": "2026-10-23T02:02:45.149010+00:00",
+            "failures": 1
+          }
+        ]
+      },
+      "patterns": {
+        "last_valid_observation": 1792700178.8885074,
+        "last_successful_fetch": "LOCAL_VERIFIED_ARCHIVE_ONLY",
+        "missing_intervals": {
+          "PEPETMN|1|CONFLICTING_OBSERVED_CANDLES": 1,
+          "UNDEFINED_WINDOW_VOLATILITY_OR_MEDIAN_VOLUME": 78530,
+          "ZERO_OBSERVED_CANDLE_RANGE": 10351
+        },
+        "pending_work": "REBUILD_IN_NEW_DIRECTORY_WHEN_DEMAND_CHANGES",
+        "source_unavailable": false,
+        "staleness": 21127.139843463898,
+        "resume_cursor": "1cf7ebb391318980248e0a4118c7b3ceb9a5304ccbad53689d5118b9fbf08e98",
+        "retry_status": "IMMUTABLE_INDEX_CACHE"
+      },
+      "order_books": {
+        "last_valid_observation": 1792721244.993936,
+        "last_successful_fetch": 1792721244.993936,
+        "missing_intervals": "ONLY_ACTUAL_RECEIPTS; no reconstruction from OHLCV",
+        "pending_work": "INDEPENDENT_60S_DEADLINE_SAMPLER",
+        "source_unavailable": null,
+        "staleness": 61.034414768218994,
+        "resume_cursor": "quotes / deadline_queue_v7",
+        "retry_status": "BOUNDED_SAMPLER_RETRIES"
+      },
+      "forecast_outcomes": {
+        "last_valid_observation": null,
+        "last_successful_fetch": null,
+        "missing_intervals": "late/missing future receipts remain UNSCORED",
+        "pending_work": {
+          "PENDING": 10
+        },
+        "source_unavailable": null,
+        "staleness": null,
+        "resume_cursor": "m6_predictions/m6_outcomes/deadline_queue_v7",
+        "retry_status": null
+      },
+      "symbol_metadata": {
+        "last_valid_observation": "2026-10-22T13:03:54.255359+00:00",
+        "last_successful_fetch": null,
+        "missing_intervals": null,
+        "pending_work": "public catalog refresh is explicit; spot precision != verified contest rules",
+        "source_unavailable": false,
+        "staleness": null,
+        "resume_cursor": "catalog.sqlite.assets",
+        "retry_status": null
+      },
+      "native_derived": {
+        "last_valid_observation": null,
+        "last_successful_fetch": null,
+        "missing_intervals": null,
+        "pending_work": "NATIVE 1/60/1D FIRST; derived complete buckets only",
+        "source_unavailable": null,
+        "staleness": null,
+        "resume_cursor": "catalog.sqlite.chunks/chunk_observations",
+        "retry_status": null
+      },
+      "cross_asset": {
+        "last_valid_observation": null,
+        "last_successful_fetch": null,
+        "missing_intervals": null,
+        "pending_work": "only aligned verified returns; no assumed zero correlation",
+        "source_unavailable": null,
+        "staleness": null,
+        "resume_cursor": null,
+        "retry_status": null
+      },
+      "memory": {
+        "last_valid_observation": null,
+        "last_successful_fetch": null,
+        "missing_intervals": null,
+        "pending_work": "HASH/PIT_VERIFICATION_BEFORE_RETRIEVAL",
+        "source_unavailable": null,
+        "staleness": null,
+        "resume_cursor": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone8\\formal_48h_v1\\context_memory.sqlite",
+        "retry_status": null
+      },
+      "sentiment": {
+        "last_valid_observation": null,
+        "last_successful_fetch": null,
+        "missing_intervals": null,
+        "pending_work": "PENDING_SCORES_RETAINED",
+        "source_unavailable": "FINBERT_CONTEST_LICENSE_NOT_AUTHORIZED",
+        "staleness": null,
+        "resume_cursor": null,
+        "retry_status": "NO_AUTOMATIC_WEIGHT_DOWNLOAD"
+      }
+    },
+    "full_catalog_backfill_blocks_startup": false,
+    "synthetic_gap_fill": false,
+    "credentials_used": false
+  },
+  "formal_inference_cycle_sync": [
+    {
+      "news": {
+        "after": {
+          "articles": 121,
+          "pit_valid": 121,
+          "protocol": "ATLAS_NEWS_PIT_V1",
+          "receipts": 200,
+          "scored": 96,
+          "understood": 121
+        },
+        "before": {
+          "articles": 116,
+          "pit_valid": 116,
+          "protocol": "ATLAS_NEWS_PIT_V1",
+          "receipts": 192,
+          "scored": 96,
+          "understood": 116
+        },
+        "content_scope": "PUBLISHER_FEED_HEADLINE_ONLY",
+        "duplicates": 69,
+        "errors": [
+          {
+            "attempts": 2,
+            "duplicates": 0,
+            "entries_seen": 0,
+            "error_type": "ReadTimeout",
+            "finished_at": "2026-10-23T02:02:43.594073+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 8.594000000040978,
+            "new_articles": 0,
+            "source": "GDELT_DOC_2",
+            "started_at": "2026-10-23T02:02:35.005956+00:00",
+            "status": "FAILED"
+          }
+        ],
+        "fetched_articles_count_attempted": 5,
+        "migration": {
+          "duplicates": 0,
+          "invalid": 0,
+          "migrated": 0
+        },
+        "processing": {
+          "processed": 5,
+          "version": "ATLAS_NEWS_RULE_LINKING_V1"
+        },
+        "protocol": "ATLAS_NEWS_INGESTION_V1",
+        "sentiment": {
+          "scored": 0,
+          "status": "SENTIMENT_LICENSE_OR_PROFILE_GUARD"
+        },
+        "source_runs": [
+          {
+            "attempts": 2,
+            "duplicates": 0,
+            "entries_seen": 0,
+            "error_type": "ReadTimeout",
+            "finished_at": "2026-10-23T02:02:43.594073+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 8.594000000040978,
+            "new_articles": 0,
+            "source": "GDELT_DOC_2",
+            "started_at": "2026-10-23T02:02:35.005956+00:00",
+            "status": "FAILED"
+          },
+          {
+            "attempts": 1,
+            "duplicates": 24,
+            "entries_seen": 25,
+            "error_type": null,
+            "finished_at": "2026-10-23T02:02:44.296353+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 0.6569999998901039,
+            "new_articles": 1,
+            "source": "COINDESK_RSS",
+            "started_at": "2026-10-23T02:02:43.610033+00:00",
+            "status": "SUCCESS"
+          },
+          {
+            "attempts": 1,
+            "duplicates": 26,
+            "entries_seen": 30,
+            "error_type": null,
+            "finished_at": "2026-10-23T02:02:44.720246+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 0.39000000013038516,
+            "new_articles": 4,
+            "source": "COINTELEGRAPH_RSS",
+            "started_at": "2026-10-23T02:02:44.298352+00:00",
+            "status": "SUCCESS"
+          },
+          {
+            "attempts": 1,
+            "duplicates": 19,
+            "entries_seen": 19,
+            "error_type": null,
+            "finished_at": "2026-10-23T02:02:45.149010+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 0.375,
+            "new_articles": 0,
+            "source": "THEBLOCK_RSS",
+            "started_at": "2026-10-23T02:02:44.722243+00:00",
+            "status": "SUCCESS"
+          }
+        ]
+      },
+      "ohlcv": "ALREADY_RECONCILED_BY_EXISTING_STUDY_DATASYNC",
+      "status": {
+        "credentials_used": false,
+        "full_catalog_backfill_blocks_startup": false,
+        "observed_at": 1792720965.3734002,
+        "sources": {
+          "cross_asset": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "only aligned verified returns; no assumed zero correlation",
+            "resume_cursor": null,
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "forecast_outcomes": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": "late/missing future receipts remain UNSCORED",
+            "pending_work": {},
+            "resume_cursor": "m6_predictions/m6_outcomes/deadline_queue_v7",
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "memory": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "HASH/PIT_VERIFICATION_BEFORE_RETRIEVAL",
+            "resume_cursor": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone8\\formal_48h_v1\\context_memory.sqlite",
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "native_derived": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "NATIVE 1/60/1D FIRST; derived complete buckets only",
+            "resume_cursor": "catalog.sqlite.chunks/chunk_observations",
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "news": {
+            "last_successful_fetch": {
+              "COINDESK_RSS": "2026-10-23T02:02:44.296353+00:00",
+              "COINTELEGRAPH_RSS": "2026-10-23T02:02:44.720246+00:00",
+              "GDELT_DOC_2": null,
+              "THEBLOCK_RSS": "2026-10-23T02:02:45.149010+00:00"
+            },
+            "last_valid_observation": "2026-10-23T02:02:44.693388+00:00",
+            "missing_intervals": "UNKNOWN_BEFORE_INSTRUMENTED_POLLING",
+            "pending_work": 19,
+            "resume_cursor": "news.sqlite news_source_runs/news_sync_cursor_v8",
+            "retry_status": [
+              {
+                "failures": 1,
+                "last_finished": "2026-10-23T02:02:44.296353+00:00",
+                "last_success": "2026-10-23T02:02:44.296353+00:00",
+                "source": "COINDESK_RSS"
+              },
+              {
+                "failures": 1,
+                "last_finished": "2026-10-23T02:02:44.720246+00:00",
+                "last_success": "2026-10-23T02:02:44.720246+00:00",
+                "source": "COINTELEGRAPH_RSS"
+              },
+              {
+                "failures": 4,
+                "last_finished": "2026-10-23T02:02:43.594073+00:00",
+                "last_success": null,
+                "source": "GDELT_DOC_2"
+              },
+              {
+                "failures": 1,
+                "last_finished": "2026-10-23T02:02:45.149010+00:00",
+                "last_success": "2026-10-23T02:02:45.149010+00:00",
+                "source": "THEBLOCK_RSS"
+              }
+            ],
+            "source_unavailable": [
+              "GDELT_DOC_2"
+            ],
+            "staleness": "PER_SOURCE_TIMESTAMPS; past publication is not past observation"
+          },
+          "ohlcv": {
+            "active_per_asset_preflight": {
+              "BTCTMN": {
+                "derived_verified": true,
+                "hash_verified_last_closed_at": 1792720800,
+                "live_execution": "HARD_DISABLED",
+                "native_verified": true,
+                "news_status": null,
+                "profile": "watch_core",
+                "ready": true,
+                "reason": "FEATURE_REQUIREMENTS_READY",
+                "symbol": "BTCTMN",
+                "timeframes": [
+                  {
+                    "ready": true,
+                    "reason": "MODEL_INPUT_WINDOW_FINITE",
+                    "required_warmup_bars": 151,
+                    "required_warmup_hours": 37.75,
+                    "resolution": "15",
+                    "verified_closed_bars": 298
+                  }
+                ]
+              },
+              "ETHTMN": {
+                "derived_verified": true,
+                "hash_verified_last_closed_at": 1792720800,
+                "live_execution": "HARD_DISABLED",
+                "native_verified": true,
+                "news_status": null,
+                "profile": "watch_core",
+                "ready": true,
+                "reason": "FEATURE_REQUIREMENTS_READY",
+                "symbol": "ETHTMN",
+                "timeframes": [
+                  {
+                    "ready": true,
+                    "reason": "MODEL_INPUT_WINDOW_FINITE",
+                    "required_warmup_bars": 151,
+                    "required_warmup_hours": 37.75,
+                    "resolution": "15",
+                    "verified_closed_bars": 296
+                  }
+                ]
+              }
+            },
+            "last_successful_fetch": "2026-10-23T02:02:34.986507+00:00",
+            "last_valid_observation": {
+              "BTCTMN": 1792720800,
+              "ETHTMN": 1792720800
+            },
+            "missing_intervals": "SEE_DEMAND_PLAN; unknown unobserved history is not zero activity",
+            "pending_work": 0,
+            "resume_cursor": "catalog.sqlite.download_progress",
+            "retry_status": {
+              "CACHED_VALID": 33,
+              "SAVED": 58
+            },
+            "source_unavailable": 0,
+            "staleness": {
+              "BTCTMN": 165.37340021133423,
+              "ETHTMN": 165.37340021133423
+            },
+            "validation_scope": "catalog aggregate accepted metadata; active core is independently rehashed below"
+          },
+          "order_books": {
+            "last_successful_fetch": 1792720952.291121,
+            "last_valid_observation": 1792720952.291121,
+            "missing_intervals": "ONLY_ACTUAL_RECEIPTS; no reconstruction from OHLCV",
+            "pending_work": "INDEPENDENT_60S_DEADLINE_SAMPLER",
+            "resume_cursor": "quotes / deadline_queue_v7",
+            "retry_status": "BOUNDED_SAMPLER_RETRIES",
+            "source_unavailable": null,
+            "staleness": 13.082279205322266
+          },
+          "patterns": {
+            "last_successful_fetch": "LOCAL_VERIFIED_ARCHIVE_ONLY",
+            "last_valid_observation": 1792700178.8885074,
+            "missing_intervals": {
+              "PEPETMN|1|CONFLICTING_OBSERVED_CANDLES": 1,
+              "UNDEFINED_WINDOW_VOLATILITY_OR_MEDIAN_VOLUME": 78530,
+              "ZERO_OBSERVED_CANDLE_RANGE": 10351
+            },
+            "pending_work": "REBUILD_IN_NEW_DIRECTORY_WHEN_DEMAND_CHANGES",
+            "resume_cursor": "1cf7ebb391318980248e0a4118c7b3ceb9a5304ccbad53689d5118b9fbf08e98",
+            "retry_status": "IMMUTABLE_INDEX_CACHE",
+            "source_unavailable": false,
+            "staleness": 20786.484892845154
+          },
+          "sentiment": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "PENDING_SCORES_RETAINED",
+            "resume_cursor": null,
+            "retry_status": "NO_AUTOMATIC_WEIGHT_DOWNLOAD",
+            "source_unavailable": "FINBERT_CONTEST_LICENSE_NOT_AUTHORIZED",
+            "staleness": null
+          },
+          "symbol_metadata": {
+            "last_successful_fetch": null,
+            "last_valid_observation": "2026-10-22T13:03:54.255359+00:00",
+            "missing_intervals": null,
+            "pending_work": "public catalog refresh is explicit; spot precision != verified contest rules",
+            "resume_cursor": "catalog.sqlite.assets",
+            "retry_status": null,
+            "source_unavailable": false,
+            "staleness": null
+          }
+        },
+        "synthetic_gap_fill": false,
+        "version": "ATLAS_INTELLIGENCE_SYNC_V1"
+      }
+    }
+  ],
+  "development_sync_separate": [
+    {
+      "news": {
+        "after": {
+          "articles": 116,
+          "pit_valid": 116,
+          "protocol": "ATLAS_NEWS_PIT_V1",
+          "receipts": 192,
+          "scored": 96,
+          "understood": 116
+        },
+        "before": {
+          "articles": 102,
+          "pit_valid": 102,
+          "protocol": "ATLAS_NEWS_PIT_V1",
+          "receipts": 171,
+          "scored": 96,
+          "understood": 102
+        },
+        "content_scope": "PUBLISHER_FEED_HEADLINE_ONLY",
+        "duplicates": 60,
+        "errors": [
+          {
+            "attempts": 2,
+            "duplicates": 0,
+            "entries_seen": 0,
+            "error_type": "ReadTimeout",
+            "finished_at": "2026-10-22T20:51:19.655044+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 8.577999999979511,
+            "new_articles": 0,
+            "source": "GDELT_DOC_2",
+            "started_at": "2026-10-22T20:51:11.080798+00:00",
+            "status": "FAILED"
+          }
+        ],
+        "fetched_articles_count_attempted": 14,
+        "migration": {
+          "duplicates": 0,
+          "invalid": 0,
+          "migrated": 0
+        },
+        "processing": {
+          "processed": 14,
+          "version": "ATLAS_NEWS_RULE_LINKING_V1"
+        },
+        "protocol": "ATLAS_NEWS_INGESTION_V1",
+        "sentiment": {
+          "scored": 0,
+          "status": "SENTIMENT_LICENSE_OR_PROFILE_GUARD"
+        },
+        "source_runs": [
+          {
+            "attempts": 2,
+            "duplicates": 0,
+            "entries_seen": 0,
+            "error_type": "ReadTimeout",
+            "finished_at": "2026-10-22T20:51:19.655044+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 8.577999999979511,
+            "new_articles": 0,
+            "source": "GDELT_DOC_2",
+            "started_at": "2026-10-22T20:51:11.080798+00:00",
+            "status": "FAILED"
+          },
+          {
+            "attempts": 1,
+            "duplicates": 21,
+            "entries_seen": 25,
+            "error_type": null,
+            "finished_at": "2026-10-22T20:51:20.234103+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 0.5159999998286366,
+            "new_articles": 4,
+            "source": "COINDESK_RSS",
+            "started_at": "2026-10-22T20:51:19.671388+00:00",
+            "status": "SUCCESS"
+          },
+          {
+            "attempts": 1,
+            "duplicates": 23,
+            "entries_seen": 30,
+            "error_type": null,
+            "finished_at": "2026-10-22T20:51:20.695782+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 0.3910000000614673,
+            "new_articles": 7,
+            "source": "COINTELEGRAPH_RSS",
+            "started_at": "2026-10-22T20:51:20.235109+00:00",
+            "status": "SUCCESS"
+          },
+          {
+            "attempts": 1,
+            "duplicates": 16,
+            "entries_seen": 19,
+            "error_type": null,
+            "finished_at": "2026-10-22T20:51:21.081023+00:00",
+            "invalid_articles": 0,
+            "latency_seconds": 0.3589999999385327,
+            "new_articles": 3,
+            "source": "THEBLOCK_RSS",
+            "started_at": "2026-10-22T20:51:20.697788+00:00",
+            "status": "SUCCESS"
+          }
+        ]
+      },
+      "ohlcv": "ALREADY_RECONCILED_BY_EXISTING_STUDY_DATASYNC",
+      "status": {
+        "credentials_used": false,
+        "full_catalog_backfill_blocks_startup": false,
+        "observed_at": 1792702281.3882399,
+        "sources": {
+          "cross_asset": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "only aligned verified returns; no assumed zero correlation",
+            "resume_cursor": null,
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "forecast_outcomes": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": "late/missing future receipts remain UNSCORED",
+            "pending_work": {},
+            "resume_cursor": "m6_predictions/m6_outcomes/deadline_queue_v7",
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "memory": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "HASH/PIT_VERIFICATION_BEFORE_RETRIEVAL",
+            "resume_cursor": "D:\\Hackaton\\Wallex\\wallex_agent_v3\\atlas_store\\research_challengers\\milestone8\\development_smoke_v1\\context_memory.sqlite",
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "native_derived": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "NATIVE 1/60/1D FIRST; derived complete buckets only",
+            "resume_cursor": "catalog.sqlite.chunks/chunk_observations",
+            "retry_status": null,
+            "source_unavailable": null,
+            "staleness": null
+          },
+          "news": {
+            "last_successful_fetch": {
+              "COINDESK_RSS": "2026-10-22T20:51:20.234103+00:00",
+              "COINTELEGRAPH_RSS": "2026-10-22T20:51:20.695782+00:00",
+              "GDELT_DOC_2": null,
+              "THEBLOCK_RSS": "2026-10-22T20:51:21.081023+00:00"
+            },
+            "last_valid_observation": "2026-10-22T20:51:21.064107+00:00",
+            "missing_intervals": "UNKNOWN_BEFORE_INSTRUMENTED_POLLING",
+            "pending_work": 14,
+            "resume_cursor": "news.sqlite news_source_runs/news_sync_cursor_v8",
+            "retry_status": [
+              {
+                "failures": 1,
+                "last_finished": "2026-10-22T20:51:20.234103+00:00",
+                "last_success": "2026-10-22T20:51:20.234103+00:00",
+                "source": "COINDESK_RSS"
+              },
+              {
+                "failures": 1,
+                "last_finished": "2026-10-22T20:51:20.695782+00:00",
+                "last_success": "2026-10-22T20:51:20.695782+00:00",
+                "source": "COINTELEGRAPH_RSS"
+              },
+              {
+                "failures": 3,
+                "last_finished": "2026-10-22T20:51:19.655044+00:00",
+                "last_success": null,
+                "source": "GDELT_DOC_2"
+              },
+              {
+                "failures": 1,
+                "last_finished": "2026-10-22T20:51:21.081023+00:00",
+                "last_success": "2026-10-22T20:51:21.081023+00:00",
+                "source": "THEBLOCK_RSS"
+              }
+            ],
+            "source_unavailable": [
+              "GDELT_DOC_2"
+            ],
+            "staleness": "PER_SOURCE_TIMESTAMPS; past publication is not past observation"
+          },
+          "ohlcv": {
+            "last_successful_fetch": "2026-10-22T20:51:11.057856+00:00",
+            "last_valid_observation": 1792702140,
+            "missing_intervals": "SEE_DEMAND_PLAN; unknown unobserved history is not zero activity",
+            "pending_work": 0,
+            "resume_cursor": "catalog.sqlite.download_progress",
+            "retry_status": {
+              "CACHED_VALID": 33,
+              "SAVED": 52
+            },
+            "source_unavailable": 0,
+            "staleness": 141.38823986053467
+          },
+          "order_books": {
+            "last_successful_fetch": 1792702269.41623,
+            "last_valid_observation": 1792702269.41623,
+            "missing_intervals": "ONLY_ACTUAL_RECEIPTS; no reconstruction from OHLCV",
+            "pending_work": "INDEPENDENT_60S_DEADLINE_SAMPLER",
+            "resume_cursor": "quotes / deadline_queue_v7",
+            "retry_status": "BOUNDED_SAMPLER_RETRIES",
+            "source_unavailable": null,
+            "staleness": 11.972009897232056
+          },
+          "patterns": {
+            "last_successful_fetch": "LOCAL_VERIFIED_ARCHIVE_ONLY",
+            "last_valid_observation": 1792700178.8885074,
+            "missing_intervals": {
+              "PEPETMN|1|CONFLICTING_OBSERVED_CANDLES": 1,
+              "UNDEFINED_WINDOW_VOLATILITY_OR_MEDIAN_VOLUME": 78530,
+              "ZERO_OBSERVED_CANDLE_RANGE": 10351
+            },
+            "pending_work": "REBUILD_IN_NEW_DIRECTORY_WHEN_DEMAND_CHANGES",
+            "resume_cursor": "1cf7ebb391318980248e0a4118c7b3ceb9a5304ccbad53689d5118b9fbf08e98",
+            "retry_status": "IMMUTABLE_INDEX_CACHE",
+            "source_unavailable": false,
+            "staleness": 2102.4997324943542
+          },
+          "sentiment": {
+            "last_successful_fetch": null,
+            "last_valid_observation": null,
+            "missing_intervals": null,
+            "pending_work": "PENDING_SCORES_RETAINED",
+            "resume_cursor": null,
+            "retry_status": "NO_AUTOMATIC_WEIGHT_DOWNLOAD",
+            "source_unavailable": "FINBERT_CONTEST_LICENSE_NOT_AUTHORIZED",
+            "staleness": null
+          },
+          "symbol_metadata": {
+            "last_successful_fetch": null,
+            "last_valid_observation": "2026-10-22T13:03:54.255359+00:00",
+            "missing_intervals": null,
+            "pending_work": "public catalog refresh is explicit; spot precision != verified contest rules",
+            "resume_cursor": "catalog.sqlite.assets",
+            "retry_status": null,
+            "source_unavailable": false,
+            "staleness": null
+          }
+        },
+        "synthetic_gap_fill": false,
+        "version": "ATLAS_INTELLIGENCE_SYNC_V1"
+      }
+    }
+  ]
+}

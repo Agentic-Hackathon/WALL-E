@@ -1,0 +1,11 @@
+{
+  "observed_not_hidden": [
+    "initial pattern build rejected unsupported local 5m verifier grid; fixed without changing API resolutions",
+    "next pattern build rejected actual conflicting PEPETMN/1 candles; now excluded independently, no winner/overwrite",
+    "librosa import probe interrupted after minutes; explicit independent bounded recurrence fallback",
+    "first new agent test fixture lacked quote hash in older M6 schema: 13 setup errors; corrected to actual M7 receipt-bearing evidence",
+    "development smoke used c80d5b0 and is NOT merged into later frozen formal study",
+    "no positive-entry real evidence or existing held positions; no fabricated financial branch tests"
+  ],
+  "current_financial_or_model_success_inferred_from_these": false
+}

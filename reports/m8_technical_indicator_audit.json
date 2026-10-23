@@ -1,0 +1,802 @@
+{
+  "registry": {
+    "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+    "definitions": [
+      {
+        "name": "tenkan9",
+        "formula": "(highest9+lowest9)/2",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 9,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "kijun26",
+        "formula": "(highest26+lowest26)/2",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 26,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "senkou_a_computed_now",
+        "formula": "(Tenkan9+Kijun26)/2; display +26 bars, available NOW",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 26,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "senkou_b_computed_now",
+        "formula": "(highest52+lowest52)/2; display +26 bars, available NOW",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 52,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "cloud_at_current_a",
+        "formula": "SenkouA computed 26 bars ago",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 52,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "cloud_at_current_b",
+        "formula": "SenkouB computed 26 bars ago",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 78,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "supertrend_trailing_band_v1",
+        "formula": "stateful final bands HL2 +/- 3*WilderATR14, prior close band resets",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 15,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_retracement_0.236",
+        "formula": "UP: H-r*(H-L); DOWN: L+r*(H-L), two opposite CONFIRMED pivots",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_retracement_0.382",
+        "formula": "UP: H-r*(H-L); DOWN: L+r*(H-L), two opposite CONFIRMED pivots",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_retracement_0.5",
+        "formula": "UP: H-r*(H-L); DOWN: L+r*(H-L), two opposite CONFIRMED pivots",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_retracement_0.618",
+        "formula": "UP: H-r*(H-L); DOWN: L+r*(H-L), two opposite CONFIRMED pivots",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_retracement_0.786",
+        "formula": "UP: H-r*(H-L); DOWN: L+r*(H-L), two opposite CONFIRMED pivots",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_extension_1.272",
+        "formula": "UP: L+r*(H-L); DOWN: H-r*(H-L), confirmed pivots only",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_extension_1.618",
+        "formula": "UP: L+r*(H-L); DOWN: H-r*(H-L), confirmed pivots only",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      },
+      {
+        "name": "fibonacci_extension_2.0",
+        "formula": "UP: L+r*(H-L); DOWN: H-r*(H-L), confirmed pivots only",
+        "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+        "warmup_bars": 5,
+        "inputs": [
+          "verified closed OHLCV"
+        ],
+        "timeframe": "CLOSED_TIMEFRAME_TEMPLATE",
+        "missing_policy": "None; no imputation",
+        "zero_denominator_policy": "undefined ratios are None; Fibonacci requires H>L",
+        "availability": "max(all dependency receipts, last dependency close, pivot confirmation close)",
+        "provenance": "actual chunk SHA-256 + implementation SHA-256",
+        "authority": "RESEARCH_EVIDENCE_NOT_CHAMPION_RECIPE"
+      }
+    ],
+    "implementation_sha256_LF": "e3808d284fb8956435f110b4b036162a428a9905e162a8f58b5a72ddd9148d97"
+  },
+  "per_asset": [
+    {
+      "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+      "candle_close_at": 1792720800,
+      "indicator_values": {
+        "sma20_ratio": 0.00027199184132276066,
+        "ema50_ratio": -0.00024560441550658396,
+        "wma20_ratio": 0.0005426706148456972,
+        "dema20_ratio": 0.0007758895407548039,
+        "tema20_ratio": 0.0006430763597060629,
+        "hma20_ratio": 0.0009325620044833283,
+        "macd_hist": 2391760.603455754,
+        "adx14": 18.9937038468436,
+        "di_spread": -13.851260448290557,
+        "aroon_osc25": 8.333333333333334,
+        "supertrend_dir": 1.0,
+        "ichimoku_tk_spread": -0.0009083165885382427,
+        "psar_gap": 0.001946674682731686,
+        "donchian_position20": 0.5537887074192303,
+        "rsi14": 49.303849474690175,
+        "stoch_k14": 94.47123709469672,
+        "stoch_rsi14": 0.6688935737652967,
+        "roc12": -0.0001518471228992846,
+        "cci20": -8.418259317857549,
+        "williams_r14": -5.528762905303269,
+        "trix15": -4.9978662679306396e-05,
+        "tsi": -3.467265791278751,
+        "momentum10": 11640882.0,
+        "ultimate_osc": 79.16201214415754,
+        "atr14_pct": 0.0011143169781618278,
+        "bb_width20": 0.004367074928590714,
+        "keltner_width20": 0.0035109039723534427,
+        "historical_vol20": 0.001218624387373545,
+        "parkinson_vol20": 0.001391740863284201,
+        "garman_klass20": 0.0013903717338920446,
+        "obv_slope12": 0.01677771670533274,
+        "mfi14": 45.85342078475289,
+        "cmf20": 0.39861257736083816,
+        "adl_slope12": 0.01682717514846832,
+        "volume_roc12": 1.0682538063277152,
+        "relative_volume20": 0.9971084480538618,
+        "volume_z20": -0.0020933048113588415,
+        "typical_vwap24_approx_gap": 0.0007397120253149758,
+        "log_return_1": 0.0005978603697227382,
+        "body_ratio": 0.28532552225902835,
+        "upper_wick_ratio": 0.07248819838767225,
+        "lower_wick_ratio": 0.6421862793532994,
+        "breakout_strength20": -0.002593179793377254,
+        "trend_persistence20": -0.2,
+        "range_position20": 0.5537887074192303,
+        "close_z20": 0.24912953935555734
+      },
+      "ichimoku": {
+        "tenkan9": 22095425400.0,
+        "kijun26": 22115519591.0,
+        "senkou_a_computed_now": 22105472495.5,
+        "senkou_b_computed_now": 22160000500.5,
+        "displayed_forward_at": 1792744200,
+        "cloud_at_current_a": 22147500247.75,
+        "cloud_at_current_b": 21980000000.0,
+        "availability": "computed now is not available 26 bars ago; forward display is not future price",
+        "chikou_policy": "NOT_BACKDATED_AS_HISTORICAL_FEATURE"
+      },
+      "supertrend_trailing_band_v1": {
+        "direction": 1,
+        "line": 22055326659.224316,
+        "atr14": 36135389.72556457,
+        "multiplier": 3.0,
+        "legacy_supertrend_dir": "V3 simplified HL2/ATR expression preserved, not silently replaced"
+      },
+      "fibonacci": {
+        "version": "CONFIRMED_SWING_FIBONACCI_V1",
+        "status": "DESCRIPTIVE_CONFIRMED_SWING_LEVELS",
+        "retracements": {
+          "0.236": 22078201158.536,
+          "0.382": 22086344042.232,
+          "0.5": 22092925277.0,
+          "0.618": 22099506511.768,
+          "0.786": 22108876405.336
+        },
+        "extensions": {
+          "1.272": 22049868385.128,
+          "1.618": 22030570866.232,
+          "2.0": 22009265513.0
+        },
+        "anchors": [
+          {
+            "kind": "HIGH",
+            "price": 22120811865.0,
+            "pivot_open": 1792716300,
+            "confirmed_at": 1792719000,
+            "confirmation_right_bars": 2
+          },
+          {
+            "kind": "LOW",
+            "price": 22065038689.0,
+            "pivot_open": 1792717200,
+            "confirmed_at": 1792719900,
+            "confirmation_right_bars": 2
+          }
+        ],
+        "direction": "DOWN"
+      },
+      "confirmed_swings": [
+        {
+          "kind": "HIGH",
+          "price": 22242839439.0,
+          "pivot_open": 1792685700,
+          "confirmed_at": 1792688400,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 22020001001.0,
+          "pivot_open": 1792687500,
+          "confirmed_at": 1792690200,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 22219999990.0,
+          "pivot_open": 1792690200,
+          "confirmed_at": 1792692900,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 22050000000.0,
+          "pivot_open": 1792693800,
+          "confirmed_at": 1792696500,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 22136658023.0,
+          "pivot_open": 1792697400,
+          "confirmed_at": 1792700100,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 22089151896.0,
+          "pivot_open": 1792699200,
+          "confirmed_at": 1792701900,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 22051069576.0,
+          "pivot_open": 1792702800,
+          "confirmed_at": 1792705500,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 22179969606.0,
+          "pivot_open": 1792704600,
+          "confirmed_at": 1792707300,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 22099076874.0,
+          "pivot_open": 1792709100,
+          "confirmed_at": 1792711800,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 22070000000.0,
+          "pivot_open": 1792714500,
+          "confirmed_at": 1792717200,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 22120811865.0,
+          "pivot_open": 1792716300,
+          "confirmed_at": 1792719000,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 22065038689.0,
+          "pivot_open": 1792717200,
+          "confirmed_at": 1792719900,
+          "confirmation_right_bars": 2
+        }
+      ],
+      "provisional_extrema": {
+        "status": "UNCONFIRMED_NOT_FIBONACCI_ANCHORS",
+        "high": 22125812111.0,
+        "low": 22079471409.0
+      },
+      "support_resistance": {
+        "confirmed_low_levels": [
+          22020001001.0,
+          22050000000.0,
+          22089151896.0,
+          22051069576.0,
+          22099076874.0,
+          22070000000.0,
+          22065038689.0
+        ],
+        "confirmed_high_levels": [
+          22242839439.0,
+          22219999990.0,
+          22136658023.0,
+          22179969606.0,
+          22120811865.0
+        ]
+      },
+      "volume_profile": {
+        "status": "INSUFFICIENT_REAL_TRADE_AT_PRICE_DATA",
+        "values": null
+      },
+      "vwap": {
+        "status": "TYPICAL_PRICE_VOLUME_APPROXIMATION_NOT_TRADE_VWAP",
+        "gap": 0.0007397120253149758
+      },
+      "missing_indicators": [],
+      "warmup": {
+        "ichimoku_current_cloud": 78,
+        "fibonacci": "two opposite pivots confirmed with 2 closed right bars",
+        "supertrend": 15
+      },
+      "missing_policy": "None/explicit reason, no imputation",
+      "champion_features_changed": false,
+      "decision_authority": "RESEARCH_EVIDENCE_ONLY",
+      "legacy_indicator_audit": {
+        "psar_gap": "V3 is close/rolling-low3-1, NOT full Parabolic SAR; not used as PSAR signal",
+        "historical_vol20": "V3 output is per-bar log-return std; registry annualization wording is inaccurate",
+        "atr14_pct": "V3 uses simple rolling True Range; new SuperTrend explicitly uses Wilder EWM",
+        "supertrend_dir": "V3 simplified expression is not trailing SuperTrend; separate corrected field above",
+        "RSI_warmup": "14 return changes require 15 closed bars; undefined down denominator remains missing"
+      },
+      "evidence_sha256": "dae2363caa31ecf7f99582dd40fe2ef88edb4a62def39f6e1ec9e8e5114f930f",
+      "symbol": "BTCTMN",
+      "resolution": "15",
+      "decision_timestamp": 1792721307.5773177,
+      "available_at": 1792721307.5773177,
+      "status": "VERIFIED_CLOSED_TECHNICAL_EVIDENCE",
+      "source_hashes": {
+        "candles/BTCTMN/15/1792389600_1792443600.csv.gz": "d31eda0a3da63e08b1293c21486c4bc8bbd0811ff4cea75fc247bddf9a40410c",
+        "candles/BTCTMN/15/1792389600_1792450800.csv.gz": "b27f72d4fc255998a2f59e51bb743eaeb612bd4733a919c04ec8cec02c268bfa",
+        "candles/BTCTMN/15/1792452600_1792647900.csv.gz": "8649f882305c2ce2381c2011bdd9caf0dd38be2af841a4723942fc28a66c7211",
+        "candles/BTCTMN/15/1792452600_1792650600.csv.gz": "ef4866e3a161b3996b6e80a48fb85c0f8e1c794a383ad6e2d5b07973197aa264",
+        "candles/BTCTMN/15/1792452600_1792651500.csv.gz": "fdbd8e0f396112805ee1c8c434d5ba3b285d9f08fc0617f3da1a6e41f20ea859",
+        "candles/BTCTMN/15/1792452600_1792652400.csv.gz": "70e29a043ace400788d347c9b98023cc2cfe296738c2ad561187bc272c66a6a6",
+        "candles/BTCTMN/15/1792452600_1792653300.csv.gz": "33f403f71662508cc06aa5c261f13262a7c8908996ae7d0f7a55a62f09b5e30a",
+        "candles/BTCTMN/15/1792452600_1792654200.csv.gz": "f6c3b983124a42bbc56c2930f7d2696a9665bf35ee2b5b029db400dcae3393f2",
+        "candles/BTCTMN/15/1792452600_1792655100.csv.gz": "ab7c57e7a3e94843d9710578764e069c45c4171d47a1ff2f4c5ebbed40192d3a",
+        "candles/BTCTMN/15/1792452600_1792656000.csv.gz": "e2299fdae7b6ced457abdb3f5dc7b2f70338fcf0ce6c82d8b8c6c244887efa7f",
+        "candles/BTCTMN/15/1792452600_1792656900.csv.gz": "23f13e94f69bdae1e893d0846a862794d5bd140959cce32d6fe17b8868d5a938",
+        "candles/BTCTMN/15/1792452600_1792657800.csv.gz": "e1cd21d36f921c044e5a47a11c597137b39740e1e7e5af65831ac867ed90598c",
+        "candles/BTCTMN/15/1792452600_1792658700.csv.gz": "b9c8c4b705cf6875f7c7123985877e1365ef2a48e7876a74994a2cb8d5e19acb",
+        "candles/BTCTMN/15/1792452600_1792660500.csv.gz": "94d7d6832af46a368e2d05f07b2007f9daf24af31044eff3b6cc5ac95d16e387",
+        "candles/BTCTMN/15/1792452600_1792661400.csv.gz": "ca3b325ecf8471c4b2b07ce2f3e6f168e319f68f8b17e4ba55dde368ed8a5d80",
+        "candles/BTCTMN/15/1792452600_1792662300.csv.gz": "7afb17f43ca56c028eb7ea9ba9c57bd6b7cf2a0f1e3f8f921104bb2101056c8e",
+        "candles/BTCTMN/15/1792452600_1792663200.csv.gz": "fa6914a48b6dced0b1913b17b955296e76652be9c4cfa7c8ce32f78f821eb3af",
+        "candles/BTCTMN/15/1792452600_1792664100.csv.gz": "1e1cd0401add2dae2e346d2882a47390a3c662586ed0023ad6d9b1b3088c8e7a",
+        "candles/BTCTMN/15/1792452600_1792665000.csv.gz": "1956c65e5cbf37d6a263ca0a54f5e49a90beb6e885a45cecdf4e6a78f82f85f4",
+        "candles/BTCTMN/15/1792452600_1792665900.csv.gz": "a4afd5a9ebd0a41383a5371e0071ae558be91a6dee5ce436e37bb903fe523698",
+        "candles/BTCTMN/15/1792452600_1792666800.csv.gz": "f2c8e1df6ee026b50a3c980854360d5e731a61525787a915692cd4f98ba95408",
+        "candles/BTCTMN/15/1792452600_1792667700.csv.gz": "236a00c504d6909434aff4cb5186daea754ee14164aed24397d9fa7a49ba4b0a",
+        "candles/BTCTMN/15/1792452600_1792668600.csv.gz": "5b3177008a29666a7eb97503048c863e81efb3f7f95d48650e23981c868fa591",
+        "candles/BTCTMN/15/1792452600_1792669500.csv.gz": "ee9fc5ec9dd8c8260a15de0a53959e26c94a0628d581f40e99536582eb75c4e0",
+        "candles/BTCTMN/15/1792452600_1792670400.csv.gz": "fb09fc141c39b28e4d0510a157582641c5a2a7bff1096641a44ceb137a92c216",
+        "candles/BTCTMN/15/1792452600_1792671300.csv.gz": "a45c3ef0f14b73f66f3fbaf1e5a2b6d44454d53b0e0ba278b7b48519cc428bb0",
+        "candles/BTCTMN/15/1792452600_1792672200.csv.gz": "6f022f584455f09842c83bd97bebc49eaf8bbaeec85cbd884f760dbb17433dbd",
+        "candles/BTCTMN/15/1792452600_1792673100.csv.gz": "bf508f3a0c095e040a07b785b16d28e8e35a806a2ce8475cc892d1fc5188c30d",
+        "candles/BTCTMN/15/1792452600_1792674000.csv.gz": "6c93c59fcb0684b61bd49a0bb738a8f7a378887575fb4fa55e77530e6caa5a76",
+        "candles/BTCTMN/15/1792452600_1792674900.csv.gz": "43f05cc7b5d61e5a8666680188870754ed948d0ce0d09bb4f6e8b72497623455",
+        "candles/BTCTMN/15/1792452600_1792675800.csv.gz": "c06817cad7bfd0aaf13f9a51c92142c7fed0d072aa8e869d9be63af325d54d36",
+        "candles/BTCTMN/15/1792452600_1792676700.csv.gz": "5bb680da3bb8cbbea1850ab3323ee2eea80d02b82106733c49609898d9d0c442",
+        "candles/BTCTMN/15/1792452600_1792692900.csv.gz": "27275e3fb04eb2324e6ff2f711521b2939840860521e7970b3ccbdf9331f697b",
+        "candles/BTCTMN/15/1792452600_1792693800.csv.gz": "791bb2c5c9eb0d90a290a1053af7f440939fcfcb76ad41e1d54af1f18ca18553",
+        "candles/BTCTMN/15/1792452600_1792694700.csv.gz": "27036c1baf74de36e72b37f9e770a3ddb397d4b98e192f23d40c9ac6789f14cf",
+        "candles/BTCTMN/15/1792452600_1792697400.csv.gz": "66062c9e40afa595cbbd4d0678cf7c326786aaa08a65685615d811918954d899",
+        "candles/BTCTMN/15/1792452600_1792701900.csv.gz": "d25fed094afe5d761057d96a2aad13e3c9be299db928f94f817cdb9f547ad872",
+        "candles/BTCTMN/15/1792452600_1792720800.csv.gz": "003c9d9f0f61c688ab54abbf76e2dac059720b455319420fc0fd0c5fba4192b1",
+        "candles/BTCTMN/15/1792454400_1792645200.csv.gz": "dea75e056491a098782417bdc8a24767b1f1d895606748b2a801bbd6c3819f8d"
+      },
+      "track": "RECEIPT_AWARE_CURRENT_EVIDENCE"
+    },
+    {
+      "version": "ATLAS_TECHNICAL_EVIDENCE_V4_1",
+      "candle_close_at": 1792720800,
+      "indicator_values": {
+        "sma20_ratio": 0.003729854542294131,
+        "ema50_ratio": 0.0029504224544996127,
+        "wma20_ratio": 0.003852081462463186,
+        "dema20_ratio": 0.003654129472821843,
+        "tema20_ratio": 0.0028557175400383272,
+        "hma20_ratio": 0.003325313255150286,
+        "macd_hist": 275878.3585226269,
+        "adx14": 14.47606502717367,
+        "di_spread": 19.039184524027643,
+        "aroon_osc25": 79.16666666666666,
+        "supertrend_dir": 1.0,
+        "ichimoku_tk_spread": 0.000998100252677744,
+        "psar_gap": 0.005444421617997852,
+        "donchian_position20": 0.7693390081007554,
+        "rsi14": 72.75190375695388,
+        "stoch_k14": 71.50012313603841,
+        "stoch_rsi14": 1.0,
+        "roc12": 0.005440588666776769,
+        "cci20": 130.25248705607495,
+        "williams_r14": -28.49987686396159,
+        "trix15": -3.268193180361312e-05,
+        "tsi": 2.3636498119396374,
+        "momentum10": 3591997.0,
+        "ultimate_osc": 59.34339804960729,
+        "atr14_pct": 0.0015346355843864968,
+        "bb_width20": 0.008214460487081784,
+        "keltner_width20": 0.003794207244563538,
+        "historical_vol20": 0.0019864503643429797,
+        "parkinson_vol20": 0.001528594377047135,
+        "garman_klass20": 0.0013424762200281459,
+        "obv_slope12": 0.28068290654838846,
+        "mfi14": 71.25998078809025,
+        "cmf20": null,
+        "adl_slope12": 16.332214886715562,
+        "volume_roc12": 251.36928104575165,
+        "relative_volume20": 3.738349009920593,
+        "volume_z20": 1.9335530759963382,
+        "typical_vwap24_approx_gap": 0.0033093558456491756,
+        "log_return_1": 0.004984124700397081,
+        "body_ratio": 0.6731371192387925,
+        "upper_wick_ratio": 0.32686288076120756,
+        "lower_wick_ratio": 0.0,
+        "breakout_strength20": -0.0003134612864769126,
+        "trend_persistence20": -0.05,
+        "range_position20": 0.7693390081007554,
+        "close_z20": 1.8162383509712876
+      },
+      "ichimoku": {
+        "tenkan9": 650259368.5,
+        "kijun26": 649609160.5,
+        "senkou_a_computed_now": 649934264.5,
+        "senkou_b_computed_now": 649772227.0,
+        "displayed_forward_at": 1792744200,
+        "cloud_at_current_a": 648718527.5,
+        "cloud_at_current_b": 649772227.0,
+        "availability": "computed now is not available 26 bars ago; forward display is not future price",
+        "chikou_policy": "NOT_BACKDATED_AS_HISTORICAL_FEATURE"
+      },
+      "supertrend_trailing_band_v1": {
+        "direction": -1,
+        "line": 652070221.6919447,
+        "atr14": 1437245.3469612992,
+        "multiplier": 3.0,
+        "legacy_supertrend_dir": "V3 simplified HL2/ATR expression preserved, not silently replaced"
+      },
+      "fibonacci": {
+        "version": "CONFIRMED_SWING_FIBONACCI_V1",
+        "status": "DESCRIPTIVE_CONFIRMED_SWING_LEVELS",
+        "retracements": {
+          "0.236": 648359020.8,
+          "0.382": 648631829.1,
+          "0.5": 648852318.0,
+          "0.618": 649072806.9,
+          "0.786": 649386723.3
+        },
+        "extensions": {
+          "1.272": 647409797.4,
+          "1.618": 646763279.1,
+          "2.0": 646049493.0
+        },
+        "anchors": [
+          {
+            "kind": "HIGH",
+            "price": 649786593.0,
+            "pivot_open": 1792717200,
+            "confirmed_at": 1792719900,
+            "confirmation_right_bars": 2
+          },
+          {
+            "kind": "LOW",
+            "price": 647918043.0,
+            "pivot_open": 1792718100,
+            "confirmed_at": 1792720800,
+            "confirmation_right_bars": 2
+          }
+        ],
+        "direction": "DOWN"
+      },
+      "confirmed_swings": [
+        {
+          "kind": "LOW",
+          "price": 641957909.0,
+          "pivot_open": 1792687500,
+          "confirmed_at": 1792690200,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 650096152.0,
+          "pivot_open": 1792689300,
+          "confirmed_at": 1792692000,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 645233504.0,
+          "pivot_open": 1792693800,
+          "confirmed_at": 1792696500,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 650006002.0,
+          "pivot_open": 1792697400,
+          "confirmed_at": 1792700100,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 646509478.0,
+          "pivot_open": 1792698300,
+          "confirmed_at": 1792701000,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 646200034.0,
+          "pivot_open": 1792702800,
+          "confirmed_at": 1792705500,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 651649849.0,
+          "pivot_open": 1792703700,
+          "confirmed_at": 1792706400,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 651115159.0,
+          "pivot_open": 1792706400,
+          "confirmed_at": 1792709100,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 647500000.0,
+          "pivot_open": 1792709100,
+          "confirmed_at": 1792711800,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 649573113.0,
+          "pivot_open": 1792713600,
+          "confirmed_at": 1792716300,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "HIGH",
+          "price": 649786593.0,
+          "pivot_open": 1792717200,
+          "confirmed_at": 1792719900,
+          "confirmation_right_bars": 2
+        },
+        {
+          "kind": "LOW",
+          "price": 647918043.0,
+          "pivot_open": 1792718100,
+          "confirmed_at": 1792720800,
+          "confirmation_right_bars": 2
+        }
+      ],
+      "provisional_extrema": {
+        "status": "UNCONFIRMED_NOT_FIBONACCI_ANCHORS",
+        "high": 653018287.0,
+        "low": 648206774.0
+      },
+      "support_resistance": {
+        "confirmed_low_levels": [
+          641957909.0,
+          645233504.0,
+          646509478.0,
+          646200034.0,
+          647500000.0,
+          647918043.0
+        ],
+        "confirmed_high_levels": [
+          650096152.0,
+          650006002.0,
+          651649849.0,
+          651115159.0,
+          649573113.0,
+          649786593.0
+        ]
+      },
+      "volume_profile": {
+        "status": "INSUFFICIENT_REAL_TRADE_AT_PRICE_DATA",
+        "values": null
+      },
+      "vwap": {
+        "status": "TYPICAL_PRICE_VOLUME_APPROXIMATION_NOT_TRADE_VWAP",
+        "gap": 0.0033093558456491756
+      },
+      "missing_indicators": [
+        "cmf20"
+      ],
+      "warmup": {
+        "ichimoku_current_cloud": 78,
+        "fibonacci": "two opposite pivots confirmed with 2 closed right bars",
+        "supertrend": 15
+      },
+      "missing_policy": "None/explicit reason, no imputation",
+      "champion_features_changed": false,
+      "decision_authority": "RESEARCH_EVIDENCE_ONLY",
+      "legacy_indicator_audit": {
+        "psar_gap": "V3 is close/rolling-low3-1, NOT full Parabolic SAR; not used as PSAR signal",
+        "historical_vol20": "V3 output is per-bar log-return std; registry annualization wording is inaccurate",
+        "atr14_pct": "V3 uses simple rolling True Range; new SuperTrend explicitly uses Wilder EWM",
+        "supertrend_dir": "V3 simplified expression is not trailing SuperTrend; separate corrected field above",
+        "RSI_warmup": "14 return changes require 15 closed bars; undefined down denominator remains missing"
+      },
+      "evidence_sha256": "8b7d81ab668807e7a905bf24e46200751cf6eff8160684a90c31849a6ae38fcc",
+      "symbol": "ETHTMN",
+      "resolution": "15",
+      "decision_timestamp": 1792721307.7393832,
+      "available_at": 1792721307.7393832,
+      "status": "VERIFIED_CLOSED_TECHNICAL_EVIDENCE",
+      "source_hashes": {
+        "candles/ETHTMN/15/1792389600_1792443600.csv.gz": "cd619747a9b45a764aa1d332c7ba7af8eb9174998e257106c660bf7790361385",
+        "candles/ETHTMN/15/1792389600_1792450800.csv.gz": "4c480ae25dc6f09ff79631a2175acbb63d8e6f438f722fcb4ed773964a128eee",
+        "candles/ETHTMN/15/1792454400_1792645200.csv.gz": "e0571b1fcb7c23f6cc749b8811e0ae76297f8b1b5f192d061c9d3d5501122d7e",
+        "candles/ETHTMN/15/1792454400_1792647900.csv.gz": "30238baa159e3f73153feb8203d15a9585f1c2ad7557727fc239ecd657e70372",
+        "candles/ETHTMN/15/1792454400_1792650600.csv.gz": "51e6fe906ebc2c32d4aecae3419ae7ebee452c14d2cf4ec992e168ee2a4be511",
+        "candles/ETHTMN/15/1792454400_1792651500.csv.gz": "2b7e4f13cbbb9d4541041701cdb8603e0305f261ca74e2d4077803495f8502f8",
+        "candles/ETHTMN/15/1792454400_1792652400.csv.gz": "064c92c479cdd5f84ca130621aae28ce0263e68d311d6b223f11e8f1046999c2",
+        "candles/ETHTMN/15/1792454400_1792653300.csv.gz": "0c654d339b9ac4d7db8d23a63a9aebeb6000cf9e789d17c3b1c15ded0cbb88b8",
+        "candles/ETHTMN/15/1792454400_1792654200.csv.gz": "9f9f6c931005f0700fc231f744bcd8324c25efa16c61706198d97700b22be500",
+        "candles/ETHTMN/15/1792454400_1792655100.csv.gz": "3c8e113bc859a0c5d051b45d530c486d5bb177863f3f79d3698f5ffcde970ef7",
+        "candles/ETHTMN/15/1792454400_1792656000.csv.gz": "8cbd188ec81c7485adb72b724bef0bbb598e40ae418f9a2aa1e5ee06abab5a44",
+        "candles/ETHTMN/15/1792454400_1792656900.csv.gz": "e1280faacb9d4bbd663317e4f4b2d992c063c6526ae9b09cff0cd754c1560752",
+        "candles/ETHTMN/15/1792454400_1792657800.csv.gz": "29cdaf87bb21856e6bfe53dd7d5da40d5e84d0c7bddcd579891014bf7c0d1198",
+        "candles/ETHTMN/15/1792454400_1792658700.csv.gz": "a412d1c547ba786daf26ba245efe8fc88b96e49825f5c13e08e0b55c1abfce07",
+        "candles/ETHTMN/15/1792454400_1792660500.csv.gz": "6b4b1ea688e4bcb16914da516bde2fff72412de977ab0ae578a8de6b25b27002",
+        "candles/ETHTMN/15/1792454400_1792661400.csv.gz": "e365159b1fa7bdf397576485188685ef51dd3aa52aac8e1ff3a5649817aa47a8",
+        "candles/ETHTMN/15/1792454400_1792662300.csv.gz": "8304f54b8d49a52a9eecccde20888daa0eb318295a35d6e9f5bfe3947c694afd",
+        "candles/ETHTMN/15/1792454400_1792663200.csv.gz": "cbc60771c558a6719b7f986838d084567728e52884870f2405cf755fed2c8f89",
+        "candles/ETHTMN/15/1792454400_1792664100.csv.gz": "34f8d23b3d3a146b940dd5eff912ae46d54083616bee1fb9d1786039c10e68af",
+        "candles/ETHTMN/15/1792454400_1792665000.csv.gz": "a766976d0ea02c3cf64cd136ee0603ecd87fefc90887e83c6e9b5412c8103134",
+        "candles/ETHTMN/15/1792454400_1792665900.csv.gz": "77736a6e02d65d96ff8e56f7e24927fdc2d7e4d685ec6041f2119737a7122c3b",
+        "candles/ETHTMN/15/1792454400_1792666800.csv.gz": "6e6982a3e1cc0490d4025d873777b46aa0153e1e2edd20c585c2d2e6aae992b5",
+        "candles/ETHTMN/15/1792454400_1792667700.csv.gz": "51f8a79763dc26d3e811bd4cdc0d0c2d0e5111dd58478f528de55c1e156d3e49",
+        "candles/ETHTMN/15/1792454400_1792668600.csv.gz": "6758c2b5901d91d9989dfe1ee2a22ec4ae2d317526eee704d05f530672441666",
+        "candles/ETHTMN/15/1792454400_1792669500.csv.gz": "675a56244cb9a26088de371d9338e1867a9691ca625b551da6bfe9f94f83cbf6",
+        "candles/ETHTMN/15/1792454400_1792670400.csv.gz": "f6ea4863d97e19b879ad807b979b0b69b2432b312b354ac022fea881c3fe8951",
+        "candles/ETHTMN/15/1792454400_1792671300.csv.gz": "b6da97d3c85932d26c08022c7ec3b672857308ceb600b559e253b96fe62653ce",
+        "candles/ETHTMN/15/1792454400_1792672200.csv.gz": "f350d2bbd806b404e3bb5fb35bdd00b163f23cb98c5a78ebc94a422d59fee62a",
+        "candles/ETHTMN/15/1792454400_1792673100.csv.gz": "7871e857591c386b0d06a3423e9fee9d6a3ed39e9c562e1adff30ad556679040",
+        "candles/ETHTMN/15/1792454400_1792674000.csv.gz": "8d2c9d2db5556beda39499633cc4f1c51c59bd4e8c75762b3716e84174a3f242",
+        "candles/ETHTMN/15/1792454400_1792674900.csv.gz": "937be3538f6acbf15dbda39c68f49bff49c37a2b5215b9b8e354652bec39d9a9",
+        "candles/ETHTMN/15/1792454400_1792675800.csv.gz": "b3e4b96d48d55ee88fe0d809fdae0c6d722bf29e70c35d9e2dac255cc56b848d",
+        "candles/ETHTMN/15/1792454400_1792676700.csv.gz": "d73effe0834c66151920b4460ecf5706d59fda5b12861ccc1a82995c0dcc8caa",
+        "candles/ETHTMN/15/1792454400_1792701900.csv.gz": "4f2a74459c60c2b9231bf02fdacdbb69ad523d8d2a63f8bb4c904d980011d196",
+        "candles/ETHTMN/15/1792454400_1792720800.csv.gz": "265b488faef5930568aa35dcbd4b3d80deac0f8e74820b000bfe3b82e9d3bcea"
+      },
+      "track": "RECEIPT_AWARE_CURRENT_EVIDENCE"
+    }
+  ],
+  "champion_input_unchanged": true
+}

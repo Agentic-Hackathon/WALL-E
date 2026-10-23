@@ -10,13 +10,14 @@
         "sha256": "e6af707d1fa3fbbb67372c6fbee76c44d6c253d67478aa0338df3c6d49331f89"
       }
     ],
-    "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "additive PIT memory layers and Atlas product ranking, not FinMem additive ranking",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "status": "ADAPTED_IMPLEMENTATION",
+    "integration_scope": "Independent Atlas workflow adaptation, NOT execution of cloned framework",
+    "actual_atlas_adapter": "existing ResearchMemory retrieved and append-only M8 decision/NAV evidence",
+    "measured_effect": "Executed evidence/critique/memory/sizing chain; economic gain NOT demonstrated",
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": "tests/test_milestone8_agentic_real_only.py; tests/test_milestone8_dynamic_shadow_real_only.py",
+    "direct_use_rejected_reason": null
   },
   {
     "repository": "FinRL-Trading",
@@ -29,13 +30,14 @@
         "sha256": "afae3377fdbd0537635360e91585f3c5b478ffe8eb5308f1ddcb37b76a7325d2"
       }
     ],
-    "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "portfolio state and risk separation; existing RiskGate retained",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "status": "ADAPTED_IMPLEMENTATION",
+    "integration_scope": "Independent Atlas workflow adaptation, NOT execution of cloned framework",
+    "actual_atlas_adapter": "existing capped allocator called before actual dynamic Shadow boundary",
+    "measured_effect": "Executed evidence/critique/memory/sizing chain; economic gain NOT demonstrated",
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": "tests/test_milestone8_agentic_real_only.py; tests/test_milestone8_dynamic_shadow_real_only.py",
+    "direct_use_rejected_reason": null
   },
   {
     "repository": "Freqtrade",
@@ -49,12 +51,13 @@
       }
     ],
     "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "prefix causality checks; Atlas protections never disabled",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "integration_scope": "Read-only concept review; no runtime import",
+    "actual_atlas_adapter": null,
+    "measured_effect": null,
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": null,
+    "direct_use_rejected_reason": "Existing Atlas contract retained; licensing/runtime replacement does not establish net OOS value"
   },
   {
     "repository": "grid_trading_bot",
@@ -68,12 +71,13 @@
       }
     ],
     "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "Atlas risk-first/circuit-breaker contracts already exist",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "integration_scope": "Read-only concept review; no runtime import",
+    "actual_atlas_adapter": null,
+    "measured_effect": null,
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": null,
+    "direct_use_rejected_reason": "Existing Atlas contract retained; licensing/runtime replacement does not establish net OOS value"
   },
   {
     "repository": "hindsight",
@@ -87,12 +91,13 @@
       }
     ],
     "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "separate prospective evidence; baselines, leakage and short-window skepticism",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "integration_scope": "Read-only concept review; no runtime import",
+    "actual_atlas_adapter": null,
+    "measured_effect": null,
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": null,
+    "direct_use_rejected_reason": "Existing Atlas contract retained; licensing/runtime replacement does not establish net OOS value"
   },
   {
     "repository": "Hummingbot",
@@ -106,12 +111,13 @@
       }
     ],
     "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "observation identity, leases and reconciliation; existing broker tracker retained",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "integration_scope": "Read-only concept review; no runtime import",
+    "actual_atlas_adapter": null,
+    "measured_effect": null,
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": null,
+    "direct_use_rejected_reason": "Existing Atlas contract retained; licensing/runtime replacement does not establish net OOS value"
   },
   {
     "repository": "lumibot",
@@ -125,12 +131,13 @@
       }
     ],
     "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "Atlas risk-first/circuit-breaker contracts already exist",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "integration_scope": "Read-only concept review; no runtime import",
+    "actual_atlas_adapter": null,
+    "measured_effect": null,
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": null,
+    "direct_use_rejected_reason": "Existing Atlas contract retained; licensing/runtime replacement does not establish net OOS value"
   },
   {
     "repository": "NautilusTrader",
@@ -144,12 +151,13 @@
       }
     ],
     "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "state-only deterministic replay; no publishing execution commands",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "integration_scope": "Read-only concept review; no runtime import",
+    "actual_atlas_adapter": null,
+    "measured_effect": null,
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": null,
+    "direct_use_rejected_reason": "Existing Atlas contract retained; licensing/runtime replacement does not establish net OOS value"
   },
   {
     "repository": "trading-bot",
@@ -158,12 +166,13 @@
     "license": "UNSPECIFIED",
     "license_files": [],
     "status": "BLOCKED_BY_LICENSE",
-    "existing_capability": "Atlas risk-first/circuit-breaker contracts already exist",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "integration_scope": "Read-only concept review; no runtime import",
+    "actual_atlas_adapter": null,
+    "measured_effect": null,
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": null,
+    "direct_use_rejected_reason": "Existing Atlas contract retained; licensing/runtime replacement does not establish net OOS value"
   },
   {
     "repository": "TradingAgents",
@@ -176,12 +185,31 @@
         "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
       }
     ],
-    "status": "CONCEPTUAL_ONLY",
-    "existing_capability": "structured roles in existing LangGraph",
-    "copied_external_lines": 0,
-    "external_code_executed": false,
-    "reason": "No compatible runtime adapter implemented yet; inventory is not functional integration",
-    "measured_change": null,
-    "replay_test": null
+    "status": "ADAPTED_IMPLEMENTATION",
+    "integration_scope": "Independent Atlas workflow adaptation, NOT execution of cloned framework",
+    "actual_atlas_adapter": "atlas_agentic_review.board + LangGraph cross-review",
+    "measured_effect": "Executed evidence/critique/memory/sizing chain; economic gain NOT demonstrated",
+    "copied_external_source_lines": 0,
+    "external_trading_repository_executed": false,
+    "test_evidence": "tests/test_milestone8_agentic_real_only.py; tests/test_milestone8_dynamic_shadow_real_only.py",
+    "direct_use_rejected_reason": null
+  },
+  {
+    "repository": "SciPy",
+    "version": "1.16.3",
+    "license": "BSD-3-Clause",
+    "status": "DIRECT_INTEGRATION",
+    "actual_atlas_adapter": "atlas_patterns -> scipy.spatial.distance.cdist",
+    "measured_effect": "27041 real indexed windows, Euclidean/structure/DTW costs used in actual retrieval",
+    "test_evidence": "tests/test_milestone8_patterns_real_only.py",
+    "copied_external_source_lines": 0
+  },
+  {
+    "repository": "librosa",
+    "version": "0.10.2.post1",
+    "license": "ISC",
+    "status": "REJECTED",
+    "reason": "Local import/inspection probe did not finish within several minutes; interrupted. No successful DTW runtime integration claimed",
+    "fallback": "small independently authored banded recurrence over SciPy costs"
   }
 ]

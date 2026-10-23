@@ -7,6 +7,7 @@ from wallex_bot.atlas_news_pipeline import NewsStore
 from wallex_bot.atlas_news_ingestion import harvest
 from wallex_bot.atlas_intelligence_sync import IntelligenceSyncManager
 from wallex_bot.atlas_intelligence import profile
+import pytest
 
 def test_news_shared_lease_blocks_second_fetch(tmp_path,monkeypatch):
     import wallex_bot.atlas_news_ingestion as module
@@ -48,3 +49,27 @@ def test_m8_profile_pins_separate_research_without_promotion():
     assert c['automatic_promotion'] is False and c['shadow'] is False # disables legacy second execution
     assert c['intelligence']['pattern_decision_use'] is False and c['intelligence']['finbert_competition_decision_use'] is False
     assert c['intelligence']['terminal_exit_window_seconds']==3600
+
+
+def test_real_native_and_derived_core_are_both_verified():
+    root=Path(__file__).resolve().parents[1]/'atlas_store'
+    if not (root/'catalog.sqlite').exists():pytest.skip('Authentic Wallex archive required')
+    lake=Lake(root)
+    try:
+        result=IntelligenceSyncManager(lake).core_preflight('BTCTMN')
+        assert result.get('native_verified') is True and result.get('derived_verified') is True
+        assert result['hash_verified_last_closed_at']<=time.time()
+    finally:lake.close()
+
+
+def test_actual_conflicting_parent_cannot_be_authorized_by_derived_data():
+    root=Path(__file__).resolve().parents[1]/'atlas_store'
+    if not (root/'catalog.sqlite').exists():pytest.skip('Authentic Wallex archive required')
+    lake=Lake(root)
+    try:
+        result=IntelligenceSyncManager(lake).core_preflight('PEPETMN')
+        if 'CONFLICTING_OBSERVED_CANDLES' not in result.get('reason',''):
+            pytest.skip('Previously observed real parent conflict is not present in supplied archive')
+        assert result['ready'] is False and result['native_verified'] is False
+        assert result['reason'].startswith('NATIVE_PARENT_INVALID:')
+    finally:lake.close()

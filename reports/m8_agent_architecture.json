@@ -1,0 +1,38 @@
+{
+  "logical_agent_roles": 10,
+  "existing_seven_roles_preserved": true,
+  "physical_langgraph_nodes": [
+    "specialists_and_cross_review",
+    "portfolio_manager",
+    "unchanged_risk_and_shadow_boundary",
+    "explanation_and_pit_memory"
+  ],
+  "actual_graph_decisions": 10,
+  "actual_cross_review_messages": 45,
+  "role_contract": [
+    "agent_name",
+    "decision_timestamp",
+    "symbol",
+    "evidence_ids",
+    "source_hashes",
+    "signal",
+    "confidence",
+    "uncertainty",
+    "limitations",
+    "recommendation",
+    "reasoning_summary"
+  ],
+  "LLM_calls": 0,
+  "real_forecast_models": [
+    "champion",
+    "m5_lightgbm",
+    "m5_patchtst",
+    "zero",
+    "historical_quantiles"
+  ],
+  "AI_contribution": "Actual model quantiles constrain net-edge acceptance and sizing BEFORE explanation",
+  "economic_ablation_status": "INSUFFICIENT_INDEPENDENT_ECONOMIC_ABLATION",
+  "LLM_order_authority": false,
+  "pattern_or_news_auto_promotion": false,
+  "checkpoint": "agentic_checkpoints.sqlite / SqliteSaver"
+}

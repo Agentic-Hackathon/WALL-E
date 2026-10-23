@@ -1,0 +1,6 @@
+﻿model,registered,matched_matured,status,mean_asset_batch_prediction_latency_seconds,forecast_availability,availability_denominator
+champion,2,0,PENDING_NO_SHARED_MATURED_QUOTES,0.5760077238082886,1.0,attempted per-asset cycles in study_events_v7
+m5_lightgbm,2,0,PENDING_NO_SHARED_MATURED_QUOTES,0.5760077238082886,1.0,attempted per-asset cycles in study_events_v7
+m5_patchtst,2,0,PENDING_NO_SHARED_MATURED_QUOTES,0.5760077238082886,1.0,attempted per-asset cycles in study_events_v7
+zero,2,0,PENDING_NO_SHARED_MATURED_QUOTES,0.5760077238082886,1.0,attempted per-asset cycles in study_events_v7
+historical_quantiles,2,0,PENDING_NO_SHARED_MATURED_QUOTES,0.5760077238082886,1.0,attempted per-asset cycles in study_events_v7
