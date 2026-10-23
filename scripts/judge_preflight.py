@@ -19,6 +19,17 @@ def tools(workspace=ROOT):
         tree=ast.parse(path.read_text(encoding='utf-8-sig'));main=False;commands=[];has_parser=False
         for node in ast.walk(tree):
             if isinstance(node,ast.FunctionDef) and node.name=='main':main=True
+            if isinstance(node,ast.FunctionDef) and any(isinstance(d,ast.Call) and isinstance(d.func,ast.Attribute) and d.func.attr=='tool' for d in node.decorator_list):
+                items.append({'module':'wallex_bot.'+path.stem+'::'+node.name,'command':'python -m wallex_bot.'+path.stem,
+                    'help_supported':False,'tool_type':'MCP_SERVICE_NO_HELP; connect through trusted local MCP client',
+                    'options_or_commands':[node.name],'description':(ast.get_docstring(node) or node.name).splitlines()[0],
+                    'ui_authority':'DISCOVER_AND_COPY_CLI_ONLY; no automatic MCP/private API invocation'})
+            if path.stem=='atlas_skills' and isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id=='Tool':
+                values=[ast.literal_eval(arg) for arg in node.args]
+                items.append({'module':'wallex_bot.atlas_skills::'+values[0],'command':'python -m wallex_bot.atlas_cli --help',
+                    'help_supported':True,'tool_type':'ATLAS_REGISTERED_TOOL','permission':values[3] if len(values)>3 else 'READ_ONLY',
+                    'options_or_commands':[values[0],values[1]],'description':values[2],
+                    'ui_authority':'DISCOVER_AND_COPY_CLI_ONLY; registry never grants arbitrary execution'})
             if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and node.func.attr=='ArgumentParser':has_parser=True
             if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and node.func.attr=='add_argument':
                 for kw in node.keywords:

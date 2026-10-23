@@ -4,4 +4,6 @@ The console Tool Catalog is generated from actual Python modules with main() and
 
 Groups: archive/discovery/data-sync/PIT; feature registry/health/recipe; news/linking/licensing; deep/challenger training and evaluation; patterns; prospective forecasts; portfolio/risk/broker/Shadow; memory/context/advisory; replay/operations; reports and judge preflight. The existing atlas_cli has a single positional command plus shared options: check --help before choosing parameters. Every tool remains subject to its original execution-mode and data guards. LIVE is never a catalog shortcut.
 
+Current source inventory:20 executable module entries +6 decorated MCP tools +10 Atlas registered logical tools =36 searchable items. Shared CLI subcommands/choices are expanded inside their module card. MCP/private reads are discoverable metadata, not invoked by the UI. This count is source-derived, not a promise of successful inference without assets.
+
 Minimal read-only commands: atlas_cli data-sync-plan, data-sync-status, feature-health, feature-recipe-audit, context-status, operations-report, broker-status; other commands can write research artifacts or fetch public data and require an explicit terminal action. Historical frozen-session CLIs may correctly reject changed source. The console reads saved receipts without resuming them.

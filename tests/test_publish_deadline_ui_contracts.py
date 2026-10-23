@@ -96,6 +96,8 @@ def test_env_only_key_no_file_discovery(tmp_path,monkeypatch):
 
 def test_tool_inventory_is_real_module_help_not_execution():
     rows=inventory();assert any(r['module']=='wallex_bot.atlas_cli' for r in rows)
+    assert sum(r['tool_type']=='ATLAS_REGISTERED_TOOL' for r in rows)==10
+    assert sum('MCP_SERVICE' in r['tool_type'] for r in rows)==6
     assert all((r['command'].endswith(' --help') if r['help_supported'] else 'SERVICE_NO_HELP' in r['tool_type']) and 'COPY_CLI_ONLY' in r['ui_authority'] for r in rows)
 
 def test_console_http_host_export_and_mutation_boundaries(tmp_path):
