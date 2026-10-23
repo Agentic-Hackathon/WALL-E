@@ -48,6 +48,7 @@ def test_static_routes_are_exact_and_offline(tmp_path):
         for path,content in [('/static/fonts/Vazirmatn.woff2',b'wOF2'),('/static/console_v2.css',b'@font-face'),('/static/console_v2.js',b'agent_name')]:
             with urlopen(base+path) as r:
                 assert r.status==200 and content in r.read()
+                if path.endswith(('.js','.css')):assert r.headers['Cache-Control']=='no-store'
         with urlopen(base+'/') as r:
             assert b"script-src 'self'" in r.headers['Content-Security-Policy'].encode()
     finally:
