@@ -27,12 +27,12 @@ async function backtestCharts(){
  if(r.requested_start){$('bt-start').value=btDate(r.requested_start);$('bt-end').value=btDate(r.requested_end)}
  const rules=Object.entries(r.rules||{}),colors=['#53d8b7','#8aaeff','#ffc56b'];
  const pnl=rules.map(([name,s])=>`${name}: ${num(s.net_pnl_tmn)} TMN`).join(' · ');
- $('bt-charts').innerHTML=btCanvas('bt-price',r.symbol+' · SMA BUY / SELL · فرضی')+
- btCanvas('bt-equity','Equity · قواعد ثابت فرضی · fee 0.30% / slip 0.05% هر سمت')+
- btCanvas('bt-pnl','PnL فرضی · '+(pnl||'N/A — '+r.status))+
- btCanvas('bt-dd','Drawdown % · فرضی')+
+ $('bt-charts').innerHTML=btCanvas('bt-price',r.symbol+' · SMA BUY / SELL · شبیه‌سازی تاریخی')+
+ btCanvas('bt-equity','Equity · شبیه‌سازی تاریخی · fee 0.30% / slip 0.05% هر سمت')+
+ btCanvas('bt-pnl','PnL · شبیه‌سازی تاریخی · '+(pnl||'N/A — '+r.status))+
+ btCanvas('bt-dd','Drawdown % · شبیه‌سازی تاریخی')+
  btCanvas('bt-roles','Agent timeline · تصمیم‌های ثبت‌شده · بدون بازده مستقل')+
- btCanvas('bt-shadow','Shadow NAV · رسیدهای واقعی حساب فرضی');
+ btCanvas('bt-shadow','Shadow NAV · حساب کاغذی ثبت‌شده');
  btLines('bt-price',[{name:r.symbol,color:'#8aaeff',rows:(r.bars||[]).map(b=>({timestamp:b.timestamp,value:b.close}))}],rules[0]?.[1].events||[]);
  const equities=rules.map(([name,s],i)=>({name,color:colors[i],rows:s.curve.map(p=>({timestamp:p.timestamp,value:p.nav_tmn}))}));
  Object.entries(r.baselines||{}).forEach(([name,s],i)=>equities.push({name,color:['#da98ee','#a0afc4'][i],rows:s.curve.map(p=>({timestamp:p.timestamp,value:p.nav_tmn}))}));

@@ -76,7 +76,7 @@ def test_chart_ui_does_not_add_warning_prose_or_fake_finrl_agents():
     js=Path('ui_backtest/view.js').read_text(encoding='utf-8')
     assert 'pages.backtest' in js and 'type="datetime-local"' in js
     assert '<p>' not in js and 'class="warning"' not in js
-    assert 'فرضی' in js and 'N/A' in js
+    assert 'فرضی' not in js and 'شبیه‌سازی تاریخی' in js and 'N/A' in js
 
 
 def test_http_is_chart_only_and_checks_host(tmp_path):
