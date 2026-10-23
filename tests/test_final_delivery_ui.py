@@ -20,8 +20,10 @@ def test_local_font_license_and_exact_unmodified_bytes():
     assert 'SIL OPEN FONT LICENSE Version 1.1' in (font.parent/'OFL.txt').read_text()
     css=(ROOT/'wallex_bot/static/console_v2.css').read_text()
     assert '@font-face' in css and 'Vazirmatn' in css and '@media(max-width:700px)' in css
-    from scripts.judge_preflight import manifest
-    assert manifest(ROOT)['wallex_bot/static/fonts/Vazirmatn.woff2']==hashlib.sha256(font.read_bytes()).hexdigest()
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('delivery_judge_preflight',ROOT/'scripts/judge_preflight.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    assert module.manifest(ROOT)['wallex_bot/static/fonts/Vazirmatn.woff2']==hashlib.sha256(font.read_bytes()).hexdigest()
 
 
 @pytest.mark.parametrize('name',['README.md','README_FA.md'])
